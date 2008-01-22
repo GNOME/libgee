@@ -1,4 +1,8 @@
 2007-07-27  Jürg Billeter  <j@bitron.ch>
 
+	* gee/Makefile.am: distribute gee.vala to fix build without valac
+
+2007-07-27  Jürg Billeter  <j@bitron.ch>
+
 	* configure.ac: fix package name
 

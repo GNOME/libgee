@@ -89,4 +89,4 @@ dist_vapi_DATA = \
 	gee-1.0.vala \
 	$(NULL)
 
-EXTRA_DIST = gee.vala.stamp
+EXTRA_DIST = gee.vala gee.vala.stamp
