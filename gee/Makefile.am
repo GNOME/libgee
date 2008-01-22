@@ -72,8 +72,8 @@ geeinclude_HEADERS = \
 	set.h \
 	$(NULL)
 
-gee.vala gee.vala.stamp: $(filter %.vala,$(libgee_la_SOURCES))
-	$(VALAC) --library gee $^
+gee-1.0.vapi gee.vala.stamp: $(filter %.vala,$(libgee_la_SOURCES))
+	$(VALAC) --basedir $(top_srcdir) --library gee-1.0 $^
 	touch $@
 
 libgee_la_LIBADD = \
@@ -82,11 +82,8 @@ libgee_la_LIBADD = \
 
 vapidir = $(datadir)/vala/vapi
 
-gee-1.0.vala: gee.vala
-	cp $^ $@
-
 dist_vapi_DATA = \
-	gee-1.0.vala \
+	gee-1.0.vapi \
 	$(NULL)
 
-EXTRA_DIST = gee.vala gee.vala.stamp
+EXTRA_DIST = gee-1.0.vapi gee.vala.stamp
