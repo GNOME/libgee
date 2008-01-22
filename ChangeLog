@@ -1,3 +1,11 @@
+2007-08-30  Jürg Billeter  <j@bitron.ch>
+
+	* gee/arraylist.vala, gee/hashmap.vala, gee/hashset.vala,
+	  gee/iterable.vala, gee/iterator.vala, gee/list.vala, gee/map.vala,
+	  gee/readonlycollection.vala, gee/readonlylist.vala,
+	  gee/readonlymap.vala, gee/readonlyset.vala: explicitly subtype
+	  GLib.Object to support future versions of Vala
+
 2007-07-27  Jürg Billeter  <j@bitron.ch>
 
 	* configure.ac: Post-release version bump
