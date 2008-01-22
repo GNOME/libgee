@@ -1,0 +1,4 @@
+2007-07-27  Jürg Billeter  <j@bitron.ch>
+
+	* configure.ac: fix package name
+
