@@ -1,6 +1,7 @@
 NULL =
 
-INCLUDES = \
+AM_CPPFLAGS = \
+	-I$(top_srcdir) \
 	$(GLIB_CFLAGS) \
 	$(NULL)
 
@@ -10,69 +11,35 @@ lib_LTLIBRARIES = \
 	libgee.la
 	$(NULL)
 
+libgee_la_VALASOURCES = \
+	arraylist.vala \
+	collection.vala \
+	hashmap.vala \
+	hashset.vala \
+	iterable.vala \
+	iterator.vala \
+	list.vala \
+	map.vala \
+	readonlycollection.vala \
+	readonlylist.vala \
+	readonlymap.vala \
+	readonlyset.vala \
+	set.vala \
+	$(NULL)
+
 libgee_la_SOURCES = \
 	gee.vala.stamp \
-	arraylist.c \
-	arraylist.h \
-	arraylist.vala \
-	collection.c \
-	collection.h \
-	collection.vala \
-	hashmap.c \
-	hashmap.h \
-	hashmap.vala \
-	hashset.c \
-	hashset.h \
-	hashset.vala \
-	iterable.c \
-	iterable.h \
-	iterable.vala \
-	iterator.c \
-	iterator.h \
-	iterator.vala \
-	list.c \
-	list.h \
-	list.vala \
-	map.c \
-	map.h \
-	map.vala \
-	readonlycollection.c \
-	readonlycollection.h \
-	readonlycollection.vala \
-	readonlylist.c \
-	readonlylist.h \
-	readonlylist.vala \
-	readonlymap.c \
-	readonlymap.h \
-	readonlymap.vala \
-	readonlyset.c \
-	readonlyset.h \
-	readonlyset.vala \
-	set.c \
-	set.h \
-	set.vala \
+	$(libgee_la_VALASOURCES:.vala=.c) \
+	$(libgee_la_VALASOURCES:.vala=.h) \
 	$(NULL)
 
 geeincludedir = $(includedir)/gee-1.0/gee
 
 geeinclude_HEADERS = \
-	arraylist.h \
-	collection.h \
-	gee.h \
-	hashmap.h \
-	hashset.h \
-	iterable.h \
-	iterator.h \
-	list.h \
-	map.h \
-	readonlycollection.h \
-	readonlylist.h \
-	readonlymap.h \
-	readonlyset.h \
-	set.h \
+	$(libgee_la_VALASOURCES:.vala=.h) \
 	$(NULL)
 
-gee-1.0.vapi gee.vala.stamp: $(filter %.vala,$(libgee_la_SOURCES))
+gee-1.0.vapi gee.vala.stamp: $(libgee_la_VALASOURCES)
 	$(VALAC) --basedir $(top_srcdir) --library gee-1.0 $^
 	touch $@
 
@@ -86,4 +53,4 @@ dist_vapi_DATA = \
 	gee-1.0.vapi \
 	$(NULL)
 
-EXTRA_DIST = gee-1.0.vapi gee.vala.stamp
+EXTRA_DIST = $(libgee_la_VALASOURCES) gee-1.0.vapi gee.vala.stamp

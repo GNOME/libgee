@@ -1,3 +1,10 @@
+2008-01-22  Jürg Billeter  <j@bitron.ch>
+
+	* gee/hashmap.vala, gee/hashset.vala: remove unneeded type casts
+
+	* gee/Makefile.am: don't use filter function in makefiles as it's a
+	  GNU make extension
+
 2007-12-15  Jürg Billeter  <j@bitron.ch>
 
 	* gee/hashmap.vala, gee/hashset.vala: update for vala trunk
