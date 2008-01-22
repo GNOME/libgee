@@ -1,3 +1,8 @@
+2007-09-07  Jürg Billeter  <j@bitron.ch>
+
+	* update license headers to the GNU Lesser General Public License,
+	  version 2.1 or later
+
 2007-08-30  Jürg Billeter  <j@bitron.ch>
 
 	* gee/hashmap.vala, gee/hashset.vala: replace reference-type structs
