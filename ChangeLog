@@ -1,5 +1,11 @@
 2008-01-22  Jürg Billeter  <j@bitron.ch>
 
+	* gee/arraylist.vala, gee/hashmap.vala, gee/hashset.vala,
+	  gee/iterable.vala, gee/readonlycollection.vala, gee/readonlylist.vala,
+	  gee/readonlyset.vala: add get_element_type method to Gee.Iterable
+
+2008-01-22  Jürg Billeter  <j@bitron.ch>
+
 	* gee/hashmap.vala, gee/hashset.vala: remove unneeded type casts
 
 	* gee/Makefile.am: don't use filter function in makefiles as it's a
