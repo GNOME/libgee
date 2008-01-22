@@ -1,5 +1,9 @@
 2007-07-27  Jürg Billeter  <j@bitron.ch>
 
+	* NEWS: update for 0.1.0 release
+
+2007-07-27  Jürg Billeter  <j@bitron.ch>
+
 	* gee/Makefile.am: distribute gee.vala to fix build without valac
 
 2007-07-27  Jürg Billeter  <j@bitron.ch>
