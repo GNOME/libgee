@@ -1,3 +1,9 @@
+2008-02-05  Jürg Billeter  <j@bitron.ch>
+
+	* gee/hashmap.vala, gee/readonlycollection.vala, gee/readonlylist.vala,
+	  gee/readonlymap.vala, gee/readonlyset.vala: remove unreachable
+	  return statements
+
 2008-01-22  Jürg Billeter  <j@bitron.ch>
 
 	* gee/hashmap.vala, gee/hashset.vala: fix invalid variable initializers
