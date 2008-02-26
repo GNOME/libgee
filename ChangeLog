@@ -1,3 +1,7 @@
+2008-02-26  Jürg Billeter  <j@bitron.ch>
+
+	* gee/hashset.vala: fix iterator, patch by Ali Sabil
+
 2008-02-05  Jürg Billeter  <j@bitron.ch>
 
 	* gee/hashmap.vala, gee/readonlycollection.vala, gee/readonlylist.vala,
