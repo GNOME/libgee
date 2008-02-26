@@ -24,6 +24,7 @@ AC_SUBST(GLIB_LIBS)
 
 AC_CONFIG_FILES([Makefile
            gee-1.0.pc
-           gee/Makefile])
+           gee/Makefile
+           tests/Makefile])
 
 AC_OUTPUT

@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 NULL =
 
 AM_CPPFLAGS = \
@@ -53,4 +55,4 @@ dist_vapi_DATA = \
 	gee-1.0.vapi \
 	$(NULL)
 
-EXTRA_DIST = $(libgee_la_VALASOURCES) gee-1.0.vapi gee.vala.stamp
+EXTRA_DIST += $(libgee_la_VALASOURCES) gee-1.0.vapi gee.vala.stamp

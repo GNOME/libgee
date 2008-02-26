@@ -1,5 +1,11 @@
 2008-02-26  Jürg Billeter  <j@bitron.ch>
 
+	* Makefile.am, Makefile.decl, configure.ac, gee/Makefile.am,
+	  tests/Makefile.am, tests/testarraylist.vala,
+	  tests/testhashmap.vala, tests/testhashset.vala: add unit tests
+
+2008-02-26  Jürg Billeter  <j@bitron.ch>
+
 	* gee/hashset.vala: fix iterator, patch by Ali Sabil
 
 2008-02-05  Jürg Billeter  <j@bitron.ch>
