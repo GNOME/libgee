@@ -18,6 +18,7 @@ $(testarraylist_SOURCES): $(testarraylist_VALASOURCES)
 	$(VALAC) --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
 	touch $@
 testarraylist_LDADD = $(progs_ldadd)
+EXTRA_DIST += $(testarraylist_VALASOURCES)
 
 TEST_PROGS += testhashmap
 testhashmap_VALASOURCES = testhashmap.vala
@@ -26,6 +27,7 @@ $(testhashmap_SOURCES): $(testhashmap_VALASOURCES)
 	$(VALAC) --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
 	touch $@
 testhashmap_LDADD = $(progs_ldadd)
+EXTRA_DIST += $(testhashmap_VALASOURCES)
 
 TEST_PROGS += testhashset
 testhashset_VALASOURCES = testhashset.vala
@@ -34,6 +36,5 @@ $(testhashset_SOURCES): $(testhashset_VALASOURCES)
 	$(VALAC) --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
 	touch $@
 testhashset_LDADD = $(progs_ldadd)
-
 EXTRA_DIST += $(testhashset_VALASOURCES)
 
