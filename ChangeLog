@@ -1,3 +1,8 @@
+2008-04-13  Jürg Billeter  <j@bitron.ch>
+
+	* gee/arraylist.vala, gee/hashmap.vala, gee/hashset.vala: remove
+	  obsolete non-null type syntax
+
 2008-03-08  Jürg Billeter  <j@bitron.ch>
 
 	* configure.ac: Post-release version bump
