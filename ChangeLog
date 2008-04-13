@@ -1,5 +1,12 @@
 2008-04-13  Jürg Billeter  <j@bitron.ch>
 
+	* gee/arraylist.vala, gee/hashmap.vala, gee/hashset.vala,
+	  gee/readonlycollection.vala, gee/readonlylist.vala,
+	  gee/readonlymap.vala, gee/readonlyset.vala: remove deprecated
+	  syntax for construct parameters
+
+2008-04-13  Jürg Billeter  <j@bitron.ch>
+
 	* gee/arraylist.vala, gee/hashmap.vala, gee/hashset.vala: remove
 	  obsolete non-null type syntax
 
