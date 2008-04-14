@@ -1,3 +1,11 @@
+2008-04-14  Jürg Billeter  <j@bitron.ch>
+
+	* gee/arraylist.vala, gee/hashmap.vala, gee/hashset.vala,
+	  gee/iterator.vala, gee/list.vala, gee/map.vala,
+	  gee/readonlycollection.vala, gee/readonlylist.vala,
+	  gee/readonlymap.vala, gee/readonlyset.vala: mark types as
+	  nullable where appropriate
+
 2008-04-13  Jürg Billeter  <j@bitron.ch>
 
 	* gee/arraylist.vala, gee/hashmap.vala, gee/hashset.vala,
