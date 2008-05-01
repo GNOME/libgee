@@ -1,3 +1,11 @@
+2008-05-01  Jürg Billeter  <j@bitron.ch>
+
+	* tests/testarraylist.vala:
+	* tests/testhashmap.vala:
+	* tests/testhashset.vala:
+
+	Extend test suite, based on patch by Quikee
+
 2008-04-14  Jürg Billeter  <j@bitron.ch>
 
 	* gee/arraylist.vala, gee/hashmap.vala, gee/hashset.vala,
