@@ -1,3 +1,8 @@
+2008-05-30  Jürg Billeter  <j@bitron.ch>
+
+	* tests/testarraylist.vala: remove invalid type tests as these
+	cause compile errors with recent Vala versions
+
 2008-05-07  Jürg Billeter  <j@bitron.ch>
 
 	* gee/Makefile.am:

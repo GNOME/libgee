@@ -231,9 +231,6 @@ void test_arraylist_index_of () {
 	// Check empty list
 	assert (arraylistOfString.index_of ("one") == -1);
 	
-	// Check invalid type
-	assert (arraylistOfString.index_of (1) == -1);
-	
 	// Check one item
 	arraylistOfString.add ("one");
 	assert (arraylistOfString.index_of ("one") == 0);
@@ -276,7 +273,6 @@ void test_arraylist_index_of () {
 	assert (arraylistOfObjects.index_of (object1) == 0);
 	assert (arraylistOfObjects.index_of (object2) == 1);
 	assert (arraylistOfObjects.index_of (object3) == 2);
-	assert (arraylistOfObjects.index_of (4) == -1);
 	
 }
 
@@ -343,9 +339,6 @@ void test_arraylist_contains () {
 	// Check on empty list
 	assert (!arraylistOfString.contains("1"));
 	
-	// Check incomaptible type
-	assert (!arraylistOfString.contains(1));
-	
 	// Check items
 	arraylistOfString.add ("10");
 	assert (arraylistOfString.contains("10"));
@@ -398,9 +391,6 @@ void test_arraylist_remove () {
 	
 	// Check remove if list is empty
 	arraylistOfString.remove("42");
-	
-	// Check remove for incompatible type
-	arraylistOfString.remove(10);
 	
 	// Add 5 same elements
 	arraylistOfString.add ("42");
