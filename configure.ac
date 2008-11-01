@@ -1,4 +1,4 @@
-AC_INIT([libgee], [0.1.4], [j@bitron.ch], [libgee])
+AC_INIT([libgee], [0.1.5], [j@bitron.ch], [libgee])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE([dist-bzip2])
