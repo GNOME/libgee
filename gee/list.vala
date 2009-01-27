@@ -63,5 +63,15 @@ public interface Gee.List<G> : Collection<G> {
 	 * @param index zero-based index of the item to be removed
 	 */
 	public abstract void remove_at (int index);
+
+	/**
+	 * Returns a slice of this list.
+	 *
+	 * @param start zero-based index of the begin of the slice
+	 * @param stop  zero-based index after the end of the slice
+	 *
+	 * @return A list containing a slice of this list
+	 */
+	public abstract List<G>? slice (int start, int stop);
 }
 

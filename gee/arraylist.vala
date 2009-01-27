@@ -128,6 +128,19 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		_stamp++;
 	}
 
+	public List<G>? slice (int start, int stop) {
+		return_val_if_fail (start <= stop, null);
+		return_val_if_fail (start >= 0, null);
+		return_val_if_fail (stop <= this.size, null);
+
+		var slice = new ArrayList<G> (this._equal_func);
+		for (int i = start; i < stop; i++) {
+			slice.add (this[i]);
+		}
+
+		return slice;
+	}
+
 	private void shift (int start, int delta) {
 		assert (start >= 0 && start <= _size && start >= -delta);
 

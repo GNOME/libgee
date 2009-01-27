@@ -100,6 +100,10 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		assert_not_reached ();
 	}
 
+	public List<G>? slice (int start, int stop) {
+		assert_not_reached ();
+	}
+
 	class Iterator<G> : Object, Gee.Iterator<G> {
 		public bool next () {
 			return false;

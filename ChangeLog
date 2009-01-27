@@ -1,3 +1,12 @@
+2009-01-27  Jürg Billeter  <j@bitron.ch>
+
+	* gee/arraylist.vala:
+	* gee/list.vala:
+	* gee/readonlylist.vala:
+
+	Add List.slice method, patch by Zeeshan Ali Khattak,
+	fixes bug 569188
+
 2008-11-01  Jürg Billeter  <j@bitron.ch>
 
 	* configure.ac: Post-release version bump
