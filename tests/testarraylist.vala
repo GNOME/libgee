@@ -23,9 +23,6 @@
 using GLib;
 using Gee;
 
-const string INDEX_OUT_OF_RANGE = "*index >= 0 && index < self->priv->_size*";
-const string INSERT_INDEX_OUT_OF_RANGE = "*index >= 0 && index <= self->priv->_size*";
-
 void test_arraylist_get () {
 	var arraylistOfString = new ArrayList<string> ();
 	
@@ -35,7 +32,6 @@ void test_arraylist_get () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 	
 	// Check get for valid index in list with one element
 	arraylistOfString.add ("1");
@@ -47,7 +43,6 @@ void test_arraylist_get () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 	
 	// Check get for invalid index number
 	if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
@@ -55,7 +50,6 @@ void test_arraylist_get () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 	
 	// Check get for valid indexes in list with multiple element
 	arraylistOfString.add ("2");
@@ -72,7 +66,6 @@ void test_arraylist_get () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 }
 
 void test_arraylist_set () {
@@ -85,7 +78,6 @@ void test_arraylist_set () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 	assert (arraylistOfString.size == 0);
 	
 	// Check set when one item is in list
@@ -104,7 +96,6 @@ void test_arraylist_set () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 	assert (arraylistOfString.size == 1);
 }
 
@@ -118,7 +109,6 @@ void test_arraylist_insert () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INSERT_INDEX_OUT_OF_RANGE);
 	
 	// Inserting at index 0
 	assert (arraylistOfString.size == 0);
@@ -143,7 +133,6 @@ void test_arraylist_insert () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INSERT_INDEX_OUT_OF_RANGE);
 	
 	// Check insert to the end
 	arraylistOfString.insert (3, "20");
@@ -158,7 +147,6 @@ void test_arraylist_insert () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INSERT_INDEX_OUT_OF_RANGE);
 	
 }
 
@@ -171,14 +159,12 @@ void test_arraylist_remove_at () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 	
 	if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
 		arraylistOfString.remove_at (1);
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 	
 	// add 5 items
 	arraylistOfString.add ("1");
@@ -215,7 +201,6 @@ void test_arraylist_remove_at () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 	
 	// Check remove_at when invalid index
 	if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
@@ -223,7 +208,6 @@ void test_arraylist_remove_at () {
 		return;
 	}
 	Test.trap_assert_failed ();
-	Test.trap_assert_stderr (INDEX_OUT_OF_RANGE);
 }
 
 void test_arraylist_index_of () {

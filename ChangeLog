@@ -1,3 +1,9 @@
+2009-02-21  Jürg Billeter  <j@bitron.ch>
+
+	* tests/testarraylist.vala:
+
+	Fix test cases to avoid testing for implementation details
+
 2009-01-27  Jürg Billeter  <j@bitron.ch>
 
 	* gee/arraylist.vala:
