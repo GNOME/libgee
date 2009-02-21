@@ -1,5 +1,9 @@
 2009-02-21  Jürg Billeter  <j@bitron.ch>
 
+	* NEWS: update for 0.1.5 release
+
+2009-02-21  Jürg Billeter  <j@bitron.ch>
+
 	* tests/testarraylist.vala:
 
 	Fix test cases to avoid testing for implementation details
