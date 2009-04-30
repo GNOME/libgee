@@ -3,7 +3,6 @@ include $(top_srcdir)/Makefile.decl
 NULL =
 
 AM_CPPFLAGS = \
-	-I$(top_srcdir) \
 	$(GLIB_CFLAGS) \
 	$(NULL)
 
@@ -32,17 +31,16 @@ libgee_la_VALASOURCES = \
 libgee_la_SOURCES = \
 	gee.vala.stamp \
 	$(libgee_la_VALASOURCES:.vala=.c) \
-	$(libgee_la_VALASOURCES:.vala=.h) \
 	$(NULL)
 
-geeincludedir = $(includedir)/gee-1.0/gee
+geeincludedir = $(includedir)/gee-1.0
 
 geeinclude_HEADERS = \
-	$(libgee_la_VALASOURCES:.vala=.h) \
+	gee.h \
 	$(NULL)
 
 gee-1.0.vapi gee.vala.stamp: $(libgee_la_VALASOURCES)
-	$(VALAC) -C --basedir $(top_srcdir) --library gee-1.0 $^
+	$(VALAC) -C -H gee.h --library gee-1.0 $^
 	touch $@
 
 libgee_la_LIBADD = \
