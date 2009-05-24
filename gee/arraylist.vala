@@ -32,13 +32,10 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		get { return _size; }
 	}
 
-	public EqualFunc equal_func {
-		set { _equal_func = value; }
-	}
+	public EqualFunc equal_func { construct; get; }
 
 	private G[] _items = new G[4];
 	private int _size;
-	private EqualFunc _equal_func;
 
 	// concurrent modification protection
 	private int _stamp = 0;
@@ -61,7 +58,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 
 	public int index_of (G item) {
 		for (int index = 0; index < _size; index++) {
-			if (_equal_func (_items[index], item)) {
+			if (equal_func (_items[index], item)) {
 				return index;
 			}
 		}
@@ -105,7 +102,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 
 	public bool remove (G item) {
 		for (int index = 0; index < _size; index++) {
-			if (_equal_func (_items[index], item)) {
+			if (equal_func (_items[index], item)) {
 				remove_at (index);
 				return true;
 			}
@@ -137,7 +134,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		return_val_if_fail (start >= 0, null);
 		return_val_if_fail (stop <= _size, null);
 
-		var slice = new ArrayList<G> (this._equal_func);
+		var slice = new ArrayList<G> (this.equal_func);
 		for (int i = start; i < stop; i++) {
 			slice.add (this[i]);
 		}
@@ -173,7 +170,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 
 	private class Iterator<G> : Object, Gee.Iterator<G> {
 		public ArrayList<G> list {
-			set {
+			construct {
 				_list = value;
 				_stamp = _list._stamp;
 			}

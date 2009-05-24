@@ -31,7 +31,7 @@ public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 	}
 
 	public new Set<G> set {
-		set { _set = value; }
+		construct { _set = value; }
 	}
 
 	private Set<G> _set;

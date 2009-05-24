@@ -32,13 +32,9 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		get { return _nnodes; }
 	}
 
-	public HashFunc hash_func {
-		set { _hash_func = value; }
-	}
+	public HashFunc hash_func { construct; get; }
 
-	public EqualFunc equal_func {
-		set { _equal_func = value; }
-	}
+	public EqualFunc equal_func { construct; get; }
 
 	private int _array_size;
 	private int _nnodes;
@@ -46,9 +42,6 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 
 	// concurrent modification protection
 	private int _stamp = 0;
-
-	private HashFunc _hash_func;
-	private EqualFunc _equal_func;
 
 	private const int MIN_SIZE = 11;
 	private const int MAX_SIZE = 13845163;
@@ -64,9 +57,9 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 	}
 
 	private Node<G>** lookup_node (G key) {
-		uint hash_value = _hash_func (key);
+		uint hash_value = hash_func (key);
 		Node<G>** node = &_nodes[hash_value % _array_size];
-		while ((*node) != null && (hash_value != (*node)->key_hash || !_equal_func ((*node)->key, key))) {
+		while ((*node) != null && (hash_value != (*node)->key_hash || !equal_func ((*node)->key, key))) {
 			node = &((*node)->next);
 		}
 		return node;
@@ -90,7 +83,7 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		if (*node != null) {
 			return false;
 		} else {
-			uint hash_value = _hash_func (key);
+			uint hash_value = hash_func (key);
 			*node = new Node<G> (key, hash_value);
 			_nnodes++;
 			resize ();
@@ -171,7 +164,7 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 
 	private class Iterator<G> : Object, Gee.Iterator<G> {
 		public new HashSet<G> set {
-			set {
+			construct {
 				_set = value;
 				_stamp = _set._stamp;
 			}

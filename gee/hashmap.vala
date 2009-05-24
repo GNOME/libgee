@@ -32,17 +32,11 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		get { return _nnodes; }
 	}
 
-	public HashFunc key_hash_func {
-		set { _key_hash_func = value; }
-	}
+	public HashFunc key_hash_func { construct; get; }
 
-	public EqualFunc key_equal_func {
-		set { _key_equal_func = value; }
-	}
+	public EqualFunc key_equal_func { construct; get; }
 
-	public EqualFunc value_equal_func {
-		set { _value_equal_func = value; }
-	}
+	public EqualFunc value_equal_func { construct; get; }
 
 	private int _array_size;
 	private int _nnodes;
@@ -50,10 +44,6 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 
 	// concurrent modification protection
 	private int _stamp = 0;
-
-	private HashFunc _key_hash_func;
-	private EqualFunc _key_equal_func;
-	private EqualFunc _value_equal_func;
 
 	private const int MIN_SIZE = 11;
 	private const int MAX_SIZE = 13845163;
@@ -78,9 +68,9 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 	}
 
 	private Node<K,V>** lookup_node (K key) {
-		uint hash_value = _key_hash_func (key);
+		uint hash_value = key_hash_func (key);
 		Node<K,V>** node = &_nodes[hash_value % _array_size];
-		while ((*node) != null && (hash_value != (*node)->key_hash || !_key_equal_func ((*node)->key, key))) {
+		while ((*node) != null && (hash_value != (*node)->key_hash || !key_equal_func ((*node)->key, key))) {
 			node = &((*node)->next);
 		}
 		return node;
@@ -105,7 +95,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		if (*node != null) {
 			(*node)->value = value;
 		} else {
-			uint hash_value = _key_hash_func (key);
+			uint hash_value = key_hash_func (key);
 			*node = new Node<K,V> (key, value, hash_value);
 			_nnodes++;
 			resize ();
@@ -188,11 +178,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 	}
 
 	private class KeySet<K,V> : Object, Iterable<K>, Collection<K>, Set<K> {
-		public HashMap<K,V> map {
-			set { _map = value; }
-		}
-
-		private HashMap<K,V> _map;
+		public HashMap<K,V> map { construct; get; }
 
 		public KeySet (HashMap map) {
 			this.map = map;
@@ -203,11 +189,11 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		}
 
 		public Iterator<K> iterator () {
-			return new KeyIterator<K,V> (_map);
+			return new KeyIterator<K,V> (map);
 		}
 
 		public int size {
-			get { return _map.size; }
+			get { return map.size; }
 		}
 
 		public bool add (K key) {
@@ -229,7 +215,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 
 	private class KeyIterator<K,V> : Object, Iterator<K> {
 		public HashMap<K,V> map {
-			set {
+			construct {
 				_map = value;
 				_stamp = _map._stamp;
 			}
@@ -265,11 +251,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 	}
 
 	private class ValueCollection<K,V> : Object, Iterable<V>, Collection<V> {
-		public HashMap<K,V> map {
-			set { _map = value; }
-		}
-
-		private HashMap<K,V> _map;
+		public HashMap<K,V> map { construct; get; }
 
 		public ValueCollection (HashMap map) {
 			this.map = map;
@@ -280,11 +262,11 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		}
 
 		public Iterator<V> iterator () {
-			return new ValueIterator<K,V> (_map);
+			return new ValueIterator<K,V> (map);
 		}
 
 		public int size {
-			get { return _map.size; }
+			get { return map.size; }
 		}
 
 		public bool add (V value) {
@@ -302,7 +284,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		public bool contains (V value) {
 			Iterator<V> it = iterator ();
 			while (it.next ()) {
-				if (_map._value_equal_func (it.get (), value)) {
+				if (map.value_equal_func (it.get (), value)) {
 					return true;
 				}
 			}
@@ -312,7 +294,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 
 	private class ValueIterator<K,V> : Object, Iterator<V> {
 		public HashMap<K,V> map {
-			set {
+			construct {
 				_map = value;
 				_stamp = _map._stamp;
 			}

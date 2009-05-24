@@ -31,7 +31,7 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	}
 
 	public Map<K,V> map {
-		set { _map = value; }
+		construct { _map = value; }
 	}
 
 	private Map<K,V> _map;

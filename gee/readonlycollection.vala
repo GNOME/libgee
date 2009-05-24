@@ -31,7 +31,7 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	public Collection<G> collection {
-		set { _collection = value; }
+		construct { _collection = value; }
 	}
 
 	private Collection<G> _collection;
