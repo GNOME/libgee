@@ -102,8 +102,13 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 	public bool remove (G key) {
 		Node<G>** node = lookup_node (key);
 		if (*node != null) {
+			Node<G> next = (owned) (*node)->next;
+
 			(*node)->key = null;
-			*node = (*node)->next;
+			delete *node;
+
+			*node = (owned) next;
+
 			_nnodes--;
 			resize ();
 			_stamp++;
