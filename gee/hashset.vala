@@ -140,7 +140,7 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 
 			for (int i = 0; i < _array_size; i++) {
 				Node<G> node;
-				Node<G> next;
+				Node<G> next = null;
 				for (node = (owned) _nodes[i]; node != null; node = (owned) next) {
 					next = (owned) node.next;
 					uint hash_val = node.key_hash % new_array_size;

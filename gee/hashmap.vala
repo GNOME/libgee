@@ -156,7 +156,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 
 			for (int i = 0; i < _array_size; i++) {
 				Node<K,V> node;
-				Node<K,V> next;
+				Node<K,V> next = null;
 				for (node = (owned) _nodes[i]; node != null; node = (owned) next) {
 					next = (owned) node.next;
 					uint hash_val = node.key_hash % new_array_size;
