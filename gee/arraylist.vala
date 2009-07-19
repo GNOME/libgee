@@ -69,13 +69,15 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 	}
 
 	public new G? get (int index) {
-		assert (index >= 0 && index < _size);
+		assert (index >= 0);
+		assert (index < _size);
 
 		return _items[index];
 	}
 
 	public new void set (int index, G item) {
-		assert (index >= 0 && index < _size);
+		assert (index >= 0);
+		assert (index < _size);
 
 		_items[index] = item;
 	}
@@ -90,7 +92,8 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 	}
 
 	public void insert (int index, G item) {
-		assert (index >= 0 && index <= _size);
+		assert (index >= 0);
+		assert (index <= _size);
 
 		if (_size == _items.length) {
 			grow_if_needed (1);
@@ -111,7 +114,8 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 	}
 
 	public void remove_at (int index) {
-		assert (index >= 0 && index < _size);
+		assert (index >= 0);
+		assert (index < _size);
 
 		_items[index] = null;
 
@@ -131,7 +135,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 	public List<G>? slice (int start, int stop) {
 		return_val_if_fail (start <= stop, null);
 		return_val_if_fail (start >= 0, null);
-		return_val_if_fail (stop <= this.size, null);
+		return_val_if_fail (stop <= _size, null);
 
 		var slice = new ArrayList<G> (this._equal_func);
 		for (int i = start; i < stop; i++) {
@@ -142,7 +146,9 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 	}
 
 	private void shift (int start, int delta) {
-		assert (start >= 0 && start <= _size && start >= -delta);
+		assert (start >= 0);
+		assert (start <= _size);
+		assert (start >= -delta);
 
 		_items.move (start, start + delta, _size - start);
 
