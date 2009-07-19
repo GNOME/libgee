@@ -30,7 +30,7 @@ public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		get { return _set.size; }
 	}
 
-	public Set<G> set {
+	public new Set<G> set {
 		set { _set = value; }
 	}
 
@@ -77,7 +77,7 @@ public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 			return false;
 		}
 
-		public G? get () {
+		public new G? get () {
 			return null;
 		}
 	}

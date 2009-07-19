@@ -68,13 +68,13 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		return -1;
 	}
 
-	public G? get (int index) {
+	public new G? get (int index) {
 		assert (index >= 0 && index < _size);
 
 		return _items[index];
 	}
 
-	public void set (int index, G item) {
+	public new void set (int index, G item) {
 		assert (index >= 0 && index < _size);
 
 		_items[index] = item;
@@ -191,7 +191,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 			return (_index < _list._size);
 		}
 
-		public G? get () {
+		public new G? get () {
 			assert (_stamp == _list._stamp);
 
 			if (_index < 0 || _index >= _list._size) {

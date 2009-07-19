@@ -77,7 +77,7 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 			return false;
 		}
 
-		public G? get () {
+		public new G? get () {
 			return null;
 		}
 	}

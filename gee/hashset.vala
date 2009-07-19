@@ -170,7 +170,7 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 	}
 
 	private class Iterator<G> : Object, Gee.Iterator<G> {
-		public HashSet<G> set {
+		public new HashSet<G> set {
 			set {
 				_set = value;
 				_stamp = _set._stamp;
@@ -199,7 +199,7 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 			return (_node != null);
 		}
 
-		public G? get () {
+		public new G? get () {
 			assert (_stamp == _set._stamp);
 			assert (_node != null);
 			return _node.key;

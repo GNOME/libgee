@@ -84,7 +84,7 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		assert_not_reached ();
 	}
 
-	public G? get (int index) {
+	public new G? get (int index) {
 		if (_list == null) {
 			return null;
 		}
@@ -92,7 +92,7 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		return _list.get (index);
 	}
 
-	public void set (int index, G o) {
+	public new void set (int index, G o) {
 		assert_not_reached ();
 	}
 
@@ -109,7 +109,7 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 			return false;
 		}
 
-		public G? get () {
+		public new G? get () {
 			return null;
 		}
 	}

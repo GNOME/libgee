@@ -64,7 +64,7 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		return _map.contains (key);
 	}
 
-	public V? get (K key) {
+	public new V? get (K key) {
 		if (_map == null) {
 			return null;
 		}
@@ -72,7 +72,7 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		return _map.get (key);
 	}
 
-	public void set (K key, V value) {
+	public new void set (K key, V value) {
 		assert_not_reached ();
 	}
 
