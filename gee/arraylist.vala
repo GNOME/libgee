@@ -183,7 +183,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		private int _index = -1;
 
 		// concurrent modification protection
-		public int _stamp = 0;
+		private int _stamp = 0;
 
 		public Iterator (ArrayList list) {
 			this.list = list;
