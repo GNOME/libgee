@@ -15,6 +15,7 @@ lib_LTLIBRARIES = \
 libgee_la_VALASOURCES = \
 	arraylist.vala \
 	collection.vala \
+	functions.vala \
 	hashmap.vala \
 	hashset.vala \
 	iterable.vala \
@@ -26,6 +27,8 @@ libgee_la_VALASOURCES = \
 	readonlymap.vala \
 	readonlyset.vala \
 	set.vala \
+	treemap.vala \
+	treeset.vala \
 	$(NULL)
 
 libgee_la_SOURCES = \
