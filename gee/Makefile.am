@@ -40,7 +40,7 @@ geeinclude_HEADERS = \
 	$(NULL)
 
 gee-1.0.vapi gee.vala.stamp: $(libgee_la_VALASOURCES)
-	$(VALAC) -C -H gee.h --library gee-1.0 $^
+	$(VALAC) -C -H gee.h --library gee-1.0 --gir Gee-1.0.gir $^
 	touch $@
 
 libgee_la_LIBADD = \
@@ -53,4 +53,10 @@ dist_vapi_DATA = \
 	gee-1.0.vapi \
 	$(NULL)
 
-EXTRA_DIST += $(libgee_la_VALASOURCES) gee-1.0.vapi gee.vala.stamp
+girdir = `$(PKG_CONFIG) --variable=girdir gobject-introspection-1.0`
+
+dist_gir_DATA = \
+	Gee-1.0.gir \
+	$(NULL)
+
+EXTRA_DIST += $(libgee_la_VALASOURCES) gee-1.0.vapi Gee-1.0.gir gee.vala.stamp
