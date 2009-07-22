@@ -53,7 +53,7 @@ dist_vapi_DATA = \
 	gee-1.0.vapi \
 	$(NULL)
 
-girdir = `$(PKG_CONFIG) --variable=girdir gobject-introspection-1.0`
+girdir = $(datadir)/gir-1.0
 
 dist_gir_DATA = \
 	Gee-1.0.gir \
