@@ -248,7 +248,6 @@ void test_arraylist_index_of () {
 	var object1 = new Object ();
 	var object2 = new Object ();
 	var object3 = new Object ();
-	var object4 = new Object ();
 	
 	arraylistOfObjects.add (object1);
 	arraylistOfObjects.add (object2);
