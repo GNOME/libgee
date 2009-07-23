@@ -20,6 +20,7 @@ libgee_la_VALASOURCES = \
 	hashset.vala \
 	iterable.vala \
 	iterator.vala \
+	linkedlist.vala \
 	list.vala \
 	map.vala \
 	readonlycollection.vala \

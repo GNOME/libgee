@@ -28,5 +28,6 @@ gee/gee-1.0.vapi
 tests/testarraylist
 tests/testhashmap
 tests/testhashset
-
-
+tests/testlinkedlist
+tests/testtreemap
+tests/testtreeset

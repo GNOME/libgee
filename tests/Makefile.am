@@ -38,6 +38,15 @@ $(testhashset_SOURCES): $(testhashset_VALASOURCES)
 testhashset_LDADD = $(progs_ldadd)
 EXTRA_DIST += $(testhashset_VALASOURCES)
 
+TEST_PROGS += testlinkedlist
+testlinkedlist_VALASOURCES = testlinkedlist.vala
+testlinkedlist_SOURCES = testlinkedlist.c
+$(testlinkedlist_SOURCES): $(testlinkedlist_VALASOURCES)
+	$(VALAC) -C --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
+	touch $@
+testlinkedlist_LDADD = $(progs_ldadd)
+EXTRA_DIST += $(testlinkedlist_VALASOURCES)
+
 TEST_PROGS += testtreeset
 testtreeset_VALASOURCES = testtreeset.vala
 testtreeset_SOURCES = testtreeset.c testtreeset.h
