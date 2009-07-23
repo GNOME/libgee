@@ -64,5 +64,12 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * read-only collections.
 	 */
 	public abstract void clear ();
+
+	/**
+	 * Returns an array containing all of items from this collection.
+	 *
+	 * @return an array containing all of items from this collection
+	 */
+	public abstract G[] to_array();
 }
 

@@ -72,6 +72,10 @@ public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		assert_not_reached ();
 	}
 
+	public G[] to_array() {
+		return _set.to_array ();
+	}
+
 	private class Iterator<G> : Object, Gee.Iterator<G> {
 		public bool next () {
 			return false;

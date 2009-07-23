@@ -104,6 +104,10 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		assert_not_reached ();
 	}
 
+	public G[] to_array() {
+		return _list.to_array ();
+	}
+
 	class Iterator<G> : Object, Gee.Iterator<G> {
 		public bool next () {
 			return false;

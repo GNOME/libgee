@@ -498,6 +498,20 @@ void test_arraylist_iterator () {
 	assert (!iterator.next());
 }
 
+void test_arraylist_to_array () {
+	var arraylistOfString = new ArrayList<string> ();
+
+	// Check iterate list
+	arraylistOfString.add ("42");
+	arraylistOfString.add ("43");
+	arraylistOfString.add ("44");
+
+	string[] array = (string[]) arraylistOfString.to_array ();
+	assert (array[0] == "42");
+	assert (array[1] == "43");
+	assert (array[2] == "44");
+}
+
 void main (string[] args) {
 	Test.init (ref args);
 	
@@ -514,6 +528,7 @@ void main (string[] args) {
 	Test.add_func ("/Arraylist/Collection/contains", test_arraylist_contains);
 	Test.add_func ("/Arraylist/Collection/remove", test_arraylist_remove);
 	Test.add_func ("/Arraylist/Collection/size", test_arraylist_size);
+	Test.add_func ("/Arraylist/Collection/to_array", test_arraylist_to_array);
 	
 	// Methods of Iterable interface
 	Test.add_func ("/Arraylist/Iterable/iterator", test_arraylist_iterator);

@@ -138,6 +138,12 @@ public class Gee.ArrayList<G> : AbstractCollection<G>, Iterable<G>, Collection<G
 		return slice;
 	}
 
+	public override G[] to_array() {
+		G[] array = new G[_size];
+		Memory.copy(array, _items, sizeof(G) * _size);
+		return array;
+	}
+
 	private void shift (int start, int delta) {
 		assert (start >= 0);
 		assert (start <= _size);

@@ -40,6 +40,15 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 
 	public abstract void clear ();
 
+	public virtual G[] to_array() {
+		G[] array = new G[size];
+		int index = 0;
+		foreach (G element in this) {
+			array[index] = element;
+		}
+		return array;
+	}
+
 	//
 	// Inherited from Iterable<G>
 	//
