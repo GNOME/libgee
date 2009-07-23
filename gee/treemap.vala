@@ -295,74 +295,66 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 	private weak Node<K, V>? first;
 	private int stamp = 0;
 
-	private class KeySet<K,V> : Object, Iterable<K>, Collection<K>, Set<K> {
+	private class KeySet<K,V> : AbstractCollection<K>, Iterable<K>, Collection<K>, Set<K> {
 		public TreeMap<K,V> map { construct; get; }
 
 		public KeySet (TreeMap<K,V> map) {
 			this.map = map;
 		}
 
-		public Type get_element_type () {
-			return typeof (K);
-		}
-
-		public Iterator<K> iterator () {
+		public override Iterator<K> iterator () {
 			return new KeyIterator<K,V> (map);
 		}
 
-		public int size {
+		public override int size {
 			get { return map.size; }
 		}
 
-		public bool add (K key) {
+		public override bool add (K key) {
 			assert_not_reached ();
 		}
 
-		public void clear () {
+		public override void clear () {
 			assert_not_reached ();
 		}
 
-		public bool remove (K key) {
+		public override bool remove (K key) {
 			assert_not_reached ();
 		}
 
-		public bool contains (K key) {
+		public override bool contains (K key) {
 			return map.contains (key);
 		}
 	}
 
-	private class ValueCollection<K,V> : Object, Iterable<V>, Collection<V> {
+	private class ValueCollection<K,V> : AbstractCollection<V>, Iterable<V>, Collection<V> {
 		public TreeMap<K,V> map { construct; get; }
 
 		public ValueCollection (TreeMap map) {
 			this.map = map;
 		}
 
-		public Type get_element_type () {
-			return typeof (V);
-		}
-
-		public Iterator<V> iterator () {
+		public override Iterator<V> iterator () {
 			return new ValueIterator<K,V> (map);
 		}
 
-		public int size {
+		public override int size {
 			get { return map.size; }
 		}
 
-		public bool add (V key) {
+		public override bool add (V key) {
 			assert_not_reached ();
 		}
 
-		public void clear () {
+		public override void clear () {
 			assert_not_reached ();
 		}
 
-		public bool remove (V key) {
+		public override bool remove (V key) {
 			assert_not_reached ();
 		}
 
-		public bool contains (V key) {
+		public override bool contains (V key) {
 			Iterator<V> it = iterator ();
 			while (it.next ()) {
 				if (map.value_equal_func (key, it.get ())) {

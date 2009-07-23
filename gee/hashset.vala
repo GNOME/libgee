@@ -27,8 +27,8 @@ using GLib;
 /**
  * Hashtable implementation of the Set interface.
  */
-public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
-	public int size {
+public class Gee.HashSet<G> : AbstractCollection<G>, Iterable<G>, Collection<G>, Set<G> {
+	public override int size {
 		get { return _nnodes; }
 	}
 
@@ -65,20 +65,16 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		return node;
 	}
 
-	public bool contains (G key) {
+	public override bool contains (G key) {
 		Node<G>** node = lookup_node (key);
 		return (*node != null);
 	}
 
-	public Type get_element_type () {
-		return typeof (G);
-	}
-
-	public Gee.Iterator<G> iterator () {
+	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
-	public bool add (G key) {
+	public override bool add (G key) {
 		Node<G>** node = lookup_node (key);
 		if (*node != null) {
 			return false;
@@ -92,7 +88,7 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		}
 	}
 
-	public bool remove (G key) {
+	public override bool remove (G key) {
 		Node<G>** node = lookup_node (key);
 		if (*node != null) {
 			Node<G> next = (owned) (*node)->next;
@@ -110,7 +106,7 @@ public class Gee.HashSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		return false;
 	}
 
-	public void clear () {
+	public override void clear () {
 		for (int i = 0; i < _array_size; i++) {
 			Node<G> node = (owned) _nodes[i];
 			while (node != null) {

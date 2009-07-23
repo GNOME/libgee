@@ -27,8 +27,8 @@ using GLib;
 /**
  * Arrays of arbitrary elements which grow automatically as elements are added.
  */
-public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
-	public int size {
+public class Gee.ArrayList<G> : AbstractCollection<G>, Iterable<G>, Collection<G>, List<G> {
+	public override int size {
 		get { return _size; }
 	}
 
@@ -44,15 +44,11 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		this.equal_func = equal_func;
 	}
 
-	public Type get_element_type () {
-		return typeof (G);
-	}
-
-	public Gee.Iterator<G> iterator () {
+	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
-	public bool contains (G item) {
+	public override bool contains (G item) {
 		return (index_of (item) != -1);
 	}
 
@@ -79,7 +75,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		_items[index] = item;
 	}
 
-	public bool add (G item) {
+	public override bool add (G item) {
 		if (_size == _items.length) {
 			grow_if_needed (1);
 		}
@@ -100,7 +96,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		_stamp++;
 	}
 
-	public bool remove (G item) {
+	public override bool remove (G item) {
 		for (int index = 0; index < _size; index++) {
 			if (equal_func (_items[index], item)) {
 				remove_at (index);
@@ -121,7 +117,7 @@ public class Gee.ArrayList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		_stamp++;
 	}
 
-	public void clear () {
+	public override void clear () {
 		for (int index = 0; index < _size; index++) {
 			_items[index] = null;
 		}

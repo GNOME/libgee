@@ -13,6 +13,7 @@ lib_LTLIBRARIES = \
 	$(NULL)
 
 libgee_la_VALASOURCES = \
+	abstractcollection.vala \
 	arraylist.vala \
 	collection.vala \
 	functions.vala \

@@ -27,7 +27,7 @@
 /**
  * A Gee.List implementation, using a doubly-linked list.
  */
-public class Gee.LinkedList<G> : Object, Iterable<G>, Collection<G>, List<G> {
+public class Gee.LinkedList<G> : AbstractCollection<G>, Iterable<G>, Collection<G>, List<G> {
 	private int _size = 0;
 	private int _stamp = 0;
 	private Node? _head = null;
@@ -40,24 +40,20 @@ public class Gee.LinkedList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 	}
 
 	// Iterable<G>
-	public Type get_element_type () {
-		return typeof (G);
-	}
-
-	public Gee.Iterator<G> iterator () {
+	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
 	// Collection<G>
-	public int size {
+	public override int size {
 		get { return this._size; }
 	}
 
-	public bool contains (G item) {
+	public override bool contains (G item) {
 		return this.index_of (item) != -1;
 	}
 
-	public bool add (G item) {
+	public override bool add (G item) {
 		Node<G> n = new Node<G> (item);
 		if (this._head == null && this._tail == null) {
 			this._head = this._tail = n;
@@ -74,7 +70,7 @@ public class Gee.LinkedList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		return true;
 	}
 
-	public bool remove (G item) { // Should remove only the first occurence (a test should be added)
+	public override bool remove (G item) { // Should remove only the first occurence (a test should be added)
 		for (Node<G> n = this._head; n != null; n = n.next) {
 			if (this.equal_func (item, n.data)) {
 				this._remove_node (n);
@@ -84,7 +80,7 @@ public class Gee.LinkedList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		return false;
 	}
 
-	public void clear () {
+	public override void clear () {
 		++this._stamp;
 		this._head = this._tail = null;
 		this._size = 0;

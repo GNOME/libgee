@@ -25,8 +25,8 @@ using GLib;
 /**
  * Left-leaning red-black tree implementation of the Set interface.
  */
-public class Gee.TreeSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
-	public int size {
+public class Gee.TreeSet<G> : AbstractCollection<G>, Iterable<G>, Collection<G>, Set<G> {
+	public override int size {
 		get {return _size;}
 	}
 
@@ -38,7 +38,7 @@ public class Gee.TreeSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		this.compare_func = compare_func;
 	}
 
-	public bool contains (G item) {
+	public override bool contains (G item) {
 		weak Node<G>? cur = root;
 		while (cur != null) {
 			int res = compare_func (item, cur.key);
@@ -117,7 +117,7 @@ public class Gee.TreeSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		}
 	}
 
-	public bool add (G item) {
+	public override bool add (G item) {
 		bool r = add_to_node (ref root, item, null, null);
 		root.color = Node.Color.BLACK;
 		stamp++;
@@ -199,7 +199,7 @@ public class Gee.TreeSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		}
 	}
 
-	public bool remove (G item) {
+	public override bool remove (G item) {
 		bool b = remove_from_node (ref root, item);
 		if (root != null) {
 			root.color = Node.Color.BLACK;
@@ -208,17 +208,13 @@ public class Gee.TreeSet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		return b;
 	}
 
-	public void clear () {
+	public override void clear () {
 		root = null;
 		_size = 0;
 		stamp++;
 	}
 
-	public Type get_element_type () {
-		return typeof (G);
-	}
-
-	public Gee.Iterator<G> iterator () {
+	public override Gee.Iterator<G> iterator () {
 		return  new Iterator<G> (this);
 	}
 
