@@ -331,7 +331,7 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		}
 	}
 
-	private class ValueCollection<K,V> : Object, Iterable<K>, Collection<V> {
+	private class ValueCollection<K,V> : Object, Iterable<V>, Collection<V> {
 		public TreeMap<K,V> map { construct; get; }
 
 		public ValueCollection (TreeMap map) {
