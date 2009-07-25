@@ -138,6 +138,43 @@ public class Gee.ArrayList<G> : AbstractCollection<G>, List<G> {
 		return slice;
 	}
 
+	public override bool add_all (Collection<G> collection) {
+		if (collection.is_empty) {
+			return false;
+		}
+
+		grow_if_needed (collection.size);
+		foreach (G item in collection) {
+			_items[_size++] = item;
+		}
+		_stamp++;
+		return true;
+	}
+
+	public override bool remove_all (Collection<G> collection) {
+		bool changed = false;
+		for (int index = 0; index < _size; index++) {
+			if (collection.contains (_items[index])) {
+				remove_at (index);
+				index--;
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
+	public override bool retain_all (Collection<G> collection) {
+		bool changed = false;
+		for (int index = 0; index < _size; index++) {
+			if (!collection.contains (_items[index])) {
+				remove_at (index);
+				index--;
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
 	public override G[] to_array() {
 		G[] array = new G[_size];
 		Memory.copy(array, _items, sizeof(G) * _size);

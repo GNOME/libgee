@@ -32,6 +32,10 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 
 	public abstract int size { get; }
 
+	public virtual bool is_empty {
+		get { return size == 0; }
+	}
+
 	public abstract bool contains (G item);
 
 	public abstract bool add (G item);
@@ -47,6 +51,51 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 			array[index++] = element;
 		}
 		return array;
+	}
+
+	public virtual bool add_all (Collection<G> collection) {
+		if (collection.is_empty) {
+			return false;
+		}
+
+		bool changed = false;
+		foreach (G item in collection) {
+			changed = changed | add (item);
+		}
+		return changed;
+	}
+
+	public virtual bool contains_all (Collection<G> collection) {
+		if (collection.size > size) {
+			return false;
+		}
+
+		foreach (G item in collection) {
+			if (!contains (item)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public virtual bool remove_all (Collection<G> collection) {
+		bool changed = false;
+		foreach (G item in collection) {
+			changed = changed | remove (item);
+		}
+		return changed;
+	}
+
+	public virtual bool retain_all (Collection<G> collection) {
+		bool changed = false;
+		G[] items = to_array ();
+		int size_of_items = size;
+		for (int index = 0; index < size_of_items; index++) {
+			if (!collection.contains (items[index])) {
+				changed = changed | remove (items[index]);
+			} 
+		}
+		return changed;
 	}
 
 	//

@@ -30,6 +30,10 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		get { return _collection.size; }
 	}
 
+	public bool is_empty {
+		get { return _collection.is_empty; }
+	}
+
 	public Collection<G> collection {
 		construct { _collection = value; }
 	}
@@ -69,6 +73,27 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	public void clear () {
+		assert_not_reached ();
+	}
+
+	public bool add_all (Collection<G> collection) {
+		assert_not_reached ();
+	}
+
+	public bool contains_all (Collection<G> collection) {
+		foreach (G element in collection) {
+			if (!contains (element)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public bool remove_all (Collection<G> collection) {
+		assert_not_reached ();
+	}
+
+	public bool retain_all(Collection<G> collection) {
 		assert_not_reached ();
 	}
 

@@ -41,6 +41,11 @@ public class ArrayListTests : CollectionTests {
 		add_test("contains", test_arraylist_contains);
 		add_test("remove", test_arraylist_remove);
 		add_test("size", test_arraylist_size);
+		add_test ("empty", test_arraylist_empty);
+		add_test ("add_all", test_arraylist_add_all);
+		add_test ("contains_all", test_arraylist_contains_all);
+		add_test ("remove_all", test_arraylist_remove_all);
+		add_test ("retain_all", test_arraylist_retain_all);
 
 		// Methods of Iterable interface
 		add_test("iterator", test_arraylist_iterator);
@@ -407,9 +412,6 @@ public class ArrayListTests : CollectionTests {
 	void test_arraylist_remove () {
 		var arraylistOfString = string_collection as Gee.List<string>;
 
-		// Check remove if list is empty
-		arraylistOfString.remove("42");
-
 		// Add 5 same elements
 		arraylistOfString.add ("42");
 		arraylistOfString.add ("42");
@@ -531,6 +533,403 @@ public class ArrayListTests : CollectionTests {
 		assert (iterator.next());
 		assert (iterator.get () == "44");
 		assert (!iterator.next());
+	}
+
+	void test_arraylist_empty () {
+		var arraylist = new ArrayList<int> ();
+
+		// Check empty list
+		assert (arraylist.is_empty);
+
+		// Check when one item
+		arraylist.add (1);
+		assert (!arraylist.is_empty);
+
+		// Check when more items
+		arraylist.add (2);
+		assert (!arraylist.is_empty);
+
+		// Check when items cleared
+		arraylist.clear ();
+		assert (arraylist.is_empty);
+	}
+
+	void test_arraylist_add_all () {
+		var list1 = new ArrayList<int> ();
+		var list2 = new ArrayList<int> ();
+
+		// Check lists empty
+		list1.add_all (list2);
+
+		assert (list1.is_empty);
+		assert (list2.is_empty);
+
+		// Check list1 not empty, list2 is empty
+		list1.add (1);
+		list1.add_all (list2);
+
+		assert (list1.size == 1);
+		assert (list1.contains (1));
+		assert (list2.is_empty);
+
+		list1.clear ();
+		list2.clear ();
+
+		// Check list1 empty, list2 contains 1 element
+		list2.add (1);
+		list1.add_all (list2);
+
+		assert (list1.size == 1);
+		assert (list1.contains (1));
+		assert (list2.size == 1);
+		assert (list2.contains (1));
+
+		list1.clear ();
+		list2.clear ();
+
+		// Check correct order with more elements
+		list1.add (0);
+		list1.add (1);
+		list1.add (2);
+		list2.add (3);
+		list2.add (4);
+		list2.add (5);
+		list1.add_all (list2);
+
+		assert (list1.size == 6);
+		assert (list1.get (0) == 0);
+		assert (list1.get (1) == 1);
+		assert (list1.get (2) == 2);
+		assert (list1.get (3) == 3);
+		assert (list1.get (4) == 4);
+		assert (list1.get (5) == 5);
+
+		assert (list2.size == 3);
+		assert (list2.get (0) == 3);
+		assert (list2.get (1) == 4);
+		assert (list2.get (2) == 5);
+
+		list1.clear ();
+		list2.clear ();
+
+		// Add large collections
+		list1.add (0);
+		list1.add (1);
+		list1.add (2);
+
+		for (int i = 3; i < 103; i++) {
+			list2.add (i);
+		}
+
+		list1.add_all (list2);
+
+		assert (list1.size == 103);
+		assert (list1.get (0) == 0);
+		assert (list1.get (1) == 1);
+		assert (list1.get (2) == 2);
+		assert (list1.get (3) == 3);
+		assert (list1.get (4) == 4);
+		assert (list1.get (99) == 99);
+		assert (list1.get (100) == 100);
+		assert (list1.get (101) == 101);
+		assert (list1.get (102) == 102);
+
+		assert (list2.size == 100);
+
+		list1.clear ();
+		list2.clear ();
+	}
+
+	void test_arraylist_contains_all () {
+		var list1 = new ArrayList<int> ();
+		var list2 = new ArrayList<int> ();
+
+		// Check empty
+		assert (list1.contains_all (list2));
+
+		// list1 has elements, list2 is empty
+		list1.add (1);
+
+		assert (list1.contains_all (list2));
+
+		list1.clear ();
+		list2.clear ();
+
+		// list1 is empty, list2 has elements
+		list2.add (1);
+
+		assert (!list1.contains_all (list2));
+
+		list1.clear ();
+		list2.clear ();
+
+		// list1 and list2 are the same
+		list1.add (1);
+		list1.add (2);
+		list2.add (1);
+		list1.add (2);
+
+		assert (list1.contains_all (list2));
+
+		list1.clear ();
+		list2.clear ();
+
+		// list1 and list2 are the same
+		list1.add (1);
+		list2.add (2);
+
+		assert (!list1.contains_all (list2));
+
+		list1.clear ();
+		list2.clear ();
+
+		// list1 has a subset of list2
+		list1.add (1);
+		list1.add (2);
+		list1.add (3);
+		list1.add (4);
+		list1.add (5);
+		list1.add (6);
+
+		list2.add (2);
+		list2.add (4);
+		list2.add (6);
+
+		assert (list1.contains_all (list2));
+
+		list1.clear ();
+		list2.clear ();
+
+		// list1 has a subset of in all but one element list2
+		list1.add (1);
+		list1.add (2);
+		list1.add (3);
+		list1.add (4);
+		list1.add (5);
+		list1.add (6);
+
+		list2.add (2);
+		list2.add (4);
+		list2.add (6);
+		list2.add (7);
+
+		assert (!list1.contains_all (list2));
+
+		list1.clear ();
+		list2.clear ();
+
+	}
+
+	void test_arraylist_remove_all () {
+		var arraylist1 = new ArrayList<int> ();
+		var arraylist2 = new ArrayList<int> ();
+
+		// Check empty
+		arraylist1.remove_all (arraylist2);
+		assert (arraylist1.is_empty);
+		assert (arraylist2.is_empty);
+
+		// Arraylist1 and arraylist2 have no common elements -> nothing is removed in arraylist1
+		arraylist1.add (1);
+		arraylist1.add (2);
+		arraylist1.add (3);
+		arraylist2.add (4);
+		arraylist2.add (5);
+		arraylist2.add (6);
+
+		arraylist1.remove_all (arraylist2);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.size == 3);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Arraylist1 and arraylist2 have all elements the same -> everything is removed in arraylist1 but not arraylist2
+		arraylist1.add (1);
+		arraylist1.add (2);
+		arraylist1.add (3);
+		arraylist2.add (1);
+		arraylist2.add (2);
+		arraylist2.add (3);
+
+		arraylist1.remove_all (arraylist2);
+
+		assert (arraylist1.is_empty);
+		assert (arraylist2.size == 3);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Removing of same elements
+
+		arraylist1.add (1);
+		arraylist1.add (1);
+		arraylist1.add (1);
+		arraylist1.add (1);
+
+		arraylist2.add (1);
+		arraylist2.add (1);
+
+		arraylist1.remove_all (arraylist2);
+
+		assert (arraylist1.size == 0);
+		assert (arraylist2.size == 2);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+	}
+
+	void test_arraylist_retain_all () {
+		var arraylist1 = new ArrayList<int> ();
+		var arraylist2 = new ArrayList<int> ();
+
+		// Check empty
+
+		assert (arraylist1.is_empty);
+		assert (arraylist2.is_empty);
+
+		arraylist1.retain_all (arraylist2);
+
+		assert (arraylist1.is_empty);
+		assert (arraylist2.is_empty);
+
+
+		// Arraylist1 has elements, arraylist2 is empty -> everything in arraylist1 is removed
+		arraylist1.add (1);
+		arraylist1.add (2);
+		arraylist1.add (3);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.size == 0);
+
+		arraylist1.retain_all (arraylist2);
+
+		assert (arraylist1.size == 0);
+		assert (arraylist2.size == 0);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Arraylist1 is empty and arraylist2 has elements -> nothing changes
+		arraylist2.add (4);
+		arraylist2.add (5);
+		arraylist2.add (6);
+
+		assert (arraylist1.size == 0);
+		assert (arraylist2.size == 3);
+
+		arraylist1.retain_all (arraylist2);
+
+		assert (arraylist1.size == 0);
+		assert (arraylist2.size == 3);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Arraylist1 and arraylist2 have no common elements -> everything is removed in arraylist1
+		arraylist1.add (1);
+		arraylist1.add (2);
+		arraylist1.add (3);
+		arraylist2.add (4);
+		arraylist2.add (5);
+		arraylist2.add (6);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.size == 3);
+
+		arraylist1.retain_all (arraylist2);
+
+		assert (arraylist1.size == 0);
+		assert (arraylist2.size == 3);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Arraylist1 and arraylist2 have all elements the same -> nothing is removed in arraylist1
+		arraylist1.add (1);
+		arraylist1.add (2);
+		arraylist1.add (3);
+		arraylist2.add (1);
+		arraylist2.add (2);
+		arraylist2.add (3);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.size == 3);
+
+		arraylist1.retain_all (arraylist2);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.size == 3);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Arraylist1 and arraylist2 have 2 common elements but each also has his own elements -> arraylist1 only retains what is in arraylist2
+		arraylist1.add (1);
+		arraylist1.add (2);
+		arraylist1.add (3);
+		arraylist1.add (4);
+		arraylist1.add (5);
+
+		arraylist2.add (0);
+		arraylist2.add (2);
+		arraylist2.add (3);
+		arraylist2.add (7);
+
+		assert (arraylist1.size == 5);
+		assert (arraylist2.size == 4);
+
+		arraylist1.retain_all (arraylist2);
+
+		assert (arraylist1.size == 2);
+		assert (arraylist2.size == 4);
+
+		assert (arraylist1.contains (2));
+		assert (arraylist2.contains (3));
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Removing of same elements when arraylist2 has the same element -> nothing changes
+
+		arraylist1.add (1);
+		arraylist1.add (1);
+		arraylist1.add (1);
+		arraylist1.add (1);
+
+		arraylist2.add (1);
+
+		assert (arraylist1.size == 4);
+		assert (arraylist2.size == 1);
+
+		arraylist1.retain_all (arraylist2);
+
+		assert (arraylist1.size == 4);
+		assert (arraylist2.size == 1);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Removing of same elements when arraylist2 has the NOT same element -> everything is removed
+
+		arraylist1.add (1);
+		arraylist1.add (1);
+		arraylist1.add (1);
+		arraylist1.add (1);
+
+		arraylist2.add (2);
+
+		assert (arraylist1.size == 4);
+		assert (arraylist2.size == 1);
+
+		arraylist1.retain_all (arraylist2);
+
+		assert (arraylist1.size == 0);
+		assert (arraylist2.size == 1);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
 	}
 }
 

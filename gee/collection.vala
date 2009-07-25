@@ -1,6 +1,6 @@
 /* collection.vala
  *
- * Copyright (C) 2007  Jürg Billeter
+ * Copyright (C) 2007-2009  Jürg Billeter
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +29,11 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * The number of items in this collection.
 	 */
 	public abstract int size { get; }
+
+	/**
+	 * Specifies whether this collection is empty.
+	 */
+	public abstract bool is_empty { get; }
 
 	/**
 	 * Determines whether this collection contains the specified item.
@@ -64,6 +69,51 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * read-only collections.
 	 */
 	public abstract void clear ();
+
+	/**
+	 * Adds all items in the input collection to this collection.
+	 * 
+	 * @param collection the collection which items will be added to this 
+	 *                   collection.
+	 * 
+	 * @return     true if the collection has been changed, false otherwise
+	 */
+	public abstract bool add_all (Collection<G> collection);
+
+	/**
+	 * Returns true it this collection contains all items as the input 
+	 * collection.
+	 *
+	 * @param collection the collection which items will be compared with 
+	 *                   this collection.
+	 * 
+	 * @return     true if the collection has been changed, false otherwise
+	 */
+	public abstract bool contains_all (Collection<G> collection);
+
+	/**
+	 * Removes all items in this collection that are contained in the input 
+	 * collection. In other words all common items of both collections are 
+	 * removed from this collection.
+	 * 
+	 * @param collection the collection which items will be compared with
+	 *                   this collection.
+	 * 
+	 * @return     true if the collection has been changed, false otherwise
+	 */
+	public abstract bool remove_all (Collection<G> collection);
+
+	/**
+	 * Removes all items in this collection that are not contained in the input
+	 * collection. In other words all common items of both collections are
+	 * retained in this collection.
+	 * 
+	 * @param collection the collection which items will be compared with 
+	 *                   this collection.
+	 * 
+	 * @return     true if the collection has been changed, false otherwise
+	 */
+	public abstract bool retain_all (Collection<G> collection);
 
 	/**
 	 * Returns an array containing all of items from this collection.

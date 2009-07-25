@@ -325,6 +325,18 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		public override bool contains (K key) {
 			return map.contains (key);
 		}
+
+		public override bool add_all (Collection<K> collection) {
+			assert_not_reached ();
+		}
+
+		public override bool remove_all (Collection<K> collection) {
+			assert_not_reached ();
+		}
+
+		public override bool retain_all (Collection<K> collection) {
+			assert_not_reached ();
+		}
 	}
 
 	private class ValueCollection<K,V> : AbstractCollection<V> {
@@ -362,6 +374,18 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 				}
 			}
 			return false;
+		}
+
+		public override bool add_all (Collection<V> collection) {
+			assert_not_reached ();
+		}
+
+		public override bool remove_all (Collection<V> collection) {
+			assert_not_reached ();
+		}
+
+		public override bool retain_all (Collection<V> collection) {
+			assert_not_reached ();
 		}
 	}
 

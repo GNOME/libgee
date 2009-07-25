@@ -30,6 +30,10 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		get { return _list.size; }
 	}
 
+	public bool is_empty {
+		get { return _list.is_empty; }
+	}
+
 	public List<G> list {
 		construct { _list = value; }
 	}
@@ -101,6 +105,25 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 	}
 
 	public List<G>? slice (int start, int stop) {
+		assert_not_reached ();
+	}
+
+	public bool add_all (Collection<G> collection) {
+		assert_not_reached ();
+	}
+
+	public bool contains_all (Collection<G> collection) {
+		if (_list == null) {
+			return false;
+		}
+		return _list.contains_all (collection);
+	}
+
+	public bool remove_all (Collection<G> collection) {
+		assert_not_reached ();
+	}
+
+	public bool retain_all (Collection<G> collection) {
 		assert_not_reached ();
 	}
 

@@ -207,6 +207,18 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		public override bool contains (K key) {
 			return _map.contains (key);
 		}
+
+		public override bool add_all (Collection<K> collection) {
+			assert_not_reached ();
+		}
+
+		public override bool remove_all (Collection<K> collection) {
+			assert_not_reached ();
+		}
+
+		public override bool retain_all (Collection<K> collection) {
+			assert_not_reached ();
+		}
 	}
 
 	private class KeyIterator<K,V> : Object, Iterator<K> {
@@ -281,6 +293,18 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 				}
 			}
 			return false;
+		}
+
+		public override bool add_all (Collection<V> collection) {
+			assert_not_reached ();
+		}
+
+		public override bool remove_all (Collection<V> collection) {
+			assert_not_reached ();
+		}
+
+		public override bool retain_all (Collection<V> collection) {
+			assert_not_reached ();
 		}
 	}
 

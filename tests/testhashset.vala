@@ -272,15 +272,392 @@ void test_hashset_iterator () {
 	
 	assert (!iterator.next());
 }
+
+void test_hashset_empty () {
+	var hashset = new HashSet<string> (str_hash, str_equal);
+
+	// Case 1: Check empty set
+	assert (hashset.is_empty);
+
+	// Case 2: Check when one item
+	hashset.add ("1");
+	assert (!hashset.is_empty);
+
+	// Case 3: Check when more items
+	hashset.add ("2");
+	assert (!hashset.is_empty);
+
+	// Case 4: Check when items cleared
+	hashset.clear ();
+	assert (hashset.is_empty);
+}
+
+void test_hashset_add_all () {
+	var hashset1 = new HashSet<string> (str_hash, str_equal);
+	var hashset2 = new HashSet<string> (str_hash, str_equal);
+
+	// Case 1: Check set empty
+	hashset1.add_all (hashset2);
+
+	assert (hashset1.is_empty);
+	assert (hashset2.is_empty);
+
+	// Case 2: Check hashset1 not empty, hashset2 is empty
+	hashset1.add ("1");
+	
+	hashset1.add_all (hashset2);
+
+	assert (hashset1.size == 1);
+	assert (hashset1.contains ("1"));
+	assert (hashset2.is_empty);
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 3: Check hashset1 empty, hashset2 contains 1 element
+	hashset2.add ("1");
+	hashset1.add_all (hashset2);
+
+	assert (hashset1.size == 1);
+	assert (hashset1.contains ("1"));
+	assert (hashset2.size == 1);
+	assert (hashset2.contains ("1"));
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 4: Check more elements
+	hashset1.add ("0");
+	hashset1.add ("1");
+	hashset1.add ("2");
+	hashset2.add ("3");
+	hashset2.add ("4");
+	hashset2.add ("5");
+	hashset1.add_all (hashset2);
+
+	assert (hashset1.size == 6);
+	assert (hashset1.contains ("0"));
+	assert (hashset1.contains ("1"));
+	assert (hashset1.contains ("2"));
+	assert (hashset1.contains ("3"));
+	assert (hashset1.contains ("4"));
+	assert (hashset1.contains ("5"));
+
+	assert (hashset2.size == 3);
+	assert (hashset2.contains ("3"));
+	assert (hashset2.contains ("4"));
+	assert (hashset2.contains ("5"));
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 5: Check intersecting elements
+	hashset1.add ("0");
+	hashset1.add ("1");
+	hashset1.add ("2");
+	hashset1.add ("3");
+	hashset2.add ("2");
+	hashset2.add ("3");
+	hashset2.add ("4");
+	hashset2.add ("5");
+	hashset1.add_all (hashset2);
+
+	assert (hashset1.size == 6);
+	assert (hashset1.contains ("0"));
+	assert (hashset1.contains ("1"));
+	assert (hashset1.contains ("2"));
+	assert (hashset1.contains ("3"));
+	assert (hashset1.contains ("4"));
+	assert (hashset1.contains ("5"));
+
+	assert (hashset2.size == 4);
+	assert (hashset2.contains( "2"));
+	assert (hashset2.contains ("3"));
+	assert (hashset2.contains ("4"));
+	assert (hashset2.contains ("5"));
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 6: Add large collections
+	hashset1.add ("0");
+	hashset1.add ("1");
+	hashset1.add ("2");
+
+	for(int i = 3; i < 103; i++) {
+		hashset2.add ("%d".printf (i));
+	}
+
+	hashset1.add_all (hashset2);
+
+	assert (hashset1.size == 103);
+	assert (hashset1.contains ("0"));
+	assert (hashset1.contains ("1"));
+	assert (hashset1.contains ("2"));
+	assert (hashset1.contains ("3"));
+	assert (hashset1.contains ("4"));
+	assert (hashset1.contains ("5"));
+	assert (hashset1.contains ("99"));
+	assert (hashset1.contains ("100"));
+	assert (hashset1.contains ("101"));
+	assert (hashset1.contains ("102"));
+
+	assert (hashset2.size == 100);
+
+	hashset1.clear ();
+	hashset2.clear ();
+}
+
+void test_hashset_contains_all () {
+	var hashset1 = new HashSet<string> (str_hash, str_equal);
+	var hashset2 = new HashSet<string> (str_hash, str_equal);
+
+	// Case 1: Check empty
+	assert (hashset1.contains_all (hashset2));
+
+	// Case 2: Hashset1 has elements, hashset2 is empty
+	hashset1.add ("1");
+
+	assert (hashset1.contains_all (hashset2));
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 3: Hashset1 is empty, hashset2 has elements
+	hashset2.add ("1");
+
+	assert (!hashset1.contains_all (hashset2));
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 4: Hashset1 and hashset2 are the same
+	hashset1.add ("1");
+	hashset1.add ("2");
+	hashset2.add ("1");
+	hashset1.add ("2");
+
+	assert (hashset1.contains_all (hashset2));
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 5: Hashset1 and hashset2 are not the same
+	hashset1.add ("1");
+	hashset2.add ("2");
+
+	assert (!hashset1.contains_all (hashset2));
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 6: Hashset1 has a subset of hashset2
+	hashset1.add ("1");
+	hashset1.add ("2");
+	hashset1.add ("3");
+	hashset1.add ("4");
+	hashset1.add ("5");
+	hashset1.add ("6");
+
+	hashset2.add ("2");
+	hashset2.add ("4");
+	hashset2.add ("6");
+
+	assert (hashset1.contains_all (hashset2));
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 7: Hashset1 has a subset of hashset2 in all but one element hashset2
+	hashset1.add ("1");
+	hashset1.add ("2");
+	hashset1.add ("3");
+	hashset1.add ("4");
+	hashset1.add ("5");
+	hashset1.add ("6");
+
+	hashset2.add ("2");
+	hashset2.add ("4");
+	hashset2.add ("6");
+	hashset2.add ("7");
+
+	assert (!hashset1.contains_all (hashset2));
+
+	hashset1.clear ();
+	hashset2.clear ();
+}
+
+void test_hashset_remove_all () {
+	var hashset1 = new HashSet<string> (str_hash, str_equal);
+	var hashset2 = new HashSet<string> (str_hash, str_equal);
+
+	// Case 1: Check empty
+	hashset1.remove_all (hashset2);
+	assert (hashset1.is_empty);
+	assert (hashset2.is_empty);
+
+	// Case 2: Hashset1 and hashset2 have no common elements -> nothing is removed in hashset1
+	hashset1.add ("1");
+	hashset1.add ("2");
+	hashset1.add ("3");
+	hashset2.add ("4");
+	hashset2.add ("5");
+	hashset2.add ("6");
+
+	hashset1.remove_all (hashset2);
+
+	assert (hashset1.size == 3);
+	assert (hashset1.size == 3);
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 3: Hashset1 and hashset2 have all elements the same -> everything is removed in hashset1 but not hashset2
+	hashset1.add ("1");
+	hashset1.add ("2");
+	hashset1.add ("3");
+	hashset2.add ("1");
+	hashset2.add ("2");
+	hashset2.add ("3");
+
+	hashset1.remove_all (hashset2);
+
+	assert (hashset1.is_empty);
+	assert (hashset2.size == 3);
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+}
+
+void test_hashset_retain_all () {
+	var hashset1 = new HashSet<int> ();
+	var hashset2 = new HashSet<int> ();
+
+	// Case 1: Check empty
+
+	assert (hashset1.is_empty);
+	assert (hashset2.is_empty);
+
+	hashset1.retain_all (hashset2);
+
+	assert (hashset1.is_empty);
+	assert (hashset2.is_empty);
+
+
+	// Case 2: Hashset1 has elements, hashset2 is empty -> everything in hashset1 is removed
+	hashset1.add (1);
+	hashset1.add (2);
+	hashset1.add (3);
+
+	assert (hashset1.size == 3);
+	assert (hashset2.size == 0);
+
+	hashset1.retain_all (hashset2);
+
+	assert (hashset1.size == 0);
+	assert (hashset2.size == 0);
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 3: Hashset1 is empty and hashset2 has elements -> nothing changes
+	hashset2.add (4);
+	hashset2.add (5);
+	hashset2.add (6);
+
+	assert (hashset1.size == 0);
+	assert (hashset2.size == 3);
+
+	hashset1.retain_all (hashset2);
+
+	assert (hashset1.size == 0);
+	assert (hashset2.size == 3);
+
+	hashset1.clear ();
+	hashset2.clear ();
+	
+	// Case 4: Hashset1 and hashset2 have no common elements -> everything is removed in hashset1
+	hashset1.add (1);
+	hashset1.add (2);
+	hashset1.add (3);
+	hashset2.add (4);
+	hashset2.add (5);
+	hashset2.add (6);
+
+	assert (hashset1.size == 3);
+	assert (hashset2.size == 3);
+
+	hashset1.retain_all (hashset2);
+
+	assert (hashset1.size == 0);
+	assert (hashset2.size == 3);
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 5: Hashset1 and hashset2 have all elements the same -> nothing is removed in hashset1
+	hashset1.add (1);
+	hashset1.add (2);
+	hashset1.add (3);
+	hashset2.add (1);
+	hashset2.add (2);
+	hashset2.add (3);
+
+	assert (hashset1.size == 3);
+	assert (hashset2.size == 3);
+
+	hashset1.retain_all (hashset2);
+
+	assert (hashset1.size == 3);
+	assert (hashset2.size == 3);
+
+	hashset1.clear ();
+	hashset2.clear ();
+
+	// Case 6: Hashset1 and hashset2 have 2 common elements but each also has his own elements -> hashset1 only retains what is in hashset2
+	
+	hashset1.add (1);
+	hashset1.add (2);
+	hashset1.add (3);
+	hashset1.add (4);
+	hashset1.add (5);
+
+	hashset2.add (0);
+	hashset2.add (2);
+	hashset2.add (3);
+	hashset2.add (7);
+
+	assert (hashset1.size == 5);
+	assert (hashset2.size == 4);
+
+	hashset1.retain_all (hashset2);
+
+	assert (hashset1.size == 2);
+	assert (hashset2.size == 4);
+
+	assert (hashset1.contains (2));
+	assert (hashset2.contains (3));
+
+	hashset1.clear ();
+	hashset2.clear ();
+}
+
 void main (string[] args) {
 	Test.init (ref args);
 
+	// Methods of Collection interface
 	Test.add_func ("/HashSet/Collection/add", test_hashset_add);
 	Test.add_func ("/HashSet/Collection/clear", test_hashset_clear);
 	Test.add_func ("/HashSet/Collection/contains", test_hashset_contains);
 	Test.add_func ("/HashSet/Collection/remove", test_hashset_remove);
 	Test.add_func ("/HashSet/Collection/size", test_hashset_size);
-	
+	Test.add_func ("/HashSet/Collection/empty", test_hashset_empty);
+	Test.add_func ("/HashSet/Collection/add_all", test_hashset_add_all);
+	Test.add_func ("/HashSet/Collection/contains_all", test_hashset_contains_all);
+	Test.add_func ("/HashSet/Collection/remove_all", test_hashset_remove_all);
+	Test.add_func ("/HashSet/Collection/retain_all", test_hashset_retain_all);
+
 	Test.add_func ("/HashSet/Iterable/iterator", test_hashset_iterator);
 
 	Test.run ();
