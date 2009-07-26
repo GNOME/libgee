@@ -14,6 +14,7 @@ lib_LTLIBRARIES = \
 
 libgee_la_VALASOURCES = \
 	abstractcollection.vala \
+	abstractlist.vala \
 	arraylist.vala \
 	collection.vala \
 	functions.vala \

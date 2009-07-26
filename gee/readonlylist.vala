@@ -127,6 +127,26 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 		assert_not_reached ();
 	}
 
+	public G? first () {
+		if (_list == null) {
+			return null;
+		}
+
+		return _list.first ();
+	}
+
+	public G? last () {
+		if (_list == null) {
+			return null;
+		}
+
+		return _list.last ();
+	}
+
+	public void insert_all (int index, Collection<G> collection) {
+		assert_not_reached ();
+	}
+
 	public G[] to_array() {
 		return _list.to_array ();
 	}

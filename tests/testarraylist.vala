@@ -34,6 +34,9 @@ public class ArrayListTests : CollectionTests {
 		add_test("insert", test_arraylist_insert);
 		add_test("remove_at", test_arraylist_remove_at);
 		add_test("index_of", test_arraylist_index_of);
+		add_test ("first", test_arraylist_first);
+		add_test ("last", test_arraylist_last);
+		add_test ("insert_all", test_arraylist_insert_all);
 
 		// Methods of Collection interface
 		add_test("add", test_arraylist_add);
@@ -927,6 +930,204 @@ public class ArrayListTests : CollectionTests {
 
 		assert (arraylist1.size == 0);
 		assert (arraylist2.size == 1);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+	}
+
+	void test_arraylist_first () {
+		var arraylistOfString = new ArrayList<string> ();
+
+		// Check first for empty list
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
+			arraylistOfString.first ();
+			return;
+		}
+		Test.trap_assert_failed ();
+
+		// Check first for list with one element
+		arraylistOfString.add ("1");
+		assert (arraylistOfString.first () == "1");
+		assert (arraylistOfString.first () == arraylistOfString.get (0));
+
+		// Check first for for list with multiple element
+		arraylistOfString.add ("2");
+		arraylistOfString.add ("3");
+		assert (arraylistOfString.first () == "1");
+		assert (arraylistOfString.first () == arraylistOfString.get (0));
+
+		// Check first if list is cleared and empty again
+		arraylistOfString.clear ();
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
+			arraylistOfString.first ();
+			return;
+		}
+		Test.trap_assert_failed ();
+	}
+
+	void test_arraylist_last () {
+		var arraylistOfString = new ArrayList<string> ();
+
+		// Check last for empty list
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
+			arraylistOfString.last ();
+			return;
+		}
+		Test.trap_assert_failed ();
+
+		// Check last for list with one element
+		arraylistOfString.add ("1");
+		assert (arraylistOfString.last () == "1");
+		assert (arraylistOfString.last () == arraylistOfString.get (arraylistOfString.size - 1));
+
+		// Check last for for list with multiple element
+		arraylistOfString.add ("2");
+		arraylistOfString.add ("3");
+		assert (arraylistOfString.last () == "3");
+		assert (arraylistOfString.last () == arraylistOfString.get (arraylistOfString.size - 1));
+
+		// Check last if list is cleared and empty again
+		arraylistOfString.clear ();
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
+			arraylistOfString.last ();
+			return;
+		}
+		Test.trap_assert_failed ();
+	}
+
+	void test_arraylist_insert_all () {
+		var arraylist1 = new ArrayList<int> ();
+		var arraylist2 = new ArrayList<int> ();
+
+		// Insert an empty list
+		arraylist1.add (0);
+		arraylist1.add (1);
+		arraylist1.add (2);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.is_empty);
+
+		arraylist1.insert_all (0, arraylist2);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.is_empty);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Insert into an empty list at index 0
+		arraylist2.add (0);
+		arraylist2.add (1);
+		arraylist2.add (2);
+
+		assert (arraylist1.is_empty);
+		assert (arraylist2.size == 3);
+
+		arraylist1.insert_all (0, arraylist2);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.size == 3);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Insert all into empty list as index 1
+		arraylist2.add (0);
+		arraylist2.add (1);
+		arraylist2.add (2);
+
+		assert (arraylist1.is_empty);
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
+			arraylist1.insert_all (1, arraylist2);
+			return;
+		}
+		Test.trap_assert_failed ();
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Insert all in the beginnig
+		arraylist1.add (3);
+		arraylist1.add (4);
+		arraylist1.add (5);
+
+		arraylist2.add (0);
+		arraylist2.add (1);
+		arraylist2.add (2);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.size == 3);
+
+		arraylist1.insert_all (0, arraylist2);
+
+		assert (arraylist1.size == 6);
+		assert (arraylist2.size == 3);
+
+		assert (arraylist1.get (0) == 0);
+		assert (arraylist1.get (1) == 1);
+		assert (arraylist1.get (2) == 2);
+		assert (arraylist1.get (3) == 3);
+		assert (arraylist1.get (4) == 4);
+		assert (arraylist1.get (5) == 5);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Insert all in the middle
+		arraylist1.add (0);
+		arraylist1.add (1);
+		arraylist1.add (5);
+		arraylist1.add (6);
+
+		arraylist2.add (2);
+		arraylist2.add (3);
+		arraylist2.add (4);
+
+		assert (arraylist1.size == 4);
+		assert (arraylist2.size == 3);
+
+		arraylist1.insert_all (2, arraylist2);
+
+		assert (arraylist1.size == 7);
+		assert (arraylist2.size == 3);
+
+		assert (arraylist1.get (0) == 0);
+		assert (arraylist1.get (1) == 1);
+		assert (arraylist1.get (2) == 2);
+		assert (arraylist1.get (3) == 3);
+		assert (arraylist1.get (4) == 4);
+		assert (arraylist1.get (5) == 5);
+		assert (arraylist1.get (6) == 6);
+
+		arraylist1.clear ();
+		arraylist2.clear ();
+
+		// Insert all in at the end
+		arraylist1.add (0);
+		arraylist1.add (1);
+		arraylist1.add (2);
+
+		arraylist2.add (3);
+		arraylist2.add (4);
+		arraylist2.add (5);
+
+		assert (arraylist1.size == 3);
+		assert (arraylist2.size == 3);
+
+		arraylist1.insert_all (3, arraylist2);
+
+		assert (arraylist1.size == 6);
+		assert (arraylist2.size == 3);
+
+		assert (arraylist1.get (0) == 0);
+		assert (arraylist1.get (1) == 1);
+		assert (arraylist1.get (2) == 2);
+		assert (arraylist1.get (3) == 3);
+		assert (arraylist1.get (4) == 4);
+		assert (arraylist1.get (5) == 5);
 
 		arraylist1.clear ();
 		arraylist2.clear ();

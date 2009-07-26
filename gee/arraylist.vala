@@ -27,7 +27,7 @@ using GLib;
 /**
  * Arrays of arbitrary elements which grow automatically as elements are added.
  */
-public class Gee.ArrayList<G> : AbstractCollection<G>, List<G> {
+public class Gee.ArrayList<G> : AbstractList<G> {
 	public override int size {
 		get { return _size; }
 	}
@@ -52,7 +52,7 @@ public class Gee.ArrayList<G> : AbstractCollection<G>, List<G> {
 		return (index_of (item) != -1);
 	}
 
-	public int index_of (G item) {
+	public override int index_of (G item) {
 		for (int index = 0; index < _size; index++) {
 			if (equal_func (_items[index], item)) {
 				return index;
@@ -61,14 +61,14 @@ public class Gee.ArrayList<G> : AbstractCollection<G>, List<G> {
 		return -1;
 	}
 
-	public new G? get (int index) {
+	public override G? get (int index) {
 		assert (index >= 0);
 		assert (index < _size);
 
 		return _items[index];
 	}
 
-	public new void set (int index, G item) {
+	public override void set (int index, G item) {
 		assert (index >= 0);
 		assert (index < _size);
 
@@ -84,7 +84,7 @@ public class Gee.ArrayList<G> : AbstractCollection<G>, List<G> {
 		return true;
 	}
 
-	public void insert (int index, G item) {
+	public override void insert (int index, G item) {
 		assert (index >= 0);
 		assert (index <= _size);
 
@@ -106,7 +106,7 @@ public class Gee.ArrayList<G> : AbstractCollection<G>, List<G> {
 		return false;
 	}
 
-	public void remove_at (int index) {
+	public override void remove_at (int index) {
 		assert (index >= 0);
 		assert (index < _size);
 
@@ -125,7 +125,7 @@ public class Gee.ArrayList<G> : AbstractCollection<G>, List<G> {
 		_stamp++;
 	}
 
-	public List<G>? slice (int start, int stop) {
+	public override List<G>? slice (int start, int stop) {
 		return_val_if_fail (start <= stop, null);
 		return_val_if_fail (start >= 0, null);
 		return_val_if_fail (stop <= _size, null);

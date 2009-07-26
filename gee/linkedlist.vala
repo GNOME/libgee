@@ -27,7 +27,7 @@
 /**
  * A Gee.List implementation, using a doubly-linked list.
  */
-public class Gee.LinkedList<G> : AbstractCollection<G>, List<G> {
+public class Gee.LinkedList<G> : AbstractList<G> {
 	private int _size = 0;
 	private int _stamp = 0;
 	private Node? _head = null;
@@ -87,7 +87,7 @@ public class Gee.LinkedList<G> : AbstractCollection<G>, List<G> {
 	}
 
 	// List<G>
-	public new G? get (int index) {
+	public override G? get (int index) {
 		assert (index >= 0);
 		assert (index < this._size);
 
@@ -99,7 +99,7 @@ public class Gee.LinkedList<G> : AbstractCollection<G>, List<G> {
 		}
 	}
 
-	public new void set (int index, G item) {
+	public override void set (int index, G item) {
 		assert (index >= 0);
 		assert (index < this._size);
 
@@ -108,7 +108,7 @@ public class Gee.LinkedList<G> : AbstractCollection<G>, List<G> {
 		n.data = item;
 	}
 
-	public int index_of (G item) {
+	public override int index_of (G item) {
 		int result = -1;
 		int idx = 0;
 		foreach (G node_item in this) {
@@ -122,7 +122,7 @@ public class Gee.LinkedList<G> : AbstractCollection<G>, List<G> {
 		return result;
 	}
 
-	public void insert (int index, G item) {
+	public override void insert (int index, G item) {
 		assert (index >= 0);
 		assert (index <= this._size);
 
@@ -152,7 +152,7 @@ public class Gee.LinkedList<G> : AbstractCollection<G>, List<G> {
 		}
 	}
 
-	public void remove_at (int index) {
+	public override void remove_at (int index) {
 		assert (index >= 0);
 		assert (index < this._size);
 
@@ -161,7 +161,7 @@ public class Gee.LinkedList<G> : AbstractCollection<G>, List<G> {
 		this._remove_node (n);
 	}
 
-	public List<G>? slice (int start, int stop) {
+	public override List<G>? slice (int start, int stop) {
 		return_val_if_fail (start <= stop, null);
 		return_val_if_fail (start >= 0, null);
 		return_val_if_fail (stop <= this._size, null);

@@ -73,5 +73,28 @@ public interface Gee.List<G> : Collection<G> {
 	 * @return A list containing a slice of this list
 	 */
 	public abstract List<G>? slice (int start, int stop);
+
+	/**
+	 * Returns the first item of the list or null if list is empty.
+	 *
+	 * @return      first item in the list
+	 */
+	public abstract G? first ();
+
+	/**
+	 * Returns the last item of the list or null if list is empty.
+	 *
+	 * @return      last item in the list
+	 */
+	public abstract G? last ();
+
+	/**
+	 * Inserts items into this list for the input collection at the 
+	 * specified position.
+	 *
+	 * @param index zero-based index of the items to be inserted
+	 * @param collection collection of items to be inserted
+	 */
+	public abstract void insert_all (int index, Collection<G> collection);
 }
 
