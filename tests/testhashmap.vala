@@ -297,9 +297,237 @@ void test_hashmap_clear () {
 	assert (hashmap.size == 0);
 }
 
+void test_hashmap_empty () {
+	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
+
+	// Check empty map
+	assert (hashmap.is_empty);
+
+	// Check when one item
+	hashmap.set ("1", "1");
+	assert (!hashmap.is_empty);
+
+	// Check when more items
+	hashmap.set ("2", "2");
+	assert (!hashmap.is_empty);
+
+	// Check when items cleared
+	hashmap.clear ();
+	assert (hashmap.is_empty);
+}
+
+void test_hashmap_set_all () {
+	var hashmap1 = new HashMap<string,string> (str_hash, str_equal, str_equal);
+	var hashmap2 = new HashMap<string,string> (str_hash, str_equal, str_equal);
+
+	hashmap1.set ("a", "1");
+	hashmap1.set ("b", "2");
+	hashmap1.set ("c", "3");
+	hashmap2.set ("d", "4");
+	hashmap2.set ("e", "5");
+	hashmap2.set ("f", "6");
+
+	hashmap1.set_all (hashmap2);
+
+	assert (hashmap1.size == 6);
+	assert (hashmap1.contains ("a"));
+	assert (hashmap1.contains ("b"));
+	assert (hashmap1.contains ("c"));
+	assert (hashmap1.contains ("d"));
+	assert (hashmap1.contains ("e"));
+	assert (hashmap1.contains ("f"));
+
+	assert (hashmap1.get ("a") == "1");
+	assert (hashmap1.get ("b") == "2");
+	assert (hashmap1.get ("c") == "3");
+	assert (hashmap1.get ("d") == "4");
+	assert (hashmap1.get ("e") == "5");
+	assert (hashmap1.get ("f") == "6");
+}
+
+void test_hashmap_remove_all () {
+	var map1 = new HashMap<string,string> (str_hash, str_equal, str_equal);
+	var map2 = new HashMap<string,string> (str_hash, str_equal, str_equal);
+	
+	// Check remove all on empty maps.
+
+	assert (map1.is_empty);
+	assert (map2.is_empty);
+
+	map1.remove_all (map2);	
+
+	assert (map1.is_empty);
+	assert (map2.is_empty);
+
+	map1.clear ();
+	map2.clear ();
+
+	// Map1 is empty, map2 has entries. -> no change
+
+	map2.set ("a", "1");
+	map2.set ("b", "2");
+
+	assert (map1.is_empty);
+	assert (map2.size == 2);
+
+	map1.remove_all (map2);	
+
+	assert (map1.is_empty);
+	assert (map2.size == 2);
+
+	map1.clear ();
+	map2.clear ();
+	
+	// Map1 has entries, map2 is empty. -> no change
+
+	map1.set ("a", "1");
+	map1.set ("b", "2");
+
+	assert (map1.size == 2);
+	assert (map2.is_empty);
+
+	map1.remove_all (map2);	
+
+	assert (map1.size == 2);
+	assert (map2.is_empty);
+
+	map1.clear ();
+	map2.clear ();
+
+	// Map1 and map2 have the same entries -> map1 is cleared
+
+	map1.set ("a", "0");
+	map1.set ("b", "1");
+	map2.set ("a", "1");
+	map2.set ("b", "0");
+
+	assert (map1.size == 2);
+	assert (map2.size == 2);
+
+	map1.remove_all (map2);	
+
+	assert (map1.is_empty);
+	assert (map2.size == 2);
+
+	map1.clear ();
+	map2.clear ();
+
+	// Map1 has some common keys with map2 but both have also unique keys -> common key are cleared from map1
+
+	map1.set ("x", "2");
+	map1.set ("a", "1");
+	map1.set ("b", "1");
+	map1.set ("y", "2");
+
+	map2.set ("i", "100");
+	map2.set ("a", "200");
+	map2.set ("j", "300");
+	map2.set ("b", "400");
+	map2.set ("k", "500");
+
+	assert (map1.size == 4);
+	assert (map2.size == 5);
+
+	map1.remove_all (map2);	
+
+	assert (map1.size == 2);
+	assert (map2.size == 5);
+	
+	assert (map1.contains ("x"));
+	assert (map1.contains ("y"));
+
+	map1.clear ();
+	map2.clear ();
+
+}
+
+void test_hashmap_contains_all() {
+	var map1 = new HashMap<string,string> (str_hash, str_equal, str_equal);
+	var map2 = new HashMap<string,string> (str_hash, str_equal, str_equal);
+
+	// Check empty.
+	assert (map1.contains_all (map2));
+
+	// Map1 has items, map2 is empty.
+	
+	map1.set ("1", "1");
+
+	assert (map1.contains_all (map2));
+
+	map1.clear ();
+	map2.clear ();
+
+	// Map1 is empty, map2 has items.
+	
+	map2.set ("1", "1");
+
+	assert (!map1.contains_all (map2));
+
+	map1.clear ();
+	map2.clear ();
+
+	// Map1 and map2 are the same.
+	
+	map1.set ("1", "a");
+	map1.set ("2", "b");
+
+	map2.set ("1", "c");
+	map2.set ("2", "d");
+
+	assert (map1.contains_all (map2));
+
+	map1.clear ();
+	map2.clear ();
+
+	// Map1 and map2 are not the same
+	map1.set ("1", "a");
+	map2.set ("2", "b");
+
+	assert (!map1.contains_all (map2));
+
+	map1.clear ();
+	map2.clear ();
+
+	// Map1 has a subset of map2
+	map1.set ("1", "a");
+	map1.set ("2", "b");
+	map1.set ("3", "c");
+	map1.set ("4", "d");
+	map1.set ("5", "e");
+	map1.set ("6", "f");
+
+	map2.set ("2", "g");
+	map2.set ("4", "h");
+	map2.set ("6", "i");
+
+	assert (map1.contains_all (map2));
+
+	map1.clear ();
+	map2.clear ();
+
+	// Map1 has a subset of map2 in all but one element map2
+	map1.set ("1", "a");
+	map1.set ("2", "b");
+	map1.set ("3", "c");
+	map1.set ("4", "d");
+	map1.set ("5", "e");
+	map1.set ("6", "f");
+
+	map2.set ("2", "g");
+	map2.set ("4", "h");
+	map2.set ("6", "i");
+	map2.set ("7", "j");
+
+	assert (!map1.contains_all (map2));
+
+	map1.clear ();
+	map2.clear ();
+}
+
 void main (string[] args) {
 	Test.init (ref args);
 
+	// Methods of Map interface
 	Test.add_func ("/HashMap/Map/get", test_hashmap_get);
 	Test.add_func ("/HashMap/Map/set", test_hashmap_set);
 	Test.add_func ("/HashMap/Map/remove", test_hashmap_remove);
@@ -308,6 +536,10 @@ void main (string[] args) {
 	Test.add_func ("/HashMap/Map/get_keys", test_hashmap_get_keys);
 	Test.add_func ("/HashMap/Map/get_values", test_hashmap_get_values);
 	Test.add_func ("/HashMap/Map/clear", test_hashmap_clear);
+	Test.add_func ("/HashMap/Map/empty", test_hashmap_empty);
+	Test.add_func ("/HashMap/Map/set_all", test_hashmap_set_all);
+	Test.add_func ("/HashMap/Map/remove_all", test_hashmap_remove_all);
+	Test.add_func ("/HashMap/Map/contains_all", test_hashmap_contains_all);
 
 	Test.run ();
 }

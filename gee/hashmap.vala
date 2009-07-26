@@ -27,8 +27,8 @@ using GLib;
 /**
  * Hashtable implementation of the Map interface.
  */
-public class Gee.HashMap<K,V> : Object, Map<K,V> {
-	public int size {
+public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
+	public override int size {
 		get { return _nnodes; }
 	}
 
@@ -59,11 +59,11 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		_nodes = new Node<K,V>[_array_size];
 	}
 
-	public Set<K> get_keys () {
+	public override Set<K> get_keys () {
 		return new KeySet<K,V> (this);
 	}
 
-	public Collection<V> get_values () {
+	public override Collection<V> get_values () {
 		return new ValueCollection<K,V> (this);
 	}
 
@@ -76,12 +76,12 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		return node;
 	}
 
-	public bool contains (K key) {
+	public override bool contains (K key) {
 		Node<K,V>** node = lookup_node (key);
 		return (*node != null);
 	}
 
-	public new V? get (K key) {
+	public override V? get (K key) {
 		Node<K,V>* node = (*lookup_node (key));
 		if (node != null) {
 			return node->value;
@@ -90,7 +90,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		}
 	}
 
-	public new void set (K key, V value) {
+	public override void set (K key, V value) {
 		Node<K,V>** node = lookup_node (key);
 		if (*node != null) {
 			(*node)->value = value;
@@ -103,7 +103,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		_stamp++;
 	}
 
-	public bool remove (K key) {
+	public override bool remove (K key) {
 		Node<K,V>** node = lookup_node (key);
 		if (*node != null) {
 			Node<K,V> next = (owned) (*node)->next;
@@ -122,7 +122,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		return false;
 	}
 
-	public void clear () {
+	public override void clear () {
 		for (int i = 0; i < _array_size; i++) {
 			Node<K,V> node = (owned) _nodes[i];
 			while (node != null) {

@@ -30,6 +30,11 @@ public interface Gee.Map<K,V> : GLib.Object {
 	public abstract int size { get; }
 
 	/**
+	 * Specifies whether this map is empty.
+	 */
+	public abstract bool is_empty { get; }
+
+	/**
 	 * Returns the keys of this map as a read-only set.
 	 *
 	 * @return the keys of the map
@@ -84,5 +89,27 @@ public interface Gee.Map<K,V> : GLib.Object {
 	 * read-only collections.
 	 */
 	public abstract void clear ();
+
+	/**
+	 * Inserts all items that are contained in the input map to this map.
+	 *
+	 *  @param map the map which items are inserted to this map
+	 */
+	public abstract void set_all (Map<K,V> map);
+
+	/**
+	 * Removes all items from this map that are common to the input map 
+	 * and this map.
+	 *
+	 *  @param map the map which common items are deleted from this map
+	 */
+	public abstract bool remove_all (Map<K,V> map);
+
+	/**
+	 * Returns true it this map contains all items as the input map.
+	 *
+	 * @param map the map which items will be compared with this map.
+	 */
+	public abstract bool contains_all (Map<K,V> map);
 }
 

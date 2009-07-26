@@ -30,6 +30,10 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		get { return _map.size; }
 	}
 
+	public bool is_empty {
+		get { return _map.is_empty; }
+	}
+
 	public Map<K,V> map {
 		construct { _map = value; }
 	}
@@ -82,6 +86,22 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 
 	public void clear () {
 		assert_not_reached ();
+	}
+
+	public void set_all (Map<K,V> map) {
+		assert_not_reached ();
+	}
+
+	public bool remove_all (Map<K,V> map) {
+		assert_not_reached ();
+	}
+
+	public bool contains_all (Map<K,V> map) {
+		if (_map == null) {
+			return false;
+		}
+
+		return _map.contains_all (map);
 	}
 }
 

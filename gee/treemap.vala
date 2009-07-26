@@ -25,8 +25,8 @@ using GLib;
 /**
  * Left-leaning red-black tree implementation of the Map interface.
  */
-public class Gee.TreeMap<K,V> : Object, Map<K,V> {
-	public int size {
+public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
+	public override int size {
 		get { return _size; }
 	}
 
@@ -40,11 +40,11 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		this.value_equal_func = value_equal_func;
 	}
 
-	public Set<K> get_keys () {
+	public override Set<K> get_keys () {
 		return new KeySet<K,V> (this);
 	}
 
-	public Collection<V> get_values () {
+	public override Collection<V> get_values () {
 		return new ValueCollection<K,V> (this);
 	}
 
@@ -74,7 +74,7 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		return n == null || n.color == Node.Color.BLACK;
 	}
 
-	public bool contains (K key) {
+	public override bool contains (K key) {
 		weak Node<K, V>? cur = root;
 		while (cur != null) {
 			int res = key_compare_func (key, cur.key);
@@ -89,7 +89,7 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		return false;
 	}
 
-	public new V? get (K key) {
+	public override V? get (K key) {
 		weak Node<K, V>? cur = root;
 		while (cur != null) {
 			int res = key_compare_func (key, cur.key);
@@ -129,7 +129,7 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		fix_up (ref node);
 	}
 
-	public new void set (K key, V value) {
+	public override void set (K key, V value) {
 		set_to_node (ref root, key, value, null, null);
 		root.color = Node.Color.BLACK;
 	}
@@ -219,7 +219,7 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		}
 	}
 
-	public bool remove (K key) {
+	public override bool remove (K key) {
 		bool b = remove_from_node (ref root, key);
 		if (root != null) {
 			root.color = Node.Color.BLACK;
@@ -228,7 +228,7 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		return b;
 	}
 
-	public void clear () {
+	public override void clear () {
 		root = null;
 		_size = 0;
 		stamp++;
