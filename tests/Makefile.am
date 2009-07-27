@@ -12,8 +12,8 @@ noinst_PROGRAMS = $(TEST_PROGS)
 progs_ldadd = $(GLIB_LIBS) ../gee/libgee.la
 
 TEST_PROGS += testarraylist
-testarraylist_VALASOURCES = testarraylist.vala
-testarraylist_SOURCES = testarraylist.c
+testarraylist_VALASOURCES = testarraylist.vala testcollection.vala testfixture.vala
+testarraylist_SOURCES = testarraylist.c testcollection.c testfixture.c
 $(testarraylist_SOURCES): $(testarraylist_VALASOURCES)
 	$(VALAC) -C --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
 	touch $@
