@@ -44,7 +44,7 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 		G[] array = new G[size];
 		int index = 0;
 		foreach (G element in this) {
-			array[index] = element;
+			array[index++] = element;
 		}
 		return array;
 	}
