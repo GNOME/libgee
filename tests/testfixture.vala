@@ -44,8 +44,8 @@ public abstract class TestFixture: Object {
 		                              adaptor.teardown ));
 	}
 
-	public abstract void setup ();
-	public abstract void teardown ();
+	public virtual void setup () {}
+	public virtual void teardown () {}
 
 	public TestSuite get_suite () {
 		return this.suite;
