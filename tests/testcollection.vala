@@ -28,7 +28,7 @@ public abstract class CollectionTests : TestFixture {
 
 	public CollectionTests (string name) {
 		base(name);
-		add_test ("Collection.to_array ", test_to_array);
+		//add_test ("Collection.to_array ", test_to_array);
 	}
 
 	protected Collection<int> int_collection;
