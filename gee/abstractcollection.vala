@@ -53,8 +53,8 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	// Inherited from Iterable<G>
 	//
 
-	public Type get_element_type () {
-		return typeof (G);
+	public Type element_type {
+		get { return typeof (G); }
 	}
 
 	public abstract Iterator<G> iterator ();

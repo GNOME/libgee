@@ -28,11 +28,9 @@ using GLib;
  */
 public interface Gee.Iterable<G> : GLib.Object {
 	/**
-	 * Returns the type of the elements contained in this collection.
-	 *
-	 * @return the type of the elements contained in this collection
+	 * The type of the elements in this collection.
 	 */
-	public abstract Type get_element_type ();
+	public abstract Type element_type { get; }
 
 	/**
 	 * Returns a Iterator that can be used for simple iteration over a

@@ -40,8 +40,8 @@ public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 		this.set = set;
 	}
 
-	public Type get_element_type () {
-		return typeof (G);
+	public Type element_type {
+		get { return typeof (G); }
 	}
 
 	public Gee.Iterator<G> iterator () {

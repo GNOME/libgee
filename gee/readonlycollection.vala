@@ -40,8 +40,8 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		this.collection = collection;
 	}
 
-	public Type get_element_type () {
-		return typeof (G);
+	public Type element_type {
+		get { return typeof (G); }
 	}
 
 	public Gee.Iterator<G> iterator () {
