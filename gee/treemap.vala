@@ -295,7 +295,7 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 	private weak Node<K, V>? first;
 	private int stamp = 0;
 
-	private class KeySet<K,V> : AbstractCollection<K>, Iterable<K>, Collection<K>, Set<K> {
+	private class KeySet<K,V> : AbstractCollection<K>, Set<K> {
 		public TreeMap<K,V> map { construct; get; }
 
 		public KeySet (TreeMap<K,V> map) {
@@ -327,7 +327,7 @@ public class Gee.TreeMap<K,V> : Object, Map<K,V> {
 		}
 	}
 
-	private class ValueCollection<K,V> : AbstractCollection<V>, Iterable<V>, Collection<V> {
+	private class ValueCollection<K,V> : AbstractCollection<V> {
 		public TreeMap<K,V> map { construct; get; }
 
 		public ValueCollection (TreeMap map) {

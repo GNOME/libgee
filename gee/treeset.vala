@@ -25,7 +25,7 @@ using GLib;
 /**
  * Left-leaning red-black tree implementation of the Set interface.
  */
-public class Gee.TreeSet<G> : AbstractCollection<G>, Iterable<G>, Collection<G>, Set<G> {
+public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
 	public override int size {
 		get {return _size;}
 	}

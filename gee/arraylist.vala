@@ -27,7 +27,7 @@ using GLib;
 /**
  * Arrays of arbitrary elements which grow automatically as elements are added.
  */
-public class Gee.ArrayList<G> : AbstractCollection<G>, Iterable<G>, Collection<G>, List<G> {
+public class Gee.ArrayList<G> : AbstractCollection<G>, List<G> {
 	public override int size {
 		get { return _size; }
 	}

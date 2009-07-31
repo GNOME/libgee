@@ -27,7 +27,7 @@ using GLib;
 /**
  * Hashtable implementation of the Set interface.
  */
-public class Gee.HashSet<G> : AbstractCollection<G>, Iterable<G>, Collection<G>, Set<G> {
+public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 	public override int size {
 		get { return _nnodes; }
 	}

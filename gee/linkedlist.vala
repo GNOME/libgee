@@ -27,7 +27,7 @@
 /**
  * A Gee.List implementation, using a doubly-linked list.
  */
-public class Gee.LinkedList<G> : AbstractCollection<G>, Iterable<G>, Collection<G>, List<G> {
+public class Gee.LinkedList<G> : AbstractCollection<G>, List<G> {
 	private int _size = 0;
 	private int _stamp = 0;
 	private Node? _head = null;

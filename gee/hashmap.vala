@@ -177,7 +177,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		}
 	}
 
-	private class KeySet<K,V> : AbstractCollection<K>, Iterable<K>, Collection<K>, Set<K> {
+	private class KeySet<K,V> : AbstractCollection<K>, Set<K> {
 		public HashMap<K,V> map { construct; get; }
 
 		public KeySet (HashMap map) {
@@ -246,7 +246,7 @@ public class Gee.HashMap<K,V> : Object, Map<K,V> {
 		}
 	}
 
-	private class ValueCollection<K,V> : AbstractCollection<K>, Iterable<V>, Collection<V> {
+	private class ValueCollection<K,V> : AbstractCollection<K> {
 		public HashMap<K,V> map { construct; get; }
 
 		public ValueCollection (HashMap map) {
