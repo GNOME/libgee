@@ -25,59 +25,24 @@ using GLib;
 /**
  * Represents a read-only collection of items in a well-defined order.
  */
-public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
-	public int size {
-		get { return _list.size; }
-	}
+public class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 
-	public bool is_empty {
-		get { return _list.is_empty; }
-	}
-
-	public List<G> list {
-		construct { _list = value; }
-	}
-
-	private List<G> _list;
-
+	/**
+	 * Constructs a read-only list that mirrors the content of the specified
+	 * list.
+	 *
+	 * @param list the list to decorate (may be null).
+	 */
 	public ReadOnlyList (List<G>? list = null) {
-		this.list = list;
-	}
-
-	public Type element_type {
-		get { return typeof (G); }
-	}
-
-	public Gee.Iterator<G> iterator () {
-		if (_list == null) {
-			return new Iterator<G> ();
-		}
-
-		return _list.iterator ();
-	}
-
-	public bool contains (G item) {
-		if (_list == null) {
-			return false;
-		}
-
-		return _list.contains (item);
+		base (list);
 	}
 
 	public int index_of (G item) {
-		if (_list == null) {
+		if (_collection == null) {
 			return -1;
 		}
 
-		return _list.index_of (item);
-	}
-
-	public bool add (G item) {
-		assert_not_reached ();
-	}
-
-	public bool remove (G item) {
-		assert_not_reached ();
+		return ((Gee.List<G>) _collection).index_of (item);
 	}
 
 	public void insert (int index, G item) {
@@ -89,76 +54,45 @@ public class Gee.ReadOnlyList<G> : Object, Iterable<G>, Collection<G>, List<G> {
 	}
 
 	public new G? get (int index) {
-		if (_list == null) {
+		if (_collection == null) {
 			return null;
 		}
 
-		return _list.get (index);
+		return ((Gee.List<G>) _collection).get (index);
 	}
 
 	public new void set (int index, G o) {
 		assert_not_reached ();
 	}
 
-	public void clear () {
-		assert_not_reached ();
-	}
-
+	/**
+	 * Unimplemented method (read only list).
+	 */
 	public List<G>? slice (int start, int stop) {
 		assert_not_reached ();
 	}
 
-	public bool add_all (Collection<G> collection) {
-		assert_not_reached ();
-	}
-
-	public bool contains_all (Collection<G> collection) {
-		if (_list == null) {
-			return false;
-		}
-		return _list.contains_all (collection);
-	}
-
-	public bool remove_all (Collection<G> collection) {
-		assert_not_reached ();
-	}
-
-	public bool retain_all (Collection<G> collection) {
-		assert_not_reached ();
-	}
-
+	/**
+	 * @inheritDoc
+	 */
 	public G? first () {
-		if (_list == null) {
+		if (_collection == null) {
 			return null;
 		}
 
-		return _list.first ();
+		return ((Gee.List<G>) _collection).first ();
 	}
 
 	public G? last () {
-		if (_list == null) {
+		if (_collection == null) {
 			return null;
 		}
 
-		return _list.last ();
+		return ((Gee.List<G>) _collection).last ();
 	}
 
 	public void insert_all (int index, Collection<G> collection) {
 		assert_not_reached ();
-	}
-
-	public G[] to_array() {
-		return _list.to_array ();
-	}
-
-	class Iterator<G> : Object, Gee.Iterator<G> {
-		public bool next () {
-			return false;
-		}
-
-		public new G? get () {
-			return null;
-		}
 	}
 }
 
