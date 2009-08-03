@@ -25,90 +25,10 @@ using GLib;
 /**
  * Represents a read-only collection of items without duplicates.
  */
-public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
-	public int size {
-		get { return _set.size; }
-	}
-
-	public bool is_empty {
-		get { return _set.is_empty; }
-	}
-
-	public new Set<G> set {
-		construct { _set = value; }
-	}
-
-	private Set<G> _set;
+public class Gee.ReadOnlySet<G> : Gee.ReadOnlyCollection<G>, Set<G> {
 
 	public ReadOnlySet (Set<G>? set = null) {
-		this.set = set;
-	}
-
-	public Type element_type {
-		get { return typeof (G); }
-	}
-
-	public Gee.Iterator<G> iterator () {
-		if (_set == null) {
-			return new Iterator<G> ();
-		}
-
-		return _set.iterator ();
-	}
-
-	public bool contains (G item) {
-		if (_set == null) {
-			return false;
-		}
-
-		return _set.contains (item);
-	}
-
-	public bool add (G item) {
-		assert_not_reached ();
-	}
-
-	public bool remove (G item) {
-		assert_not_reached ();
-	}
-
-	public void clear () {
-		assert_not_reached ();
-	}
-
-	public bool add_all (Collection<G> collection) {
-		assert_not_reached ();
-	}
-
-	public bool contains_all (Collection<G> collection) {
-		foreach (G element in collection) {
-			if (!contains (element)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public bool remove_all (Collection<G> collection) {
-		assert_not_reached ();
-	}
-
-	public bool retain_all (Collection<G> collection) {
-		assert_not_reached ();
-	}
-
-	public G[] to_array() {
-		return _set.to_array ();
-	}
-
-	private class Iterator<G> : Object, Gee.Iterator<G> {
-		public bool next () {
-			return false;
-		}
-
-		public new G? get () {
-			return null;
-		}
+		base(set);
 	}
 }
 
