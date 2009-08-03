@@ -54,6 +54,8 @@ libgee_la_LIBADD = \
 	$(GLIB_LIBS) \
 	$(NULL)
 
+libgee_la_LDFLAGS = -version-info 1:0:0
+
 vapidir = $(datadir)/vala/vapi
 
 dist_vapi_DATA = \
