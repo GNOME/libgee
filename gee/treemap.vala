@@ -169,7 +169,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		fix_up (ref node);
 	}
 
-	private bool remove_from_node (ref Node<K, V>? node, K key) {
+	private bool remove_from_node (ref Node<K, V>? node, K key, out V value) {
 		if (node == null) {
 			return false;
 		} else if (key_compare_func (key, node.key) < 0) {
@@ -180,7 +180,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			if (is_black (left) && is_black (left.left)) {
 				move_red_left (ref node);
 			}
-			bool r = remove_from_node (ref node.left, key);
+			bool r = remove_from_node (ref node.left, key, out value);
 			fix_up (ref node);
 			return r;
 		} else {
@@ -190,6 +190,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	
 			weak Node<K,V> r = node.right;
 			if (key_compare_func (key, node.key) == 0 && r == null) {
+				value = (owned) node.value;
 				node = null;
 				_size--;
 				return true;
@@ -198,12 +199,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 				move_red_right (ref node);
 			}
 			if (key_compare_func (key, node.key) == 0) {
+				value = (owned) node.value;
 				remove_minimal (ref node.right, out node.key, out node.value);
 				fix_up (ref node);
 				_size--;
 				return true;
 			} else {
-				bool re = remove_from_node (ref node.right, key);
+				bool re = remove_from_node (ref node.right, key, out value);
 				fix_up (ref node);
 				return re;
 			}
@@ -219,8 +221,14 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
-	public override bool remove (K key) {
-		bool b = remove_from_node (ref root, key);
+	public override bool remove (K key, out V? value = null) {
+		V node_value;
+		bool b = remove_from_node (ref root, key, out node_value);
+
+		if (&value != null) {
+			value = (owned) node_value;
+		}
+
 		if (root != null) {
 			root.color = Node.Color.BLACK;
 		}

@@ -75,6 +75,7 @@ void test_treemap_set () {
 
 void test_treemap_remove () {
 	var treemap = new TreeMap<string,string> ((CompareFunc) strcmp, str_equal);
+	string? value;
 
 	// check removing when map is empty
 	treemap.remove ("foo");
@@ -92,15 +93,17 @@ void test_treemap_remove () {
 	assert (treemap.size == 3);
 
 	// check remove in between 
-	treemap.remove ("ccc");
+	treemap.remove ("ccc", out value);
 	assert (treemap.size == 2);
+	assert (value == "333");
 
 	// check remove in last place
 	treemap.remove ("ddd");
 	assert (treemap.size == 1);
 
 	// check remove invalid key
-	treemap.remove ("bar");
+	treemap.remove ("bar", out value);
+	assert (value == null);
 
 	// check remove last in map
 	treemap.remove ("bbb");

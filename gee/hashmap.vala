@@ -103,10 +103,14 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		_stamp++;
 	}
 
-	public override bool remove (K key) {
+	public override bool remove (K key, out V? value = null) {
 		Node<K,V>** node = lookup_node (key);
 		if (*node != null) {
 			Node<K,V> next = (owned) (*node)->next;
+
+			if (&value != null) {
+				value = (owned) (*node)->value;
+			}
 
 			(*node)->key = null;
 			(*node)->value = null;

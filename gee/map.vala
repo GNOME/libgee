@@ -78,11 +78,12 @@ public interface Gee.Map<K,V> : GLib.Object {
 	/**
 	 * Removes the specified key from this map.
 	 *
-	 * @param key the key to remove from the map
+	 * @param key   the key to remove from the map
+	 * @param value the receiver variable for the removed value
 	 *
 	 * @return    true if the map has been changed, false otherwise
 	 */
-	public abstract bool remove (K key);
+	public abstract bool remove (K key, out V? value = null);
 
 	/**
 	 * Removes all items from this collection. Must not be called on

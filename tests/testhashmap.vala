@@ -76,6 +76,7 @@ void test_hashmap_set () {
 
 void test_hashmap_remove () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
+	string? value;
 	
 	// check removing when map is empty
 	hashmap.remove ("foo");
@@ -93,15 +94,17 @@ void test_hashmap_remove () {
 	assert (hashmap.size == 3);
 	
 	// check remove in between 
-	hashmap.remove ("ccc");
+	hashmap.remove ("ccc", out value);
 	assert (hashmap.size == 2);
+	assert (value == "333");
 	
 	// check remove in last place
 	hashmap.remove ("ddd");
 	assert (hashmap.size == 1);
 	
 	// check remove invalid key
-	hashmap.remove ("bar");
+	hashmap.remove ("bar", out value);
+	assert (value == null);
 	
 	// check remove last in map
 	hashmap.remove ("bbb");

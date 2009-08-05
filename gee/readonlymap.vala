@@ -80,7 +80,7 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		assert_not_reached ();
 	}
 
-	public bool remove (K key) {
+	public bool remove (K key, out V? value = null) {
 		assert_not_reached ();
 	}
 

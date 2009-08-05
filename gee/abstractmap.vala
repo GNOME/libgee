@@ -42,7 +42,7 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 
 	public abstract new void set (K key, V value);
 
-	public abstract bool remove (K key);
+	public abstract bool remove (K key, out V? value = null);
 
 	public abstract void clear ();
 
