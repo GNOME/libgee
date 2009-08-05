@@ -1,3 +1,14 @@
+libgee 0.3.0
+============
+
+ * Introduce AbstractCollection, AbstractList and AbstractMap base classes.
+ * Add new properties and methods to Collection, List and Map. (Tomaž Vajngerl)
+ * Add LinkedList implementation. (Mark Lee)
+ * Add TreeSet and TreeMap implementations. (Maciej Piechotka)
+ * Iterable.element_type is now a property.
+ * Map.remove now takes an optional parameter to retrieve the removed value.
+ * Bump library version info to reflect API/ABI breakage
+
 libgee 0.2.0
 ============
 
