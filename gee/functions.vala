@@ -23,6 +23,34 @@
 using GLib;
 
 namespace Gee {
+
+	public class Functions {
+
+		public static EqualFunc get_equal_func_for (Type t) {
+			if (t == typeof (string)) {
+				return str_equal;
+			} else {
+				return direct_equal;
+			}
+		}
+
+		public static HashFunc get_hash_func_for (Type t) {
+			if (t == typeof (string)) {
+				return str_hash;
+			} else {
+				return direct_hash;
+			}
+		}
+
+		public static CompareFunc get_compare_func_for (Type t) {
+			if (t == typeof (string)) {
+				return (CompareFunc) strcmp;
+			} else {
+				return direct_compare;
+			}
+		}
+	}
+
 	public static int direct_compare (void* _val1, void* _val2) {
 		long val1 = (long)_val1, val2 = (long)_val2;
 		if (val1 > val2) {
