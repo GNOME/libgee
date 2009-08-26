@@ -40,7 +40,10 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	// concurrent modification protection
 	private int _stamp = 0;
 
-	public ArrayList (EqualFunc equal_func = GLib.direct_equal) {
+	public ArrayList (EqualFunc? equal_func = null) {
+		if (equal_func == null) {
+			equal_func = Functions.get_equal_func_for (typeof (G));
+		}
 		this.equal_func = equal_func;
 	}
 

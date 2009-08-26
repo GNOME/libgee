@@ -48,7 +48,16 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	private const int MIN_SIZE = 11;
 	private const int MAX_SIZE = 13845163;
 
-	public HashMap (HashFunc key_hash_func = GLib.direct_hash, EqualFunc key_equal_func = GLib.direct_equal, EqualFunc value_equal_func = GLib.direct_equal) {
+	public HashMap (HashFunc? key_hash_func = null, EqualFunc? key_equal_func = null, EqualFunc? value_equal_func = null) {
+		if (key_hash_func == null) {
+			key_hash_func = Functions.get_hash_func_for (typeof (K));
+		}
+		if (key_equal_func == null) {
+			key_equal_func = Functions.get_equal_func_for (typeof (K));
+		}
+		if (value_equal_func == null) {
+			value_equal_func = Functions.get_equal_func_for (typeof (V));
+		}
 		this.key_hash_func = key_hash_func;
 		this.key_equal_func = key_equal_func;
 		this.value_equal_func = value_equal_func;

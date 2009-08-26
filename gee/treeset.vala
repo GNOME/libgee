@@ -34,7 +34,10 @@ public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
 
 	private int _size = 0;
 
-	public TreeSet (CompareFunc compare_func = Gee.direct_compare) {
+	public TreeSet (CompareFunc? compare_func = null) {
+		if (compare_func == null) {
+			compare_func = Functions.get_compare_func_for (typeof (G));
+		}
 		this.compare_func = compare_func;
 	}
 

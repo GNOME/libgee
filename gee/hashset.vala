@@ -46,7 +46,13 @@ public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 	private const int MIN_SIZE = 11;
 	private const int MAX_SIZE = 13845163;
 
-	public HashSet (HashFunc hash_func = GLib.direct_hash, EqualFunc equal_func = GLib.direct_equal) {
+	public HashSet (HashFunc? hash_func = null, EqualFunc? equal_func = null) {
+		if (hash_func == null) {
+			hash_func = Functions.get_hash_func_for (typeof (G));
+		}
+		if (equal_func == null) {
+			equal_func = Functions.get_equal_func_for (typeof (G));
+		}
 		this.hash_func = hash_func;
 		this.equal_func = equal_func;
 	}

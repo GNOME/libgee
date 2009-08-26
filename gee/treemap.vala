@@ -35,7 +35,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private int _size = 0;
 
-	public TreeMap (CompareFunc key_compare_func = Gee.direct_compare, EqualFunc value_equal_func = GLib.direct_equal) {
+	public TreeMap (CompareFunc? key_compare_func = null, EqualFunc? value_equal_func = null) {
+		if (key_compare_func == null) {
+			key_compare_func = Functions.get_compare_func_for (typeof (K));
+		}
+		if (value_equal_func == null) {
+			value_equal_func = Functions.get_equal_func_for (typeof (V));
+		}
 		this.key_compare_func = key_compare_func;
 		this.value_equal_func = value_equal_func;
 	}

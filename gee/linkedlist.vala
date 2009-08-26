@@ -35,7 +35,10 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 
 	public EqualFunc equal_func { private set; get; }
 
-	public LinkedList (EqualFunc equal_func = direct_equal) {
+	public LinkedList (EqualFunc? equal_func = null) {
+		if (equal_func == null) {
+			equal_func = Functions.get_equal_func_for (typeof (G));
+		}
 		this.equal_func = equal_func;
 	}
 
