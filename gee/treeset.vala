@@ -30,7 +30,7 @@ public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
 		get {return _size;}
 	}
 
-	public CompareFunc compare_func { construct; get; }
+	public CompareFunc compare_func { private set; get; }
 
 	private int _size = 0;
 

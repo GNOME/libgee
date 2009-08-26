@@ -32,11 +32,11 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		get { return _nnodes; }
 	}
 
-	public HashFunc key_hash_func { construct; get; }
+	public HashFunc key_hash_func { private set; get; }
 
-	public EqualFunc key_equal_func { construct; get; }
+	public EqualFunc key_equal_func { private set; get; }
 
-	public EqualFunc value_equal_func { construct; get; }
+	public EqualFunc value_equal_func { private set; get; }
 
 	private int _array_size;
 	private int _nnodes;
