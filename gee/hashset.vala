@@ -32,9 +32,9 @@ public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 		get { return _nnodes; }
 	}
 
-	public HashFunc hash_func { construct; get; }
+	public HashFunc hash_func { private set; get; }
 
-	public EqualFunc equal_func { construct; get; }
+	public EqualFunc equal_func { private set; get; }
 
 	private int _array_size;
 	private int _nnodes;

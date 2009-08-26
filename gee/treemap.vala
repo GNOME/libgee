@@ -30,8 +30,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		get { return _size; }
 	}
 
-	public CompareFunc key_compare_func { construct; get; }
-	public EqualFunc value_equal_func { construct; get; }
+	public CompareFunc key_compare_func { private set; get; }
+	public EqualFunc value_equal_func { private set; get; }
 
 	private int _size = 0;
 

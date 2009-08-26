@@ -33,7 +33,7 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 	private Node? _head = null;
 	private Node? _tail = null;
 
-	public EqualFunc equal_func { construct; get; }
+	public EqualFunc equal_func { private set; get; }
 
 	public LinkedList (EqualFunc equal_func = direct_equal) {
 		this.equal_func = equal_func;

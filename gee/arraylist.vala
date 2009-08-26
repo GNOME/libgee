@@ -32,7 +32,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		get { return _size; }
 	}
 
-	public EqualFunc equal_func { construct; get; }
+	public EqualFunc equal_func { private set; get; }
 
 	private G[] _items = new G[4];
 	private int _size;
