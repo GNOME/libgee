@@ -310,7 +310,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	private int stamp = 0;
 
 	private class KeySet<K,V> : AbstractCollection<K>, Set<K> {
-		public TreeMap<K,V> map { construct; get; }
+		public TreeMap<K,V> map { private set; get; }
 
 		public KeySet (TreeMap<K,V> map) {
 			this.map = map;
@@ -354,9 +354,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class ValueCollection<K,V> : AbstractCollection<V> {
-		public TreeMap<K,V> map { construct; get; }
+		public TreeMap<K,V> map { private set; get; }
 
-		public ValueCollection (TreeMap map) {
+		public ValueCollection (TreeMap<K,V> map) {
 			this.map = map;
 		}
 
@@ -404,11 +404,20 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class KeyIterator<K,V> : Object, Gee.Iterator<K> {
-		public TreeMap<K,V> map { construct; get; }
-		private int stamp;
-		construct {
-			stamp = map.stamp;
+		public TreeMap<K,V> map {
+			private set {
+				_map = value;
+				stamp = _map.stamp;
+			}
+			get {
+				return _map;
+			}
 		}
+
+		private TreeMap<K,V> _map;
+
+		// concurrent modification protection
+		private int stamp;
 
 		public KeyIterator (TreeMap<K,V> map) {
 			this.map = map;
@@ -438,11 +447,20 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class ValueIterator<K,V> : Object, Gee.Iterator<V> {
-		public TreeMap<K,V> map { construct; get; }
-		private int stamp;
-		construct {
-			stamp = map.stamp;
+		public TreeMap<K,V> map {
+			private set {
+				_map = value;
+				stamp = _map.stamp;
+			}
+			get {
+				return _map;
+			}
 		}
+
+		private TreeMap<K,V> _map;
+
+		// concurrent modification protection
+		private int stamp;
 
 		public ValueIterator (TreeMap<K,V> map) {
 			this.map = map;

@@ -191,7 +191,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class KeySet<K,V> : AbstractCollection<K>, Set<K> {
-		public HashMap<K,V> map { construct; get; }
+		public HashMap<K,V> map { private set; get; }
 
 		public KeySet (HashMap map) {
 			this.map = map;
@@ -236,7 +236,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private class KeyIterator<K,V> : Object, Iterator<K> {
 		public HashMap<K,V> map {
-			construct {
+			private set {
 				_map = value;
 				_stamp = _map._stamp;
 			}
@@ -272,7 +272,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class ValueCollection<K,V> : AbstractCollection<K> {
-		public HashMap<K,V> map { construct; get; }
+		public HashMap<K,V> map { private set; get; }
 
 		public ValueCollection (HashMap map) {
 			this.map = map;
@@ -323,7 +323,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private class ValueIterator<K,V> : Object, Iterator<V> {
 		public HashMap<K,V> map {
-			construct {
+			private set {
 				_map = value;
 				_stamp = _map._stamp;
 			}
