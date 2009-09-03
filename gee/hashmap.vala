@@ -271,7 +271,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
-	private class ValueCollection<K,V> : AbstractCollection<K> {
+	private class ValueCollection<K,V> : AbstractCollection<V> {
 		public HashMap<K,V> map { private set; get; }
 
 		public ValueCollection (HashMap map) {
