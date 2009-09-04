@@ -30,11 +30,24 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		get { return _size; }
 	}
 
+	/**
+	 * The keys comparator function.
+	 */
 	public CompareFunc key_compare_func { private set; get; }
+
+	/**
+	 * The values equality testing function.
+	 */
 	public EqualFunc value_equal_func { private set; get; }
 
 	private int _size = 0;
 
+	/**
+	 * Tree map implementation constructor.
+	 *
+	 * @param key_compare_func an optional key comparator function.
+	 * @param value_equal_func an optional values equality testing function.
+	 */
 	public TreeMap (CompareFunc? key_compare_func = null, EqualFunc? value_equal_func = null) {
 		if (key_compare_func == null) {
 			key_compare_func = Functions.get_compare_func_for (typeof (K));
@@ -46,10 +59,16 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		this.value_equal_func = value_equal_func;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override Set<K> get_keys () {
 		return new KeySet<K,V> (this);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override Collection<V> get_values () {
 		return new ValueCollection<K,V> (this);
 	}
@@ -80,6 +99,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		return n == null || n.color == Node.Color.BLACK;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool contains (K key) {
 		weak Node<K, V>? cur = root;
 		while (cur != null) {
@@ -95,6 +117,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override V? get (K key) {
 		weak Node<K, V>? cur = root;
 		while (cur != null) {
@@ -135,6 +160,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		fix_up (ref node);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void set (K key, V value) {
 		set_to_node (ref root, key, value, null, null);
 		root.color = Node.Color.BLACK;
@@ -227,6 +255,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool remove (K key, out V? value = null) {
 		V node_value;
 		bool b = remove_from_node (ref root, key, out node_value);
@@ -242,6 +273,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		return b;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void clear () {
 		root = null;
 		_size = 0;

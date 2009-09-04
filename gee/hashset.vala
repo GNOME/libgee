@@ -32,8 +32,14 @@ public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 		get { return _nnodes; }
 	}
 
+	/**
+	 * Hash function.
+	 */
 	public HashFunc hash_func { private set; get; }
 
+	/**
+	 * Equality testing function.
+	 */
 	public EqualFunc equal_func { private set; get; }
 
 	private int _array_size;
@@ -46,6 +52,12 @@ public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 	private const int MIN_SIZE = 11;
 	private const int MAX_SIZE = 13845163;
 
+	/**
+	 * Hash set implementation constructor.
+	 *
+	 * @param hash_func an optional hash function.
+	 * @param equal_func an optional equality testing function.
+	 */
 	public HashSet (HashFunc? hash_func = null, EqualFunc? equal_func = null) {
 		if (hash_func == null) {
 			hash_func = Functions.get_hash_func_for (typeof (G));
@@ -71,15 +83,24 @@ public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 		return node;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool contains (G key) {
 		Node<G>** node = lookup_node (key);
 		return (*node != null);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool add (G key) {
 		Node<G>** node = lookup_node (key);
 		if (*node != null) {
@@ -94,6 +115,9 @@ public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool remove (G key) {
 		Node<G>** node = lookup_node (key);
 		if (*node != null) {
@@ -112,6 +136,9 @@ public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void clear () {
 		for (int i = 0; i < _array_size; i++) {
 			Node<G> node = (owned) _nodes[i];

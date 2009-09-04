@@ -33,8 +33,16 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 	private Node? _head = null;
 	private Node? _tail = null;
 
+	/**
+	 * Equality testing between elements function.
+	 */
 	public EqualFunc equal_func { private set; get; }
 
+	/**
+	 * Linked list implementation constructor.
+	 *
+	 * @param equal_func an optional equality testing function.
+	 */
 	public LinkedList (EqualFunc? equal_func = null) {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
@@ -42,20 +50,30 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		this.equal_func = equal_func;
 	}
 
-	// Iterable<G>
+	/**
+	 * @inheritDoc
+	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
-	// Collection<G>
+	/**
+	 * @inheritDoc
+	 */
 	public override int size {
 		get { return this._size; }
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool contains (G item) {
 		return this.index_of (item) != -1;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool add (G item) {
 		Node<G> n = new Node<G> (item);
 		if (this._head == null && this._tail == null) {
@@ -73,6 +91,9 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		return true;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool remove (G item) { // Should remove only the first occurence (a test should be added)
 		for (Node<G> n = this._head; n != null; n = n.next) {
 			if (this.equal_func (item, n.data)) {
@@ -83,13 +104,18 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void clear () {
 		++this._stamp;
 		this._head = this._tail = null;
 		this._size = 0;
 	}
 
-	// List<G>
+	/**
+	 * @inheritDoc
+	 */
 	public override G? get (int index) {
 		assert (index >= 0);
 		assert (index < this._size);
@@ -102,6 +128,9 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void set (int index, G item) {
 		assert (index >= 0);
 		assert (index < this._size);
@@ -111,6 +140,9 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		n.data = item;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override int index_of (G item) {
 		int result = -1;
 		int idx = 0;
@@ -125,6 +157,9 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		return result;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void insert (int index, G item) {
 		assert (index >= 0);
 		assert (index <= this._size);
@@ -155,6 +190,9 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void remove_at (int index) {
 		assert (index >= 0);
 		assert (index < this._size);
@@ -164,6 +202,9 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		this._remove_node (n);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override List<G>? slice (int start, int stop) {
 		return_val_if_fail (start <= stop, null);
 		return_val_if_fail (start >= 0, null);

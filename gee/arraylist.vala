@@ -40,6 +40,11 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	// concurrent modification protection
 	private int _stamp = 0;
 
+	/**
+	 * Array list implementation constructor.
+	 *
+	 * @param equal_func an optional elements equality testing function.
+	 */
 	public ArrayList (EqualFunc? equal_func = null) {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
@@ -47,14 +52,23 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		this.equal_func = equal_func;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool contains (G item) {
 		return (index_of (item) != -1);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override int index_of (G item) {
 		for (int index = 0; index < _size; index++) {
 			if (equal_func (_items[index], item)) {
@@ -64,6 +78,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return -1;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override G? get (int index) {
 		assert (index >= 0);
 		assert (index < _size);
@@ -71,6 +88,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return _items[index];
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void set (int index, G item) {
 		assert (index >= 0);
 		assert (index < _size);
@@ -78,6 +98,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		_items[index] = item;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool add (G item) {
 		if (_size == _items.length) {
 			grow_if_needed (1);
@@ -87,6 +110,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return true;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void insert (int index, G item) {
 		assert (index >= 0);
 		assert (index <= _size);
@@ -99,6 +125,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		_stamp++;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool remove (G item) {
 		for (int index = 0; index < _size; index++) {
 			if (equal_func (_items[index], item)) {
@@ -109,6 +138,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void remove_at (int index) {
 		assert (index >= 0);
 		assert (index < _size);
@@ -120,6 +152,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		_stamp++;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void clear () {
 		for (int index = 0; index < _size; index++) {
 			_items[index] = null;
@@ -128,6 +163,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		_stamp++;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override List<G>? slice (int start, int stop) {
 		return_val_if_fail (start <= stop, null);
 		return_val_if_fail (start >= 0, null);
@@ -141,6 +179,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return slice;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool add_all (Collection<G> collection) {
 		if (collection.is_empty) {
 			return false;
@@ -154,6 +195,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return true;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool remove_all (Collection<G> collection) {
 		bool changed = false;
 		for (int index = 0; index < _size; index++) {
@@ -166,6 +210,9 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return changed;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool retain_all (Collection<G> collection) {
 		bool changed = false;
 		for (int index = 0; index < _size; index++) {

@@ -26,24 +26,41 @@
  */
 public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collection<G> {
 
-	//
-	// Inherited from Collection<G>
-	//
-
+	/**
+	 * @inheritDoc
+	 */
 	public abstract int size { get; }
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual bool is_empty {
 		get { return size == 0; }
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract bool contains (G item);
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract bool add (G item);
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract bool remove (G item);
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract void clear ();
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual G[] to_array() {
 		G[] array = new G[size];
 		int index = 0;
@@ -53,6 +70,9 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 		return array;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual bool add_all (Collection<G> collection) {
 		if (collection.is_empty) {
 			return false;
@@ -65,6 +85,9 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 		return changed;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual bool contains_all (Collection<G> collection) {
 		if (collection.size > size) {
 			return false;
@@ -78,6 +101,9 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 		return true;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual bool remove_all (Collection<G> collection) {
 		bool changed = false;
 		foreach (G item in collection) {
@@ -86,6 +112,9 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 		return changed;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual bool retain_all (Collection<G> collection) {
 		bool changed = false;
 		G[] items = to_array ();
@@ -98,13 +127,15 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 		return changed;
 	}
 
-	//
-	// Inherited from Iterable<G>
-	//
-
+	/**
+	 * @inheritDoc
+	 */
 	public Type element_type {
 		get { return typeof (G); }
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract Iterator<G> iterator ();
 }

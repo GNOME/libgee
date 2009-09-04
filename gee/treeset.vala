@@ -30,10 +30,18 @@ public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
 		get {return _size;}
 	}
 
+	/**
+	 * The elements comparator function.
+	 */
 	public CompareFunc compare_func { private set; get; }
 
 	private int _size = 0;
 
+	/**
+	 * Tree set implementation constructor.
+	 *
+	 * @param compare_func an optional elements comparator function.
+	 */
 	public TreeSet (CompareFunc? compare_func = null) {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
@@ -41,6 +49,9 @@ public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
 		this.compare_func = compare_func;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool contains (G item) {
 		weak Node<G>? cur = root;
 		while (cur != null) {
@@ -120,6 +131,11 @@ public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 *
+	 * If the element already exists in the set it will not be added twice.
+	 */
 	public override bool add (G item) {
 		bool r = add_to_node (ref root, item, null, null);
 		root.color = Node.Color.BLACK;
@@ -202,6 +218,9 @@ public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool remove (G item) {
 		bool b = remove_from_node (ref root, item);
 		if (root != null) {
@@ -211,12 +230,18 @@ public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
 		return b;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void clear () {
 		root = null;
 		_size = 0;
 		stamp++;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override Gee.Iterator<G> iterator () {
 		return  new Iterator<G> (this);
 	}

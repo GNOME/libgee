@@ -26,28 +26,49 @@ using GLib;
  * Represents a read-only collection of items.
  */
 public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
+
+	/**
+	 * @inheritDoc
+	 */
 	public int size {
 		get { return _collection.size; }
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public bool is_empty {
 		get { return _collection.is_empty; }
 	}
 
+	/**
+	 * Generic collection property.
+	 */
 	public Collection<G> collection {
 		construct { _collection = value; }
 	}
 
 	private Collection<G> _collection;
 
+	/**
+	 * Read only collection constructor.
+	 *
+	 * @param collection the collection to decorate (may be null).
+	 */
 	public ReadOnlyCollection (Collection<G>? collection = null) {
 		this.collection = collection;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public Type element_type {
 		get { return typeof (G); }
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public Gee.Iterator<G> iterator () {
 		if (_collection == null) {
 			return new Iterator<G> ();
@@ -56,6 +77,9 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		return _collection.iterator ();
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public bool contains (G item) {
 		if (_collection == null) {
 			return false;
@@ -64,22 +88,37 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		return _collection.contains (item);
 	}
 
+	/**
+	 * Unimplemented method (read only collection).
+	 */
 	public bool add (G item) {
 		assert_not_reached ();
 	}
 
+	/**
+	 * Unimplemented method (read only collection).
+	 */
 	public bool remove (G item) {
 		assert_not_reached ();
 	}
 
+	/**
+	 * Unimplemented method (read only collection).
+	 */
 	public void clear () {
 		assert_not_reached ();
 	}
 
+	/**
+	 * Unimplemented method (read only collection).
+	 */
 	public bool add_all (Collection<G> collection) {
 		assert_not_reached ();
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public bool contains_all (Collection<G> collection) {
 		foreach (G element in collection) {
 			if (!contains (element)) {
@@ -89,14 +128,23 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		return true;
 	}
 
+	/**
+	 * Unimplemented method (read only collection).
+	 */
 	public bool remove_all (Collection<G> collection) {
 		assert_not_reached ();
 	}
 
+	/**
+	 * Unimplemented method (read only collection).
+	 */
 	public bool retain_all(Collection<G> collection) {
 		assert_not_reached ();
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public G[] to_array() {
 		return _collection.to_array ();
 	}

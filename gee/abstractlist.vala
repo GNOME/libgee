@@ -26,26 +26,53 @@
  */
 public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract new G? get (int index);
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract new void set (int index, G item);
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract int index_of (G item);
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract void insert (int index, G item);
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract void remove_at (int index);
 
+	/**
+	 * @inheritDoc
+	 */
 	public abstract List<G>? slice (int start, int stop);
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual G? first () {
 		return get (0);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual G? last () {
 		return get (size - 1);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public virtual void insert_all (int index, Collection<G> collection) {
 		foreach (G item in collection) {
 			insert(index, item);
