@@ -1,10 +1,16 @@
 include $(top_srcdir)/Makefile.decl
-
 NULL =
+
+if ENABLE_DOC
+DOC_SUBDIR = \
+	doc \
+	$(NULL)
+endif
 
 SUBDIRS = \
 	gee \
 	tests \
+	$(DOC_SUBDIR) \
 	$(NULL)
 
 pkgconfigdir = $(libdir)/pkgconfig

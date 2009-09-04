@@ -16,6 +16,15 @@ AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 
+AC_ARG_ENABLE(doc, AS_HELP_STRING([--enable-doc], [Enable documentation generation]), enable_doc=$enableval, enable_doc=no)
+AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
+
+AS_IF([test "x$enable_doc" != xno],
+	[AC_PATH_PROG(VALADOC, valadoc, :)
+	 AC_SUBST(VALADOC)
+	 AS_IF([test "$VALADOC" = :],
+		[AC_MSG_ERROR([valadoc not found])])])
+
 GLIB_REQUIRED=2.12.0
 
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED)
@@ -24,6 +33,7 @@ AC_SUBST(GLIB_LIBS)
 
 AC_CONFIG_FILES([Makefile
            gee-1.0.pc
+           doc/Makefile
            gee/Makefile
            tests/Makefile])
 
