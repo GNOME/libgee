@@ -21,7 +21,7 @@
  */
 
 /**
- * A set is a collection without duplicates.
+ * A collection without duplicate elements.
  */
 public interface Gee.Set<G> : Collection<G> {
 }

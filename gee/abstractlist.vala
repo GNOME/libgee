@@ -22,7 +22,12 @@
  */
 
 /**
- * Serves as the base class for implementing list classes.
+ * Skeletal implementation of the {@link Gee.List} interface.
+ *
+ * Contains common code shared by all list implementations.
+ *
+ * @see Gee.ArrayList
+ * @see Gee.LinkedList
  */
 public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 

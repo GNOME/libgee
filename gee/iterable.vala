@@ -23,8 +23,7 @@
 using GLib;
 
 /**
- * Implemented by classes that support a simple iteration over instances of the
- * collection.
+ * An object that can provide an {@link Gee.Iterator}.
  */
 public interface Gee.Iterable<G> : GLib.Object {
 	/**

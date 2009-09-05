@@ -23,27 +23,37 @@
 using GLib;
 
 /**
- * Left-leaning red-black tree implementation of the Map interface.
+ * Left-leaning red-black tree implementation of the {@link Gee.Map} interface.
+ *
+ * This implementation is especially well designed for large quantity of
+ * data. The (balanced) tree implementation insure that the set and get 
+ * methods are in logarithmic complexity.
+ *
+ * @see Gee.HashMap
  */
 public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
+	/**
+	 * @inheritDoc
+	 */
 	public override int size {
 		get { return _size; }
 	}
 
 	/**
-	 * The keys comparator function.
+	 * The keys' comparator function.
 	 */
 	public CompareFunc key_compare_func { private set; get; }
 
 	/**
-	 * The values equality testing function.
+	 * The values' equality testing function.
 	 */
 	public EqualFunc value_equal_func { private set; get; }
 
 	private int _size = 0;
 
 	/**
-	 * Tree map implementation constructor.
+	 * Constructs a new, empty tree map sorted according to the specified
+	 * comparator function.
 	 *
 	 * @param key_compare_func an optional key comparator function.
 	 * @param value_equal_func an optional values equality testing function.

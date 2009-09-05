@@ -21,8 +21,7 @@
  */
 
 /**
- * Serves as the base interface for implementing collection classes. Defines
- * size, iteration, and modification methods.
+ * A generic collection of objects.
  */
 public interface Gee.Collection<G> : Iterable<G> {
 	/**

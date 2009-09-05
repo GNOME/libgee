@@ -23,7 +23,13 @@
 using GLib;
 
 /**
- * Represents a read-only collection of items without duplicates.
+ * Read-only view for {@link Gee.Set} collections.
+ *
+ * This class decorates any class which implements the {@link Gee.Set} interface
+ * by making it read only. Any method which normally modify data will throw an
+ * error.
+ *
+ * @see Gee.Set
  */
 public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 
@@ -42,7 +48,7 @@ public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * The decorated set.
 	 */
 	public new Set<G> set {
 		construct { _set = value; }
@@ -51,7 +57,7 @@ public class Gee.ReadOnlySet<G> : Object, Iterable<G>, Collection<G>, Set<G> {
 	private Set<G> _set;
 
 	/**
-	 * Read only set implementation constructor.
+	 * Constructs a read-only set that mirrors the content of the specified set.
 	 *
 	 * @param set the set to decorate.
 	 */

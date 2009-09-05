@@ -21,8 +21,7 @@
  */
 
 /**
- * Implemented by classes that support a simple iteration over instances of the
- * collection.
+ * An iterator over a collection.
  */
 public interface Gee.Iterator<G> : GLib.Object {
 	/**

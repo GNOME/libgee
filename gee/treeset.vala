@@ -23,22 +23,33 @@
 using GLib;
 
 /**
- * Left-leaning red-black tree implementation of the Set interface.
+ * Left-leaning red-black tree implementation of the {@link Gee.Set} interface.
+ *
+ * This implementation is especially well designed for large quantity of
+ * data. The (balanced) tree implementation insure that the set and get
+ * methods are in logarithmic complexity. For a linear implementation see
+ * {@link Gee.HashSet}.
+ *
+ * @see Gee.HashSet
  */
 public class Gee.TreeSet<G> : AbstractCollection<G>, Set<G> {
+	/**
+	 * @inheritDoc
+	 */
 	public override int size {
 		get {return _size;}
 	}
 
 	/**
-	 * The elements comparator function.
+	 * The elements' comparator function.
 	 */
 	public CompareFunc compare_func { private set; get; }
 
 	private int _size = 0;
 
 	/**
-	 * Tree set implementation constructor.
+	 * Constructs a new, empty tree set sorted according to the specified
+	 * comparator function.
 	 *
 	 * @param compare_func an optional elements comparator function.
 	 */

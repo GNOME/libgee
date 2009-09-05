@@ -23,7 +23,13 @@
 using GLib;
 
 /**
- * Represents a read-only collection of items.
+ * Read-only view for {@link Gee.Collection} collections.
+ *
+ * This class decorates any class which implements the {@link Gee.Collection}
+ * interface by making it read only. Any method which normally modify data will
+ * throw an error.
+ *
+ * @see Gee.Collection
  */
 public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 
@@ -42,7 +48,7 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	/**
-	 * Generic collection property.
+	 * The decorated collection.
 	 */
 	public Collection<G> collection {
 		construct { _collection = value; }
@@ -51,7 +57,8 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	private Collection<G> _collection;
 
 	/**
-	 * Read only collection constructor.
+	 * Constructs a read-only collection that mirrors the content of the
+	 * specified collection.
 	 *
 	 * @param collection the collection to decorate (may be null).
 	 */

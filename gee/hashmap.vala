@@ -25,17 +25,35 @@
 using GLib;
 
 /**
- * Hashtable implementation of the Map interface.
+ * Hash table implementation of the {@link Gee.Map} interface.
+ *
+ * This implementation is better fit for highly heterogenous key values.
+ * In case of high key hashes redundancy or higher amount of data prefer using
+ * tree implementation like {@link Gee.TreeMap}.
+ *
+ * @see Gee.TreeMap
  */
 public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
+	/**
+	 * @inheritDoc
+	 */
 	public override int size {
 		get { return _nnodes; }
 	}
 
+	/**
+	 * The keys' hash function.
+	 */
 	public HashFunc key_hash_func { private set; get; }
 
+	/**
+	 * The keys' equality testing function.
+	 */
 	public EqualFunc key_equal_func { private set; get; }
 
+	/**
+	 * The values' equality testing function.
+	 */
 	public EqualFunc value_equal_func { private set; get; }
 
 	private int _array_size;
@@ -48,6 +66,13 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	private const int MIN_SIZE = 11;
 	private const int MAX_SIZE = 13845163;
 
+	/**
+	 * Constructs a new, empty hash map.
+	 *
+	 * @param key_hash_func a key hash function.
+	 * @param key_equal_func a key equality testing function.
+	 * @param value_equal_func a value equallity testing function.
+	 */
 	public HashMap (HashFunc? key_hash_func = null, EqualFunc? key_equal_func = null, EqualFunc? value_equal_func = null) {
 		if (key_hash_func == null) {
 			key_hash_func = Functions.get_hash_func_for (typeof (K));
@@ -68,10 +93,16 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		_nodes = new Node<K,V>[_array_size];
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override Set<K> get_keys () {
 		return new KeySet<K,V> (this);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override Collection<V> get_values () {
 		return new ValueCollection<K,V> (this);
 	}
@@ -85,11 +116,17 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		return node;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool contains (K key) {
 		Node<K,V>** node = lookup_node (key);
 		return (*node != null);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override V? get (K key) {
 		Node<K,V>* node = (*lookup_node (key));
 		if (node != null) {
@@ -99,6 +136,9 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void set (K key, V value) {
 		Node<K,V>** node = lookup_node (key);
 		if (*node != null) {
@@ -112,6 +152,9 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		_stamp++;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override bool remove (K key, out V? value = null) {
 		Node<K,V>** node = lookup_node (key);
 		if (*node != null) {
@@ -135,6 +178,9 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public override void clear () {
 		for (int i = 0; i < _array_size; i++) {
 			Node<K,V> node = (owned) _nodes[i];

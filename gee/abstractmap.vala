@@ -20,9 +20,15 @@
  * Author:
  * 	Tomaž Vajngerl <quikee@gmail.com>
  */
- 
- /**
- * Serves as the base class for implementing map classes.
+
+/**
+ * Skeletal implementation of the {@link Gee.Map} interface.
+ *
+ * Contains common code shared by all map implementations.
+ *
+ * @see Gee.Map
+ * @see Gee.TreeMap
+ * @see Gee.HashMap
  */
 public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 

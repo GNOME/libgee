@@ -24,7 +24,13 @@ using GLib;
 
 namespace Gee {
 
+	/**
+	 * Helper class for equal, hash and compare functions.
+	 */
 	public class Functions {
+
+		private Functions () {
+		}
 
 		/**
 		 * Get a equality testing function for a given type.
@@ -73,7 +79,7 @@ namespace Gee {
 	}
 
 	/**
-	 * Compares to arbitrary elements together.
+	 * Compares two arbitrary elements together.
 	 *
 	 * The comparison is done on pointers and not on values behind.
 	 *

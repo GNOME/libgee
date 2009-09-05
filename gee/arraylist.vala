@@ -25,13 +25,27 @@
 using GLib;
 
 /**
- * Arrays of arbitrary elements which grow automatically as elements are added.
+ * Resizable array implementation of the {@link Gee.List} interface.
+ *
+ * The storage array grows automatically when needed.
+ *
+ * This implementation is pretty good for rarely modified data. Because they are
+ * stored in an array this structure does not fit for highly mutable data. For an
+ * alternative implementation see {@link Gee.LinkedList}.
+ *
+ * @see Gee.LinkedList
  */
 public class Gee.ArrayList<G> : AbstractList<G> {
+	/**
+	 * @inheritDoc
+	 */
 	public override int size {
 		get { return _size; }
 	}
 
+	/**
+	 * The elements' equality testing function.
+	 */
 	public EqualFunc equal_func { private set; get; }
 
 	private G[] _items = new G[4];
@@ -41,7 +55,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	private int _stamp = 0;
 
 	/**
-	 * Array list implementation constructor.
+	 * Constructs a new, empty array list.
 	 *
 	 * @param equal_func an optional elements equality testing function.
 	 */

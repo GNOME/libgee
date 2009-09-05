@@ -25,7 +25,12 @@
  */
 
 /**
- * A Gee.List implementation, using a doubly-linked list.
+ * Doubly-linked list implementation of the {@link Gee.List} interface.
+ *
+ * This implementation is pretty well designed for highly mutable data. When
+ * indexed access is privileged prefer using {@link Gee.ArrayList}.
+ *
+ * @see Gee.ArrayList
  */
 public class Gee.LinkedList<G> : AbstractList<G> {
 	private int _size = 0;
@@ -34,12 +39,12 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 	private Node? _tail = null;
 
 	/**
-	 * Equality testing between elements function.
+	 * The elements' equality testing function.
 	 */
 	public EqualFunc equal_func { private set; get; }
 
 	/**
-	 * Linked list implementation constructor.
+	 * Constructs a new, empty linked list.
 	 *
 	 * @param equal_func an optional equality testing function.
 	 */

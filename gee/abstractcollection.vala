@@ -22,7 +22,11 @@
  */
 
 /**
- * Serves as the base class for implementing collection classes.
+ * Skeletal implementation of the {@link Gee.Collection} interface.
+ *
+ * Contains common code shared by all collection implementations.
+ *
+ * @see Gee.AbstractList
  */
 public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collection<G> {
 

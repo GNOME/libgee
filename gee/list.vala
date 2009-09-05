@@ -21,7 +21,7 @@
  */
 
 /**
- * Represents a collection of items in a well-defined order.
+ * An ordered collection.
  */
 public interface Gee.List<G> : Collection<G> {
 	/**

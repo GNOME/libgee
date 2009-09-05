@@ -25,20 +25,29 @@
 using GLib;
 
 /**
- * Hashtable implementation of the Set interface.
+ * Hash table implementation of the {@link Gee.Set} interface.
+ *
+ * This implementation is better fit for highly heterogenous values.
+ * In case of high value hashes redundancy or higher amount of data prefer using
+ * tree implementation like {@link Gee.TreeSet}.
+ *
+ * @see Gee.TreeSet
  */
 public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
+	/**
+	 * @inheritDoc
+	 */
 	public override int size {
 		get { return _nnodes; }
 	}
 
 	/**
-	 * Hash function.
+	 * The elements' hash function.
 	 */
 	public HashFunc hash_func { private set; get; }
 
 	/**
-	 * Equality testing function.
+	 * The elements' equality testing function.
 	 */
 	public EqualFunc equal_func { private set; get; }
 
@@ -53,7 +62,7 @@ public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
 	private const int MAX_SIZE = 13845163;
 
 	/**
-	 * Hash set implementation constructor.
+	 * Constructs a new, empty hash set.
 	 *
 	 * @param hash_func an optional hash function.
 	 * @param equal_func an optional equality testing function.
