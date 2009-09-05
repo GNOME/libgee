@@ -11,14 +11,23 @@ noinst_PROGRAMS = $(TEST_PROGS)
 
 progs_ldadd = $(GLIB_LIBS) ../gee/libgee.la
 
-TEST_PROGS += testarraylist
-testarraylist_VALASOURCES = testarraylist.vala testcollection.vala testcase.vala
-testarraylist_SOURCES = testarraylist.c testcollection.c testcase.c
-$(testarraylist_SOURCES): $(testarraylist_VALASOURCES)
+BUILT_SOURCES = tests.vala.stamp
+
+TEST_PROGS += tests
+tests_VALASOURCES = \
+       testarraylist.vala \
+       testcollection.vala \
+       testlist.vala \
+       testcase.vala \
+       testmain.vala \
+       $(NULL)
+
+tests_SOURCES = tests.vala.stamp $(tests_VALASOURCES:.vala=.c)
+tests.vala.stamp: $(tests_VALASOURCES)
 	$(VALAC) -C --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
 	touch $@
-testarraylist_LDADD = $(progs_ldadd)
-EXTRA_DIST += $(testarraylist_VALASOURCES)
+tests_LDADD = $(progs_ldadd)
+EXTRA_DIST += $(tests_VALASOURCES)
 
 TEST_PROGS += testhashmap
 testhashmap_VALASOURCES = testhashmap.vala

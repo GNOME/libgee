@@ -18,35 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
- * 	Jürg Billeter <j@bitron.ch>
- * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
- * 	Julien Peeters <contact@julienpeeters.fr>
+ * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
  */
 
-using Gee;
+void main (string[] args) {
+	Test.init (ref args);
 
-public class ArrayListTests : ListTests {
+	TestSuite.get_root ().add_suite (new ArrayListTests ().get_suite ());
 
-	public ArrayListTests () {
-		base ("ArrayList");
-		add_test ("[ArrayList] selected functions", test_selected_functions);
-	}
-
-	public override void set_up () {
-		test_collection = new Gee.ArrayList<string> ();
-	}
-
-	public override void tear_down () {
-		test_collection = null;
-	}
-
-	public void test_selected_functions () {
-		var test_list = test_collection as ArrayList<string>;
-
-		// Check the collection exists
-		assert (test_list != null);
-
-		// Check the selected equal function
-		assert (test_list.equal_func == str_equal);
-	}
+	Test.run ();
 }
