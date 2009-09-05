@@ -20,7 +20,6 @@
  * 	Jürg Billeter <j@bitron.ch>
  */
 
-using GLib;
 using Gee;
 
 public class ArrayListTests : CollectionTests {
@@ -54,13 +53,13 @@ public class ArrayListTests : CollectionTests {
 		add_test("iterator", test_arraylist_iterator);
 	}
 
-	public override void setup () {
+	public override void set_up () {
 		int_collection = new ArrayList<int> ();
 		string_collection = new ArrayList<string> (str_equal);
 		object_collection = new ArrayList<Object> ();
 	}
 
-	public override void teardown () {
+	public override void tear_down () {
 		int_collection = null;
 		string_collection = null;
 		object_collection = null;

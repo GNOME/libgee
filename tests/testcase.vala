@@ -20,63 +20,62 @@
  * 	Julien Peeters <contact@julienpeeters.fr>
  */
 
-using GLib;
+public abstract class Gee.TestCase : GLib.Object {
 
-public abstract class TestFixture: Object {
-
-	private TestSuite suite;
-	private TestAdaptor[] adaptors = new TestAdaptor[0];
+	private GLib.TestSuite suite;
+	private Adaptor[] adaptors = new Adaptor[0];
 
 	public delegate void TestMethod ();
 
-	public TestFixture (string name) {
-		this.suite = new TestSuite (name);
+	public TestCase (string name) {
+		this.suite = new GLib.TestSuite (name);
 	}
 
 	public void add_test (string name, TestMethod test) {
-		var adaptor = new TestAdaptor (name, test, this);
+		var adaptor = new Adaptor (name, test, this);
 		this.adaptors += adaptor;
 
-		this.suite.add (new TestCase (adaptor.name,
-		                              0,
-		                              adaptor.setup,
-		                              adaptor.run,
-		                              adaptor.teardown ));
+		this.suite.add (new GLib.TestCase (adaptor.name,
+		                                   0,
+		                                   adaptor.set_up,
+		                                   adaptor.run,
+		                                   adaptor.tear_down ));
 	}
 
-	public virtual void setup () {}
-	public virtual void teardown () {}
+	public virtual void set_up () {
+	}
 
-	public TestSuite get_suite () {
+	public virtual void tear_down () {
+	}
+
+	public GLib.TestSuite get_suite () {
 		return this.suite;
 	}
 
-	public void add_to_suite (TestSuite suite) {
-		suite.add_suite (this.suite);
-	}
+	private class Adaptor {
 
-	private class TestAdaptor {
-
-		public string name { set; get; }
+		public string name { get; private set; }
 		private TestMethod test;
-		private TestFixture fixture;
+		private TestCase test_case;
 
-		public TestAdaptor (string name, TestMethod test, TestFixture fixture) {
+		public Adaptor (string name,
+		                TestMethod test,
+		                TestCase test_case) {
 			this.name = name;
 			this.test = test;
-			this.fixture = fixture;
+			this.test_case = test_case;
 		}
 
-		public void setup (void* fixture) {
-			this.fixture.setup ();
+		public void set_up (void* fixture) {
+			this.test_case.set_up ();
 		}
 
 		public void run (void* fixture) {
 			this.test ();
 		}
 
-		public void teardown (void* fixture) {
-			this.fixture.teardown ();
+		public void tear_down (void* fixture) {
+			this.test_case.tear_down ();
 		}
 	}
 }

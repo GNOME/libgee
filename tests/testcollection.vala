@@ -21,10 +21,9 @@
  * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
  */
 
-using GLib;
 using Gee;
 
-public abstract class CollectionTests : TestFixture {
+public abstract class CollectionTests : Gee.TestCase {
 
 	public CollectionTests (string name) {
 		base(name);
