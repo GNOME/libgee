@@ -25,6 +25,8 @@ tests_VALASOURCES = \
        testmain.vala \
        testmultimap.vala \
        testmultiset.vala \
+       testreadonlycollection.vala \
+       testreadonlylist.vala \
        $(NULL)
 
 tests_SOURCES = tests.vala.stamp $(tests_VALASOURCES:.vala=.c)

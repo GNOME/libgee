@@ -1,7 +1,7 @@
-/* testarraylist.vala
+/* testreadonlylist.vala
  *
  * Copyright (C) 2008  Jürg Billeter
- * Copyright (C) 2009  Didier Villevalois, Julien Peeters
+ * Copyright (C) 2009  Didier Villevalois
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,17 +18,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
- * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
+ * 	Tomaž Vajngerl <quikee@gmail.com>
+ * 	Julien Peeters <contact@julienpeeters.fr>
  */
 
-void main (string[] args) {
-	Test.init (ref args);
+using Gee;
 
-	TestSuite.get_root ().add_suite (new ArrayListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMultiMapTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMultiSetTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new LinkedListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new ReadOnlyListTests ().get_suite ());
+public class ReadOnlyListTests : ReadOnlyCollectionTests {
 
-	Test.run ();
+	public ReadOnlyListTests () {
+		base ("ReadOnlyList");
+	}
+
+	public override void set_up () {
+		test_collection = new ArrayList<string> ();
+		ro_collection = new ReadOnlyCollection<string> (test_collection);
+	}
+
+	public override void tear_down () {
+		test_collection = null;
+		ro_collection = null;
+	}
 }
