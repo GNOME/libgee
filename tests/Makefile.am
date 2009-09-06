@@ -18,10 +18,12 @@ tests_VALASOURCES = \
        testarraylist.vala \
        testcase.vala \
        testcollection.vala \
+       testhashmultimap.vala \
        testhashmultiset.vala \
        testlinkedlist.vala \
        testlist.vala \
        testmain.vala \
+       testmultimap.vala \
        testmultiset.vala \
        $(NULL)
 
