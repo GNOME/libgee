@@ -27,7 +27,12 @@ using GLib;
  */
 public class Gee.ReadOnlySet<G> : Gee.ReadOnlyCollection<G>, Set<G> {
 
-	public ReadOnlySet (Set<G>? set = null) {
+	/**
+	 * Constructs a read-only set that mirrors the content of the specified set.
+	 *
+	 * @param set the set to decorate.
+	 */
+	public ReadOnlySet (Set<G> set) {
 		base(set);
 	}
 }

@@ -36,7 +36,13 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 
 	protected Collection<G> _collection;
 
-	public ReadOnlyCollection (Collection<G>? collection = null) {
+	/**
+	 * Constructs a read-only collection that mirrors the content of the
+	 * specified collection.
+	 *
+	 * @param collection the collection to decorate.
+	 */
+	public ReadOnlyCollection (Collection<G> collection) {
 		this._collection = collection;
 	}
 
@@ -45,18 +51,10 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	public Gee.Iterator<G> iterator () {
-		if (_collection == null) {
-			return new Iterator<G> ();
-		}
-
 		return _collection.iterator ();
 	}
 
 	public bool contains (G item) {
-		if (_collection == null) {
-			return false;
-		}
-
 		return _collection.contains (item);
 	}
 
@@ -77,12 +75,7 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	public bool contains_all (Collection<G> collection) {
-		foreach (G element in collection) {
-			if (!contains (element)) {
-				return false;
-			}
-		}
-		return true;
+		return _collection.contains_all (collection);
 	}
 
 	public bool remove_all (Collection<G> collection) {

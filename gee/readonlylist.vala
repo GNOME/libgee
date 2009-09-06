@@ -31,17 +31,13 @@ public class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	 * Constructs a read-only list that mirrors the content of the specified
 	 * list.
 	 *
-	 * @param list the list to decorate (may be null).
+	 * @param list the list to decorate.
 	 */
-	public ReadOnlyList (List<G>? list = null) {
+	public ReadOnlyList (List<G> list) {
 		base (list);
 	}
 
 	public int index_of (G item) {
-		if (_collection == null) {
-			return -1;
-		}
-
 		return ((Gee.List<G>) _collection).index_of (item);
 	}
 
@@ -54,10 +50,6 @@ public class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	}
 
 	public new G? get (int index) {
-		if (_collection == null) {
-			return null;
-		}
-
 		return ((Gee.List<G>) _collection).get (index);
 	}
 
@@ -76,18 +68,10 @@ public class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	 * @inheritDoc
 	 */
 	public G? first () {
-		if (_collection == null) {
-			return null;
-		}
-
 		return ((Gee.List<G>) _collection).first ();
 	}
 
 	public G? last () {
-		if (_collection == null) {
-			return null;
-		}
-
 		return ((Gee.List<G>) _collection).last ();
 	}
 
