@@ -33,7 +33,7 @@ public class ArrayListTests : ListTests {
 	}
 
 	public override void set_up () {
-		test_collection = new Gee.ArrayList<string> ();
+		test_collection = new ArrayList<string> ();
 	}
 
 	public override void tear_down () {
