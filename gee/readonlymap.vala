@@ -34,14 +34,10 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		get { return _map.is_empty; }
 	}
 
-	public Map<K,V> map {
-		construct { _map = value; }
-	}
-
 	private Map<K,V> _map;
 
 	public ReadOnlyMap (Map<K,V>? map = null) {
-		this.map = map;
+		this._map = map;
 	}
 
 	public Set<K> get_keys () {

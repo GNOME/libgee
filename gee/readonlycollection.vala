@@ -34,14 +34,10 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		get { return _collection.is_empty; }
 	}
 
-	public Collection<G> collection {
-		construct { _collection = value; }
-	}
-
-	private Collection<G> _collection;
+	protected Collection<G> _collection;
 
 	public ReadOnlyCollection (Collection<G>? collection = null) {
-		this.collection = collection;
+		this._collection = collection;
 	}
 
 	public Type element_type {
