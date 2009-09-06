@@ -18,15 +18,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
- * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
+ * 	Jürg Billeter <j@bitron.ch>
+ * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
+ * 	Julien Peeters <contact@julienpeeters.fr>
  */
 
-void main (string[] args) {
-	Test.init (ref args);
+using Gee;
 
-	TestSuite.get_root ().add_suite (new ArrayListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new LinkedListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMultiSetTests ().get_suite ());
+public class HashMultiSetTests : MultiSetTests {
 
-	Test.run ();
+	public HashMultiSetTests () {
+		base ("HashMultiSet");
+		add_test ("[HashMultiSet] selected functions", test_selected_functions);
+	}
+
+	public override void set_up () {
+		test_collection = new HashMultiSet<string> ();
+	}
+
+	public override void tear_down () {
+		test_collection = null;
+	}
+
+	private void test_selected_functions () {
+		var test_multi_set = test_collection as HashMultiSet<string>;
+
+		// Check the collection exists
+		assert (test_multi_set != null);
+
+		// Check the selected hash and equal functions
+		assert (test_multi_set.hash_func == str_hash);
+		assert (test_multi_set.equal_func == str_equal);
+	}
 }

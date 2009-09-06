@@ -1,7 +1,6 @@
-/* testarraylist.vala
+/* multiset.vala
  *
- * Copyright (C) 2008  Jürg Billeter
- * Copyright (C) 2009  Didier Villevalois, Julien Peeters
+ * Copyright (C) 2009  Ali Sabil
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,15 +17,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
- * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
+ * 	Ali Sabil <ali.sabil@gmail.com>
  */
 
-void main (string[] args) {
-	Test.init (ref args);
-
-	TestSuite.get_root ().add_suite (new ArrayListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new LinkedListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMultiSetTests ().get_suite ());
-
-	Test.run ();
+/**
+ * A MultiSet is a collection allowing duplicates.
+ */
+public interface Gee.MultiSet<G> : Collection<G> {
+	/**
+	 * Returns the number of occurences of an item in this MultiSet
+	 *
+	 * @param item the item to count occurences of
+	 * @return the number of occurences of the item in this multiset.
+	 */
+	public abstract int count (G item);
 }

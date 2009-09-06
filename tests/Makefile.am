@@ -18,9 +18,11 @@ tests_VALASOURCES = \
        testarraylist.vala \
        testcase.vala \
        testcollection.vala \
+       testhashmultiset.vala \
        testlinkedlist.vala \
        testlist.vala \
        testmain.vala \
+       testmultiset.vala \
        $(NULL)
 
 tests_SOURCES = tests.vala.stamp $(tests_VALASOURCES:.vala=.c)
