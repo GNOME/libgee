@@ -47,14 +47,7 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		get { return _collection.is_empty; }
 	}
 
-	/**
-	 * The decorated collection.
-	 */
-	public Collection<G> collection {
-		construct { _collection = value; }
-	}
-
-	private Collection<G> _collection;
+	protected Collection<G> _collection;
 
 	/**
 	 * Constructs a read-only collection that mirrors the content of the
@@ -63,7 +56,7 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	 * @param collection the collection to decorate (may be null).
 	 */
 	public ReadOnlyCollection (Collection<G>? collection = null) {
-		this.collection = collection;
+		this._collection = collection;
 	}
 
 	/**

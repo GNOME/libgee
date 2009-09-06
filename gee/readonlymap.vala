@@ -47,13 +47,6 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		get { return _map.is_empty; }
 	}
 
-	/**
-	 * The decorated map.
-	 */
-	public Map<K,V> map {
-		construct { _map = value; }
-	}
-
 	private Map<K,V> _map;
 
 	/**
@@ -62,7 +55,7 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	 * @param map the map to decorate (may be null).
 	 */
 	public ReadOnlyMap (Map<K,V>? map = null) {
-		this.map = map;
+		this._map = map;
 	}
 
 	/**
