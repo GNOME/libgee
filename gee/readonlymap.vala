@@ -52,9 +52,9 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	/**
 	 * Constructs a read-only map that mirrors the content of the specified map.
 	 *
-	 * @param map the map to decorate (may be null).
+	 * @param map the map to decorate.
 	 */
-	public ReadOnlyMap (Map<K,V>? map = null) {
+	public ReadOnlyMap (Map<K,V> map) {
 		this._map = map;
 	}
 
@@ -62,10 +62,6 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	 * @inheritDoc
 	 */
 	public Set<K> get_keys () {
-		if (_map == null) {
-			return new ReadOnlySet<K> ();
-		}
-
 		return _map.get_keys ();
 	}
 
@@ -73,10 +69,6 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	 * @inheritDoc
 	 */
 	public Collection<V> get_values () {
-		if (_map == null) {
-			return new ReadOnlyCollection<V> ();
-		}
-
 		return _map.get_values ();
 	}
 
@@ -84,10 +76,6 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	 * @inheritDoc
 	 */
 	public bool contains (K key) {
-		if (_map == null) {
-			return false;
-		}
-
 		return _map.contains (key);
 	}
 
@@ -95,10 +83,6 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	 * @inheritDoc
 	 */
 	public new V? get (K key) {
-		if (_map == null) {
-			return null;
-		}
-
 		return _map.get (key);
 	}
 
@@ -141,10 +125,6 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	 * @inheritDoc
 	 */
 	public bool contains_all (Map<K,V> map) {
-		if (_map == null) {
-			return false;
-		}
-
 		return _map.contains_all (map);
 	}
 }

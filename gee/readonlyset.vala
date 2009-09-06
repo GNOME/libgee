@@ -38,7 +38,7 @@ public class Gee.ReadOnlySet<G> : Gee.ReadOnlyCollection<G>, Set<G> {
 	 *
 	 * @param set the set to decorate.
 	 */
-	public ReadOnlySet (Set<G>? set = null) {
+	public ReadOnlySet (Set<G> set) {
 		base(set);
 	}
 }
