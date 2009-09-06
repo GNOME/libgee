@@ -209,36 +209,6 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return true;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public override bool remove_all (Collection<G> collection) {
-		bool changed = false;
-		for (int index = 0; index < _size; index++) {
-			if (collection.contains (_items[index])) {
-				remove_at (index);
-				index--;
-				changed = true;
-			}
-		}
-		return changed;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public override bool retain_all (Collection<G> collection) {
-		bool changed = false;
-		for (int index = 0; index < _size; index++) {
-			if (!collection.contains (_items[index])) {
-				remove_at (index);
-				index--;
-				changed = true;
-			}
-		}
-		return changed;
-	}
-
 	private void shift (int start, int delta) {
 		assert (start >= 0);
 		assert (start <= _size);

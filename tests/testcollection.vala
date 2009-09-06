@@ -125,14 +125,14 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (! test_collection.contains("three"));
 		assert (test_collection.size == 1);
 		assert (! test_collection.is_empty);
-		
+
 		assert (test_collection.add ("two"));
 		assert (test_collection.contains("one"));
 		assert (test_collection.contains("two"));
 		assert (! test_collection.contains("three"));
 		assert (test_collection.size == 2);
 		assert (! test_collection.is_empty);
-		
+
 		assert (test_collection.add ("three"));
 		assert (test_collection.contains("one"));
 		assert (test_collection.contains("two"));
@@ -355,7 +355,7 @@ public abstract class CollectionTests : Gee.TestCase {
 
 		assert (test_collection.remove_all (dummy));
 
-		assert (test_collection.is_empty);
+		assert (test_collection.size == 2);
 		assert (dummy.size == 2);
 	}
 
