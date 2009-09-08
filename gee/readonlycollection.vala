@@ -31,7 +31,7 @@ using GLib;
  *
  * @see Gee.Collection
  */
-public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
+internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 
 	/**
 	 * @inheritDoc
@@ -145,5 +145,10 @@ public class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 			return null;
 		}
 	}
+
+	public virtual Collection<G> read_only_view {
+		get { return this; }
+	}
+
 }
 

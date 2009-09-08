@@ -1,6 +1,7 @@
-/* readonlyset.vala
+/* abstractset.vala
  *
- * Copyright (C) 2007-2008  Jürg Billeter
+ * Copyright (C) 2007  Jürg Billeter
+ * Copyright (C) 2009  Didier Villevalois
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,34 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
- * 	Jürg Billeter <j@bitron.ch>
+ * 	Julien Peeters <contact@julienpeeters.fr>
  */
-
-using GLib;
 
 /**
- * Read-only view for {@link Gee.Set} collections.
+ * Skeletal implementation of the {@link Gee.Set} interface.
  *
- * This class decorates any class which implements the {@link Gee.Set} interface
- * by making it read only. Any method which normally modify data will throw an
- * error.
+ * Contains common code shared by all set implementations.
  *
- * @see Gee.Set
+ * @see Gee.TreeSet
+ * @see Gee.HashSet
  */
-internal class Gee.ReadOnlySet<G> : Gee.ReadOnlyCollection<G>, Set<G> {
+public abstract class Gee.AbstractSet<G> : Gee.AbstractCollection<G>, Set<G> {
 
 	/**
-	 * Constructs a read-only set that mirrors the content of the specified set.
-	 *
-	 * @param set the set to decorate.
+	 * @inheritDoc
 	 */
-	public ReadOnlySet (Set<G> set) {
-		base(set);
-	}
-
 	public virtual new Set<G> read_only_view {
-		get { return this; }
+		get {
+			if (_read_only_view == null) {
+				_read_only_view = new ReadOnlySet<G> (this);
+			}
+			return _read_only_view as Set<G>;
+		}
 	}
-
 }
-

@@ -31,7 +31,7 @@ using GLib;
  *
  * @see Gee.Map
  */
-public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
+internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 
 	/**
 	 * @inheritDoc
@@ -127,5 +127,10 @@ public class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	public bool contains_all (Map<K,V> map) {
 		return _map.contains_all (map);
 	}
+
+	public virtual Map<K,V> read_only_view {
+		get { return this; }
+	}
+
 }
 

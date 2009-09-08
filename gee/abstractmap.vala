@@ -110,4 +110,19 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 		}
 		return true;
 	}
+
+	protected Map<K,V> _read_only_view;
+
+	/**
+	 * @inheritDoc
+	 */
+	public virtual Map<K,V> read_only_view {
+		get {
+			if (_read_only_view == null) {
+				_read_only_view = new ReadOnlyMap<K,V> (this);
+			}
+			return _read_only_view;
+		}
+	}
+
 }

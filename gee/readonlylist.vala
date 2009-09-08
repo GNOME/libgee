@@ -31,7 +31,7 @@ using GLib;
  *
  * @see Gee.List
  */
-public class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
+internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 
 	/**
 	 * Constructs a read-only list that mirrors the content of the specified
@@ -111,6 +111,13 @@ public class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	 */
 	public void sort (CompareFunc? compare = null) {
 		assert_not_reached ();
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public virtual new List<G> read_only_view {
+		get { return this; }
 	}
 }
 

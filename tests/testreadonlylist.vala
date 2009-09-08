@@ -32,7 +32,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 
 	public override void set_up () {
 		test_collection = new ArrayList<string> ();
-		ro_collection = new ReadOnlyCollection<string> (test_collection);
+		ro_collection = test_collection.read_only_view;
 	}
 
 	public override void tear_down () {

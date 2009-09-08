@@ -28,6 +28,8 @@ public abstract class ReadOnlyCollectionTests : Gee.TestCase {
 
 	public ReadOnlyCollectionTests (string name) {
 		base (name);
+		add_test ("[ReadOnlyCollection] unique read-only view instance",
+		          test_unique_read_only_view_instance);
 		add_test ("[ReadOnlyCollection] add", test_add);
 		add_test ("[ReadOnlyCollection] clear", test_clear);
 		add_test ("[ReadOnlyCollection] remove", test_remove);
@@ -37,6 +39,11 @@ public abstract class ReadOnlyCollectionTests : Gee.TestCase {
 
 	protected Collection<string> test_collection;
 	protected Collection<string> ro_collection;
+
+	public void test_unique_read_only_view_instance () {
+		var another_ro_collection = test_collection.read_only_view;
+		assert (ro_collection == another_ro_collection);
+	}
 
 	public void test_add () {
 		assert (test_collection.add ("one"));

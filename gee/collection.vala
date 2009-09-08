@@ -121,5 +121,10 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * @return an array containing all of items from this collection
 	 */
 	public abstract G[] to_array();
+
+	/**
+	 * Property giving access to the read-only view of this collection.
+	 */
+	public abstract Collection<G> read_only_view { get; }
 }
 

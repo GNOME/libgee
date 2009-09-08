@@ -142,4 +142,18 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	 * @inheritDoc
 	 */
 	public abstract Iterator<G> iterator ();
+
+	protected Collection<G> _read_only_view;
+
+	/**
+	 * @inheritDoc
+	 */
+	public virtual Collection<G> read_only_view {
+		get {
+			if (_read_only_view == null) {
+				_read_only_view = new ReadOnlyCollection<G> (this);
+			}
+			return _read_only_view;
+		}
+	}
 }

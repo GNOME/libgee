@@ -94,4 +94,16 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 		}
 		TimSort<G>.sort (this, compare);
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public virtual new List<G> read_only_view {
+		get {
+			if (_read_only_view == null) {
+				_read_only_view = new ReadOnlyList<G> (this);
+			}
+			return _read_only_view as List<G>;
+		}
+	}
 }

@@ -236,7 +236,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
-	private class KeySet<K,V> : AbstractCollection<K>, Set<K> {
+	private class KeySet<K,V> : AbstractSet<K> {
 		public HashMap<K,V> map { private set; get; }
 
 		public KeySet (HashMap map) {
@@ -278,6 +278,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		public override bool retain_all (Collection<K> collection) {
 			assert_not_reached ();
 		}
+
 	}
 
 	private class KeyIterator<K,V> : Object, Iterator<K> {

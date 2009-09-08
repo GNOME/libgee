@@ -353,7 +353,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	private weak Node<K, V>? first;
 	private int stamp = 0;
 
-	private class KeySet<K,V> : AbstractCollection<K>, Set<K> {
+	private class KeySet<K,V> : AbstractSet<K> {
 		public TreeMap<K,V> map { private set; get; }
 
 		public KeySet (TreeMap<K,V> map) {

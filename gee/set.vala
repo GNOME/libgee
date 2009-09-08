@@ -24,5 +24,11 @@
  * A collection without duplicate elements.
  */
 public interface Gee.Set<G> : Collection<G> {
+
+	/**
+	 * Property giving access to the read-only view of this set.
+	 */
+	public abstract new Set<G> read_only_view { get; }
+
 }
 

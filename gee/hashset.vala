@@ -33,7 +33,7 @@ using GLib;
  *
  * @see Gee.TreeSet
  */
-public class Gee.HashSet<G> : AbstractCollection<G>, Set<G> {
+public class Gee.HashSet<G> : AbstractSet<G> {
 	/**
 	 * @inheritDoc
 	 */
