@@ -25,6 +25,9 @@ AS_IF([test "x$enable_doc" != xno],
 	 AS_IF([test "$VALADOC" = :],
 		[AC_MSG_ERROR([valadoc not found])])])
 
+AC_ARG_ENABLE(benchmark, AS_HELP_STRING([--enable-benchmark], [Enable benchmark]), enable_benchmark=$enableval, enable_benchmark=no)
+AM_CONDITIONAL(ENABLE_BENCHMARK, test x$enable_benchmark = xyes)
+
 GLIB_REQUIRED=2.12.0
 
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED)
@@ -33,8 +36,8 @@ AC_SUBST(GLIB_LIBS)
 
 AC_CONFIG_FILES([Makefile
            gee-1.0.pc
+           benchmark/Makefile
            doc/Makefile
            gee/Makefile
            tests/Makefile])
-
 AC_OUTPUT

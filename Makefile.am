@@ -7,10 +7,17 @@ DOC_SUBDIR = \
 	$(NULL)
 endif
 
+if ENABLE_BENCHMARK
+BENCHMARK_SUBDIR = \
+	benchmark \
+	$(NULL)
+endif
+
 SUBDIRS = \
 	gee \
 	tests \
 	$(DOC_SUBDIR) \
+	$(BENCHMARK_SUBDIR) \
 	$(NULL)
 
 pkgconfigdir = $(libdir)/pkgconfig

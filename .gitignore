@@ -25,9 +25,10 @@ compile
 stamp-h1
 *.pc
 gee/gee-1.0.vapi
-tests/testarraylist
+gee/gee-internals-1.0.vapi
+benchmark/benchmarks
+tests/tests
 tests/testhashmap
 tests/testhashset
-tests/testlinkedlist
 tests/testtreemap
 tests/testtreeset
