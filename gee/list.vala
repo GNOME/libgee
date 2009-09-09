@@ -96,5 +96,12 @@ public interface Gee.List<G> : Collection<G> {
 	 * @param collection collection of items to be inserted
 	 */
 	public abstract void insert_all (int index, Collection<G> collection);
+
+	/**
+	 * Sorts items by comparing with the specified compare function.
+	 *
+	 * @param compare_func compare function to use to compare items
+	 */
+	public abstract void sort (CompareFunc? compare_func = null);
 }
 

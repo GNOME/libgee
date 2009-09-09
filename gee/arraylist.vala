@@ -48,8 +48,8 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	 */
 	public EqualFunc equal_func { private set; get; }
 
-	private G[] _items = new G[4];
-	private int _size;
+	internal G[] _items = new G[4];
+	internal int _size;
 
 	// concurrent modification protection
 	private int _stamp = 0;

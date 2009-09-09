@@ -30,7 +30,11 @@ public class ArrayListTests : ListTests {
 	public ArrayListTests () {
 		base ("ArrayList");
 		add_test ("[ArrayList] selected functions", test_selected_functions);
+		add_test ("[ArrayList] small sort (insertion)", test_small_sort);
+		add_test ("[ArrayList] big sort (timsort)", test_big_sort);
 	}
+
+	private static const int BIG_SORT_SIZE = 1000000;
 
 	public override void set_up () {
 		test_collection = new ArrayList<string> ();
@@ -48,5 +52,53 @@ public class ArrayListTests : ListTests {
 
 		// Check the selected equal function
 		assert (test_list.equal_func == str_equal);
+	}
+
+	private void test_small_sort () {
+		var test_list = test_collection as ArrayList<string>;
+
+		// Check the collection exists
+		assert (test_list != null);
+
+		test_list.add ("one");
+		test_list.add ("two");
+		test_list.add ("three");
+		test_list.add ("four");
+		test_list.add ("five");
+		test_list.add ("six");
+		test_list.add ("seven");
+		test_list.add ("eight");
+		test_list.add ("nine");
+		test_list.add ("ten");
+		test_list.add ("eleven");
+		test_list.add ("twelve");
+
+		test_list.sort ();
+
+		assert (test_list.get (0) == "eight");
+		assert (test_list.get (1) == "eleven");
+		assert (test_list.get (2) == "five");
+		assert (test_list.get (3) == "four");
+		assert (test_list.get (4) == "nine");
+		assert (test_list.get (5) == "one");
+		assert (test_list.get (6) == "seven");
+		assert (test_list.get (7) == "six");
+		assert (test_list.get (8) == "ten");
+		assert (test_list.get (9) == "three");
+		assert (test_list.get (10) == "twelve");
+		assert (test_list.get (11) == "two");
+	}
+
+	private void test_big_sort () {
+		Gee.List<int32> big_test_list = new ArrayList<int32> ();
+		for (int i = 0; i < BIG_SORT_SIZE; i++) {
+			big_test_list.add (GLib.Random.int_range (1, BIG_SORT_SIZE - 1));
+		}
+
+		big_test_list.sort ();
+
+		for (int i = 1; i < BIG_SORT_SIZE; i++) {
+			assert (big_test_list[i - 1] <= big_test_list[i]);
+		}
 	}
 }

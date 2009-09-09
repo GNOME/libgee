@@ -105,5 +105,12 @@ public class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	public void insert_all (int index, Collection<G> collection) {
 		assert_not_reached ();
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public void sort (CompareFunc? compare = null) {
+		assert_not_reached ();
+	}
 }
 

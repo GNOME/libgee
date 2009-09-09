@@ -35,6 +35,7 @@ libgee_la_VALASOURCES = \
 	readonlymap.vala \
 	readonlyset.vala \
 	set.vala \
+	timsort.vala \
 	treemap.vala \
 	treeset.vala \
 	$(NULL)

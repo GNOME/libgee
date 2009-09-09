@@ -84,4 +84,14 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 			index++;
 		}
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public void sort (CompareFunc? compare = null) {
+		if (compare == null) {
+			compare = Functions.get_compare_func_for (typeof (G));
+		}
+		TimSort<G>.sort (this, compare);
+	}
 }
