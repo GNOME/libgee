@@ -20,6 +20,19 @@ SUBDIRS = \
 	$(BENCHMARK_SUBDIR) \
 	$(NULL)
 
+if ENABLE_COVERAGE
+coverage:
+	$(MAKE) -C tests coverage-reset
+	$(MAKE) -C tests test
+	$(MAKE) -C tests coverage-report
+else
+coverage:
+	@echo "The project has not been configured for coverage, check that you have gcov, lcov."
+	@echo "Of course, do not use --disable-coverage"
+	@exit 1
+endif
+.PHONY: coverage
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = gee-1.0.pc
 

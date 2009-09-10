@@ -4,6 +4,7 @@ NULL =
 
 AM_CPPFLAGS = \
 	$(GLIB_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(NULL)
 
 BUILT_SOURCES = gee.vala.stamp
@@ -65,6 +66,7 @@ gee-1.0.vapi gee.vala.stamp: $(libgee_la_VALASOURCES)
 
 libgee_la_LIBADD = \
 	$(GLIB_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 libgee_la_LDFLAGS = -version-info 1:0:0

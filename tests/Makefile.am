@@ -36,6 +36,33 @@ tests.vala.stamp: $(tests_VALASOURCES)
 tests_LDADD = $(progs_ldadd)
 EXTRA_DIST += $(tests_VALASOURCES)
 
+coverage-reset:
+	lcov --base-directory=@top_srcdir@ --directory @top_srcdir@/gee --zerocounters
+
+coverage-report:
+	lcov --directory @top_srcdir@/gee \
+		--capture \
+		--output-file @top_builddir@/lcov.info
+
+	lcov --directory @top_srcdir@/gee \
+		--output-file @top_builddir@/lcov.info \
+		--remove @top_builddir@/lcov.info \
+		/usr/include/\*
+
+	$(mkdir_p) @top_builddir@/tests/coverage
+	git_commit=`GIT_DIR=@top_srcdir@/.git git log -1 --pretty=format:%h 2>/dev/null`;\
+	genhtml --title "@PACKAGE_STRING@ $$git_commit" \
+		--output-directory @top_builddir@/tests/coverage @top_builddir@/lcov.info
+	@echo
+	@echo 'lcov report can be found in:'
+	@echo 'file://@abs_top_builddir@/tests/coverage/index.html'
+	@echo
+
+clean-local:
+	-rm -rf coverage
+
+.PHONY: coverage-report
+
 TEST_PROGS += testhashmap
 testhashmap_VALASOURCES = testhashmap.vala
 testhashmap_SOURCES = testhashmap.c

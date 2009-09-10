@@ -24,10 +24,12 @@ ylwrap
 compile
 stamp-h1
 *.pc
+lcov.info
 gee/gee-1.0.vapi
 gee/gee-internals-1.0.vapi
 benchmark/benchmarks
 tests/tests
+tests/coverage
 tests/testhashmap
 tests/testhashset
 tests/testtreemap

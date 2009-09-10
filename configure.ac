@@ -25,6 +25,25 @@ AS_IF([test "x$enable_doc" != xno],
 	 AS_IF([test "$VALADOC" = :],
 		[AC_MSG_ERROR([valadoc not found])])])
 
+AC_ARG_ENABLE(coverage,
+	AS_HELP_STRING([--enable-coverage],
+	[compile with coverage profiling and debug (gcc only)]),
+	enable_coverage=$enableval,enable_coverage=no)
+AM_CONDITIONAL(ENABLE_COVERAGE, test x$enable_coverage != xno)
+
+AS_IF([test "x$enable_coverage" != xno],
+	[COVERAGE_CFLAGS="-fprofile-arcs -ftest-coverage"
+	 COVERAGE_LIBS="-lgcov"
+	 AC_SUBST(COVERAGE_CFLAGS)
+	 AC_SUBST(COVERAGE_LIBS)
+	 
+	 #FIXME: preserve non -Wall/-g/-O flags from users CFLAGS
+	 CFLAGS="-Wall -g -O0"
+	 AC_PATH_PROG(LCOV, lcov, :)
+	 AC_SUBST(LCOV)
+	 AS_IF([test "$LCOV" = :],
+		[AC_MSG_ERROR([lcov is necessary for testing code coverage (http://ltp.sourceforge.net/coverage/lcov.php)])])])
+
 AC_ARG_ENABLE(benchmark, AS_HELP_STRING([--enable-benchmark], [Enable benchmark]), enable_benchmark=$enableval, enable_benchmark=no)
 AM_CONDITIONAL(ENABLE_BENCHMARK, test x$enable_benchmark = xyes)
 
