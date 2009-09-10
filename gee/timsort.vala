@@ -44,7 +44,7 @@
  *   SODA (Fourth Annual ACM-SIAM Symposium on Discrete Algorithms), pp
  *   467-474, Austin, Texas, 25-27 January 1993.
  */
-internal class Gee.TimSort<G> {
+internal class Gee.TimSort<G> : Object {
 
 	public static void sort (List<G> list, CompareFunc compare) {
 		if (list is ArrayList) {
