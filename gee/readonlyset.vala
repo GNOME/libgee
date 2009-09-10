@@ -43,7 +43,7 @@ internal class Gee.ReadOnlySet<G> : Gee.ReadOnlyCollection<G>, Set<G> {
 	}
 
 	public virtual new Set<G> read_only_view {
-		get { return this; }
+		owned get { return this; }
 	}
 
 }

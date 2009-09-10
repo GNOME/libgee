@@ -147,7 +147,7 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	public virtual Collection<G> read_only_view {
-		get { return this; }
+		owned get { return this; }
 	}
 
 }

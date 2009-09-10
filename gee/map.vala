@@ -116,6 +116,6 @@ public interface Gee.Map<K,V> : GLib.Object {
 	/**
 	 * Property giving access to the read-only view this map.
 	 */
-	public abstract Map<K,V> read_only_view { get; }
+	public abstract Map<K,V> read_only_view { owned get; }
 }
 

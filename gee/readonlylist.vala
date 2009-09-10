@@ -117,7 +117,7 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	 * @inheritDoc
 	 */
 	public virtual new List<G> read_only_view {
-		get { return this; }
+		owned get { return this; }
 	}
 }
 

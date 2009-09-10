@@ -31,15 +31,20 @@
  */
 public abstract class Gee.AbstractSet<G> : Gee.AbstractCollection<G>, Set<G> {
 
+	private weak Set<G> _read_only_view;
+
 	/**
 	 * @inheritDoc
 	 */
 	public virtual new Set<G> read_only_view {
-		get {
+		owned get {
+			Set<G> instance = _read_only_view;
 			if (_read_only_view == null) {
-				_read_only_view = new ReadOnlySet<G> (this);
+				instance = new ReadOnlySet<G> (this);
+				_read_only_view = instance;
+				instance.add_weak_pointer (&_read_only_view);
 			}
-			return _read_only_view as Set<G>;
+			return instance;
 		}
 	}
 }

@@ -111,17 +111,20 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 		return true;
 	}
 
-	protected Map<K,V> _read_only_view;
+	private weak Map<K,V> _read_only_view;
 
 	/**
 	 * @inheritDoc
 	 */
 	public virtual Map<K,V> read_only_view {
-		get {
+		owned get {
+			Map<K,V> instance = _read_only_view;
 			if (_read_only_view == null) {
-				_read_only_view = new ReadOnlyMap<K,V> (this);
+				instance = new ReadOnlyMap<K,V> (this);
+				_read_only_view = instance;
+				instance.add_weak_pointer (&_read_only_view);
 			}
-			return _read_only_view;
+			return instance;
 		}
 	}
 

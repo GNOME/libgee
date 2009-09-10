@@ -43,6 +43,16 @@ public abstract class ReadOnlyCollectionTests : Gee.TestCase {
 	public void test_unique_read_only_view_instance () {
 		var another_ro_collection = test_collection.read_only_view;
 		assert (ro_collection == another_ro_collection);
+
+		weak Collection<string> saved_instance = ro_collection;
+		long instance_address = (long) saved_instance;
+		assert (instance_address == (long) another_ro_collection);
+
+		another_ro_collection = null;
+		ro_collection = null;
+
+		another_ro_collection = test_collection.read_only_view;
+		assert (instance_address != (long) another_ro_collection);
 	}
 
 	public void test_add () {

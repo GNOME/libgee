@@ -125,6 +125,6 @@ public interface Gee.Collection<G> : Iterable<G> {
 	/**
 	 * Property giving access to the read-only view of this collection.
 	 */
-	public abstract Collection<G> read_only_view { get; }
+	public abstract Collection<G> read_only_view { owned get; }
 }
 

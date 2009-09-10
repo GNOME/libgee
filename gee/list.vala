@@ -109,6 +109,6 @@ public interface Gee.List<G> : Collection<G> {
 	/**
 	 * Property giving access to the read-only view of this list.
 	 */
-	public abstract new List<G> read_only_view { get; }
+	public abstract new List<G> read_only_view { owned get; }
 }
 

@@ -143,17 +143,20 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	 */
 	public abstract Iterator<G> iterator ();
 
-	protected Collection<G> _read_only_view;
+	private weak Collection<G> _read_only_view;
 
 	/**
 	 * @inheritDoc
 	 */
 	public virtual Collection<G> read_only_view {
-		get {
+		owned get {
+			Collection<G> instance = _read_only_view;
 			if (_read_only_view == null) {
-				_read_only_view = new ReadOnlyCollection<G> (this);
+				instance = new ReadOnlyCollection<G> (this);
+				_read_only_view = instance;
+				instance.add_weak_pointer (&_read_only_view);
 			}
-			return _read_only_view;
+			return instance;
 		}
 	}
 }

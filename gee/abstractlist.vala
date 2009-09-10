@@ -95,15 +95,20 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 		TimSort<G>.sort (this, compare);
 	}
 
+	private weak List<G> _read_only_view;
+
 	/**
 	 * @inheritDoc
 	 */
 	public virtual new List<G> read_only_view {
-		get {
+		owned get {
+			List<G> instance = _read_only_view;
 			if (_read_only_view == null) {
-				_read_only_view = new ReadOnlyList<G> (this);
+				instance = new ReadOnlyList<G> (this);
+				_read_only_view = instance;
+				instance.add_weak_pointer (&_read_only_view);
 			}
-			return _read_only_view as List<G>;
+			return instance;
 		}
 	}
 }

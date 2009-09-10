@@ -129,7 +129,7 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	}
 
 	public virtual Map<K,V> read_only_view {
-		get { return this; }
+		owned get { return this; }
 	}
 
 }
