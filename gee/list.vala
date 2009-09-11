@@ -77,18 +77,18 @@ public interface Gee.List<G> : Collection<G> {
 	public abstract List<G>? slice (int start, int stop);
 
 	/**
-	 * Returns the first item of the list or null if list is empty.
+	 * Returns the first item of the list. Fails if the list is empty.
 	 *
 	 * @return      first item in the list
 	 */
-	public abstract G? first ();
+	public abstract G first ();
 
 	/**
-	 * Returns the last item of the list or null if list is empty.
+	 * Returns the last item of the list. Fails if the list is empty.
 	 *
 	 * @return      last item in the list
 	 */
-	public abstract G? last ();
+	public abstract G last ();
 
 	/**
 	 * Inserts items into this list for the input collection at the 

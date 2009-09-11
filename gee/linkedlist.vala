@@ -230,6 +230,22 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	/**
 	 * @inheritDoc
 	 */
+	public override G first () {
+		assert (_size > 0);
+		return _head.data;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public override G last () {
+		assert (_size > 0);
+		return _tail.data;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public int? capacity {
 		get { return null; }
 	}
