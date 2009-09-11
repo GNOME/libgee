@@ -180,7 +180,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private void move_red_left (ref Node<K, V> root) {
 		root.flip ();
-		if (is_red (root.right.left)) {
+		if (root.right != null && is_red (root.right.left)) {
 			rotate_right (ref root.right);
 			rotate_left (ref root);
 			root.flip ();
@@ -189,7 +189,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private void move_red_right (ref Node<K, V> root) {
 		root.flip ();
-		if (is_red (root.left.left)) {
+		if (root.left != null && is_red (root.left.left)) {
 			rotate_right (ref root.right);
 			root.flip ();
 		}
@@ -239,7 +239,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 				_size--;
 				return true;
 			}
-			if (is_black (r) && is_black (r.left)) {
+			if (r == null || (is_black (r) && is_black (r.left))) {
 				move_red_right (ref node);
 			}
 			if (key_compare_func (key, node.key) == 0) {
