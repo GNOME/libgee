@@ -231,7 +231,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			if (is_red (node.left)) {
 				rotate_right (ref node);
 			}
-	
+
 			weak Node<K,V> r = node.right;
 			if (key_compare_func (key, node.key) == 0 && r == null) {
 				value = (owned) node.value;

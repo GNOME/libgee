@@ -127,7 +127,7 @@ namespace Gee.Benchmark {
 	}
 
 	public class Benchmark<G> : Object {
-		
+
 		public Benchmark (Factory<G> factory,
 		                  Gee.List<Algorithm<G>> algorithms,
 		                  Gee.List<Generator<G>> generators,
@@ -176,7 +176,7 @@ namespace Gee.Benchmark {
 
 						for (int k = 0; k < algorithms.size; k++) {
 							Collection<G> copy = factory.copy (collection);
-							
+
 							timer.reset ();
 							timer.start ();
 							algorithms[k].process_collection (copy);

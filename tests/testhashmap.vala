@@ -27,45 +27,45 @@ const string CODE_NOT_REACHABLE = "*code should not be reached*";
 
 void test_hashmap_get () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
-	
+
 	// Check get from empty map
 	assert (hashmap.get ("foo") == null);
-	
+
 	// Check get from map with one items
 	hashmap.set ("key", "value");
 	assert (hashmap.get ("key") == "value");
-	
+
 	// Check get from non-existing key
 	assert (hashmap.get ("foo") == null);
-	
+
 	// Check get from map with multiple items
 	hashmap.set ("key2", "value2");
 	hashmap.set ("key3", "value3");
 	assert (hashmap.get ("key") == "value");
 	assert (hashmap.get ("key2") == "value2");
 	assert (hashmap.get ("key3") == "value3");
-	
+
 }
 
 void test_hashmap_set () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
-	
+
 	// check map is empty
 	assert (hashmap.size == 0);
-	
+
 	// check set an item to map
 	hashmap.set ("abc", "one");
 	assert (hashmap.contains ("abc"));
 	assert (hashmap.get ("abc") == "one");
 	assert (hashmap.size == 1);
-	
+
 	// check set an item to map with same value
 	hashmap.set ("def", "one");
 	assert (hashmap.contains ("def"));
 	assert (hashmap.get ("abc") == "one");
 	assert (hashmap.get ("def") == "one");
 	assert (hashmap.size == 2);
-	
+
 	// check set with same key
 	hashmap.set ("def", "two");
 	assert (hashmap.contains ("def"));
@@ -77,35 +77,35 @@ void test_hashmap_set () {
 void test_hashmap_remove () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
 	string? value;
-	
+
 	// check removing when map is empty
 	hashmap.remove ("foo");
 	assert (hashmap.size == 0);
-	
+
 	// add items
 	hashmap.set ("aaa", "111");
 	hashmap.set ("bbb", "222");
 	hashmap.set ("ccc", "333");
 	hashmap.set ("ddd", "444");
 	assert (hashmap.size == 4);
-	
+
 	// check remove on first place
 	hashmap.remove ("aaa");
 	assert (hashmap.size == 3);
-	
+
 	// check remove in between 
 	hashmap.remove ("ccc", out value);
 	assert (hashmap.size == 2);
 	assert (value == "333");
-	
+
 	// check remove in last place
 	hashmap.remove ("ddd");
 	assert (hashmap.size == 1);
-	
+
 	// check remove invalid key
 	hashmap.remove ("bar", out value);
 	assert (value == null);
-	
+
 	// check remove last in map
 	hashmap.remove ("bbb");
 	assert (hashmap.size == 0);
@@ -113,64 +113,64 @@ void test_hashmap_remove () {
 
 void test_hashmap_contains () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
-	
+
 	// Check on empty map
 	assert (!hashmap.contains ("111"));
-	
+
 	// Check items
 	hashmap.set ("10", "111");
 	assert (hashmap.contains ("10"));
 	assert (!hashmap.contains ("20"));
 	assert (!hashmap.contains ("30"));
-	
+
 	assert (hashmap.get ("10") == "111");
-	
+
 	hashmap.set ("20", "222");
 	assert (hashmap.contains ("10"));
 	assert (hashmap.contains ("20"));
 	assert (!hashmap.contains ("30"));
-	
+
 	assert (hashmap.get ("10") == "111");
 	assert (hashmap.get ("20") == "222");
-	
+
 	hashmap.set ("30", "333");
 	assert (hashmap.contains ("10"));
 	assert (hashmap.contains ("20"));
 	assert (hashmap.contains ("30"));
-	
+
 	assert (hashmap.get ("10") == "111");
 	assert (hashmap.get ("20") == "222");
 	assert (hashmap.get ("30") == "333");
-	
+
 	// Clear and recheck
 	hashmap.clear ();
 	assert (!hashmap.contains ("10"));
 	assert (!hashmap.contains ("20"));
 	assert (!hashmap.contains ("30"));
-	
+
 	var hashmapOfInt = new HashMap<int,int> ();
-	
+
 	// Check items
 	hashmapOfInt.set (10, 111);
 	assert (hashmapOfInt.contains (10));
 	assert (!hashmapOfInt.contains (20));
 	assert (!hashmapOfInt.contains (30));
-	
+
 	assert (hashmapOfInt.get (10) == 111);
-	
+
 	hashmapOfInt.set (20, 222);
 	assert (hashmapOfInt.contains (10));
 	assert (hashmapOfInt.contains (20));
 	assert (!hashmapOfInt.contains (30));
-	
+
 	assert (hashmapOfInt.get (10) == 111);
 	assert (hashmapOfInt.get (20) == 222);
-	
+
 	hashmapOfInt.set (30, 333);
 	assert (hashmapOfInt.contains (10));
 	assert (hashmapOfInt.contains (20));
 	assert (hashmapOfInt.contains (30));
-	
+
 	assert (hashmapOfInt.get (10) == 111);
 	assert (hashmapOfInt.get (20) == 222);
 	assert (hashmapOfInt.get (30) == 333);
@@ -178,18 +178,18 @@ void test_hashmap_contains () {
 
 void test_hashmap_size () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
-	
+
 	// Check empty map
 	assert (hashmap.size == 0);
-	
+
 	// Check when one item
 	hashmap.set ("1", "1");
 	assert (hashmap.size == 1);
-	
+
 	// Check when more items
 	hashmap.set ("2", "2");
 	assert (hashmap.size == 2);
-	
+
 	// Check when items cleared
 	hashmap.clear ();
 	assert (hashmap.size == 0);
@@ -197,11 +197,11 @@ void test_hashmap_size () {
 
 void test_hashmap_get_keys () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
-	
+
 	// Check keys on empty map
 	var keySet = hashmap.get_keys ();
 	assert (keySet.size == 0);
-	
+
 	// Check keys on map with one item
 	hashmap.set ("aaa", "111");
 	assert (keySet.size == 1);
@@ -209,7 +209,7 @@ void test_hashmap_get_keys () {
 	keySet = hashmap.get_keys ();
 	assert (keySet.size == 1);
 	assert (keySet.contains ("aaa"));
-	
+
 	// Check modify key set directly
 	if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
 		keySet.add ("ccc");
@@ -217,7 +217,7 @@ void test_hashmap_get_keys () {
 	}
 	Test.trap_assert_failed ();
 	Test.trap_assert_stderr (CODE_NOT_REACHABLE);
-	
+
 	// Check keys on map with multiple items
 	hashmap.set ("bbb", "222");
 	assert (keySet.size == 2);
@@ -227,22 +227,22 @@ void test_hashmap_get_keys () {
 	assert (keySet.size == 2);
 	assert (keySet.contains ("aaa"));
 	assert (keySet.contains ("bbb"));
-	
+
 	// Check keys on map clear
 	hashmap.clear ();
 	assert (keySet.size == 0);
 	keySet = hashmap.get_keys ();
 	assert (keySet.size == 0);
-	
+
 }
 
 void test_hashmap_get_values () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
-	
+
 	// Check keys on empty map
 	var valueCollection = hashmap.get_values ();
 	assert (valueCollection.size == 0);
-	
+
 	// Check keys on map with one item
 	hashmap.set ("aaa", "111");
 	assert (valueCollection.size == 1);
@@ -250,7 +250,7 @@ void test_hashmap_get_values () {
 	valueCollection = hashmap.get_values ();
 	assert (valueCollection.size == 1);
 	assert (valueCollection.contains ("111"));
-	
+
 	// Check modify key set directly
 	if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT | TestTrapFlags.SILENCE_STDERR)) {
 		valueCollection.add ("ccc");
@@ -258,7 +258,7 @@ void test_hashmap_get_values () {
 	}
 	Test.trap_assert_failed ();
 	Test.trap_assert_stderr (CODE_NOT_REACHABLE);
-	
+
 	// Check keys on map with multiple items
 	hashmap.set ("bbb", "222");
 	assert (valueCollection.size == 2);
@@ -268,7 +268,7 @@ void test_hashmap_get_values () {
 	assert (valueCollection.size == 2);
 	assert (valueCollection.contains ("111"));
 	assert (valueCollection.contains ("222"));
-	
+
 	// Check keys on map clear
 	hashmap.clear ();
 	assert (valueCollection.size == 0);
@@ -280,17 +280,17 @@ void test_hashmap_get_values () {
 void test_hashmap_clear () {
 	var hashmap = new HashMap<string,string> (str_hash, str_equal, str_equal);
 	assert (hashmap.size == 0);
-	
+
 	// Check clear on empty map
 	hashmap.clear ();
 	assert (hashmap.size == 0);
-	
+
 	// Check clear one item
 	hashmap.set ("1", "1");
 	assert (hashmap.size == 1);
 	hashmap.clear ();
 	assert (hashmap.size == 0);
-	
+
 	// Check clear multiple items
 	hashmap.set ("1", "1");
 	hashmap.set ("2", "2");
@@ -351,7 +351,7 @@ void test_hashmap_set_all () {
 void test_hashmap_remove_all () {
 	var map1 = new HashMap<string,string> (str_hash, str_equal, str_equal);
 	var map2 = new HashMap<string,string> (str_hash, str_equal, str_equal);
-	
+
 	// Check remove all on empty maps.
 
 	assert (map1.is_empty);
@@ -380,7 +380,7 @@ void test_hashmap_remove_all () {
 
 	map1.clear ();
 	map2.clear ();
-	
+
 	// Map1 has entries, map2 is empty. -> no change
 
 	map1.set ("a", "1");
@@ -435,7 +435,7 @@ void test_hashmap_remove_all () {
 
 	assert (map1.size == 2);
 	assert (map2.size == 5);
-	
+
 	assert (map1.contains ("x"));
 	assert (map1.contains ("y"));
 
@@ -452,7 +452,7 @@ void test_hashmap_contains_all() {
 	assert (map1.contains_all (map2));
 
 	// Map1 has items, map2 is empty.
-	
+
 	map1.set ("1", "1");
 
 	assert (map1.contains_all (map2));
@@ -461,7 +461,7 @@ void test_hashmap_contains_all() {
 	map2.clear ();
 
 	// Map1 is empty, map2 has items.
-	
+
 	map2.set ("1", "1");
 
 	assert (!map1.contains_all (map2));
@@ -470,7 +470,7 @@ void test_hashmap_contains_all() {
 	map2.clear ();
 
 	// Map1 and map2 are the same.
-	
+
 	map1.set ("1", "a");
 	map1.set ("2", "b");
 
