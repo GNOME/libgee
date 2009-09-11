@@ -29,6 +29,7 @@ tests_VALASOURCES = \
        testmap.vala \
        testmultimap.vala \
        testmultiset.vala \
+       testpriorityqueue.vala \
        testqueue.vala \
        testreadonlycollection.vala \
        testreadonlylist.vala \
