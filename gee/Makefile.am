@@ -20,6 +20,7 @@ libgee_la_VALASOURCES = \
 	abstractset.vala \
 	arraylist.vala \
 	collection.vala \
+	deque.vala \
 	functions.vala \
 	hashmap.vala \
 	hashmultimap.vala \
@@ -32,6 +33,7 @@ libgee_la_VALASOURCES = \
 	map.vala \
 	multimap.vala \
 	multiset.vala \
+	queue.vala \
 	readonlycollection.vala \
 	readonlylist.vala \
 	readonlymap.vala \

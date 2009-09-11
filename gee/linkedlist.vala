@@ -32,7 +32,7 @@
  *
  * @see Gee.ArrayList
  */
-public class Gee.LinkedList<G> : AbstractList<G> {
+public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	private int _size = 0;
 	private int _stamp = 0;
 	private Node? _head = null;
@@ -225,6 +225,142 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 		}
 
 		return slice;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public int? capacity {
+		get { return null; }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public int? remaining_capacity {
+		get { return null; }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public bool is_full {
+		get { return false; }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public bool offer (G element) {
+		return offer_tail (element);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? peek () {
+		return peek_head ();
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? poll () {
+		return poll_head ();
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public int drain (Collection<G> recipient, int amount = -1) {
+		return drain_head (recipient, amount);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public bool offer_head (G element) {
+		insert (0, element);
+		return true;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? peek_head () {
+		if (this._size == 0) {
+			return null;
+		}
+		return get (0);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? poll_head () {
+		if (this._size == 0) {
+			return null;
+		}
+		return remove_at (0);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public int drain_head (Collection<G> recipient, int amount = -1) {
+		if (amount == -1) {
+			amount = this._size;
+		}
+		for (int i = 0; i < amount; i++) {
+			if (this._size == 0) {
+				return i;
+			}
+			recipient.add (remove_at (0));
+		}
+		return amount;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public bool offer_tail (G element) {
+		return add (element);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? peek_tail () {
+		if (this._size == 0) {
+			return null;
+		}
+		return get (_size - 1);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? poll_tail () {
+		if (this._size == 0) {
+			return null;
+		}
+		return remove_at (_size - 1);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public int drain_tail (Collection<G> recipient, int amount = -1) {
+		if (amount == -1) {
+			amount = this._size;
+		}
+		for (int i = 0; i < amount; i++) {
+			if (this._size == 0) {
+				return i;
+			}
+			recipient.add (remove_at (this._size - 1));
+		}
+		return amount;
 	}
 
 	private class Node<G> { // Maybe a compact class should be used?

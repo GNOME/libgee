@@ -18,13 +18,16 @@ tests_VALASOURCES = \
        testarraylist.vala \
        testcase.vala \
        testcollection.vala \
+       testdeque.vala \
        testhashmultimap.vala \
        testhashmultiset.vala \
        testlinkedlist.vala \
+       testlinkedlistasdeque.vala \
        testlist.vala \
        testmain.vala \
        testmultimap.vala \
        testmultiset.vala \
+       testqueue.vala \
        testreadonlycollection.vala \
        testreadonlylist.vala \
        $(NULL)

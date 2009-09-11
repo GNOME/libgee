@@ -1,7 +1,6 @@
-/* testarraylist.vala
+/* testlinkedlistasdeque.vala
  *
- * Copyright (C) 2008  Jürg Billeter
- * Copyright (C) 2009  Didier Villevalois, Julien Peeters
+ * Copyright (C) 2009  Didier Villevalois
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,19 +16,34 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
- * Author:
- * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
+ * Authors:
+ * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
  */
 
-void main (string[] args) {
-	Test.init (ref args);
+using Gee;
 
-	TestSuite.get_root ().add_suite (new ArrayListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMultiMapTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMultiSetTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new LinkedListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new LinkedListAsDequeTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new ReadOnlyListTests ().get_suite ());
+public class LinkedListAsDequeTests : DequeTests {
 
-	Test.run ();
+	public LinkedListAsDequeTests () {
+		base ("LinkedList as Deque");
+		add_test ("[LinkedList] selected functions", test_selected_functions);
+	}
+
+	public override void set_up () {
+		test_collection = new LinkedList<string> ();
+	}
+
+	public override void tear_down () {
+		test_collection = null;
+	}
+
+	private void test_selected_functions () {
+		var test_list = test_collection as LinkedList<string>;
+
+		// Check the collection exists
+		assert (test_list != null);
+
+		// Check the selected equal function
+		assert (test_list.equal_func == str_equal);
+	}
 }
