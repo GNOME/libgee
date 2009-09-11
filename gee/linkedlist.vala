@@ -198,13 +198,15 @@ public class Gee.LinkedList<G> : AbstractList<G> {
 	/**
 	 * @inheritDoc
 	 */
-	public override void remove_at (int index) {
+	public override G remove_at (int index) {
 		assert (index >= 0);
 		assert (index < this._size);
 
 		unowned Node<G>? n = this._get_node_at (index);
 		return_if_fail (n != null);
+		G element = n.data;
 		this._remove_node (n);
+		return element;
 	}
 
 	/**

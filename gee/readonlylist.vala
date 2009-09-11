@@ -60,7 +60,7 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	/**
 	 * Unimplemented method (read only list).
 	 */
-	public void remove_at (int index) {
+	public G remove_at (int index) {
 		assert_not_reached ();
 	}
 

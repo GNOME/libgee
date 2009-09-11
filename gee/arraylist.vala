@@ -155,15 +155,17 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	/**
 	 * @inheritDoc
 	 */
-	public override void remove_at (int index) {
+	public override G remove_at (int index) {
 		assert (index >= 0);
 		assert (index < _size);
 
+		G item = _items[index];
 		_items[index] = null;
 
 		shift (index + 1, -1);
 
 		_stamp++;
+		return item;
 	}
 
 	/**

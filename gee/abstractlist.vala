@@ -54,7 +54,7 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 	/**
 	 * @inheritDoc
 	 */
-	public abstract void remove_at (int index);
+	public abstract G remove_at (int index);
 
 	/**
 	 * @inheritDoc

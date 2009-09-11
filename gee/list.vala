@@ -61,8 +61,10 @@ public interface Gee.List<G> : Collection<G> {
 	 * Removes the item at the specified index of this list.
 	 *
 	 * @param index zero-based index of the item to be removed
+	 *
+	 * @return      the removed element
 	 */
-	public abstract void remove_at (int index);
+	public abstract G remove_at (int index);
 
 	/**
 	 * Returns a slice of this list.

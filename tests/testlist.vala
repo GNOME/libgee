@@ -276,7 +276,7 @@ public abstract class ListTests : CollectionTests {
 		assert (test_list.size == 5);
 
 		// Check remove_at first
-		test_list.remove_at (0);
+		assert (test_list.remove_at (0) == "one");
 		assert (test_list.size == 4);
 		assert (test_list.get (0) == "two");
 		assert (test_list.get (1) == "three");
@@ -284,14 +284,14 @@ public abstract class ListTests : CollectionTests {
 		assert (test_list.get (3) == "five");
 
 		// Check remove_at last
-		test_list.remove_at (3);
+		assert (test_list.remove_at (3) == "five");
 		assert (test_list.size == 3);
 		assert (test_list.get (0) == "two");
 		assert (test_list.get (1) == "three");
 		assert (test_list.get (2) == "four");
 
 		// Check remove_at in between
-		test_list.remove_at (1);
+		assert (test_list.remove_at (1) == "three");
 		assert (test_list.size == 2);
 		assert (test_list.get (0) == "two");
 		assert (test_list.get (1) == "four");
