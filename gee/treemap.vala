@@ -480,7 +480,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			}
 		}
 
-		public new K? get () {
+		public new K get () {
 			assert (stamp == map.stamp);
 			assert (current != null);
 			return current.key;
@@ -523,7 +523,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			}
 		}
 
-		public new V? get () {
+		public new V get () {
 			assert (stamp == map.stamp);
 			assert (current != null);
 			return current.value;

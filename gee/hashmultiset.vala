@@ -120,7 +120,7 @@ public class Gee.HashMultiSet<G> : AbstractCollection<G>, MultiSet<G> {
 			return false;
 		}
 
-		public new G? get () {
+		public new G get () {
 			return _iter.get ();
 		}
 	}

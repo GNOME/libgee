@@ -336,7 +336,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			}
 		}
 
-		public new G? get () {
+		public new G get () {
 			assert (stamp == set.stamp);
 			assert (current != null);
 			return current.key;

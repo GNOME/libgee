@@ -230,7 +230,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			return (_node != null);
 		}
 
-		public new G? get () {
+		public new G get () {
 			assert (_stamp == _set._stamp);
 			assert (_node != null);
 			return _node.key;

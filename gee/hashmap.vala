@@ -311,7 +311,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			return (_node != null);
 		}
 
-		public new K? get () {
+		public new K get () {
 			assert (_stamp == _map._stamp);
 			assert (_node != null);
 			return _node.key;
@@ -398,7 +398,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			return (_node != null);
 		}
 
-		public new V? get () {
+		public new V get () {
 			assert (_stamp == _map._stamp);
 			assert (_node != null);
 			return _node.value;

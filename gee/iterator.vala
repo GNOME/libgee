@@ -36,6 +36,6 @@ public interface Gee.Iterator<G> : GLib.Object {
 	 *
 	 * @return the current element in the iteration
 	 */
-	public abstract G? get ();
+	public abstract G get ();
 }
 

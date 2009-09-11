@@ -414,14 +414,11 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 			}
 		}
 
-		public new G? get () {
+		public new G get () {
 			assert (this._stamp == this._list._stamp);
+			assert (this.position != null);
 
-			if (this.position == null) {
-				return null;
-			} else {
-				return this.position.data;
-			}
+			return this.position.data;
 		}
 	}
 
