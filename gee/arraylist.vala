@@ -95,7 +95,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	/**
 	 * @inheritDoc
 	 */
-	public override G? get (int index) {
+	public override G get (int index) {
 		assert (index >= 0);
 		assert (index < _size);
 

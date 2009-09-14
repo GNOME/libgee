@@ -121,16 +121,13 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	/**
 	 * @inheritDoc
 	 */
-	public override G? get (int index) {
+	public override G get (int index) {
 		assert (index >= 0);
 		assert (index < this._size);
 
 		unowned Node<G>? n = this._get_node_at (index);
-		if (n == null) {
-			return null;
-		} else {
-			return n.data;
-		}
+		assert (n != null);
+		return n.data;
 	}
 
 	/**
