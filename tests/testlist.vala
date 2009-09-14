@@ -41,6 +41,7 @@ public abstract class ListTests : CollectionTests {
 		add_test ("[List] first", test_first);
 		add_test ("[List] last", test_last);
 		add_test ("[List] insert_all", test_insert_all);
+		add_test ("[List] slice", test_slice);
 	}
 
 	public void test_iterator_is_ordered () {
@@ -546,5 +547,46 @@ public abstract class ListTests : CollectionTests {
 		assert (test_list.get (3) == "three");
 		assert (test_list.get (4) == "four");
 		assert (test_list.get (5) == "five");
+	}
+
+	public void test_slice () {
+		var test_list = test_collection as Gee.List<string>;
+
+		// Check the test list is not null
+		assert (test_list != null);
+		Gee.List<string> dummy;
+
+		// Check first for empty list
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			dummy = test_list.slice (1, 4);
+			return;
+		}
+		Test.trap_assert_failed ();
+
+		// Check for list with some items
+		assert (test_list.add ("zero"));
+		assert (test_list.add ("one"));
+		assert (test_list.add ("two"));
+		assert (test_list.add ("three"));
+		assert (test_list.add ("four"));
+		assert (test_list.add ("five"));
+		assert (test_list.size == 6);
+
+		dummy = test_list.slice (1, 4);
+		assert (dummy.size == 3);
+		assert (test_list.size == 6);
+
+		assert (dummy.get (0) == "one");
+		assert (dummy.get (1) == "two");
+		assert (dummy.get (2) == "three");
+
+		// Check for invalid indices
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			dummy = test_list.slice (0, 9);
+			return;
+		}
+		Test.trap_assert_failed ();
 	}
 }
