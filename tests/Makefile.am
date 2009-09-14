@@ -38,6 +38,7 @@ tests_VALASOURCES = \
        testreadonlymap.vala \
        testreadonlyset.vala \
        testset.vala \
+       testsortedset.vala \
        testtreemap.vala \
        testtreemultiset.vala \
        testtreeset.vala \

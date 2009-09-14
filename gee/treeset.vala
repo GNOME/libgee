@@ -32,7 +32,7 @@ using GLib;
  *
  * @see Gee.HashSet
  */
-public class Gee.TreeSet<G> : AbstractSet<G> {
+public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
 	 * @inheritDoc
 	 */
@@ -136,10 +136,10 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		if (node == null) {
 			node = new Node<G> ((owned) item, prev, next);
 			if (prev == null) {
-				first = node;
+				_first = node;
 			}
 			if (next == null) {
-				last = node;
+				_last = node;
 			}
 			_size++;
 			return true;
@@ -208,18 +208,18 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 	}
 
 	private inline void fix_removal (ref Node<G> node, out G? key = null) {
-		Node<G> n = (owned) node;
+		Node<G> n = (owned)node;
 		if (&key != null)
 			key = (owned) n.key;
 		if (n.prev != null) {
 			n.prev.next = n.next;
 		} else {
-			first = n.next;
+			_first = n.next;
 		}
 		if (n.next != null) {
 			n.next.prev = n.prev;
 		} else {
-			last = n.prev;
+			_last = n.prev;
 		}
 		node = null;
 		_size--;
@@ -240,7 +240,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		fix_up (ref node);
 	}
 
-	private bool remove_from_node (ref Node<G>? node, G item) {
+	private bool remove_from_node (ref Node<G>? node, G item, out weak Node<G>? prev = null, out weak Node<G>? next = null) {
 #if DEBUG
 		stdout.printf ("Removing %s from %s\n", (string)item, node != null ? (string)node.key : null);
 #endif
@@ -254,7 +254,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			if (is_black (left) && is_black (left.left)) {
 				move_red_left (ref node);
 			}
-			bool r = remove_from_node (ref node.left, item);
+			bool r = remove_from_node (ref node.left, item, out prev, out next);
 			fix_up (ref node);
 			return r;
 		} else {
@@ -264,6 +264,10 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 
 			weak Node<G>? r = node.right;
 			if (compare_func (item, node.key) == 0 && r == null) {
+				if (&prev != null)
+					prev = node.prev;
+				if (&next != null)
+					next = node.next;
 				fix_removal (ref node, null);
 				return true;
 			}
@@ -271,11 +275,15 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 				move_red_right (ref node);
 			}
 			if (compare_func (item, node.key) == 0) {
+				if (&prev != null)
+					prev = node.prev;
+				if (&next != null)
+					next = node;
 				remove_minimal (ref node.right, out node.key);
 				fix_up (ref node);
 				return true;
 			} else {
-				bool re = remove_from_node (ref node.right, item);
+				bool re = remove_from_node (ref node.right, item, out prev, out next);
 				fix_up (ref node);
 				return re;
 			}
@@ -323,9 +331,149 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		return new Iterator<G> (this);
 	}
 
+	private inline G? lift_null_get (Node<G>? node) {
+		return node != null ? node.key : null;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G first () {
+		assert (_first != null);
+		return _first.key;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G last () {
+		assert (_last != null);
+		return _last.key;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public SortedSet<G> head_set (G before) {
+		return new SubSet<G>.head (this, before);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public SortedSet<G> tail_set (G after) {
+		return new SubSet<G>.tail (this, after);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public SortedSet<G> sub_set (G after, G before) {
+		return new SubSet<G> (this, after, before);
+	}
+
+	private inline weak Node<G>? find_node (G item) {
+		weak Node<G>? cur = root;
+		while (cur != null) {
+			int res = compare_func (item, cur.key);
+			if (res == 0) {
+				return cur;
+			} else if (res < 0) {
+				cur = cur.left;
+			} else {
+				cur = cur.right;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public BidirIterator<G>? iterator_at (G item) {
+		weak Node<G>? node = find_node (item);
+		return node != null ? new Iterator<G>.pointing (this, node) : null;
+	}
+
+	private inline weak Node<G>? find_nearest (G item) {
+		weak Node<G>? cur = root;
+		while (cur != null) {
+			int res = compare_func (item, cur.key);
+			if (res == 0) {
+				return cur;
+			} else if (res < 0) {
+				if (cur.left == null)
+					return cur;
+				cur = cur.left;
+			} else {
+				if (cur.right == null)
+					return cur;
+				cur = cur.right;
+			}
+		}
+		return null;
+	}
+
+	private inline weak Node<G>? find_lower (G item) {
+		weak Node<G>? node = find_nearest (item);
+		if (node == null)
+			return null;
+		return compare_func (item, node.key) <= 0 ? node.prev : node;
+	}
+
+	private inline weak Node<G>? find_higher (G item) {
+		weak Node<G>? node = find_nearest (item);
+		if (node == null)
+			return null;
+		return compare_func (item, node.key) >= 0 ? node.next : node;
+	}
+
+	private inline weak Node<G>? find_floor (G item) {
+		weak Node<G>? node = find_nearest (item);
+		if (node == null)
+			return null;
+		return compare_func (item, node.key) < 0 ? node.prev : node;
+	}
+
+	private inline weak Node<G>? find_ceil (G item) {
+		weak Node<G>? node = find_nearest (item);
+		if (node == null)
+			return null;
+		return compare_func (item, node.key) > 0 ? node.next : node;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? lower (G item) {
+		return lift_null_get (find_lower (item));
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? higher (G item) {
+		return lift_null_get (find_higher (item));
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? floor (G item) {
+		return lift_null_get (find_floor (item));
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public G? ceil (G item) {
+		return lift_null_get (find_ceil (item));
+	}
+
 #if CONSISTENCY_CHECKS
 	public inline void check () {
 		check_subtree (root);
+		assert (root == null || root.color == Node.Color.BLACK);
 #if DEBUG
 		stdout.printf ("%s\n", dump ());
 #endif
@@ -415,46 +563,71 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			stamp = _set.stamp;
 		}
 
+		public Iterator.pointing (TreeSet<G> set, Node<G> current) {
+			this._set = set;
+			this.current = current;
+			this.stamp = set.stamp;
+			this.started = true;
+		}
+
 		public bool next () {
 			assert (stamp == _set.stamp);
 			if (current != null) {
-				current = current.next;
+				if (current.next != null) {
+					current = current.next;
+					return true;
+				} else {
+					return false;
+				}
 			} else if (!started) {
-				current = _set.first;
+				current = _set._first;
 				started = true;
+				return current != null;
 			} else {
 				current = _next;
-				_next = null;
-				_prev = null;
+				if (current != null) {
+					_next = null;
+					_prev = null;
+				}
+				return current != null;
 			}
-			return current != null;
 		}
 
 		public bool has_next () {
 			assert (stamp == _set.stamp);
-			return (!started && _set.first != null) ||
+			return (!started && _set._first != null) ||
 			       (current == null && _next != null) ||
 			       (current != null && current.next != null);
 		}
 
 		public bool first () {
 			assert (stamp == _set.stamp);
-			current = _set.first;
+			current = _set._first;
 			_next = null;
 			_prev = null;
+			started = true;
 			return current != null; // on false it is null anyway
 		}
 
 		public bool previous () {
 			assert (stamp == _set.stamp);
 			if (current != null) {
-				current = current.prev;
+				if (current.prev != null) {
+					current = current.prev;
+					return true;
+				} else {
+					return false;
+				}
 			} else {
-				current = _prev;
-				_next = null;
-				_prev = null;
+				if (_prev != null) {
+					current = _prev;
+					_next = null;
+					_prev = null;
+					return true;
+				} else {
+					return false;
+				}
 			}
-			return current != null;
 		}
 
 		public bool has_previous () {
@@ -465,9 +638,10 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 
 		public bool last () {
 			assert (stamp == _set.stamp);
-			current = _set.last;
+			current = _set._last;
 			_next = null;
 			_prev = null;
+			started = true;
 			return current != null; // on false it is null anyway
 		}
 
@@ -480,12 +654,30 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		public void remove () {
 			assert (stamp == _set.stamp);
 			assert (current != null);
-			_next = current.next;
-			_prev = current.prev;
-			_set.remove (get ());
-			stamp++;
+			_set.remove_from_node (ref _set.root, current.key, out _prev, out _next);
+			_set.root.color = Node.Color.BLACK;
 			current = null;
-			assert (stamp == _set.stamp);
+			assert (stamp++ == _set.stamp++);
+		}
+
+		internal bool safe_next_get (out G val) {
+			if (current != null) {
+				val = _set.lift_null_get (current.next);
+				return current.next != null;
+			} else {
+				val = _set.lift_null_get (_next);
+				return _next != null;
+			}
+		}
+
+		internal bool safe_previous_get (out G val) {
+			if (current != null) {
+				val = _set.lift_null_get (current.prev);
+				return current.prev != null;
+			} else {
+				val = _set.lift_null_get (_prev);
+				return _next != null;
+			}
 		}
 
 		private weak Node<G>? current = null;
@@ -494,8 +686,375 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		private bool started = false;
 	}
 
+	private inline G min (G a, G b) {
+		return compare_func (a, b) <= 0 ? a : b;
+	}
+
+	private inline G max (G a, G b) {
+		return compare_func (a, b) > 0 ? a : b;
+	}
+
+	private struct Range<G> {
+		public Range (TreeSet<G> set, G after, G before) {
+			this.set = set;
+			if (set.compare_func (after, before) < 0) {
+				this.after = after;
+				this.before = before;
+				type = RangeType.BOUNDED;
+			} else {
+				type = RangeType.EMPTY;
+			}
+		}
+
+		public Range.head (TreeSet<G> set, G before) {
+			this.set = set;
+			this.before = before;
+			type = RangeType.HEAD;
+		}
+
+		public Range.tail (TreeSet<G> set, G after) {
+			this.set = set;
+			this.after = after;
+			type = RangeType.TAIL;
+		}
+
+#if false
+		public Range.empty (TreeSet<G> set) {
+			this.set = set;
+			type = RangeType.EMPTY;
+		}
+#endif
+
+		public Range<G> cut_head (G after) {
+			switch (type) {
+			case RangeType.HEAD:
+				return Range<G> (set, after, before);
+			case RangeType.TAIL:
+				return Range<G>.tail (set, set.max (after, this.after));
+			case RangeType.EMPTY:
+				return this;
+			case RangeType.BOUNDED:
+				var _after = set.max (after, this.after);
+				return Range<G> (set, _after, before);
+			default:
+				assert_not_reached ();
+			}
+		}
+
+		public Range<G> cut_tail (G before) {
+			switch (type) {
+			case RangeType.HEAD:
+				return Range<G>.head (set, set.min (before, this.before));
+			case RangeType.TAIL:
+				return Range<G> (set, after, before);
+			case RangeType.EMPTY:
+				return this;
+			case RangeType.BOUNDED:
+				var _before = set.min (before, this.before);
+				return Range<G> (set, after, _before);
+			default:
+				assert_not_reached ();
+			}
+		}
+
+		public Range<G> cut (G after, G before) {
+			if (type == RangeType.EMPTY)
+				return this;
+			var _before = type != RangeType.TAIL ? set.min (before, this.before) : before;
+			var _after = type != RangeType.HEAD ? set.max (after, this.after) : after;
+			return Range<G> (set, _after, _before);
+		}
+
+		public bool in_range (G item) {
+			return type == RangeType.EMPTY ? false : compare_range(item) == 0;
+		}
+
+		public int compare_range (G item) {
+			switch (type) {
+			case RangeType.HEAD:
+				return set.compare_func (item, before) < 0 ? 0 : 1;
+			case RangeType.TAIL:
+				return set.compare_func (item, after) >= 0 ? 0 : -1;
+			case RangeType.EMPTY:
+				return 0; // For simplicity - please make sure it does not break anything
+			case RangeType.BOUNDED:
+				return set.compare_func (item, after) >= 0 ?
+					(set.compare_func (item, before) < 0 ? 0 : 1) : -1;
+			default:
+				assert_not_reached ();
+			}
+		}
+
+		public bool empty_subset () {
+			switch (type) {
+			case RangeType.HEAD:
+				return !in_range (set._first.key);
+			case RangeType.TAIL:
+				return !in_range (set._last.key);
+			case RangeType.EMPTY:
+				return true;
+			case RangeType.BOUNDED:
+				return first () == null;
+			default:
+				assert_not_reached ();
+			}
+		}
+
+		public weak Node<G>? first () {
+			switch (type) {
+			case RangeType.EMPTY:
+				return null;
+			case RangeType.HEAD:
+				return set._first;
+			default:
+				return set.find_floor (after);
+			}
+		}
+
+		public weak Node<G>? last () {
+			switch (type) {
+			case RangeType.EMPTY:
+				return null;
+			case RangeType.TAIL:
+				return set._last;
+			default:
+				return set.find_lower (before);
+			}
+		}
+
+		private new TreeSet<G> set;
+		private G after;
+		private G before;
+		private RangeType type;
+	}
+
+	private enum RangeType {
+		HEAD,
+		TAIL,
+		EMPTY,
+		BOUNDED
+	}
+
+	private class SubSet<G> : AbstractSet<G>, SortedSet<G> {
+		public SubSet (TreeSet<G> set, G after, G before) {
+			this.set = set;
+			this.range = Range<G> (set, after, before);
+		}
+
+		public SubSet.head (TreeSet<G> set, G before) {
+			this.set = set;
+			this.range = Range<G>.head (set, before);
+		}
+
+		public SubSet.tail (TreeSet<G> set, G after) {
+			this.set = set;
+			this.range = Range<G>.tail (set, after);
+		}
+
+		public SubSet.from_range (TreeSet<G> set, Range<G> range) {
+			this.set = set;
+			this.range = range;
+		}
+
+		public override int size {
+			get {
+				var i = 0;
+				Gee.Iterator<G> iterator = iterator ();
+				while (iterator.next ())
+					i++;
+				return i;
+			}
+		}
+
+		public override bool is_empty {
+			get {
+				return range.empty_subset ();
+			}
+		}
+
+		public override bool contains (G item) {
+			return range.in_range (item) && set.contains (item);
+		}
+
+		public override bool add (G item) {
+			return range.in_range (item) && set.add (item);
+		}
+
+		public override bool remove (G item) {
+			return range.in_range (item) && set.remove (item);
+		}
+
+		public override void clear () {
+			var iter = iterator ();
+			while (iter.next ()) {
+				iter.remove ();
+			}
+		}
+
+		public override Gee.Iterator<G> iterator () {
+			return new SubIterator<G> (set, range);
+		}
+
+		public BidirIterator<G> bidir_iterator () {
+			return new SubIterator<G> (set, range);
+		}
+
+		public G first () {
+			weak Node<G>? _first = range.first ();
+			assert (_first != null);
+			return _first.key;
+		}
+
+		public G last () {
+			weak Node<G>? _last = range.last ();
+			assert (_last != null);
+			return _last.key;
+		}
+
+		public SortedSet<G> head_set (G before) {
+			return new SubSet<G>.from_range (set, range.cut_tail (before));
+		}
+
+		public SortedSet<G> tail_set (G after) {
+			return new SubSet<G>.from_range (set, range.cut_head (after));
+		}
+
+		public SortedSet<G> sub_set (G after, G before) {
+			return new SubSet<G>.from_range (set, range.cut (after, before));
+		}
+
+		public BidirIterator<G>? iterator_at (G item) {
+			if (!range.in_range (item))
+				return null;
+			weak Node<G>? n = set.find_node (item);
+			if (n == null)
+				return null;
+			return new SubIterator<G>.pointing (set, range, n);
+		}
+
+		public G? lower (G item) {
+			var res = range.compare_range (item);
+			if (res > 0)
+				return last ();
+			var l = set.lower (item);
+			return l != null && range.in_range (l) ? l : null;
+		}
+
+		public G? higher (G item) {
+			var res = range.compare_range (item);
+			if (res < 0)
+				return first ();
+			var h = set.higher (item);
+			return h != null && range.in_range (h) ? h : null;
+		}
+
+		public G? floor (G item) {
+			var res = range.compare_range (item);
+			if (res > 0)
+				return last ();
+			var l = set.floor (item);
+			return l != null && range.in_range (l) ? l : null;
+		}
+
+		public G? ceil (G item) {
+			var res = range.compare_range (item);
+			if (res < 0)
+				return first ();
+			var h = set.ceil (item);
+			return h != null && range.in_range (h) ? h : null;
+		}
+
+		private new TreeSet<G> set;
+		private Range<G> range;
+	}
+
+	private class SubIterator<G> : Object, Gee.Iterator<G>, BidirIterator<G> {
+		public SubIterator (TreeSet<G> set, Range<G> range) {
+			this.set = set;
+			this.range = range;
+		}
+
+		public SubIterator.pointing (TreeSet<G> set, Range<G> range, Node<G> node) {
+			this.set = set;
+			this.range = range;
+			this.iterator = new Iterator<G>.pointing (set, node);
+		}
+
+		public bool next () {
+			if (iterator != null) {
+				G next;
+				if (iterator.safe_next_get (out next) && range.in_range (next)) {
+					assert (iterator.next ());
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return first ();
+			}
+		}
+
+		public bool has_next () {
+			if (iterator != null) {
+				G next;
+				return (iterator.safe_next_get (out next) && range.in_range (next));
+			} else {
+				return range.first () != null;
+			}
+		}
+
+		public bool first () {
+			weak Node<G>? node = range.first ();
+			if (node == null)
+				return false;
+			iterator = new Iterator<G>.pointing (set, node);
+			return true;
+		}
+
+		public bool previous () {
+			if (iterator == null)
+				return false;
+			G prev;
+			if (iterator.safe_previous_get (out prev) && range.in_range (prev)) {
+				assert (iterator.previous ());
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public bool has_previous () {
+			if (iterator == null)
+				return false;
+			G prev;
+			return iterator.safe_previous_get (out prev) && range.in_range (prev);
+		}
+
+		public bool last () {
+			weak Node<G>? node = range.last ();
+			if (node == null)
+				return false;
+			iterator = new Iterator<G>.pointing (set, node);
+			return true;
+		}
+
+		public new G get () {
+			assert (iterator != null);
+			return iterator.get ();
+		}
+
+		public void remove () {
+			assert (iterator != null);
+			iterator.remove ();
+		}
+
+		private new TreeSet<G> set;
+		private Range<G> range;
+		private Iterator<G>? iterator = null;
+	}
+
 	private Node<G>? root = null;
-	private weak Node<G>? first = null;
-	private weak Node<G>? last = null;
+	private weak Node<G>? _first = null;
+	private weak Node<G>? _last = null;
 	private int stamp = 0;
 }

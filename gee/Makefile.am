@@ -46,6 +46,7 @@ libgee_la_VALASOURCES = \
 	readonlymap.vala \
 	readonlyset.vala \
 	set.vala \
+	sortedset.vala \
 	timsort.vala \
 	treemap.vala \
 	treemultiset.vala \

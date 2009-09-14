@@ -23,13 +23,12 @@
 
 using Gee;
 
-public class TreeSetTests : SetTests {
+public class TreeSetTests : SortedSetTests {
 
 	public TreeSetTests () {
 		base ("TreeSet");
 		add_test ("[TreeSet] selected functions", test_selected_functions);
 		add_test ("[TreeSet] GObject properties", test_gobject_properties);
-		add_test ("[TreeSet] ordering", test_ordering);
 		add_test ("[TreeSet] add and remove", test_add_remove);
 	}
 
@@ -62,53 +61,6 @@ public class TreeSetTests : SetTests {
 		test_set.get_property ("compare-func", ref value);
 		assert (value.get_pointer () == (void*) test_set.compare_func);
 		value.unset ();
-	}
-
-	public void test_ordering () {
-		var test_set = test_collection as Set<string>;
-
-		// Check the set exists
-		assert (test_set != null);
-
-		test_set.add ("one");
-		test_set.add ("two");
-		test_set.add ("three");
-		test_set.add ("four");
-		test_set.add ("five");
-		test_set.add ("six");
-		test_set.add ("seven");
-		test_set.add ("eight");
-		test_set.add ("nine");
-		test_set.add ("ten");
-		test_set.add ("eleven");
-		test_set.add ("twelve");
-
-		Iterator<string> iterator = test_set.iterator ();
-		assert (iterator.next () == true);
-		assert (iterator.get () == "eight");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "eleven");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "five");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "four");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "nine");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "one");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "seven");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "six");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "ten");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "three");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "twelve");
-		assert (iterator.next () == true);
-		assert (iterator.get () == "two");
-		assert (iterator.next () == false);
 	}
 
 	public new void test_add_remove () {
