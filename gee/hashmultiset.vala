@@ -120,6 +120,22 @@ public class Gee.HashMultiSet<G> : AbstractCollection<G>, MultiSet<G> {
 			return false;
 		}
 
+		public bool has_next () {
+			return _pending > 0 || _iter.has_next ();
+		}
+
+		public bool first () {
+			if (set._nitems == 0) {
+				return false;
+			}
+			_pending = 0;
+			if (_iter.first ()) {
+				var key = _iter.get ();
+				_pending = set._items.get (key) - 1;
+			}
+			return true;
+		}
+
 		public new G get () {
 			return _iter.get ();
 		}

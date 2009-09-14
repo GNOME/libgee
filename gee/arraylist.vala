@@ -263,6 +263,20 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 			return (_index < _list._size);
 		}
 
+		public bool has_next () {
+			assert (_stamp == _list._stamp);
+			return (_index + 1 < _list._size);
+		}
+
+		public bool first () {
+			assert (_stamp == _list._stamp);
+			if (_list.size == 0) {
+				return false;
+			}
+			_index = 0;
+			return true;
+		}
+
 		public new G get () {
 			assert (_stamp == _list._stamp);
 			assert (_index >= 0);

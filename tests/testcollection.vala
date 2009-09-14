@@ -55,7 +55,15 @@ public abstract class CollectionTests : Gee.TestCase {
 	public void test_iterator_returns_all_elements_once () {
 		// Check the collection exists
 		assert (test_collection != null);
+		bool has_next;
 
+		// Check with an empty collection
+		Iterator<string> iterator = test_collection.iterator ();
+		assert (! iterator.has_next ());
+		assert (! iterator.next ());
+		assert (! iterator.first ());
+
+		// Check for some elements in the collection
 		assert (test_collection.add ("one"));
 		assert (test_collection.add ("two"));
 		assert (test_collection.add ("three"));
@@ -66,7 +74,15 @@ public abstract class CollectionTests : Gee.TestCase {
 		bool one_found_once = true;
 		bool two_found_once = true;
 		bool three_found_once = true;
-		foreach (string element in test_collection) {
+		iterator = test_collection.iterator ();
+		while (true) {
+			has_next = iterator.has_next ();
+			assert (has_next == iterator.next ());
+			if (! has_next) {
+				break;
+			}
+
+			string element = iterator.get ();
 			if (element == "one") {
 				if (one_found) {
 					one_found_once = false;
@@ -84,6 +100,53 @@ public abstract class CollectionTests : Gee.TestCase {
 				three_found = true;
 			}
 		}
+		has_next = iterator.has_next ();
+		assert (! has_next);
+		assert (has_next == iterator.next ());
+		assert (one_found);
+		assert (one_found_once);
+		assert (two_found);
+		assert (two_found_once);
+		assert (three_found);
+		assert (three_found_once);
+
+		// Do it twice to check first ()
+		assert (iterator.first ());
+
+		one_found = false;
+		two_found = false;
+		three_found = false;
+		one_found_once = true;
+		two_found_once = true;
+		three_found_once = true;
+		while (true) {
+			string element = iterator.get ();
+			if (element == "one") {
+				if (one_found) {
+					one_found_once = false;
+				}
+				one_found = true;
+			} else if (element == "two") {
+				if (two_found) {
+					two_found_once = false;
+				}
+				two_found = true;
+			} else if (element == "three") {
+				if (three_found) {
+					three_found_once = false;
+				}
+				three_found = true;
+			}
+
+			has_next = iterator.has_next ();
+			assert (has_next == iterator.next ());
+			if (! has_next) {
+				break;
+			}
+		}
+		has_next = iterator.has_next ();
+		assert (! has_next);
+		assert (has_next == iterator.next ());
 		assert (one_found);
 		assert (one_found_once);
 		assert (two_found);

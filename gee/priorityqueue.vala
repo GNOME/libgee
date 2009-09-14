@@ -760,6 +760,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		private bool from_type1_children = false;
 		private bool from_type2_child = false;
 		private unowned Node<G>? position;
+		private unowned Node<G>? _next;
 		private int stamp;
 
 		public Iterator (PriorityQueue<G> queue) {
@@ -770,42 +771,70 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		public bool next () {
 			assert (stamp == queue._stamp);
+			if (!has_next ()) {
+				return false;
+			}
+			position = _next;
+			_next = null;
+			return (position != null);
+		}
 
+		public bool has_next () {
+			assert (stamp == queue._stamp);
+			if (_next == null) {
+				_next = position;
+				if (!_has_next ()) {
+					_next = null;
+				}
+			}
+			return (_next != null);
+		}
+
+		private bool _has_next() {
 			if (!started) {
 				started = true;
-				return position != null;
-			} else if (position is Type1Node) {
-				var node = position as Type1Node<G>;
+				return _next != null;
+			} else if (_next is Type1Node) {
+				var node = _next as Type1Node<G>;
 				if (!from_type1_children && node.type1_children_head != null) {
-					position = node.type1_children_head;
+					_next = node.type1_children_head;
 					from_type1_children = false;
 					from_type2_child = false;
 					return true;
 				} else if (!from_type2_child && node.type2_child != null) {
-					position = node.type2_child;
+					_next = node.type2_child;
 					from_type1_children = false;
 					from_type2_child = false;
 					return true;
 				} else if (node.brothers_next != null) {
-					position = node.brothers_next;
+					_next = node.brothers_next;
 					return true;
 				}
 				from_type1_children = true;
-			} else if (position is Type2Node) {
-				var node = position as Type2Node<G>;
+			} else if (_next is Type2Node) {
+				var node = _next as Type2Node<G>;
 				if (!from_type1_children && node.type1_children_head != null) {
-					position = node.type1_children_head;
+					_next = node.type1_children_head;
 					from_type1_children = false;
 					from_type2_child = false;
 					return true;
 				}
 				from_type2_child = true;
 			}
-			if (position != queue._r) {
-				position = position.parent;
-				return next ();
+			if (_next != queue._r) {
+				_next = _next.parent;
+				return _has_next ();
 			}
 			return false;
+		}
+
+		public bool first () {
+			assert (stamp == queue._stamp);
+			position = queue._r;
+			started = false;
+			from_type1_children = false;
+			from_type2_child = false;
+			return next ();
 		}
 
 		public new G get () {

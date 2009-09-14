@@ -471,11 +471,23 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (stamp == _map.stamp);
 			if (current != null) {
 				current = current.next;
-			} else if (!run){
+			} else if (state == KeyIterator.State.BEFORE_THE_BEGIN) {
 				run = true;
 				current = _map.first;
 			}
 			return current != null;
+		}
+
+		public bool has_next () {
+			assert (stamp == _map.stamp);
+			return (current == null && state == KeyIterator.State.BEFORE_THE_BEGIN) ||
+			       (current != null && current.next != null);
+		}
+
+		public bool first () {
+			assert (stamp == _map.stamp);
+			current = _map.first;
+			return current != null; // on false it is null anyway
 		}
 
 		public new K get () {
@@ -485,6 +497,11 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		private weak Node<K, V>? current;
+		private enum State {
+			BEFORE_THE_BEGIN,
+			PAST_THE_END
+		}
+		private KeyIterator.State state = KeyIterator.State.BEFORE_THE_BEGIN;
 		private bool run = false;
 	}
 
@@ -509,11 +526,23 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (stamp == _map.stamp);
 			if (current != null) {
 				current = current.next;
-			} else if (!run){
+			} else if (state == ValueIterator.State.BEFORE_THE_BEGIN) {
 				run = true;
 				current = _map.first;
 			}
 			return current != null;
+		}
+
+		public bool has_next () {
+			assert (stamp == _map.stamp);
+			return (current == null && state == ValueIterator.State.BEFORE_THE_BEGIN) ||
+			       (current != null && current.next != null);
+		}
+
+		public bool first () {
+			assert (stamp == _map.stamp);
+			current = _map.first;
+			return current != null; // on false it is null anyway
 		}
 
 		public new V get () {
@@ -523,6 +552,11 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		private weak Node<K, V>? current;
+		private enum State {
+			BEFORE_THE_BEGIN,
+			PAST_THE_END
+		}
+		private ValueIterator.State state = ValueIterator.State.BEFORE_THE_BEGIN;
 		private bool run = false;
 	}
 }

@@ -393,7 +393,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 
 		public Iterator (LinkedList<G> list) {
 			this._list = list;
-			this.position = list._head;
+			this.position = null;
 			this._stamp = list._stamp;
 		}
 
@@ -402,13 +402,29 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 
 			if (!this.started) {
 				this.started = true;
-				return this.position != null;
-			} else if (this.position.next == null) {
-				return false;
-			} else {
+				this.position = this._list._head;
+			} else if (this.position != null) {
 				this.position = this.position.next;
-				return true;
 			}
+			return this.position != null;
+		}
+
+		public bool has_next () {
+			assert (this._stamp == this._list._stamp);
+
+			if (!this.started) {
+				return this._list._head != null;
+			} else if (this.position != null) {
+				return this.position.next != null;
+			}
+			return false;
+		}
+
+		public bool first () {
+			assert (this._stamp == this._list._stamp);
+			this.position = null;
+			this.started = false;
+			return next ();
 		}
 
 		public new G get () {

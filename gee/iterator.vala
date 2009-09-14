@@ -1,6 +1,7 @@
 /* iterator.vala
  *
  * Copyright (C) 2007-2008  Jürg Billeter
+ * Copyright (C) 2009  Didier Villevalois, Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +19,7 @@
  *
  * Author:
  * 	Jürg Billeter <j@bitron.ch>
+ * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 
 /**
@@ -30,6 +32,20 @@ public interface Gee.Iterator<G> : GLib.Object {
 	 * @return true if the iterator has a next element
 	 */
 	public abstract bool next ();
+
+	/**
+	 * Checks whether there is a next element in the iteration.
+	 *
+	 * @return true if the iterator has a next element
+	 */
+	public abstract bool has_next ();
+
+	/**
+	 * Rewinds to the first element in the iteration.
+	 *
+	 * @return true if the iterator has a first element
+	 */
+	public abstract bool first ();
 
 	/**
 	 * Returns the current element in the iteration.

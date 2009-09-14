@@ -141,6 +141,14 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 			return false;
 		}
 
+		public bool has_next () {
+			return false;
+		}
+
+		public bool first () {
+			return false;
+		}
+
 		public new G? get () {
 			return null;
 		}
