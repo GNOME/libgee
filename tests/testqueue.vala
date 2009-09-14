@@ -36,9 +36,9 @@ public abstract class QueueTests : CollectionTests {
 		// Check the test queue is not null
 		assert (test_queue != null);
 
-		if (test_queue.capacity == null) {
+		if (test_queue.capacity == Gee.Queue.UNBOUNDED_CAPACITY) {
 			// Unbounded capacity
-			assert (test_queue.remaining_capacity == null);
+			assert (test_queue.remaining_capacity == Gee.Queue.UNBOUNDED_CAPACITY);
 			assert (! test_queue.is_full);
 		} else {
 			// Bounded capacity

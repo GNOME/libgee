@@ -246,15 +246,15 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	/**
 	 * @inheritDoc
 	 */
-	public int? capacity {
-		get { return null; }
+	public int capacity {
+		get { return UNBOUNDED_CAPACITY; }
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public int? remaining_capacity {
-		get { return null; }
+	public int remaining_capacity {
+		get { return UNBOUNDED_CAPACITY; }
 	}
 
 	/**

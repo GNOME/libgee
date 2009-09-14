@@ -26,7 +26,7 @@
  * Although all Queue implementations do not limit the amount of elements they
  * can contain, this interface supports for capacity-bounded queues. When
  * capacity is not bound, then the {@link capacity} and
- * {@link remaining_capacity} both return null.
+ * {@link remaining_capacity} both return {@link UNBOUNDED_CAPACITY}.
  *
  * This interface defines methods that will never fail whatever the state of
  * the queue is. For capacity-bounded queues, those methods will either return
@@ -44,15 +44,21 @@
  * poll method to indicate that the queue contains no elements.
  */
 public interface Gee.Queue<G> : Collection<G> {
+
+	/**
+	 * The unbounded capacity value.
+	 */
+	public static const int UNBOUNDED_CAPACITY = -1;
+
 	/**
 	 * The capacity of this queue (or null if capacity is not bound).
 	 */
-	public abstract int? capacity { get; }
+	public abstract int capacity { get; }
 
 	/**
 	 * The remaining capacity of this queue (or null if capacity is not bound).
 	 */
-	public abstract int? remaining_capacity { get; }
+	public abstract int remaining_capacity { get; }
 
 	/**
 	 * Specifies whether this queue is full.
