@@ -92,7 +92,7 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 		if (compare == null) {
 			compare = Functions.get_compare_func_for (typeof (G));
 		}
-		TimSort<G>.sort (this, compare);
+		TimSort.sort<G> (this, compare);
 	}
 
 	private weak List<G> _read_only_view;

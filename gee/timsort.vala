@@ -46,15 +46,15 @@
  */
 internal class Gee.TimSort<G> : Object {
 
-	public static void sort (List<G> list, CompareFunc compare) {
+	public static void sort<G> (List<G> list, CompareFunc compare) {
 		if (list is ArrayList) {
-			TimSort<G>.sort_arraylist ((ArrayList<G>) list, compare);
+			TimSort.sort_arraylist<G> ((ArrayList<G>) list, compare);
 		} else {
-			TimSort<G>.sort_list (list, compare);
+			TimSort.sort_list<G> (list, compare);
 		}
 	}
 
-	private static void sort_list (List<G> list, CompareFunc compare) {
+	private static void sort_list<G> (List<G> list, CompareFunc compare) {
 		TimSort<G> helper = new TimSort<G> ();
 
 		helper.list_collection = list;
@@ -73,7 +73,7 @@ internal class Gee.TimSort<G> : Object {
 		}
 	}
 
-	private static void sort_arraylist (ArrayList<G> list, CompareFunc compare) {
+	private static void sort_arraylist<G> (ArrayList<G> list, CompareFunc compare) {
 		TimSort<G> helper = new TimSort<G> ();
 
 		helper.list_collection = list;
