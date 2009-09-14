@@ -20,6 +20,7 @@ libgee_la_VALASOURCES = \
 	abstractqueue.vala \
 	abstractset.vala \
 	arraylist.vala \
+	bidiriterator.vala \
 	collection.vala \
 	deque.vala \
 	functions.vala \

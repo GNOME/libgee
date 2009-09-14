@@ -151,6 +151,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			if (prev == null) {
 				first = node;
 			}
+			if (next == null) {
+				last = node;
+			}
 			_size++;
 		}
 
@@ -208,6 +211,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 		if (n.next != null) {
 			n.next.prev = n.prev;
+		} else {
+			last = n.next;
 		}
 		node = null;
 		_size--;
@@ -354,6 +359,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private Node<K, V>? root = null;
 	private weak Node<K, V>? first = null;
+	private weak Node<K, V>? last = null;
 	private int stamp = 0;
 
 	private class KeySet<K,V> : AbstractSet<K> {
@@ -450,7 +456,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
-	private class KeyIterator<K,V> : Object, Gee.Iterator<K> {
+	private class KeyIterator<K,V> : Object, Gee.Iterator<K>, BidirIterator<K> {
 		public TreeMap<K,V> map {
 			private set {
 				_map = value;
@@ -490,6 +496,29 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			return current != null; // on false it is null anyway
 		}
 
+		public bool previous () {
+			assert (stamp == _map.stamp);
+			if (current != null) {
+				current = current.prev;
+			} else if (state == KeyIterator.State.PAST_THE_END) {
+				current = _map.last;
+			}
+			state = KeyIterator.State.BEFORE_THE_BEGIN;
+			return current != null;
+		}
+
+		public bool has_previous () {
+			assert (stamp == _map.stamp);
+			return (current == null && state == KeyIterator.State.PAST_THE_END) ||
+			       (current != null && current.prev != null);
+		}
+
+		public bool last () {
+			assert (stamp == _map.stamp);
+			current = _map.last;
+			return current != null; // on false it is null anyway
+		}
+
 		public new K get () {
 			assert (stamp == _map.stamp);
 			assert (current != null);
@@ -509,7 +538,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		private bool run = false;
 	}
 
-	private class ValueIterator<K,V> : Object, Gee.Iterator<V> {
+	private class ValueIterator<K,V> : Object, Gee.Iterator<V>, Gee.BidirIterator<V> {
 		public TreeMap<K,V> map {
 			private set {
 				_map = value;
@@ -546,6 +575,29 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		public bool first () {
 			assert (stamp == _map.stamp);
 			current = _map.first;
+			return current != null; // on false it is null anyway
+		}
+
+		public bool previous () {
+			assert (stamp == _map.stamp);
+			if (current != null) {
+				current = current.prev;
+			} else if (state == ValueIterator.State.PAST_THE_END) {
+				current = _map.last;
+			}
+			state = ValueIterator.State.BEFORE_THE_BEGIN;
+			return current != null;
+		}
+
+		public bool has_previous () {
+			assert (stamp == _map.stamp);
+			return (current == null && state == ValueIterator.State.PAST_THE_END) ||
+			       (current != null && current.prev != null);
+		}
+
+		public bool last () {
+			assert (stamp == _map.stamp);
+			current = _map.last;
 			return current != null; // on false it is null anyway
 		}
 

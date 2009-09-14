@@ -119,6 +119,9 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			if (prev == null) {
 				first = node;
 			}
+			if (next == null) {
+				last = node;
+			}
 			_size++;
 			return true;
 		}
@@ -182,6 +185,8 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		}
 		if (n.next != null) {
 			n.next.prev = n.prev;
+		} else {
+			last = n.prev;
 		}
 		node = null;
 		_size--;
@@ -269,6 +274,13 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		return new Iterator<G> (this);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public BidirIterator<G> bidir_iterator () {
+		return new Iterator<G> (this);
+	}
+
 	[Compact]
 	private class Node<G> {
 		public enum Color {
@@ -315,7 +327,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		public weak Node<G>? next;
 	}
 
-	private class Iterator<G> : Object, Gee.Iterator<G> {
+	private class Iterator<G> : Object, Gee.Iterator<G>, BidirIterator<G> {
 		public new TreeSet<G> set {
 			private set {
 				_set = value;
@@ -371,6 +383,45 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			return current != null; // on false it is null anyway
 		}
 
+		public bool previous () {
+			assert (stamp == _set.stamp);
+			if (current != null) {
+				current = current.prev;
+			} else {
+				switch (state) {
+				case Iterator.State.BEFORE_THE_BEGIN:
+					break;
+				case Iterator.State.NORMAL: // After remove
+					current = _prev;
+					_next = null;
+					_prev = null;
+					break;
+				case Iterator.State.PAST_THE_END:
+					current = _set.last;
+					break;
+				default:
+					assert_not_reached ();
+				}
+			}
+			state = current != null ? Iterator.State.NORMAL : Iterator.State.BEFORE_THE_BEGIN;
+			return current != null;
+		}
+
+		public bool has_previous () {
+			assert (stamp == _set.stamp);
+			return (current == null && state == Iterator.State.PAST_THE_END) ||
+			       (current == null && state == Iterator.State.NORMAL && _prev != null) ||
+			       (current != null && current.prev != null);
+		}
+
+		public bool last () {
+			assert (stamp == _set.stamp);
+			current = _set.last;
+			_next = null;
+			_prev = null;
+			return current != null; // on false it is null anyway
+		}
+
 		public new G get () {
 			assert (stamp == _set.stamp);
 			assert (current != null);
@@ -401,5 +452,6 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 
 	private Node<G>? root = null;
 	private weak Node<G>? first = null;
+	private weak Node<G>? last = null;
 	private int stamp = 0;
 }
