@@ -26,7 +26,7 @@ using GLib;
  * Left-leaning red-black tree implementation of the {@link Gee.Map} interface.
  *
  * This implementation is especially well designed for large quantity of
- * data. The (balanced) tree implementation insure that the set and get 
+ * data. The (balanced) tree implementation insure that the set and get
  * methods are in logarithmic complexity.
  *
  * @see Gee.HashMap
@@ -156,7 +156,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 		if (is_red (node.left) && is_red (node.right)) {
 			node.flip ();
-		}		
+		}
 
 		int cmp = key_compare_func (key, node.key);
 		if (cmp == 0) {
@@ -195,12 +195,27 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
+	private void fix_removal (ref Node<K,V> node, out K? key = null, out V? value) {
+		Node<K,V> n = (owned) node;
+		if (&key != null)
+			key = (owned) n.key;
+		if (&value != null)
+			value = (owned) n.value;
+		if (n.prev != null) {
+			n.prev.next = n.next;
+		} else {
+			first = n.next;
+		}
+		if (n.next != null) {
+			n.next.prev = n.prev;
+		}
+		node = null;
+		_size--;
+	}
+
 	private void remove_minimal (ref Node<K,V> node, out K key, out V value) {
 		if (node.left == null) {
-			Node<K,V> n = (owned) node;
-			key = (owned) n.key;
-			value = (owned) n.value;
-			node = null;
+			fix_removal (ref node, out key, out value);
 			return;
 		}
 
@@ -234,9 +249,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 			weak Node<K,V> r = node.right;
 			if (key_compare_func (key, node.key) == 0 && r == null) {
-				value = (owned) node.value;
-				node = null;
-				_size--;
+				fix_removal (ref node, null, out value);
 				return true;
 			}
 			if (r == null || (is_black (r) && is_black (r.left))) {
@@ -246,7 +259,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 				value = (owned) node.value;
 				remove_minimal (ref node.right, out node.key, out node.value);
 				fix_up (ref node);
-				_size--;
 				return true;
 			} else {
 				bool re = remove_from_node (ref node.right, key, out value);
@@ -321,15 +333,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			}
 		}
 
-		~Node () {
-			if (prev != null) {
-				prev.next = this.next;
-			}
-			if (next != null) {
-				next.prev = this.prev;
-			}
-		}
-
 		public void flip () {
 			color.flip ();
 			if (left != null) {
@@ -349,8 +352,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		public weak Node<K, V>? next;
 	}
 
-	private Node<K, V>? root;
-	private weak Node<K, V>? first;
+	private Node<K, V>? root = null;
+	private weak Node<K, V>? first = null;
 	private int stamp = 0;
 
 	private class KeySet<K,V> : AbstractSet<K> {
@@ -453,9 +456,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 				_map = value;
 				stamp = _map.stamp;
 			}
-			get {
-				return _map;
-			}
 		}
 
 		private TreeMap<K,V> _map;
@@ -468,20 +468,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		public bool next () {
+			assert (stamp == _map.stamp);
 			if (current != null) {
 				current = current.next;
-				return current != null;
 			} else if (!run){
 				run = true;
-				current = map.first;
-				return current != null;
-			} else {
-				return false;
+				current = _map.first;
 			}
+			return current != null;
 		}
 
 		public new K get () {
-			assert (stamp == map.stamp);
+			assert (stamp == _map.stamp);
 			assert (current != null);
 			return current.key;
 		}
@@ -496,9 +494,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 				_map = value;
 				stamp = _map.stamp;
 			}
-			get {
-				return _map;
-			}
 		}
 
 		private TreeMap<K,V> _map;
@@ -511,20 +506,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		public bool next () {
+			assert (stamp == _map.stamp);
 			if (current != null) {
 				current = current.next;
-				return current != null;
-			} else if (!run) {
+			} else if (!run){
 				run = true;
-				current = map.first;
-				return current != null;
-			} else {
-				return false;
+				current = _map.first;
 			}
+			return current != null;
 		}
 
 		public new V get () {
-			assert (stamp == map.stamp);
+			assert (stamp == _map.stamp);
 			assert (current != null);
 			return current.value;
 		}

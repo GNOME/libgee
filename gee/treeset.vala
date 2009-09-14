@@ -171,11 +171,25 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		}
 	}
 
+	private void fix_removal (ref Node<G> node, out G? key = null) {
+		Node<G> n = (owned) node;
+		if (&key != null)
+			key = (owned) n.key;
+		if (n.prev != null) {
+			n.prev.next = n.next;
+		} else {
+			first = n.next;
+		}
+		if (n.next != null) {
+			n.next.prev = n.prev;
+		}
+		node = null;
+		_size--;
+	}
+
 	private void remove_minimal (ref Node<G> node, out G key) {
 		if (node.left == null) {
-			Node<G> n = (owned) node;
-			key = (owned) n.key;
-			node = null;
+			fix_removal (ref node, out key);
 			return;
 		}
 
@@ -209,8 +223,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 
 			weak Node<G> r = node.right;
 			if (compare_func (item, node.key) == 0 && r == null) {
-				node = null;
-				_size--;
+				fix_removal (ref node, null);
 				return true;
 			}
 			if (is_black (r) && is_black (r.left)) {
@@ -219,7 +232,6 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			if (compare_func (item, node.key) == 0) {
 				remove_minimal (ref node.right, out node.key);
 				fix_up (ref node);
-				_size--;
 				return true;
 			} else {
 				bool re = remove_from_node (ref node.right, item);
@@ -285,15 +297,6 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			}
 		}
 
-		~Node () {
-			if (prev != null) {
-				prev.next = this.next;
-			}
-			if (next != null) {
-				next.prev = this.prev;
-			}
-		}
-
 		public void flip () {
 			color.flip ();
 			if (left != null) {
@@ -313,31 +316,35 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 	}
 
 	private class Iterator<G> : Object, Gee.Iterator<G> {
-		public new TreeSet<G> set {construct; get;}
-		private int stamp;
-		construct {
-			stamp = set.stamp;
+		public new TreeSet<G> set {
+			private set {
+				_set = value;
+				stamp = _set.stamp;
+			}
 		}
+
+		private TreeSet<G> _set;
+
+		// concurrent modification protection
+		private int stamp;
 
 		public Iterator (TreeSet<G> set) {
 			this.set = set;
 		}
 
 		public bool next () {
+			assert (stamp == _set.stamp);
 			if (current != null) {
 				current = current.next;
-				return current != null;
 			} else if (!run){
 				run = true;
-				current = set.first;
-				return current != null;
-			} else {
-				return false;
+				current = _set.first;
 			}
+			return current != null;
 		}
 
 		public new G get () {
-			assert (stamp == set.stamp);
+			assert (stamp == _set.stamp);
 			assert (current != null);
 			return current.key;
 		}
@@ -346,7 +353,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		private bool run = false;
 	}
 
-	private Node<G>? root;
-	private weak Node<G>? first;
+	private Node<G>? root = null;
+	private weak Node<G>? first = null;
 	private int stamp = 0;
 }
