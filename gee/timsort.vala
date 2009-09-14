@@ -638,75 +638,76 @@ internal class Gee.TimSort<G> : Object {
 			b->merge_in_reversed (list, b->index, dest - a->length - b->length, b->length);
 		}
 	}
-}
 
-[Compact]
-internal class Gee.Slice<G> {
+	[Compact]
+	private class Slice<G> {
 
-	public unowned G[] list;
-	public G[]? new_list;
-	public int index;
-	public int length;
+		public unowned G[] list;
+		public G[]? new_list;
+		public int index;
+		public int length;
 
-	public Slice (G[] list, int index, int length) {
-		this.list = list;
-		this.index = index;
-		this.length = length;
-	}
+		public Slice (G[] list, int index, int length) {
+			this.list = list;
+			this.index = index;
+			this.length = length;
+		}
 
-	public void copy () {
-		new_list = new G[length];
-		Memory.copy (&new_list[0], &list[index], sizeof(G) * length);
-		list = new_list;
-		index = 0;
-	}
+		public void copy () {
+			new_list = new G[length];
+			Memory.copy (&new_list[0], &list[index], sizeof(G) * length);
+			list = new_list;
+			index = 0;
+		}
 
-	public inline void merge_in (G[] dest_array, int index, int dest_index, int count) {
-		Memory.move (&dest_array[dest_index], &list[index], sizeof(G) * count);
-	}
+		public inline void merge_in (G[] dest_array, int index, int dest_index, int count) {
+			Memory.move (&dest_array[dest_index], &list[index], sizeof(G) * count);
+		}
 
-	public inline void merge_in_reversed (G[] dest_array, int index, int dest_index, int count) {
-		Memory.move (&dest_array[dest_index], &list[index], sizeof(G) * count);
-	}
+		public inline void merge_in_reversed (G[] dest_array, int index, int dest_index, int count) {
+			Memory.move (&dest_array[dest_index], &list[index], sizeof(G) * count);
+		}
 
-	public inline void shorten_start (int n) {
-		index += n;
-		length -= n;
-	}
+		public inline void shorten_start (int n) {
+			index += n;
+			length -= n;
+		}
 
-	public inline void shorten_end (int n) {
-		length -= n;
-	}
+		public inline void shorten_end (int n) {
+			length -= n;
+		}
 
-	public inline unowned G pop_first () {
-		length--;
-		return list[index++];
-	}
+		public inline unowned G pop_first () {
+			length--;
+			return list[index++];
+		}
 
-	public inline unowned G pop_last () {
-		length--;
-		return list[index + length];
-	}
+		public inline unowned G pop_last () {
+			length--;
+			return list[index + length];
+		}
 
-	public inline unowned G peek_first () {
-		return list[index];
-	}
+		public inline unowned G peek_first () {
+			return list[index];
+		}
 
-	public inline unowned G peek_last () {
-		return list[index + length - 1];
-	}
+		public inline unowned G peek_last () {
+			return list[index + length - 1];
+		}
 
-	public void reverse () {
-		int low = index;
-		int high = index + length - 1;
-		while (low < high) {
-			swap (low++, high--);
+		public void reverse () {
+			int low = index;
+			int high = index + length - 1;
+			while (low < high) {
+				swap (low++, high--);
+			}
+		}
+
+		private inline void swap (int i, int j) {
+			G temp = (owned) list[i];
+			list[i] = (owned) list[j];
+			list[j] = (owned) temp;
 		}
 	}
-
-	private inline void swap (int i, int j) {
-		G temp = (owned) list[i];
-		list[i] = (owned) list[j];
-		list[j] = (owned) temp;
-	}
 }
+
