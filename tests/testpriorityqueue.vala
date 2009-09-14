@@ -27,6 +27,7 @@ public class PriorityQueueTests : QueueTests {
 	public PriorityQueueTests () {
 		base ("PriorityQueue");
 		add_test ("[PriorityQueue] selected functions", test_selected_functions);
+		add_test ("[PriorityQueue] GObject properties", test_gobject_properties);
 		add_test ("[PriorityQueue] poll gives minimum", test_poll_gives_minimum);
 	}
 
@@ -46,6 +47,19 @@ public class PriorityQueueTests : QueueTests {
 
 		// Check the selected compare function
 		assert (test_queue.compare_func == strcmp);
+	}
+
+	public new void test_gobject_properties() {
+		var test_queue = test_collection as PriorityQueue<string>;
+
+		// Check the list exists
+		assert (test_queue != null);
+		Value value;
+
+		value = Value (typeof (CompareFunc));
+		test_queue.get_property ("compare-func", ref value);
+		assert (value.get_pointer () == (void*) test_queue.compare_func);
+		value.unset ();
 	}
 
 	private void test_poll_gives_minimum () {

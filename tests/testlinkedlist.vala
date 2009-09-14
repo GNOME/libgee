@@ -29,6 +29,7 @@ public class LinkedListTests : ListTests {
 	public LinkedListTests () {
 		base ("LinkedList");
 		add_test ("[LinkedList] selected functions", test_selected_functions);
+		add_test ("[LinkedList] GObject properties", test_gobject_properties);
 		add_test ("[LinkedList] sort", test_sort);
 	}
 
@@ -48,6 +49,19 @@ public class LinkedListTests : ListTests {
 
 		// Check the selected equal function
 		assert (test_list.equal_func == str_equal);
+	}
+
+	public new void test_gobject_properties() {
+		var test_list = test_collection as LinkedList<string>;
+
+		// Check the list exists
+		assert (test_list != null);
+		Value value;
+
+		value = Value (typeof (EqualFunc));
+		test_list.get_property ("equal-func", ref value);
+		assert (value.get_pointer () == (void*) test_list.equal_func);
+		value.unset ();
 	}
 
 	private void test_sort () {

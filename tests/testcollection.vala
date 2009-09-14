@@ -39,6 +39,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] remove_all", test_remove_all);
 		add_test ("[Collection] retain_all", test_retain_all);
 		add_test ("[Collection] to_array", test_to_array);
+		add_test ("[Collection] GObject properties", test_gobject_properties);
 	}
 
 	protected Collection<string> test_collection;
@@ -514,5 +515,26 @@ public abstract class CollectionTests : Gee.TestCase {
 		foreach (string element in test_collection) {
 			assert (element == array[index++]);
 		}
+	}
+
+	public void test_gobject_properties() {
+		// Check the collection exists
+		assert (test_collection != null);
+		Value value;
+
+		value = Value (typeof (Type));
+		test_collection.get_property ("element-type", ref value);
+		assert (value.get_gtype () == test_collection.element_type);
+		value.unset ();
+
+		value = Value (typeof (bool));
+		test_collection.get_property ("is-empty", ref value);
+		assert (value.get_boolean () == test_collection.is_empty);
+		value.unset ();
+
+		value = Value (typeof (int));
+		test_collection.get_property ("size", ref value);
+		assert (value.get_int () == test_collection.size);
+		value.unset ();
 	}
 }

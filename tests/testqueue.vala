@@ -28,6 +28,7 @@ public abstract class QueueTests : CollectionTests {
 		base (name);
 		add_test ("[Queue] capacity bound", test_capacity_bound);
 		add_test ("[Queue] one element operation", test_one_element_operation);
+		add_test ("[Queue] GObject properties", test_gobject_properties);
 	}
 
 	public void test_capacity_bound () {
@@ -109,5 +110,28 @@ public abstract class QueueTests : CollectionTests {
 		assert (test_queue.is_empty);
 		assert (recipient.size == 1);
 		assert (recipient.get (0) == "one");
+	}
+
+	public new void test_gobject_properties() {
+		var test_queue = test_collection as Gee.Queue<string>;
+
+		// Check the list exists
+		assert (test_queue != null);
+		Value value;
+
+		value = Value (typeof (int));
+		test_queue.get_property ("capacity", ref value);
+		assert (value.get_int () == test_queue.capacity);
+		value.unset ();
+
+		value = Value (typeof (int));
+		test_queue.get_property ("remaining-capacity", ref value);
+		assert (value.get_int () == test_queue.remaining_capacity);
+		value.unset ();
+
+		value = Value (typeof (bool));
+		test_queue.get_property ("is-full", ref value);
+		assert (value.get_boolean () == test_queue.is_full);
+		value.unset ();
 	}
 }

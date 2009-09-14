@@ -36,6 +36,7 @@ public abstract class MapTests : Gee.TestCase {
 		add_test ("[Map] set all", test_set_all);
 		add_test ("[Map] remove all", test_remove_all);
 		add_test ("[Map] contains all", test_contains_all);
+		add_test ("[Map] GObject properties", test_gobject_properties);
 	}
 
 	protected Map<string, string> test_map;
@@ -418,5 +419,21 @@ public abstract class MapTests : Gee.TestCase {
 		another_map.set ("height", "value_of_height");
 
 		assert (! test_map.contains_all (another_map));
+	}
+
+	public void test_gobject_properties() {
+		// Check the map exists
+		assert (test_map != null);
+		Value value;
+
+		value = Value (typeof (bool));
+		test_map.get_property ("is-empty", ref value);
+		assert (value.get_boolean () == test_map.is_empty);
+		value.unset ();
+
+		value = Value (typeof (int));
+		test_map.get_property ("size", ref value);
+		assert (value.get_int () == test_map.size);
+		value.unset ();
 	}
 }
