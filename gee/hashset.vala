@@ -76,9 +76,6 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 		}
 		this.hash_func = hash_func;
 		this.equal_func = equal_func;
-	}
-
-	construct {
 		_array_size = MIN_SIZE;
 		_nodes = new Node<G>[_array_size];
 	}
