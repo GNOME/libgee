@@ -407,7 +407,9 @@ public abstract class CollectionTests : Gee.TestCase {
 
 		assert (test_collection.add_all (dummy));
 
-		assert (test_collection.size == 4);
+		// We can only assert the result is greater or equal than 3
+		// as we do not assume duplicates
+		assert (test_collection.size >= 3);
 		assert (test_collection.contains ("hello1"));
 		assert (test_collection.contains ("hello2"));
 		assert (test_collection.contains ("hello3"));
@@ -508,20 +510,6 @@ public abstract class CollectionTests : Gee.TestCase {
 
 		test_collection.clear ();
 		dummy.clear ();
-
-		// Check removing the same element
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-
-		assert (dummy.add ("hello1"));
-		assert (dummy.add ("hello1"));
-
-		assert (test_collection.remove_all (dummy));
-
-		assert (test_collection.size == 2);
-		assert (dummy.size == 2);
 	}
 
 	public void test_retain_all () {
@@ -630,35 +618,6 @@ public abstract class CollectionTests : Gee.TestCase {
 
 		test_collection.clear ();
 		dummy.clear ();
-
-		// Check when the test collection contains the same elements several
-		// times and the dummy collection contains the element too
-		assert (dummy.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-
-		assert (! test_collection.retain_all (dummy));
-
-		assert (test_collection.size == 4);
-		assert (dummy.size == 1);
-
-		test_collection.clear ();
-		dummy.clear ();
-
-		// Check when the test collection contains the same elements several
-		// times and the dummy collection contains the element too
-		assert (dummy.add ("hello2"));
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-		assert (test_collection.add ("hello1"));
-
-		assert (test_collection.retain_all (dummy));
-
-		assert (test_collection.is_empty);
-		assert (dummy.size == 1);
 	}
 
 	public void test_to_array() {

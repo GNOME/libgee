@@ -1,4 +1,4 @@
-/* testarraylist.vala
+/* testset.vala
  *
  * Copyright (C) 2008  Jürg Billeter
  * Copyright (C) 2009  Didier Villevalois, Julien Peeters
@@ -18,23 +18,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
+ * 	Jürg Billeter <j@bitron.ch>
  * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
+ * 	Julien Peeters <contact@julienpeeters.fr>
  */
 
-void main (string[] args) {
-	Test.init (ref args);
+using GLib;
+using Gee;
 
-	TestSuite.get_root ().add_suite (new ArrayListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMapTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMultiMapTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashMultiSetTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new HashSetTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new LinkedListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new LinkedListAsDequeTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new PriorityQueueTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new ReadOnlyListTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new TreeMapTests ().get_suite ());
-	TestSuite.get_root ().add_suite (new TreeSetTests ().get_suite ());
+public abstract class SetTests : CollectionTests {
 
-	Test.run ();
+	public SetTests (string name) {
+		base (name);
+		add_test ("[Set] duplicates are ignored", test_duplicates_are_ignored);
+	}
+
+	public virtual void test_duplicates_are_ignored () {
+		var test_set = test_collection as Set<string>;
+
+		// Check the test list is not null
+		assert (test_set != null);
+
+		assert (test_set.add ("one"));
+		assert (test_set.contains ("one"));
+		assert (test_set.size == 1);
+
+		assert (! test_set.add ("one"));
+		assert (test_set.contains ("one"));
+		assert (test_set.size == 1);
+
+		assert (test_set.remove ("one"));
+		assert (! test_set.contains ("one"));
+		assert (test_set.size == 0);
+
+		assert (! test_set.remove ("one"));
+		assert (! test_set.contains ("one"));
+		assert (test_set.size == 0);
+	}
 }

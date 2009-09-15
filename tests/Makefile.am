@@ -22,6 +22,7 @@ tests_VALASOURCES = \
        testhashmap.vala \
        testhashmultimap.vala \
        testhashmultiset.vala \
+       testhashset.vala \
        testlinkedlist.vala \
        testlinkedlistasdeque.vala \
        testlist.vala \
@@ -33,7 +34,9 @@ tests_VALASOURCES = \
        testqueue.vala \
        testreadonlycollection.vala \
        testreadonlylist.vala \
+       testset.vala \
        testtreemap.vala \
+       testtreeset.vala \
        $(NULL)
 
 tests_SOURCES = tests.vala.stamp $(tests_VALASOURCES:.vala=.c)
@@ -69,21 +72,3 @@ clean-local:
 	-rm -rf coverage
 
 .PHONY: coverage-report
-
-TEST_PROGS += testhashset
-testhashset_VALASOURCES = testhashset.vala
-testhashset_SOURCES = testhashset.c
-$(testhashset_SOURCES): $(testhashset_VALASOURCES)
-	$(VALAC) -C --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
-	touch $@
-testhashset_LDADD = $(progs_ldadd)
-EXTRA_DIST += $(testhashset_VALASOURCES)
-
-TEST_PROGS += testtreeset
-testtreeset_VALASOURCES = testtreeset.vala
-testtreeset_SOURCES = testtreeset.c testtreeset.h
-$(testtreeset_SOURCES): $(testtreeset_VALASOURCES)
-	$(VALAC) -C --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
-	touch $@
-testtreeset_LDADD = $(progs_ldadd)
-EXTRA_DIST += $(testtreeset_VALASOURCES)
