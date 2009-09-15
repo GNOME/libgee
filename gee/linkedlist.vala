@@ -387,6 +387,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 
 	private class Iterator<G> : Object, Gee.Iterator<G> {
 		private bool started = false;
+		private bool removed = false;
 		private unowned Node<G>? position;
 		private int _stamp;
 		private LinkedList<G> _list;
@@ -400,7 +401,9 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		public bool next () {
 			assert (this._stamp == this._list._stamp);
 
-			if (!this.started) {
+			if (this.removed) {
+				this.removed = false;
+			} else if (!this.started) {
 				this.started = true;
 				this.position = this._list._head;
 			} else if (this.position != null) {
@@ -412,7 +415,9 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		public bool has_next () {
 			assert (this._stamp == this._list._stamp);
 
-			if (!this.started) {
+			if (this.removed) {
+				return this.position != null;
+			} else if (!this.started) {
 				return this._list._head != null;
 			} else if (this.position != null) {
 				return this.position.next != null;
@@ -432,6 +437,20 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 			assert (this.position != null);
 
 			return this.position.data;
+		}
+
+		public void remove () {
+			assert (this._stamp == this._list._stamp);
+			assert (this.position != null);
+
+			unowned Node<G>? new_position = this.position.next;
+			if (new_position == null) {
+				started = false;
+			}
+			_list._remove_node (this.position);
+			this.position = new_position;
+			this.removed = true;
+			this._stamp = this._list._stamp;
 		}
 	}
 

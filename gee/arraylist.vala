@@ -247,6 +247,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 
 		private ArrayList<G> _list;
 		private int _index = -1;
+		private bool _removed = false;
 
 		// concurrent modification protection
 		private int _stamp = 0;
@@ -260,6 +261,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 			if (_index < _list._size) {
 				_index++;
 			}
+			_removed = false;
 			return (_index < _list._size);
 		}
 
@@ -274,6 +276,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 				return false;
 			}
 			_index = 0;
+			_removed = false;
 			return true;
 		}
 
@@ -281,7 +284,19 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 			assert (_stamp == _list._stamp);
 			assert (_index >= 0);
 			assert (_index < _list._size);
+			assert (! _removed);
 			return _list.get (_index);
+		}
+
+		public void remove () {
+			assert (_stamp == _list._stamp);
+			assert (_index >= 0);
+			assert (_index < _list._size);
+			assert (! _removed);
+			_list.remove_at (_index);
+			_index--;
+			_removed = true;
+			_stamp = _list._stamp;
 		}
 	}
 }

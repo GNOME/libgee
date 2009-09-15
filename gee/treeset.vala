@@ -377,6 +377,17 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			return current.key;
 		}
 
+		public void remove () {
+			assert (stamp == _set.stamp);
+			assert (current != null);
+			_next = current.next;
+			_prev = current.prev;
+			_set.remove (get ());
+			stamp++;
+			current = null;
+			assert (stamp == _set.stamp);
+		}
+
 		private weak Node<G>? current;
 		private weak Node<G>? _next;
 		private weak Node<G>? _prev;

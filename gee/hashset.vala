@@ -130,6 +130,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	public override bool remove (G key) {
 		Node<G>** node = lookup_node (key);
 		if (*node != null) {
+			assert (*node != null);
 			Node<G> next = (owned) (*node)->next;
 
 			(*node)->key = null;
@@ -259,6 +260,15 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			assert (_stamp == _set._stamp);
 			assert (_node != null);
 			return _node.key;
+		}
+
+		public void remove () {
+			assert (_stamp == _set._stamp);
+			assert (_node != null);
+			has_next ();
+			_set.remove (_node.key);
+			_node = null;
+			_stamp = _set._stamp;
 		}
 	}
 }

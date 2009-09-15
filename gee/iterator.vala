@@ -20,10 +20,19 @@
  * Author:
  * 	Jürg Billeter <j@bitron.ch>
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
+ * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
  */
 
 /**
  * An iterator over a collection.
+ *
+ * Gee's iterators are "on-track" iterators. They always point to an item
+ * except before the first call to {@link next} or {@link first}, or, when an
+ * item has been removed, until the next call to {@link next} or {@link first}.
+ *
+ * Please note that when the iterator is out of track, neither {@link get} nor
+ * {@link remove} are defined and both will fail. After the next call to
+ * {@link next} or {@link first}, they will be defined again.
  */
 public interface Gee.Iterator<G> : GLib.Object {
 	/**
@@ -53,5 +62,12 @@ public interface Gee.Iterator<G> : GLib.Object {
 	 * @return the current element in the iteration
 	 */
 	public abstract G get ();
+
+	/**
+	 * Removes the current element in the iteration. The cursor is set in an
+	 * in-between state. Both {@link get} and {@link remove} will fail until
+	 * the next move of the cursor (calling {@link next} or {@link first}).
+	 */
+	public abstract void remove ();
 }
 

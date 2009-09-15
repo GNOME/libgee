@@ -95,11 +95,12 @@ public class Gee.HashMultiSet<G> : AbstractCollection<G>, MultiSet<G> {
 	private class Iterator<G> : Object, Gee.Iterator<G> {
 		public new HashMultiSet<G> set { construct; get; }
 
-		private Gee.Iterator<G> _iter;
+		private Gee.UpdatableKeyIterator<G, int> _iter;
 		private int _pending = 0;
+		private bool _removed = false;
 
 		construct {
-			_iter = set._items.get_keys ().iterator ();
+			_iter = set._items.updatable_key_iterator ();
 		}
 
 		public Iterator (HashMultiSet<G> set) {
@@ -107,10 +108,10 @@ public class Gee.HashMultiSet<G> : AbstractCollection<G>, MultiSet<G> {
 		}
 
 		public bool next () {
+			_removed = false;
 			if (_pending == 0) {
 				if (_iter.next ()) {
-					var key = _iter.get ();
-					_pending = set._items.get (key) - 1;
+					_pending = _iter.get_value () - 1;
 					return true;
 				}
 			} else {
@@ -130,14 +131,23 @@ public class Gee.HashMultiSet<G> : AbstractCollection<G>, MultiSet<G> {
 			}
 			_pending = 0;
 			if (_iter.first ()) {
-				var key = _iter.get ();
-				_pending = set._items.get (key) - 1;
+				_pending = _iter.get_value () - 1;
 			}
 			return true;
 		}
 
 		public new G get () {
+			assert (! _removed);
 			return _iter.get ();
+		}
+
+		public void remove () {
+			assert (! _removed);
+			_iter.set_value (_pending = _iter.get_value () - 1);
+			if (_pending == 0) {
+				_iter.remove ();
+			}
+			_removed = true;
 		}
 	}
 }

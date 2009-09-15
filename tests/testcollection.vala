@@ -32,6 +32,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] type correctness", test_type_correctness);
 		add_test ("[Collection] iterator returns all elements once",
 		          test_iterator_returns_all_elements_once);
+		add_test ("[Collection] mutable iterator", test_mutable_iterator);
 		add_test ("[Collection] contains, size and is_empty",
 		          test_contains_size_and_is_empty);
 		add_test ("[Collection] add_all", test_add_all);
@@ -151,6 +152,106 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (one_found_once);
 		assert (two_found);
 		assert (two_found_once);
+		assert (three_found);
+		assert (three_found_once);
+	}
+
+	public void test_mutable_iterator () {
+		// Check the collection exists
+		assert (test_collection != null);
+		bool has_next;
+
+		// Check with an empty collection
+		Iterator<string> iterator = test_collection.iterator ();
+		// ...
+
+		// Check for some elements in the collection and remove one
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+
+		bool one_found = false;
+		bool two_found = false;
+		bool three_found = false;
+		bool one_found_once = true;
+		bool two_found_once = true;
+		bool three_found_once = true;
+		iterator = test_collection.iterator ();
+		while (true) {
+			has_next = iterator.has_next ();
+			assert (has_next == iterator.next ());
+			if (! has_next) {
+				break;
+			}
+
+			string element = iterator.get ();
+			if (element == "one") {
+				if (one_found) {
+					one_found_once = false;
+				}
+				one_found = true;
+			} else if (element == "two") {
+				if (two_found) {
+					two_found_once = false;
+				}
+				two_found = true;
+
+				// Remove this element
+				iterator.remove ();
+			} else if (element == "three") {
+				if (three_found) {
+					three_found_once = false;
+				}
+				three_found = true;
+			}
+		}
+		has_next = iterator.has_next ();
+		assert (! has_next);
+		assert (has_next == iterator.next ());
+		assert (one_found);
+		assert (one_found_once);
+		assert (two_found);
+		assert (two_found_once);
+		assert (three_found);
+		assert (three_found_once);
+
+		// Check after removal
+		assert (iterator.first ());
+
+		one_found = false;
+		two_found = false;
+		three_found = false;
+		one_found_once = true;
+		two_found_once = true;
+		three_found_once = true;
+		while (true) {
+			string element = iterator.get ();
+			if (element == "one") {
+				if (one_found) {
+					one_found_once = false;
+				}
+				one_found = true;
+			} else if (element == "two") {
+				two_found = true;
+			} else if (element == "three") {
+				if (three_found) {
+					three_found_once = false;
+				}
+				three_found = true;
+			}
+
+			has_next = iterator.has_next ();
+			assert (has_next == iterator.next ());
+			if (! has_next) {
+				break;
+			}
+		}
+		has_next = iterator.has_next ();
+		assert (! has_next);
+		assert (has_next == iterator.next ());
+		assert (one_found);
+		assert (one_found_once);
+		assert (!two_found);
 		assert (three_found);
 		assert (three_found_once);
 	}

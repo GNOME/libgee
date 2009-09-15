@@ -496,6 +496,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			return current.key;
 		}
 
+		public void remove () {
+			assert_not_reached ();
+		}
+
 		private weak Node<K, V>? current;
 		private enum State {
 			BEFORE_THE_BEGIN,
@@ -549,6 +553,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (stamp == _map.stamp);
 			assert (current != null);
 			return current.value;
+		}
+
+		public void remove () {
+			assert_not_reached ();
 		}
 
 		private weak Node<K, V>? current;

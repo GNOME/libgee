@@ -762,6 +762,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		private unowned Node<G>? position;
 		private unowned Node<G>? _next;
 		private int stamp;
+		private bool removed = false;
 
 		public Iterator (PriorityQueue<G> queue) {
 			this.queue = queue;
@@ -774,6 +775,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			if (!has_next ()) {
 				return false;
 			}
+			removed = false;
 			position = _next;
 			_next = null;
 			return (position != null);
@@ -821,7 +823,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 				}
 				from_type2_child = true;
 			}
-			if (_next != queue._r) {
+			if (_next != null && _next != queue._r) {
 				_next = _next.parent;
 				return _has_next ();
 			}
@@ -840,7 +842,20 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		public new G get () {
 			assert (stamp == queue._stamp);
 			assert (position != null);
+			assert (! removed);
 			return position.data;
+		}
+
+		public void remove () {
+			assert (stamp == queue._stamp);
+			assert (position != null);
+			assert (! removed);
+			has_next ();
+			Node<G> node = position;
+			position = null;
+			queue._delete (node);
+			stamp = queue._stamp;
+			removed = true;
 		}
 
 		internal Node<G> get_node () {

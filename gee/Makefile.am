@@ -44,6 +44,7 @@ libgee_la_VALASOURCES = \
 	timsort.vala \
 	treemap.vala \
 	treeset.vala \
+	updatablekeyiterator.vala \
 	$(NULL)
 
 libgee_la_SOURCES = \
