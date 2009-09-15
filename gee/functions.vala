@@ -1,6 +1,6 @@
 /* functions.vala
  *
- * Copyright (C) 2009  Maciej Piechotka
+ * Copyright (C) 2009  Didier Villevalois, Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
+ * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 
@@ -27,10 +28,7 @@ namespace Gee {
 	/**
 	 * Helper class for equal, hash and compare functions.
 	 */
-	public class Functions {
-
-		private Functions () {
-		}
+	namespace Functions {
 
 		/**
 		 * Get a equality testing function for a given type.
@@ -73,7 +71,7 @@ namespace Gee {
 			if (t == typeof (string)) {
 				return (CompareFunc) strcmp;
 			} else {
-				return direct_compare;
+				return (CompareFunc) direct_compare;
 			}
 		}
 	}
