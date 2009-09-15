@@ -34,6 +34,11 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 	/**
 	 * @inheritDoc
 	 */
+	public abstract ListIterator<G> list_iterator ();
+
+	/**
+	 * @inheritDoc
+	 */
 	public abstract new G? get (int index);
 
 	/**

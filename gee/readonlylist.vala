@@ -46,6 +46,13 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	/**
 	 * @inheritDoc
 	 */
+	public ListIterator<G> list_iterator () {
+		return new Iterator<G> (((Gee.List<G>) _collection).list_iterator ());
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public int index_of (G item) {
 		return ((Gee.List<G>) _collection).index_of (item);
 	}
@@ -118,6 +125,41 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	 */
 	public virtual new List<G> read_only_view {
 		owned get { return this; }
+	}
+
+	
+	private class Iterator<G> : ReadOnlyCollection.Iterator<G>, BidirIterator<G>, ListIterator<G> {
+		public Iterator (ListIterator<G> iterator) {
+			base (iterator);
+		}
+
+		public bool previous () {
+			return ((ListIterator<G>) _iter).previous ();
+		}
+
+		public bool has_previous () {
+			return ((ListIterator<G>) _iter).has_previous ();
+		}
+
+		public bool last () {
+			return ((ListIterator<G>) _iter).last ();
+		}
+
+		public new void set (G item) {
+			assert_not_reached ();
+		}
+
+		public void insert (G item) {
+			assert_not_reached ();
+		}
+
+		public void add (G item) {
+			assert_not_reached ();
+		}
+
+		public int index () {
+			return ((ListIterator<G>) _iter).index ();
+		}
 	}
 }
 

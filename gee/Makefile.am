@@ -32,6 +32,7 @@ libgee_la_VALASOURCES = \
 	iterator.vala \
 	linkedlist.vala \
 	list.vala \
+	listiterator.vala \
 	map.vala \
 	multimap.vala \
 	multiset.vala \

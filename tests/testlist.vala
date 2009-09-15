@@ -31,6 +31,7 @@ public abstract class ListTests : CollectionTests {
 	public ListTests (string name) {
 		base (name);
 		add_test ("[List] iterator is ordered", test_iterator_is_ordered);
+		add_test ("[List] list iterator", test_list_iterator);
 		add_test ("[List] duplicates are retained",
 		          test_duplicates_are_retained);
 		add_test ("[List] get", test_get);
@@ -52,7 +53,7 @@ public abstract class ListTests : CollectionTests {
 
 		// Check iterate empty list
 		var iterator = test_list.iterator ();
-		assert (! iterator.next());
+		assert (! iterator.next ());
 
 		// Check iterate list
 		assert (test_list.add ("one"));
@@ -69,7 +70,81 @@ public abstract class ListTests : CollectionTests {
 		assert (iterator.get () == "three");
 		assert (iterator.next());
 		assert (iterator.get () == "one");
-		assert (! iterator.next());
+		assert (! iterator.next ());
+	}
+
+	public void test_list_iterator () {
+		var test_list = test_collection as Gee.List<string>;
+
+		// Check the test list is not null
+		assert (test_list != null);
+
+		// Check iterate empty list
+		var iterator = test_list.list_iterator ();
+		assert (! iterator.has_next ());
+		assert (! iterator.next ());
+		assert (! iterator.has_previous ());
+		assert (! iterator.previous ());
+		assert (! iterator.first ());
+		assert (! iterator.last ());
+
+		// Check iterate list
+		assert (test_list.add ("one"));
+		assert (test_list.add ("two"));
+		assert (test_list.add ("three"));
+
+		iterator = test_list.list_iterator ();
+		assert (iterator.next());
+		assert (iterator.get () == "one");
+		assert (iterator.index () == 0);
+		iterator.set ("new one");
+		assert (iterator.next());
+		assert (iterator.get () == "two");
+		assert (iterator.index () == 1);
+		iterator.set ("new two");
+		assert (test_list.size == 3);
+		assert (iterator.index () == 1);
+		iterator.insert ("before two");
+		assert (test_list.size == 4);
+		assert (iterator.index () == 2);
+		iterator.add ("after two");
+		assert (test_list.size == 5);
+		assert (iterator.index () == 3);
+		assert (iterator.next());
+		assert (iterator.get () == "three");
+		assert (iterator.index () == 4);
+		iterator.set ("new three");
+		assert (! iterator.has_next ());
+		assert (! iterator.next ());
+
+		assert (iterator.first ());
+		assert (iterator.get () == "new one");
+		assert (iterator.index () == 0);
+		assert (! iterator.has_previous ());
+		assert (! iterator.previous ());
+
+		assert (iterator.last ());
+		assert (iterator.get () == "new three");
+		assert (iterator.index () == 4);
+		assert (! iterator.has_next ());
+		assert (! iterator.next ());
+
+		assert (iterator.has_previous ());
+		assert (iterator.previous ());
+		assert (iterator.get () == "after two");
+		assert (iterator.index () == 3);
+		assert (iterator.has_previous ());
+		assert (iterator.previous ());
+		assert (iterator.get () == "new two");
+		assert (iterator.index () == 2);
+		assert (iterator.has_previous ());
+		assert (iterator.previous ());
+		assert (iterator.get () == "before two");
+		assert (iterator.index () == 1);
+		assert (iterator.has_previous ());
+		assert (iterator.previous ());
+		assert (iterator.get () == "new one");
+		assert (iterator.index () == 0);
 	}
 
 	public virtual void test_duplicates_are_retained () {

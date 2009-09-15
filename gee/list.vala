@@ -25,6 +25,13 @@
  */
 public interface Gee.List<G> : Collection<G> {
 	/**
+	 * Returns a ListIterator that can be used for iteration over this list.
+	 *
+	 * @return a ListIterator that can be used for iteration over this list
+	 */
+	public abstract new ListIterator<G> list_iterator ();
+
+	/**
 	 * Returns the item at the specified index in this list.
 	 *
 	 * @param index zero-based index of the item to be returned

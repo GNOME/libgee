@@ -3,8 +3,7 @@
  * Copyright (C) 2004-2005  Novell, Inc
  * Copyright (C) 2005  David Waite
  * Copyright (C) 2007-2008  Jürg Billeter
- * Copyright (C) 2009  Mark Lee
- * Copyright (C) 2009  Julien Fontanet
+ * Copyright (C) 2009  Mark Lee, Didier Villevalois
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +21,7 @@
  *
  * Author:
  * 	Mark Lee <marklee@src.gnome.org>
+ * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
  */
 
 /**
@@ -59,6 +59,13 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	 * @inheritDoc
 	 */
 	public override Gee.Iterator<G> iterator () {
+		return new Iterator<G> (this);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public override ListIterator<G> list_iterator () {
 		return new Iterator<G> (this);
 	}
 
@@ -385,31 +392,38 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		}
 	}
 
-	private class Iterator<G> : Object, Gee.Iterator<G> {
+	private class Iterator<G> : Object, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G> {
 		private bool started = false;
 		private bool removed = false;
 		private unowned Node<G>? position;
 		private int _stamp;
 		private LinkedList<G> _list;
+		private int _index;
 
 		public Iterator (LinkedList<G> list) {
 			this._list = list;
 			this.position = null;
+			this._index = -1;
 			this._stamp = list._stamp;
 		}
 
 		public bool next () {
 			assert (this._stamp == this._list._stamp);
 
-			if (this.removed) {
+			if (this.removed && this.position != null) {
 				this.removed = false;
-			} else if (!this.started) {
+				return true;
+			} else if (!this.started && this._list._head != null) {
 				this.started = true;
 				this.position = this._list._head;
-			} else if (this.position != null) {
+				this._index++;
+				return true;
+			} else if (this.position != null && this.position.next != null) {
 				this.position = this.position.next;
+				this._index++;
+				return true;
 			}
-			return this.position != null;
+			return false;
 		}
 
 		public bool has_next () {
@@ -427,9 +441,14 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 
 		public bool first () {
 			assert (this._stamp == this._list._stamp);
-			this.position = null;
-			this.started = false;
-			return next ();
+			if (this._list.size == 0) {
+				return false;
+			}
+			this.position = this._list._head;
+			this.started = true;
+			this._index = 0;
+			this.removed = false;
+			return this.position != null;
 		}
 
 		public new G get () {
@@ -451,6 +470,94 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 			this.position = new_position;
 			this.removed = true;
 			this._stamp = this._list._stamp;
+		}
+
+		public bool previous () {
+			assert (this._stamp == this._list._stamp);
+
+			if (!this.started) {
+				this.position = null;
+				return false;
+			} else if (this.position != null && this.position.prev != null) {
+				this.position = this.position.prev;
+				this._index--;
+				return true;
+			}
+			return false;
+		}
+
+		public bool has_previous () {
+			assert (this._stamp == this._list._stamp);
+
+			if (!this.started) {
+				return false;
+			} else if (this.position != null) {
+				return this.position.prev != null;
+			}
+			return false;
+		}
+
+		public bool last () {
+			assert (this._stamp == this._list._stamp);
+
+			if (this._list.size == 0) {
+				return false;
+			}
+			this.position = this._list._tail;
+			this.started = true;
+			this._index = this._list._size - 1;
+			return this.position != null;
+		}
+
+		public new void set (G item) {
+			assert (this._stamp == this._list._stamp);
+			assert (this.position != null);
+
+			this.position.data = item;
+		}
+
+		public void insert (G item) {
+			assert (this._stamp == this._list._stamp);
+			assert (this.position != null);
+
+			Node<G> n = new Node<G> (item);
+			if (this.position.prev != null) {
+				this.position.prev.next = n;
+				n.prev = this.position.prev;
+			} else {
+				this._list._head = n;
+			}
+			this.position.prev = n;
+			n.next = this.position;
+			this._list._size++;
+			this._index++;
+			_stamp = _list._stamp;
+		}
+
+		public void add (G item) {
+			assert (this._stamp == this._list._stamp);
+			assert (this.position != null);
+
+			Node<G> n = new Node<G> (item);
+			if (this.position.next != null) {
+				this.position.next.prev = n;
+				n.next = this.position.next;
+			} else {
+				this._list._tail = n;
+			}
+			this.position.next = n;
+			n.prev = this.position;
+			this.position = n;
+			this._list._size++;
+			this._index++;
+			_stamp = _list._stamp;
+		}
+
+		public int index () {
+			assert (this._stamp == this._list._stamp);
+			assert (this.position != null);
+
+			return this._index;
 		}
 	}
 
