@@ -159,7 +159,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 
 	private void move_red_left (ref Node<G> root) {
 		root.flip ();
-		if (is_red (root.right.left)) {
+		if (root.right != null && is_red (root.right.left)) {
 			rotate_right (ref root.right);
 			rotate_left (ref root);
 			root.flip ();
@@ -168,7 +168,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 
 	private void move_red_right (ref Node<G> root) {
 		root.flip ();
-		if (is_red (root.left.left)) {
+		if (root.left != null && is_red (root.left.left)) {
 			rotate_right (ref root.right);
 			root.flip ();
 		}
@@ -231,7 +231,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 				fix_removal (ref node, null);
 				return true;
 			}
-			if (is_black (r) && is_black (r.left)) {
+			if (r == null || (is_black (r) && is_black (r.left))) {
 				move_red_right (ref node);
 			}
 			if (compare_func (item, node.key) == 0) {
@@ -370,6 +370,9 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 
 		public bool has_next () {
 			assert (stamp == _set.stamp);
+			if (_set.size == 0) {
+				return false;
+			}
 			return (current == null && state == Iterator.State.BEFORE_THE_BEGIN) ||
 			       (current == null && state == Iterator.State.NORMAL && _next != null) ||
 			       (current != null && current.next != null);
