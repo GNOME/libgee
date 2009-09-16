@@ -342,33 +342,21 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			assert (stamp == _set.stamp);
 			if (current != null) {
 				current = current.next;
+			} else if (!started) {
+				current = _set.first;
+				started = true;
 			} else {
-				switch (state) {
-				case Iterator.State.BEFORE_THE_BEGIN:
-					current = _set.first;
-					break;
-				case Iterator.State.NORMAL: // After remove
-					current = _next;
-					_next = null;
-					_prev = null;
-					break;
-				case Iterator.State.PAST_THE_END:
-					break;
-				default:
-					assert_not_reached ();
-				}
+				current = _next;
+				_next = null;
+				_prev = null;
 			}
-			state = current != null ? Iterator.State.NORMAL : Iterator.State.PAST_THE_END;
 			return current != null;
 		}
 
 		public bool has_next () {
 			assert (stamp == _set.stamp);
-			if (_set.size == 0) {
-				return false;
-			}
-			return (current == null && state == Iterator.State.BEFORE_THE_BEGIN) ||
-			       (current == null && state == Iterator.State.NORMAL && _next != null) ||
+			return (!started && _set.first != null) ||
+			       (current == null && _next != null) ||
 			       (current != null && current.next != null);
 		}
 
@@ -385,29 +373,16 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			if (current != null) {
 				current = current.prev;
 			} else {
-				switch (state) {
-				case Iterator.State.BEFORE_THE_BEGIN:
-					break;
-				case Iterator.State.NORMAL: // After remove
-					current = _prev;
-					_next = null;
-					_prev = null;
-					break;
-				case Iterator.State.PAST_THE_END:
-					current = _set.last;
-					break;
-				default:
-					assert_not_reached ();
-				}
+				current = _prev;
+				_next = null;
+				_prev = null;
 			}
-			state = current != null ? Iterator.State.NORMAL : Iterator.State.BEFORE_THE_BEGIN;
 			return current != null;
 		}
 
 		public bool has_previous () {
 			assert (stamp == _set.stamp);
-			return (current == null && state == Iterator.State.PAST_THE_END) ||
-			       (current == null && state == Iterator.State.NORMAL && _prev != null) ||
+			return (current == null && _prev != null) ||
 			       (current != null && current.prev != null);
 		}
 
@@ -436,15 +411,10 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 			assert (stamp == _set.stamp);
 		}
 
-		private weak Node<G>? current;
-		private weak Node<G>? _next;
-		private weak Node<G>? _prev;
-		private enum State {
-			BEFORE_THE_BEGIN,
-			NORMAL,
-			PAST_THE_END
-		}
-		private Iterator.State state = Iterator.State.BEFORE_THE_BEGIN;
+		private weak Node<G>? current = null;
+		private weak Node<G>? _next = null;
+		private weak Node<G>? _prev = null;
+		private bool started = false;
 	}
 
 	private Node<G>? root = null;
