@@ -108,7 +108,7 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 		if (is_black (node.left) && is_red (node.right)) {
 			rotate_left (ref node);
 		}
-		if (is_red (node.left) && is_black (node.right)) {
+		if (is_red (node.left) && is_red (node.left.left)) {
 			rotate_right (ref node);
 		}
 	}
