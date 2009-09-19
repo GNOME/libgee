@@ -69,14 +69,14 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 	/**
 	 * @inheritDoc
 	 */
-	public virtual G? first () {
+	public virtual G first () {
 		return get (0);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public virtual G? last () {
+	public virtual G last () {
 		return get (size - 1);
 	}
 
