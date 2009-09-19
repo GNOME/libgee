@@ -86,9 +86,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		this.key_hash_func = key_hash_func;
 		this.key_equal_func = key_equal_func;
 		this.value_equal_func = value_equal_func;
-	}
 
-	construct {
 		_array_size = MIN_SIZE;
 		_nodes = new Node<K,V>[_array_size];
 	}
@@ -241,18 +239,18 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class KeySet<K,V> : AbstractSet<K> {
-		public HashMap<K,V> map { private set; get; }
+		private HashMap<K,V> _map;
 
 		public KeySet (HashMap map) {
-			this.map = map;
+			_map = map;
 		}
 
 		public override Iterator<K> iterator () {
-			return new KeyIterator<K,V> (map);
+			return new KeyIterator<K,V> (_map);
 		}
 
 		public override int size {
-			get { return map.size; }
+			get { return _map.size; }
 		}
 
 		public override bool add (K key) {
@@ -286,18 +284,18 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class ValueCollection<K,V> : AbstractCollection<V> {
-		public HashMap<K,V> map { private set; get; }
+		private HashMap<K,V> _map;
 
 		public ValueCollection (HashMap map) {
-			this.map = map;
+			_map = map;
 		}
 
 		public override Iterator<V> iterator () {
-			return new ValueIterator<K,V> (map);
+			return new ValueIterator<K,V> (_map);
 		}
 
 		public override int size {
-			get { return map.size; }
+			get { return _map.size; }
 		}
 
 		public override bool add (V value) {
@@ -315,7 +313,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		public override bool contains (V value) {
 			Iterator<V> it = iterator ();
 			while (it.next ()) {
-				if (map.value_equal_func (it.get (), value)) {
+				if (_map.value_equal_func (it.get (), value)) {
 					return true;
 				}
 			}
@@ -336,13 +334,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private abstract class NodeIterator<K,V> : Object {
-		public HashMap<K,V> map {
-			private set {
-				_map = value;
-				_stamp = _map._stamp;
-			}
-		}
-
 		protected HashMap<K,V> _map;
 		private int _index = -1;
 		protected weak Node<K,V> _node;
@@ -352,7 +343,8 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		protected int _stamp;
 
 		public NodeIterator (HashMap map) {
-			this.map = map;
+			_map = map;
+			_stamp = _map._stamp;
 		}
 
 		public bool next () {

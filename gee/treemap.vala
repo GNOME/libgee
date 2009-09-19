@@ -363,18 +363,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	private int stamp = 0;
 
 	private class KeySet<K,V> : AbstractSet<K> {
-		public TreeMap<K,V> map { private set; get; }
+		private TreeMap<K,V> _map;
 
 		public KeySet (TreeMap<K,V> map) {
-			this.map = map;
+			_map = map;
 		}
 
 		public override Iterator<K> iterator () {
-			return new KeyIterator<K,V> (map);
+			return new KeyIterator<K,V> (_map);
 		}
 
 		public override int size {
-			get { return map.size; }
+			get { return _map.size; }
 		}
 
 		public override bool add (K key) {
@@ -390,7 +390,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		public override bool contains (K key) {
-			return map.contains (key);
+			return _map.contains (key);
 		}
 
 		public override bool add_all (Collection<K> collection) {
@@ -407,18 +407,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class ValueCollection<K,V> : AbstractCollection<V> {
-		public TreeMap<K,V> map { private set; get; }
+		private TreeMap<K,V> _map;
 
 		public ValueCollection (TreeMap<K,V> map) {
-			this.map = map;
+			_map = map;
 		}
 
 		public override Iterator<V> iterator () {
-			return new ValueIterator<K,V> (map);
+			return new ValueIterator<K,V> (_map);
 		}
 
 		public override int size {
-			get { return map.size; }
+			get { return _map.size; }
 		}
 
 		public override bool add (V key) {
@@ -436,7 +436,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		public override bool contains (V key) {
 			Iterator<V> it = iterator ();
 			while (it.next ()) {
-				if (map.value_equal_func (key, it.get ())) {
+				if (_map.value_equal_func (key, it.get ())) {
 					return true;
 				}
 			}
@@ -457,20 +457,14 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class KeyIterator<K,V> : Object, Gee.Iterator<K>, BidirIterator<K> {
-		public TreeMap<K,V> map {
-			private set {
-				_map = value;
-				stamp = _map.stamp;
-			}
-		}
-
 		private TreeMap<K,V> _map;
 
 		// concurrent modification protection
 		private int stamp;
 
 		public KeyIterator (TreeMap<K,V> map) {
-			this.map = map;
+			_map = map;
+			stamp = _map.stamp;
 		}
 
 		public bool next () {
@@ -539,20 +533,14 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class ValueIterator<K,V> : Object, Gee.Iterator<V>, Gee.BidirIterator<V> {
-		public TreeMap<K,V> map {
-			private set {
-				_map = value;
-				stamp = _map.stamp;
-			}
-		}
-
 		private TreeMap<K,V> _map;
 
 		// concurrent modification protection
 		private int stamp;
 
 		public ValueIterator (TreeMap<K,V> map) {
-			this.map = map;
+			_map = map;
+			stamp = _map.stamp;
 		}
 
 		public bool next () {

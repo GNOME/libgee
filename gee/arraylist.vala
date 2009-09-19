@@ -247,13 +247,6 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	private class Iterator<G> : Object, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G> {
-		public ArrayList<G> list {
-			construct {
-				_list = value;
-				_stamp = _list._stamp;
-			}
-		}
-
 		private ArrayList<G> _list;
 		private int _index = -1;
 		private bool _removed = false;
@@ -262,7 +255,8 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		private int _stamp = 0;
 
 		public Iterator (ArrayList list) {
-			this.list = list;
+			_list = list;
+			_stamp = _list._stamp;
 		}
 
 		public bool next () {

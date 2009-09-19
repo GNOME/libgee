@@ -199,13 +199,6 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	}
 
 	private class Iterator<G> : Object, Gee.Iterator<G> {
-		public new HashSet<G> set {
-			construct {
-				_set = value;
-				_stamp = _set._stamp;
-			}
-		}
-
 		private HashSet<G> _set;
 		private int _index = -1;
 		private weak Node<G> _node;
@@ -215,7 +208,8 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 		private int _stamp = 0;
 
 		public Iterator (HashSet set) {
-			this.set = set;
+			_set = set;
+			_stamp = _set._stamp;
 		}
 
 		public bool next () {
