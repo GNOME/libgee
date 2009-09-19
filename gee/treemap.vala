@@ -200,10 +200,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			_size++;
 		}
 
-		if (is_red (node.left) && is_red (node.right)) {
-			node.flip ();
-		}
-
 		int cmp = key_compare_func (key, node.key);
 		if (cmp == 0) {
 			node.value = value;
@@ -226,7 +222,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private void move_red_left (ref Node<K, V> root) {
 		root.flip ();
-		if (root.right != null && is_red (root.right.left)) {
+		if (is_red (root.right.left)) {
 			rotate_right (ref root.right);
 			rotate_left (ref root);
 			root.flip ();
@@ -235,8 +231,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private void move_red_right (ref Node<K, V> root) {
 		root.flip ();
-		if (root.left != null && is_red (root.left.left)) {
-			rotate_right (ref root.right);
+		if (is_red (root.left.left)) {
+			rotate_right (ref root);
 			root.flip ();
 		}
 	}
@@ -284,7 +280,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			if (left == null) {
 				return false;
 			}
-			if (is_black (left) && is_black (left.left)) {
+			if (node.left != null && is_black (left) && is_black (left.left)) {
 				move_red_left (ref node);
 			}
 			bool r = remove_from_node (ref node.left, key, out value);
@@ -295,12 +291,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 				rotate_right (ref node);
 			}
 
-			weak Node<K,V> r = node.right;
+			weak Node<K,V>? r = node.right;
 			if (key_compare_func (key, node.key) == 0 && r == null) {
 				fix_removal (ref node, null, out value);
 				return true;
 			}
-			if (r == null || (is_black (r) && is_black (r.left))) {
+			if (is_black (r) && r != null && is_black (r.left)) {
 				move_red_right (ref node);
 			}
 			if (key_compare_func (key, node.key) == 0) {
@@ -322,6 +318,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 		if (is_red (node.left) && is_red (node.left.left)) {
 			rotate_right (ref node);
+		}
+		if (is_red (node.left) && is_red (node.right)) {
+			node.flip ();
 		}
 	}
 
@@ -389,7 +388,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		public void flip () {
-			color.flip ();
+			color = color.flip ();
 			if (left != null) {
 				left.color = left.color.flip ();
 			}
