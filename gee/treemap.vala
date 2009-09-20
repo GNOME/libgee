@@ -44,7 +44,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	 */
 	public override Set<K> keys {
 		owned get {
-			return new KeySet<K,V> (this);
+			Set<K> keys = _keys;
+			if (_keys == null) {
+				keys = new KeySet<K,V> (this);
+				_keys = keys;
+				keys.add_weak_pointer (&_keys);
+			}
+			return keys;
 		}
 	}
 
@@ -53,7 +59,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	 */
 	public override Collection<V> values {
 		owned get {
-			return new ValueCollection<K,V> (this);
+			Collection<K> values = _values;
+			if (_values == null) {
+				values = new ValueCollection<K,V> (this);
+				_values = values;
+				values.add_weak_pointer (&_values);
+			}
+			return values;
 		}
 	}
 
@@ -62,7 +74,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	 */
 	public override Set<Map.Entry<K,V>> entries {
 		owned get {
-			return new EntrySet<K,V> (this);
+			Set<Map.Entry<K,V>> entries = _entries;
+			if (_entries == null) {
+				entries = new EntrySet<K,V> (this);
+				_entries = entries;
+				entries.add_weak_pointer (&_entries);
+			}
+			return entries;
 		}
 	}
 
@@ -77,6 +95,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	public EqualFunc value_equal_func { private set; get; }
 
 	private int _size = 0;
+
+	private weak Set<K> _keys;
+	private weak Collection<V> _values;
+	private weak Set<Map.Entry<K,V>> _entries;
 
 	/**
 	 * Constructs a new, empty tree map sorted according to the specified
