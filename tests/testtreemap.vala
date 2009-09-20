@@ -88,7 +88,7 @@ public class TreeMapTests : MapTests {
 		test_tree_map.set ("eleven", "eleven");
 		test_tree_map.set ("twelve", "twelve");
 
-		Iterator<string> iterator = test_tree_map.get_keys ().iterator ();
+		Iterator<string> iterator = test_tree_map.keys.iterator ();
 		assert (iterator.next () == true);
 		assert (iterator.get () == "eight");
 		assert (iterator.next () == true);

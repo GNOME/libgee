@@ -47,6 +47,24 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		get { return _map.is_empty; }
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public Set<K> keys {
+		owned get {
+			return _map.keys;
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Collection<V> values {
+		owned get {
+			return _map.values;
+		}
+	}
+
 	private Map<K,V> _map;
 
 	/**
@@ -61,22 +79,15 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	/**
 	 * @inheritDoc
 	 */
-	public Set<K> get_keys () {
-		return _map.get_keys ();
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Collection<V> get_values () {
-		return _map.get_values ();
+	public bool has_key (K key) {
+		return _map.has_key (key);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public bool contains (K key) {
-		return _map.contains (key);
+		return _map.has_key (key);
 	}
 
 	/**
@@ -90,6 +101,13 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	 * Unimplemented method (read only map).
 	 */
 	public new void set (K key, V value) {
+		assert_not_reached ();
+	}
+
+	/**
+	 * Unimplemented method (read only map).
+	 */
+	public bool unset (K key, out V? value = null) {
 		assert_not_reached ();
 	}
 
@@ -117,6 +135,13 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	/**
 	 * Unimplemented method (read only map).
 	 */
+	public bool unset_all (Map<K,V> map) {
+		assert_not_reached ();
+	}
+
+	/**
+	 * Unimplemented method (read only map).
+	 */
 	public bool remove_all (Map<K,V> map) {
 		assert_not_reached ();
 	}
@@ -124,8 +149,15 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	/**
 	 * @inheritDoc
 	 */
+	public bool has_all (Map<K,V> map) {
+		return _map.has_all (map);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public bool contains_all (Map<K,V> map) {
-		return _map.contains_all (map);
+		return _map.has_all (map);
 	}
 
 	public virtual Map<K,V> read_only_view {

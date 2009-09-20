@@ -42,6 +42,24 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public override Set<K> keys {
+		owned get {
+			return new KeySet<K,V> (this);
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public override Collection<V> values {
+		owned get {
+			return new ValueCollection<K,V> (this);
+		}
+	}
+
+	/**
 	 * The keys' hash function.
 	 */
 	public HashFunc key_hash_func { private set; get; }
@@ -91,20 +109,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		_nodes = new Node<K,V>[_array_size];
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public override Set<K> get_keys () {
-		return new KeySet<K,V> (this);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public override Collection<V> get_values () {
-		return new ValueCollection<K,V> (this);
-	}
-
 	internal Gee.UpdatableKeyIterator<K,V> updatable_key_iterator () {
 		return new UpdatableKeyIterator<K,V> (this);
 	}
@@ -121,7 +125,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * @inheritDoc
 	 */
-	public override bool contains (K key) {
+	public override bool has_key (K key) {
 		Node<K,V>** node = lookup_node (key);
 		return (*node != null);
 	}
@@ -157,7 +161,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * @inheritDoc
 	 */
-	public override bool remove (K key, out V? value = null) {
+	public override bool unset (K key, out V? value = null) {
 		Node<K,V>** node = lookup_node (key);
 		if (*node != null) {
 			Node<K,V> next = (owned) (*node)->next;

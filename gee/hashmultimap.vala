@@ -62,12 +62,12 @@ public class Gee.HashMultiMap<K,V> : GLib.Object, MultiMap<K,V> {
 	}
 
 	public Set<K> get_keys () {
-		return _items.get_keys ();
+		return _items.keys;
 	}
 
 	public MultiSet<K> get_all_keys () {
 		MultiSet<K> result = new HashMultiSet<K> (_key_hash_func, _key_equal_func);
-		foreach (var key in _items.get_keys ()) {
+		foreach (var key in _items.keys) {
 			for (int i = 0; i < _items.get (key).size; i++) {
 				result.add (key);
 			}
@@ -77,7 +77,7 @@ public class Gee.HashMultiMap<K,V> : GLib.Object, MultiMap<K,V> {
 
 	public Collection<V> get_values () {
 		var result = new ArrayList<V> (_value_equal_func);
-		foreach (var key in _items.get_keys ()) {
+		foreach (var key in _items.keys) {
 			foreach (var value in _items.get (key)) {
 				result.add (value);
 			}

@@ -40,6 +40,24 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public override Set<K> keys {
+		owned get {
+			return new KeySet<K,V> (this);
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public override Collection<V> values {
+		owned get {
+			return new ValueCollection<K,V> (this);
+		}
+	}
+
+	/**
 	 * The keys' comparator function.
 	 */
 	public CompareFunc key_compare_func { private set; get; }
@@ -67,20 +85,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 		this.key_compare_func = key_compare_func;
 		this.value_equal_func = value_equal_func;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public override Set<K> get_keys () {
-		return new KeySet<K,V> (this);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public override Collection<V> get_values () {
-		return new ValueCollection<K,V> (this);
 	}
 
 	private void rotate_right (ref Node<K, V> root) {
@@ -112,7 +116,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * @inheritDoc
 	 */
-	public override bool contains (K key) {
+	public override bool has_key (K key) {
 		weak Node<K, V>? cur = root;
 		while (cur != null) {
 			int res = key_compare_func (key, cur.key);
@@ -285,7 +289,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * @inheritDoc
 	 */
-	public override bool remove (K key, out V? value = null) {
+	public override bool unset (K key, out V? value = null) {
 		V node_value;
 		bool b = remove_from_node (ref root, key, out node_value);
 
