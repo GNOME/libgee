@@ -40,6 +40,8 @@ tests_VALASOURCES = \
        testtreeset.vala \
        $(NULL)
 
+tests_DEPENDENCIES = $(top_srcdir)/gee/gee-1.0.vapi
+
 tests_SOURCES = tests.vala.stamp $(tests_VALASOURCES:.vala=.c)
 tests.vala.stamp: $(tests_VALASOURCES)
 	$(VALAC) -C --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
