@@ -56,6 +56,8 @@ public abstract class MapTests : Gee.TestCase {
 		// Add a binding
 		test_map.set ("one", "value_of_one");
 		assert (test_map.has_key ("one"));
+		assert (test_map.has ("one", "value_of_one"));
+		assert (! test_map.has ("one", "another_value_for_one"));
 		assert (test_map.get ("one") == "value_of_one");
 		assert (! test_map.has_key ("two"));
 		assert (test_map.get ("two") == null);
@@ -67,6 +69,8 @@ public abstract class MapTests : Gee.TestCase {
 		// Remove the last added binding
 		assert (test_map.unset ("one"));
 		assert (! test_map.has_key ("one"));
+		assert (! test_map.has ("one", "value_of_one"));
+		assert (! test_map.has ("one", "another_value_for_one"));
 		assert (test_map.get ("one") == null);
 		assert (! test_map.has_key ("two"));
 		assert (test_map.get ("two") ==  null);
@@ -373,10 +377,22 @@ public abstract class MapTests : Gee.TestCase {
 		test_map.set ("one", "value_of_one");
 		test_map.set ("two", "value_of_two");
 
+		another_map.set ("one", "value_of_one");
+		another_map.set ("two", "value_of_two");
+
+		assert (test_map.has_all (another_map));
+
+		test_map.clear ();
+		another_map.clear ();
+
+		// Test_Map and another_map are not the same.
+		test_map.set ("one", "value_of_one");
+		test_map.set ("two", "value_of_two");
+
 		another_map.set ("one", "another_value_of_one");
 		another_map.set ("two", "another_value_of_two");
 
-		assert (test_map.has_all (another_map));
+		assert (! test_map.has_all (another_map));
 
 		test_map.clear ();
 		another_map.clear ();

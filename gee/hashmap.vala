@@ -133,6 +133,14 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * @inheritDoc
 	 */
+	public override bool has (K key, V value) {
+		Node<K,V>** node = lookup_node (key);
+		return (*node != null && value_equal_func ((*node)->value, value));
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public override V? get (K key) {
 		Node<K,V>* node = (*lookup_node (key));
 		if (node != null) {

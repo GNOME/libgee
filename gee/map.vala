@@ -64,6 +64,16 @@ public interface Gee.Map<K,V> : GLib.Object {
 	public abstract bool contains (K key);
 
 	/**
+	 * Determines whether this map has the specified key/value entry.
+	 *
+	 * @param key the key to locate in the map
+	 * @param value the corresponding value
+	 *
+	 * @return    true if key is found, false otherwise
+	 */
+	public abstract bool has (K key, V value);
+
+	/**
 	 * Returns the value of the specified key in this map.
 	 *
 	 * @param key the key whose value is to be retrieved

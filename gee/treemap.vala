@@ -134,6 +134,14 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * @inheritDoc
 	 */
+	public override bool has (K key, V value) {
+		V? own_value = get (key);
+		return (own_value != null && value_equal_func (own_value, value));
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public override V? get (K key) {
 		weak Node<K, V>? cur = root;
 		while (cur != null) {

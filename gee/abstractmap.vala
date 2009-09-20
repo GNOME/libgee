@@ -69,6 +69,11 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 	/**
 	 * @inheritDoc
 	 */
+	public abstract bool has (K key, V value);
+
+	/**
+	 * @inheritDoc
+	 */
 	public abstract new V? get (K key);
 
 	/**
@@ -130,7 +135,7 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 	 */
 	public virtual bool has_all (Map<K,V> map) {
 		foreach (K key in map.keys) {
-			if (!has_key (key)) {
+			if (!has (key, map.get (key))) {
 				return false;
 			}
 		}

@@ -93,6 +93,13 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	/**
 	 * @inheritDoc
 	 */
+	public bool has (K key, V value) {
+		return _map.has (key, value);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public new V? get (K key) {
 		return _map.get (key);
 	}
