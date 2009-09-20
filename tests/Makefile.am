@@ -35,6 +35,8 @@ tests_VALASOURCES = \
        testqueue.vala \
        testreadonlycollection.vala \
        testreadonlylist.vala \
+       testreadonlymap.vala \
+       testreadonlyset.vala \
        testset.vala \
        testtreemap.vala \
        testtreeset.vala \

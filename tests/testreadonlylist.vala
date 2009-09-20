@@ -20,6 +20,7 @@
  * Author:
  * 	Tomaž Vajngerl <quikee@gmail.com>
  * 	Julien Peeters <contact@julienpeeters.fr>
+ * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
  */
 
 using Gee;
@@ -27,16 +28,216 @@ using Gee;
 public class ReadOnlyListTests : ReadOnlyCollectionTests {
 
 	public ReadOnlyListTests () {
-		base ("ReadOnlyList");
+		base.with_name ("ReadOnlyList");
+		add_test ("[ReadOnlyList] immutable iterator", test_immutable_iterator);
+		add_test ("[ReadOnlyList] immutable", test_immutable);
+		add_test ("[ReadOnlyList] accurate view", test_accurate_view);
 	}
 
 	public override void set_up () {
 		test_collection = new ArrayList<string> ();
-		ro_collection = test_collection.read_only_view;
+		ro_collection = get_ro_view (test_collection);
 	}
 
 	public override void tear_down () {
 		test_collection = null;
 		ro_collection = null;
+	}
+
+	protected override Collection<string> get_ro_view (Collection<string> collection) {
+		return ((Gee.List) collection).read_only_view;
+	}
+
+	public new void test_immutable_iterator () {
+		var test_list = test_collection as Gee.List<string>;
+		var ro_list = ro_collection as Gee.List<string>;
+
+		assert (test_list.add ("one"));
+		assert (test_list.add ("two"));
+
+		assert (ro_list.size == 2);
+		assert (ro_list.get (0) == "one");
+		assert (ro_list.get (1) == "two");
+
+		ListIterator<string> iterator = ro_list.list_iterator ();
+
+		assert (iterator.has_next ());
+		assert (iterator.next ());
+		assert (iterator.get () == "one");
+		assert (iterator.index () == 0);
+
+		assert (iterator.has_next ());
+		assert (iterator.next ());
+		assert (iterator.get () == "two");
+		assert (iterator.index () == 1);
+
+		assert (! iterator.has_next ());
+		assert (! iterator.next ());
+
+		assert (iterator.has_previous ());
+		assert (iterator.previous ());
+		assert (iterator.get () == "one");
+		assert (iterator.index () == 0);
+
+		assert (iterator.last ());
+		assert (iterator.get () == "two");
+		assert (iterator.index () == 1);
+
+		assert (iterator.first ());
+		assert (iterator.get () == "one");
+		assert (iterator.index () == 0);
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			iterator.remove ();
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 2);
+		assert (ro_list.get (0) == "one");
+		assert (ro_list.get (1) == "two");
+		assert (iterator.index () == 0);
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			iterator.set ("three");
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 2);
+		assert (ro_list.get (0) == "one");
+		assert (ro_list.get (1) == "two");
+		assert (iterator.index () == 0);
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			iterator.insert ("three");
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 2);
+		assert (ro_list.get (0) == "one");
+		assert (ro_list.get (1) == "two");
+		assert (iterator.index () == 0);
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			iterator.add ("three");
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 2);
+		assert (ro_list.get (0) == "one");
+		assert (ro_list.get (1) == "two");
+		assert (iterator.index () == 0);
+	}
+
+	public new void test_immutable () {
+		var test_list = test_collection as Gee.List<string>;
+		var ro_list = ro_collection as Gee.List<string>;
+
+		assert (test_list.add ("one"));
+		assert (ro_list.size == 1);
+		assert (ro_list.contains ("one"));
+
+		Collection<string> dummy = new ArrayList<string> ();
+		assert (dummy.add ("one"));
+		assert (dummy.add ("two"));
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			ro_list.set (0, "two");
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 1);
+		assert (ro_list.contains ("one"));
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			ro_list.insert (1, "two");
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 1);
+		assert (ro_list.contains ("one"));
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			ro_list.remove_at (1);
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 1);
+		assert (ro_list.contains ("one"));
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			ro_list.insert_all (1, dummy);
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 1);
+		assert (ro_list.contains ("one"));
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			ro_list.sort ();
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_list.size == 1);
+		assert (ro_list.contains ("one"));
+	}
+
+	public new void test_accurate_view () {
+		var test_list = test_collection as Gee.List<string>;
+		var ro_list = ro_collection as Gee.List<string>;
+
+		Collection<string> dummy = new ArrayList<string> ();
+		assert (dummy.add ("one"));
+		assert (dummy.add ("two"));
+
+		assert (ro_list.element_type == typeof (string));
+
+		assert (ro_list.size == 0);
+		assert (ro_list.is_empty);
+		assert (! ro_list.contains ("one"));
+		assert (ro_list.index_of ("one") == -1);
+
+		assert (test_list.add ("one"));
+		assert (ro_list.size == 1);
+		assert (! ro_list.is_empty);
+		assert (ro_list.get (0) == "one");
+		assert (ro_list.index_of ("one") == 0);
+		assert (ro_list.first () == "one");
+		assert (ro_list.last () == "one");
+
+		assert (test_list.add ("two"));
+		assert (ro_list.size == 2);
+		assert (! ro_list.is_empty);
+		assert (ro_list.get (0) == "one");
+		assert (ro_list.index_of ("one") == 0);
+		assert (ro_list.get (1) == "two");
+		assert (ro_list.index_of ("two") == 1);
+		assert (ro_list.first () == "one");
+		assert (ro_list.last () == "two");
+
+		assert (test_list.remove ("one"));
+		assert (ro_list.size == 1);
+		assert (! ro_list.is_empty);
+		assert (! ro_list.contains ("one"));
+		assert (ro_list.index_of ("one") == -1);
+		assert (ro_list.contains ("two"));
+		assert (ro_list.get (0) == "two");
+		assert (ro_list.index_of ("two") == 0);
+		assert (ro_list.first () == "two");
+		assert (ro_list.last () == "two");
+
+		test_list.clear ();
+		assert (ro_list.size == 0);
+		assert (ro_list.is_empty);
+		assert (ro_list.index_of ("one") == -1);
+		assert (ro_list.index_of ("two") == -1);
 	}
 }

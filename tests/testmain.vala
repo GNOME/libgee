@@ -25,6 +25,7 @@ void main (string[] args) {
 	Test.init (ref args);
 
 	TestSuite.get_root ().add_suite (new ArrayListTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new ComparableTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new HashMapTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new HashMultiMapTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new HashMultiSetTests ().get_suite ());
@@ -32,7 +33,10 @@ void main (string[] args) {
 	TestSuite.get_root ().add_suite (new LinkedListTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new LinkedListAsDequeTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new PriorityQueueTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new ReadOnlyCollectionTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new ReadOnlyListTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new ReadOnlyMapTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new ReadOnlySetTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new TreeMapTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new TreeSetTests ().get_suite ());
 

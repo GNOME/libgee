@@ -24,24 +24,40 @@
 
 using Gee;
 
-public abstract class ReadOnlyCollectionTests : Gee.TestCase {
+public class ReadOnlyCollectionTests : Gee.TestCase {
 
-	public ReadOnlyCollectionTests (string name) {
+	public ReadOnlyCollectionTests () {
+		this.with_name ("ReadOnlyCollection");
+	}
+
+	public ReadOnlyCollectionTests.with_name (string name) {
 		base (name);
 		add_test ("[ReadOnlyCollection] unique read-only view instance",
 		          test_unique_read_only_view_instance);
-		add_test ("[ReadOnlyCollection] add", test_add);
-		add_test ("[ReadOnlyCollection] clear", test_clear);
-		add_test ("[ReadOnlyCollection] remove", test_remove);
-		add_test ("[ReadOnlyCollection] contains", test_contains);
-		add_test ("[ReadOnlyCollection] size", test_size);
+		add_test ("[ReadOnlyCollection] immutable iterator", test_immutable_iterator);
+		add_test ("[ReadOnlyCollection] immutable", test_immutable);
+		add_test ("[ReadOnlyCollection] accurate view", test_accurate_view);
 	}
 
 	protected Collection<string> test_collection;
 	protected Collection<string> ro_collection;
 
+	public override void set_up () {
+		test_collection = new HashMultiSet<string> ();
+		ro_collection = get_ro_view (test_collection);
+	}
+
+	public override void tear_down () {
+		test_collection = null;
+		ro_collection = null;
+	}
+
+	protected virtual Collection<string> get_ro_view (Collection<string> collection) {
+		return collection.read_only_view;
+	}
+
 	public void test_unique_read_only_view_instance () {
-		var another_ro_collection = test_collection.read_only_view;
+		var another_ro_collection = get_ro_view (test_collection);
 		assert (ro_collection == another_ro_collection);
 
 		ro_collection.set_data ("marker", new Object ());
@@ -50,15 +66,57 @@ public abstract class ReadOnlyCollectionTests : Gee.TestCase {
 		another_ro_collection = null;
 		ro_collection = null;
 
-		another_ro_collection = test_collection.read_only_view;
+		another_ro_collection = get_ro_view (test_collection);
 		assert (another_ro_collection.get_data ("marker") == null);
+
+		// Check that the read-only view of the view is itself
+		assert (another_ro_collection == get_ro_view (another_ro_collection));
 	}
 
-	public void test_add () {
+	public void test_immutable_iterator () {
 		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
 
+		assert (ro_collection.size == 2);
+		assert (ro_collection.contains ("one"));
+		assert (ro_collection.contains ("two"));
+
+		Iterator<string> iterator = ro_collection.iterator ();
+
+		assert (iterator.has_next ());
+		assert (iterator.next ());
+		assert (iterator.get () == "one");
+
+		assert (iterator.has_next ());
+		assert (iterator.next ());
+		assert (iterator.get () == "two");
+
+		assert (! iterator.has_next ());
+		assert (! iterator.next ());
+
+		assert (iterator.first ());
+		assert (iterator.get () == "one");
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			iterator.remove ();
+			return;
+		}
+		Test.trap_assert_failed ();
+
+		assert (ro_collection.size == 2);
+		assert (ro_collection.contains ("one"));
+		assert (ro_collection.contains ("two"));
+	}
+
+	public void test_immutable () {
+		assert (test_collection.add ("one"));
 		assert (ro_collection.size == 1);
 		assert (ro_collection.contains ("one"));
+
+		Collection<string> dummy = new ArrayList<string> ();
+		assert (dummy.add ("one"));
+		assert (dummy.add ("two"));
 
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
@@ -66,14 +124,6 @@ public abstract class ReadOnlyCollectionTests : Gee.TestCase {
 			return;
 		}
 		Test.trap_assert_failed ();
-
-		assert (ro_collection.size == 1);
-		assert (ro_collection.contains ("one"));
-	}
-
-	public void test_clear () {
-		assert (test_collection.add ("one"));
-
 		assert (ro_collection.size == 1);
 		assert (ro_collection.contains ("one"));
 
@@ -83,22 +133,6 @@ public abstract class ReadOnlyCollectionTests : Gee.TestCase {
 			return;
 		}
 		Test.trap_assert_failed ();
-
-		assert (ro_collection.size == 1);
-		assert (ro_collection.contains ("one"));
-	}
-
-	public void test_contains () {
-		assert (! ro_collection.contains ("one"));
-		assert (test_collection.add ("one"));
-		assert (ro_collection.contains ("one"));
-		assert (test_collection.remove ("one"));
-		assert (! ro_collection.contains ("one"));
-	}
-
-	public void test_remove () {
-		assert (test_collection.add ("one"));
-
 		assert (ro_collection.size == 1);
 		assert (ro_collection.contains ("one"));
 
@@ -108,18 +142,72 @@ public abstract class ReadOnlyCollectionTests : Gee.TestCase {
 			return;
 		}
 		Test.trap_assert_failed ();
+		assert (ro_collection.size == 1);
+		assert (ro_collection.contains ("one"));
 
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			assert (ro_collection.add_all (dummy));
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_collection.size == 1);
+		assert (ro_collection.contains ("one"));
+
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			assert (ro_collection.remove_all (dummy));
+			return;
+		}
+		Test.trap_assert_failed ();
+		assert (ro_collection.size == 1);
+		assert (ro_collection.contains ("one"));
+
+		assert (dummy.remove ("one"));
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			assert (ro_collection.retain_all (dummy));
+			return;
+		}
+		Test.trap_assert_failed ();
 		assert (ro_collection.size == 1);
 		assert (ro_collection.contains ("one"));
 	}
 
-	public void test_size () {
+	public void test_accurate_view () {
+		Collection<string> dummy = new ArrayList<string> ();
+		assert (dummy.add ("one"));
+		assert (dummy.add ("two"));
+
+		assert (ro_collection.element_type == typeof (string));
+
 		assert (ro_collection.size == 0);
+		assert (ro_collection.is_empty);
+		assert (! ro_collection.contains ("one"));
+
 		assert (test_collection.add ("one"));
 		assert (ro_collection.size == 1);
+		assert (! ro_collection.is_empty);
+		assert (ro_collection.contains ("one"));
+
 		assert (test_collection.add ("two"));
 		assert (ro_collection.size == 2);
+		assert (! ro_collection.is_empty);
+		assert (ro_collection.contains ("one"));
+		assert (ro_collection.contains ("two"));
+		assert (ro_collection.contains_all (dummy));
+
+		assert (test_collection.remove ("one"));
+		assert (ro_collection.size == 1);
+		assert (! ro_collection.is_empty);
+		assert (! ro_collection.contains ("one"));
+		assert (ro_collection.contains ("two"));
+		assert (! ro_collection.contains_all (dummy));
+
 		test_collection.clear ();
 		assert (ro_collection.size == 0);
+		assert (ro_collection.is_empty);
+		assert (! ro_collection.contains ("one"));
+		assert (! ro_collection.contains ("two"));
 	}
 }
