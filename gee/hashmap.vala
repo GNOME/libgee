@@ -60,6 +60,15 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public override Set<Map.Entry<K,V>> entries {
+		owned get {
+			return new EntrySet<K,V> (this);
+		}
+	}
+
+	/**
 	 * The keys' hash function.
 	 */
 	public HashFunc key_hash_func { private set; get; }
@@ -242,11 +251,38 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		public V value;
 		public Node<K,V> next;
 		public uint key_hash;
+		public unowned Map.Entry<K,V>? entry;
 
 		public Node (owned K k, owned V v, uint hash) {
 			key = (owned) k;
 			value = (owned) v;
 			key_hash = hash;
+			 entry = null;
+		}
+	}
+
+	private class Entry<K,V> : Map.Entry<K,V> {
+		private unowned Node<K,V> _node;
+
+		public static Map.Entry<K,V> entry_for<K,V> (Node<K,V> node) {
+			Map.Entry<K,V> result = node.entry;
+			if (node.entry == null) {
+				result = new Entry<K,V> (node);
+				node.entry = result;
+				result.add_weak_pointer (&node.entry);
+			}
+			return result;
+		}
+
+		public Entry (Node<K,V> node) {
+			_node = node;
+		}
+
+		public override K key { get { return _node.key; } }
+
+		public override V value {
+			get { return _node.value; }
+			set { _node.value = value; }
 		}
 	}
 
@@ -341,6 +377,50 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		public override bool retain_all (Collection<V> collection) {
+			assert_not_reached ();
+		}
+	}
+
+	private class EntrySet<K,V> : AbstractSet<Map.Entry<K, V>> {
+		private HashMap<K,V> _map;
+
+		public EntrySet (HashMap<K,V> map) {
+			_map = map;
+		}
+
+		public override Iterator<Map.Entry<K, V>> iterator () {
+			return new EntryIterator<K,V> (_map);
+		}
+
+		public override int size {
+			get { return _map.size; }
+		}
+
+		public override bool add (Map.Entry<K, V> entry) {
+			assert_not_reached ();
+		}
+
+		public override void clear () {
+			assert_not_reached ();
+		}
+
+		public override bool remove (Map.Entry<K, V> entry) {
+			assert_not_reached ();
+		}
+
+		public override bool contains (Map.Entry<K, V> entry) {
+			return _map.has (entry.key, entry.value);
+		}
+
+		public override bool add_all (Collection<Map.Entry<K, V>> entries) {
+			assert_not_reached ();
+		}
+
+		public override bool remove_all (Collection<Map.Entry<K, V>> entries) {
+			assert_not_reached ();
+		}
+
+		public override bool retain_all (Collection<Map.Entry<K, V>> entries) {
 			assert_not_reached ();
 		}
 	}
@@ -454,6 +534,22 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (_stamp == _map._stamp);
 			assert (_node != null);
 			return _node.value;
+		}
+
+		public void remove () {
+			assert_not_reached ();
+		}
+	}
+
+	private class EntryIterator<K,V> : NodeIterator<K,V>, Iterator<Map.Entry<K,V>> {
+		public EntryIterator (HashMap map) {
+			base (map);
+		}
+
+		public new Map.Entry<K,V> get () {
+			assert (_stamp == _map._stamp);
+			assert (_node != null);
+			return Entry<K,V>.entry_for<K,V> (_node);
 		}
 
 		public void remove () {

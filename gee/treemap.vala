@@ -58,6 +58,15 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public override Set<Map.Entry<K,V>> entries {
+		owned get {
+			return new EntrySet<K,V> (this);
+		}
+	}
+
+	/**
 	 * The keys' comparator function.
 	 */
 	public CompareFunc key_compare_func { private set; get; }
@@ -367,12 +376,38 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		public Node<K, V>? right;
 		public weak Node<K, V>? prev;
 		public weak Node<K, V>? next;
+		public unowned Map.Entry<K,V>? entry;
 	}
 
 	private Node<K, V>? root = null;
 	private weak Node<K, V>? first = null;
 	private weak Node<K, V>? last = null;
 	private int stamp = 0;
+
+	private class Entry<K,V> : Map.Entry<K,V> {
+		private unowned Node<K,V> _node;
+
+		public static Map.Entry<K,V> entry_for<K,V> (Node<K,V> node) {
+			Map.Entry<K,V> result = node.entry;
+			if (node.entry == null) {
+				result = new Entry<K,V> (node);
+				node.entry = result;
+				result.add_weak_pointer (&node.entry);
+			}
+			return result;
+		}
+
+		public Entry (Node<K,V> node) {
+			_node = node;
+		}
+
+		public override K key { get { return _node.key; } }
+
+		public override V value {
+			get { return _node.value; }
+			set { _node.value = value; }
+		}
+	}
 
 	private class KeySet<K,V> : AbstractSet<K> {
 		private TreeMap<K,V> _map;
@@ -464,6 +499,50 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		public override bool retain_all (Collection<V> collection) {
+			assert_not_reached ();
+		}
+	}
+
+	private class EntrySet<K,V> : AbstractSet<Map.Entry<K, V>> {
+		private TreeMap<K,V> _map;
+
+		public EntrySet (TreeMap<K,V> map) {
+			_map = map;
+		}
+
+		public override Iterator<Map.Entry<K, V>> iterator () {
+			return new EntryIterator<K,V> (_map);
+		}
+
+		public override int size {
+			get { return _map.size; }
+		}
+
+		public override bool add (Map.Entry<K, V> entry) {
+			assert_not_reached ();
+		}
+
+		public override void clear () {
+			assert_not_reached ();
+		}
+
+		public override bool remove (Map.Entry<K, V> entry) {
+			assert_not_reached ();
+		}
+
+		public override bool contains (Map.Entry<K, V> entry) {
+			return _map.has (entry.key, entry.value);
+		}
+
+		public override bool add_all (Collection<Map.Entry<K, V>> entries) {
+			assert_not_reached ();
+		}
+
+		public override bool remove_all (Collection<Map.Entry<K, V>> entries) {
+			assert_not_reached ();
+		}
+
+		public override bool retain_all (Collection<Map.Entry<K, V>> entries) {
 			assert_not_reached ();
 		}
 	}
@@ -617,6 +696,82 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			PAST_THE_END
 		}
 		private ValueIterator.State state = ValueIterator.State.BEFORE_THE_BEGIN;
+		private bool run = false;
+	}
+
+	private class EntryIterator<K,V> : Object, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
+		private TreeMap<K,V> _map;
+
+		// concurrent modification protection
+		private int stamp;
+
+		public EntryIterator (TreeMap<K,V> map) {
+			_map = map;
+			stamp = _map.stamp;
+		}
+
+		public bool next () {
+			assert (stamp == _map.stamp);
+			if (current != null) {
+				current = current.next;
+			} else if (state == EntryIterator.State.BEFORE_THE_BEGIN) {
+				run = true;
+				current = _map.first;
+			}
+			return current != null;
+		}
+
+		public bool has_next () {
+			assert (stamp == _map.stamp);
+			return (current == null && state == EntryIterator.State.BEFORE_THE_BEGIN) ||
+			       (current != null && current.next != null);
+		}
+
+		public bool first () {
+			assert (stamp == _map.stamp);
+			current = _map.first;
+			return current != null; // on false it is null anyway
+		}
+
+		public bool previous () {
+			assert (stamp == _map.stamp);
+			if (current != null) {
+				current = current.prev;
+			} else if (state == EntryIterator.State.PAST_THE_END) {
+				current = _map.last;
+			}
+			state = EntryIterator.State.BEFORE_THE_BEGIN;
+			return current != null;
+		}
+
+		public bool has_previous () {
+			assert (stamp == _map.stamp);
+			return (current == null && state == EntryIterator.State.PAST_THE_END) ||
+			       (current != null && current.prev != null);
+		}
+
+		public bool last () {
+			assert (stamp == _map.stamp);
+			current = _map.last;
+			return current != null; // on false it is null anyway
+		}
+
+		public new Map.Entry<K,V> get () {
+			assert (stamp == _map.stamp);
+			assert (current != null);
+			return Entry<K,V>.entry_for<K,V> (current);
+		}
+
+		public void remove () {
+			assert_not_reached ();
+		}
+
+		private weak Node<K, V>? current;
+		private enum State {
+			BEFORE_THE_BEGIN,
+			PAST_THE_END
+		}
+		private EntryIterator.State state = EntryIterator.State.BEFORE_THE_BEGIN;
 		private bool run = false;
 	}
 }

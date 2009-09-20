@@ -45,6 +45,26 @@ public interface Gee.Map<K,V> : GLib.Object {
 	public abstract Collection<V> values { owned get; }
 
 	/**
+	 * The read-only view of the entries of this map.
+	 */
+	public abstract Set<Entry<K,V>> entries { owned get; }
+
+	/**
+	 * An entry of a map.
+	 */
+	public abstract class Entry<K,V> : Object {
+		/**
+		 * The key of this entry.
+		 */
+		public abstract K key { get; }
+
+		/**
+		 * The value of this entry.
+		 */
+		public abstract V value { get; set; }
+	}
+
+	/**
 	 * Determines whether this map has the specified key.
 	 *
 	 * @param key the key to locate in the map

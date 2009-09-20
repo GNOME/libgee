@@ -57,6 +57,11 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 	/**
 	 * @inheritDoc
 	 */
+	public abstract Set<Map.Entry<K,V>> entries { owned get; }
+
+	/**
+	 * @inheritDoc
+	 */
 	public abstract bool has_key (K key);
 
 	/**
@@ -107,8 +112,8 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 	 * @inheritDoc
 	 */
 	public virtual void set_all (Map<K,V> map) {
-		foreach (K key in map.keys) {
-			set (key, map.get (key));
+		foreach (Map.Entry<K,V> entry in map.entries) {
+			set (entry.key, entry.value);
 		}
 	}
 
@@ -134,8 +139,8 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 	 * @inheritDoc
 	 */
 	public virtual bool has_all (Map<K,V> map) {
-		foreach (K key in map.keys) {
-			if (!has (key, map.get (key))) {
+		foreach (Map.Entry<K,V> entry in map.entries) {
+			if (!has (entry.key, entry.value)) {
 				return false;
 			}
 		}

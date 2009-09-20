@@ -65,6 +65,15 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public Set<Map.Entry<K,V>> entries {
+		owned get {
+			return _map.entries;
+		}
+	}
+
 	private Map<K,V> _map;
 
 	/**
