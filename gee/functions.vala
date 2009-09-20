@@ -70,10 +70,16 @@ namespace Gee {
 		public static CompareFunc get_compare_func_for (Type t) {
 			if (t == typeof (string)) {
 				return (CompareFunc) strcmp;
+			} else if (t.is_a (typeof (Comparable))) {
+				return (CompareFunc) comparable_compare;
 			} else {
 				return (CompareFunc) direct_compare;
 			}
 		}
+	}
+
+	internal static int comparable_compare (void* a, void* b) {
+		return ((Comparable) a).compare_to ((Comparable) b);
 	}
 
 	/**

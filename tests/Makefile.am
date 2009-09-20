@@ -18,6 +18,7 @@ tests_VALASOURCES = \
        testarraylist.vala \
        testcase.vala \
        testcollection.vala \
+       testcomparable.vala \
        testdeque.vala \
        testhashmap.vala \
        testhashmultimap.vala \

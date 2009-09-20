@@ -22,6 +22,7 @@ libgee_la_VALASOURCES = \
 	arraylist.vala \
 	bidiriterator.vala \
 	collection.vala \
+	comparable.vala \
 	deque.vala \
 	functions.vala \
 	hashmap.vala \
