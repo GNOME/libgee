@@ -41,7 +41,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	/**
 	 * The elements' equality testing function.
 	 */
-	public EqualFunc equal_func { private set; get; }
+	public EqualDataFunc equal_func { private set; get; }
 
 	/**
 	 * Constructs a new, empty linked list.
@@ -51,7 +51,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	 *
 	 * @param equal_func an optional element equality testing function
 	 */
-	public LinkedList (EqualFunc? equal_func = null) {
+	public LinkedList (owned EqualDataFunc? equal_func = null) {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}

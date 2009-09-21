@@ -39,7 +39,7 @@ namespace Gee.Benchmark {
 		public string name { get { return "MergeSort"; } }
 
 		public void process_collection (Collection<G> collection) {
-			CompareFunc compare = Functions.get_compare_func_for (typeof (G));
+			CompareDataFunc compare = Functions.get_compare_func_for (typeof (G));
 			Gee.MergeSort.sort<G> ((Gee.List<G>) collection, compare);
 		}
 	}

@@ -24,17 +24,17 @@
  * Hash table implementation of the {@link MultiMap} interface.
  */
 public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
-	public HashFunc key_hash_func {
+	public HashDataFunc<K> key_hash_func {
 		get { return ((HashMap<K, Set<V>>) _storage_map).key_hash_func; }
 	}
 
-	public EqualFunc key_equal_func {
+	public EqualDataFunc<K> key_equal_func {
 		get { return ((HashMap<K, Set<V>>) _storage_map).key_equal_func; }
 	}
 
-	public HashFunc value_hash_func { private set; get; }
+	public HashDataFunc<V> value_hash_func { private set; get; }
 
-	public EqualFunc value_equal_func { private set; get; }
+	public EqualDataFunc<V> value_equal_func { private set; get; }
 
 	/**
 	 * Constructs a new, empty hash multimap.
@@ -47,9 +47,9 @@ public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
 	 * @param value_hash_func an optional value hash function
 	 * @param value_equal_func an optional value equality testing function
 	 */
-	public HashMultiMap (HashFunc? key_hash_func = null, EqualFunc? key_equal_func = null,
-	                     HashFunc? value_hash_func = null, EqualFunc? value_equal_func = null) {
-		base (new HashMap<K, Set<V>> (key_hash_func, key_equal_func, direct_equal));
+	public HashMultiMap (owned HashDataFunc? key_hash_func = null, owned EqualDataFunc? key_equal_func = null,
+	                     owned HashDataFunc? value_hash_func = null, owned EqualDataFunc? value_equal_func = null) {
+		base (new HashMap<K, Set<V>> (key_hash_func, key_equal_func, Functions.get_equal_func_for (typeof (Set<V>))));
 		if (value_hash_func == null) {
 			value_hash_func = Functions.get_hash_func_for (typeof (V));
 		}
@@ -68,7 +68,7 @@ public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
 		return new HashMultiSet<K> (key_hash_func, key_equal_func);
 	}
 
-	protected override EqualFunc get_value_equal_func () {
+	protected override EqualDataFunc<V> get_value_equal_func () {
 		return _value_equal_func;
 	}
 }

@@ -46,7 +46,7 @@
  */
 internal class Gee.TimSort<G> : Object {
 
-	public static void sort<G> (List<G> list, CompareFunc compare) {
+	public static void sort<G> (List<G> list, CompareDataFunc compare) {
 		if (list is ArrayList) {
 			TimSort.sort_arraylist<G> ((ArrayList<G>) list, compare);
 		} else {
@@ -54,17 +54,7 @@ internal class Gee.TimSort<G> : Object {
 		}
 	}
 
-	public static void sort_with_data<G> (List<G> list, CompareDataFunc compare_data) {
-		if (list is ArrayList) {
-			TimSort.sort_arraylist<G> ((ArrayList<G>) list, null, compare_data);
-		} else {
-			TimSort.sort_list<G> (list, null, compare_data);
-		}
-	}
-
-	private static void sort_list<G> (List<G> list, CompareFunc? compare, CompareDataFunc? compare_data = null) {
-        assert (compare != null || compare_data != null);
-
+	private static void sort_list<G> (List<G> list, CompareDataFunc<G> compare) {
 		TimSort<G> helper = new TimSort<G> ();
 
 		helper.list_collection = list;
@@ -73,7 +63,6 @@ internal class Gee.TimSort<G> : Object {
 		helper.index = 0;
 		helper.size = list.size;
 		helper.compare = compare;
-		helper.compare_data = compare_data;
 
 		helper.do_sort ();
 
@@ -84,9 +73,7 @@ internal class Gee.TimSort<G> : Object {
 		}
 	}
 
-	private static void sort_arraylist<G> (ArrayList<G> list, CompareFunc? compare, CompareDataFunc? compare_data = null) {
-        assert (compare != null || compare_data != null);
-
+	private static void sort_arraylist<G> (ArrayList<G> list, CompareDataFunc<G> compare) {
 		TimSort<G> helper = new TimSort<G> ();
 
 		helper.list_collection = list;
@@ -94,7 +81,6 @@ internal class Gee.TimSort<G> : Object {
 		helper.index = 0;
 		helper.size = list._size;
 		helper.compare = compare;
-		helper.compare_data = compare_data;
 
 		helper.do_sort ();
 	}
@@ -108,8 +94,7 @@ internal class Gee.TimSort<G> : Object {
 	private int size;
 	private Slice<G>*[] pending;
 	private int minimum_gallop;
-	private CompareFunc compare;
-	private CompareDataFunc compare_data;
+	private CompareDataFunc<G> compare;
 
 	private void do_sort () {
 		if (size < 2) {
@@ -168,19 +153,11 @@ internal class Gee.TimSort<G> : Object {
 	private delegate bool LowerFunc (G left, G right);
 
 	private inline bool lower_than (G left, G right) {
-        if (compare != null) {
             return compare (left, right) < 0;
-        } else {
-            return compare_data (left, right) < 0;
-        }
 	}
 
 	private inline bool lower_than_or_equal_to (G left, G right) {
-        if (compare != null) {
             return compare (left, right) <= 0;
-        } else {
-            return compare_data (left, right) <= 0;
-        }
 	}
 
 	private int compute_minimum_run_length (int length) {

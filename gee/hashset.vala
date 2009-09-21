@@ -24,6 +24,9 @@
 
 using GLib;
 
+public delegate uint HashDataFunc (void* v);
+public delegate bool EqualDataFunc (void* a, void* b);
+
 /**
  * Hash table implementation of the {@link Set} interface.
  *
@@ -44,12 +47,12 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	/**
 	 * The elements' hash function.
 	 */
-	public HashFunc hash_func { private set; get; }
+	public HashDataFunc<G> hash_func { private set; get; }
 
 	/**
 	 * The elements' equality testing function.
 	 */
-	public EqualFunc equal_func { private set; get; }
+	public EqualDataFunc<G> equal_func { private set; get; }
 
 	private int _array_size;
 	private int _nnodes;
@@ -70,7 +73,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	 * @param hash_func an optional hash function
 	 * @param equal_func an optional equality testing function
 	 */
-	public HashSet (HashFunc? hash_func = null, EqualFunc? equal_func = null) {
+	public HashSet (owned HashDataFunc? hash_func = null, owned EqualDataFunc? equal_func = null) {
 		if (hash_func == null) {
 			hash_func = Functions.get_hash_func_for (typeof (G));
 		}

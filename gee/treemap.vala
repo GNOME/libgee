@@ -87,12 +87,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * The keys' comparator function.
 	 */
-	public CompareFunc key_compare_func { private set; get; }
+	public CompareDataFunc key_compare_func { private set; get; }
 
 	/**
 	 * The values' equality testing function.
 	 */
-	public EqualFunc value_equal_func { private set; get; }
+	public EqualDataFunc value_equal_func { private set; get; }
 
 	private int _size = 0;
 
@@ -110,7 +110,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	 * @param key_compare_func an optional key comparator function
 	 * @param value_equal_func an optional values equality testing function
 	 */
-	public TreeMap (CompareFunc? key_compare_func = null, EqualFunc? value_equal_func = null) {
+	public TreeMap (owned CompareDataFunc? key_compare_func = null, owned EqualDataFunc? value_equal_func = null) {
 		if (key_compare_func == null) {
 			key_compare_func = Functions.get_compare_func_for (typeof (K));
 		}

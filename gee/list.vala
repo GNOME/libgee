@@ -111,7 +111,7 @@ public interface Gee.List<G> : Collection<G> {
 	 *
 	 * @param compare_func compare function to use to compare items
 	 */
-	public abstract void sort (CompareFunc? compare_func = null);
+	public abstract void sort (owned CompareDataFunc? compare_func = null);
 
 	/**
 	 * The read-only view of this list.

@@ -27,8 +27,6 @@ public class HashMapTests : MapTests {
 
 	public HashMapTests () {
 		base ("HashMap");
-		add_test ("[HashMap] selected functions", test_selected_functions);
-		add_test ("[HashMap] GObject properties", test_gobject_properties);
 	}
 
 	public override void set_up () {
@@ -37,40 +35,5 @@ public class HashMapTests : MapTests {
 
 	public override void tear_down () {
 		test_map = null;
-	}
-
-	public void test_selected_functions () {
-		var test_hash_map = test_map as HashMap<string,string>;
-
-		// Check the map exists
-		assert (test_hash_map != null);
-
-		// Check the selected hash and equal functions
-		assert (test_hash_map.key_hash_func == str_hash);
-		assert (test_hash_map.key_equal_func == str_equal);
-		assert (test_hash_map.value_equal_func == str_equal);
-	}
-
-	public new void test_gobject_properties () {
-		var test_hash_map = test_map as HashMap<string,string>;
-
-		// Check the list exists
-		assert (test_hash_map != null);
-		Value value;
-
-		value = Value (typeof (HashFunc));
-		test_hash_map.get_property ("key-hash-func", ref value);
-		assert (value.get_pointer () == (void*) test_hash_map.key_hash_func);
-		value.unset ();
-
-		value = Value (typeof (EqualFunc));
-		test_hash_map.get_property ("key-equal-func", ref value);
-		assert (value.get_pointer () == (void*) test_hash_map.key_equal_func);
-		value.unset ();
-
-		value = Value (typeof (EqualFunc));
-		test_hash_map.get_property ("value-equal-func", ref value);
-		assert (value.get_pointer () == (void*) test_hash_map.value_equal_func);
-		value.unset ();
 	}
 }

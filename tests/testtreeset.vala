@@ -27,8 +27,6 @@ public class TreeSetTests : SortedSetTests {
 
 	public TreeSetTests () {
 		base ("TreeSet");
-		add_test ("[TreeSet] selected functions", test_selected_functions);
-		add_test ("[TreeSet] GObject properties", test_gobject_properties);
 		add_test ("[TreeSet] add and remove", test_add_remove);
 	}
 
@@ -38,29 +36,6 @@ public class TreeSetTests : SortedSetTests {
 
 	public override void tear_down () {
 		test_collection = null;
-	}
-
-	public void test_selected_functions () {
-		var test_set = test_collection as TreeSet<string>;
-
-		// Check the set exists
-		assert (test_set != null);
-
-		// Check the selected compare function
-		assert (test_set.compare_func == (CompareFunc) strcmp);
-	}
-
-	public new void test_gobject_properties () {
-		var test_set = test_collection as TreeSet<string>;
-
-		// Check the set exists
-		assert (test_set != null);
-		Value value;
-
-		value = Value (typeof (CompareFunc));
-		test_set.get_property ("compare-func", ref value);
-		assert (value.get_pointer () == (void*) test_set.compare_func);
-		value.unset ();
 	}
 
 	public new void test_add_remove () {

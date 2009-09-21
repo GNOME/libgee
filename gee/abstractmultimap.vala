@@ -45,7 +45,7 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 
 	protected abstract MultiSet<K> create_multi_key_set ();
 
-	protected abstract EqualFunc get_value_equal_func ();
+	protected abstract EqualDataFunc get_value_equal_func ();
 
 	public Set<K> get_keys () {
 		return _storage_map.keys;

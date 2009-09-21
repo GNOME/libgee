@@ -45,7 +45,7 @@ public class ComparableTests : Gee.TestCase {
 		TestComparable o1 = new TestComparable (10);
 		TestComparable o2 = new TestComparable (20);
 
-		CompareFunc compare = Functions.get_compare_func_for (typeof (TestComparable));
+		CompareDataFunc<TestComparable> compare = Functions.get_compare_func_for (typeof (TestComparable));
 		assert (compare (o1, o2) < 0);
 
 		o1._a = 42;

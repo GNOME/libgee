@@ -45,9 +45,5 @@ public class HashMultiSetTests : MultiSetTests {
 
 		// Check the collection exists
 		assert (test_multi_set != null);
-
-		// Check the selected hash and equal functions
-		assert (test_multi_set.hash_func == str_hash);
-		assert (test_multi_set.equal_func == str_equal);
 	}
 }

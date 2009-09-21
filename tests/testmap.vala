@@ -314,9 +314,7 @@ public abstract class MapTests : Gee.TestCase {
 	}
 
 	public void test_set_all () {
-		var another_map = new HashMap<string,string> (str_hash,
-		                                              str_equal,
-		                                              str_equal);
+		var another_map = new HashMap<string,string> ();
 
 		test_map.set ("one", "value_of_one");
 		test_map.set ("two", "value_of_two");
@@ -344,9 +342,7 @@ public abstract class MapTests : Gee.TestCase {
 	}
 
 	public void test_unset_all () {
-		var another_map = new HashMap<string,string> (str_hash,
-		                                              str_equal,
-		                                              str_equal);
+		var another_map = new HashMap<string,string> ();
 
 		// Check unset all on empty maps.
 		assert (test_map.is_empty);
@@ -431,9 +427,7 @@ public abstract class MapTests : Gee.TestCase {
 	}
 
 	public void test_has_all () {
-		var another_map = new HashMap<string,string> (str_hash,
-		                                              str_equal,
-		                                              str_equal);
+		var another_map = new HashMap<string,string> ();
 
 		// Check empty.
 		assert (test_map.has_all (another_map));

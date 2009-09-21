@@ -25,7 +25,7 @@
  * interface.
  */
 public class Gee.TreeMultiSet<G> : AbstractMultiSet<G> {
-	public CompareFunc compare_func {
+	public CompareDataFunc compare_func {
 		get { return ((TreeMap<G, int>) _storage_map).key_compare_func; }
 	}
 
@@ -37,7 +37,7 @@ public class Gee.TreeMultiSet<G> : AbstractMultiSet<G> {
 	 *
 	 * @param compare_func an optional element comparator function
 	 */
-	public TreeMultiSet (CompareFunc? compare_func = null) {
+	public TreeMultiSet (owned CompareDataFunc? compare_func = null) {
 		base (new TreeMap<G, int> (compare_func));
 	}
 }

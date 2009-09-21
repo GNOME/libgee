@@ -44,7 +44,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	/**
 	 * The elements' comparator function.
 	 */
-	public CompareFunc compare_func { private set; get; }
+	public CompareDataFunc<G> compare_func { private set; get; }
 
 	private int _size = 0;
 	private int _stamp = 0;
@@ -68,7 +68,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	 *
 	 * @param compare_func an optional element comparator function
 	 */
-	public PriorityQueue (CompareFunc? compare_func = null) {
+	public PriorityQueue (owned CompareDataFunc? compare_func = null) {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}

@@ -22,7 +22,7 @@
 
 internal class Gee.MergeSort<G> {
 
-	public static void sort<G> (List<G> list, CompareFunc compare) {
+	public static void sort<G> (List<G> list, CompareDataFunc compare) {
 		if (list is ArrayList) {
 			MergeSort.sort_arraylist<G> ((ArrayList<G>) list, compare);
 		} else {
@@ -30,7 +30,7 @@ internal class Gee.MergeSort<G> {
 		}
 	}
 
-	public static void sort_list<G> (List<G> list, CompareFunc compare) {
+	public static void sort_list<G> (List<G> list, CompareDataFunc compare) {
 		MergeSort<G> helper = new MergeSort<G> ();
 
 		helper.list_collection = list;
@@ -49,7 +49,7 @@ internal class Gee.MergeSort<G> {
 		}
 	}
 
-	public static void sort_arraylist<G> (ArrayList<G> list, CompareFunc compare) {
+	public static void sort_arraylist<G> (ArrayList<G> list, CompareDataFunc compare) {
 		MergeSort<G> helper = new MergeSort<G> ();
 
 		helper.list_collection = list;
@@ -66,7 +66,7 @@ internal class Gee.MergeSort<G> {
 	private unowned G[] list;
 	private int index;
 	private int size;
-	private CompareFunc compare;
+	private CompareDataFunc compare;
 
 	private void do_sort () {
 		if (this.size <= 1) {

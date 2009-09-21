@@ -29,7 +29,6 @@ public class TreeMultiMapTests : MultiMapTests {
 
 	public TreeMultiMapTests () {
 		base ("TreeMultiMap");
-		add_test ("[TreeMultiMap] selected functions", test_selected_functions);
 	}
 
 	public override void set_up () {
@@ -38,16 +37,5 @@ public class TreeMultiMapTests : MultiMapTests {
 
 	public override void tear_down () {
 		test_multi_map = null;
-	}
-
-	private void test_selected_functions () {
-		var test_tree_multi_map = test_multi_map as TreeMultiMap<string,string>;
-
-		// Check the map exists
-		assert (test_tree_multi_map != null);
-
-		// Check the selected compare functions
-		assert (test_tree_multi_map.key_compare_func == (CompareFunc) strcmp);
-		assert (test_tree_multi_map.value_compare_func == (CompareFunc) strcmp);
 	}
 }

@@ -1,6 +1,6 @@
 /* treeset.vala
  *
- * Copyright (C) 2009  Maciej Piechotka
+ * Copyright (C) 2009-2010  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
 	 * The elements' comparator function.
 	 */
-	public CompareFunc compare_func { private set; get; }
+	public CompareDataFunc compare_func { private set; get; }
 
 	private int _size = 0;
 
@@ -56,7 +56,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	 *
 	 * @param compare_func an optional element comparator function
 	 */
-	public TreeSet (CompareFunc? compare_func = null) {
+	public TreeSet (owned CompareDataFunc? compare_func = null) {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}

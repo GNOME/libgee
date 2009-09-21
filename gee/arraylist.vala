@@ -48,7 +48,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	/**
 	 * The elements' equality testing function.
 	 */
-	public EqualFunc equal_func { private set; get; }
+	public EqualDataFunc equal_func { private set; get; }
 
 	internal G[] _items = new G[4];
 	internal int _size;
@@ -64,7 +64,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	 *
 	 * @param equal_func an optional element equality testing function
 	 */
-	public ArrayList (EqualFunc? equal_func = null) {
+	public ArrayList (owned EqualDataFunc? equal_func = null) {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
@@ -221,18 +221,6 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		}
 		_stamp++;
 		return true;
-	}
-
-	/**
-	 * Sorts items by comparing with the specified compare function.
-	 *
-	 * @deprecated This method has only been added as hack and will be
-	 * deprecated after the next odd minor version bump (>= 0.7.x).
-	 *
-	 * @param compare_func compare function to use to compare items
-	 */
-	public void sort_with_data (CompareDataFunc compare) {
-		TimSort.sort_with_data<G> (this, compare);
 	}
 
 	private void shift (int start, int delta) {

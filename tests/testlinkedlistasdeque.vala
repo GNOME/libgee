@@ -42,8 +42,5 @@ public class LinkedListAsDequeTests : DequeTests {
 
 		// Check the collection exists
 		assert (test_list != null);
-
-		// Check the selected equal function
-		assert (test_list.equal_func == str_equal);
 	}
 }

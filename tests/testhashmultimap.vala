@@ -45,11 +45,5 @@ public class HashMultiMapTests : MultiMapTests {
 
 		// Check the map exists
 		assert (test_hash_multi_map != null);
-
-		// Check the selected hash and equal functions
-		assert (test_hash_multi_map.key_hash_func == str_hash);
-		assert (test_hash_multi_map.key_equal_func == str_equal);
-		assert (test_hash_multi_map.value_hash_func == str_hash);
-		assert (test_hash_multi_map.value_equal_func == str_equal);
 	}
 }

@@ -26,7 +26,6 @@ public class TreeMultiSetTests : MultiSetTests {
 
 	public TreeMultiSetTests () {
 		base ("TreeMultiSet");
-		add_test ("[TreeMultiSet] selected functions", test_selected_functions);
 	}
 
 	public override void set_up () {
@@ -35,15 +34,5 @@ public class TreeMultiSetTests : MultiSetTests {
 
 	public override void tear_down () {
 		test_collection = null;
-	}
-
-	private void test_selected_functions () {
-		var test_multi_set = test_collection as TreeMultiSet<string>;
-
-		// Check the collection exists
-		assert (test_multi_set != null);
-
-		// Check the selected compare functions
-		assert (test_multi_set.compare_func == (CompareFunc) strcmp);
 	}
 }
