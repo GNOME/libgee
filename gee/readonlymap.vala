@@ -31,7 +31,7 @@ using GLib;
  *
  * @see Gee.Map
  */
-internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
+internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V> {
 
 	/**
 	 * @inheritDoc
@@ -185,6 +185,20 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 
 	public virtual Map<K,V> read_only_view {
 		owned get { return this; }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Type element_type {
+		get { return typeof (Map.Entry<K,V>); }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Iterator<Map.Entry<K,V>> iterator () {
+		return entries.iterator ();
 	}
 
 	protected class MapIterator<K,V> : Object, Gee.MapIterator<K,V> {

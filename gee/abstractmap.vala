@@ -30,7 +30,7 @@
  * @see Gee.TreeMap
  * @see Gee.HashMap
  */
-public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
+public abstract class Gee.AbstractMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V> {
 
 	/**
 	 * @inheritDoc
@@ -176,4 +176,17 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public Type element_type {
+		get { return typeof (Map.Entry<K,V>); }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Iterator<Map.Entry<K,V>> iterator () {
+		return entries.iterator ();
+	}
 }

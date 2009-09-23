@@ -23,7 +23,7 @@
 /**
  * An object that maps keys to values.
  */
-public interface Gee.Map<K,V> : GLib.Object {
+public interface Gee.Map<K,V> : GLib.Object, Iterable<Map.Entry<K,V>> {
 	/**
 	 * The number of items in this map.
 	 */
