@@ -38,6 +38,7 @@ void main (string[] args) {
 	TestSuite.get_root ().add_suite (new ReadOnlyMapTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new ReadOnlySetTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new TreeMapTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new TreeMultiSetTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new TreeSetTests ().get_suite ());
 
 	Test.run ();
