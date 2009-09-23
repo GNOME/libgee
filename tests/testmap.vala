@@ -29,6 +29,7 @@ public abstract class MapTests : Gee.TestCase {
 
 	public MapTests (string name) {
 		base (name);
+		add_test ("[Map] type correctness", test_type_correctness);
 		add_test ("[Map] has_key, size and is_empty",
 		          test_has_key_size_is_empty);
 		add_test ("[Map] keys", test_keys);
@@ -40,6 +41,15 @@ public abstract class MapTests : Gee.TestCase {
 	}
 
 	protected Map<string, string> test_map;
+
+	public void test_type_correctness () {
+		// Check the map exists
+		assert (test_map != null);
+
+		// Check the advertised key and value types
+		assert (test_map.key_type == typeof (string));
+		assert (test_map.value_type == typeof (string));
+	}
 
 	public void test_has_key_size_is_empty () {
 		// Check the collection exists

@@ -179,6 +179,20 @@ public abstract class Gee.AbstractMap<K,V> : Object, Iterable<Map.Entry<K,V>>, M
 	/**
 	 * @inheritDoc
 	 */
+	public Type key_type {
+		get { return typeof (K); }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Type value_type {
+		get { return typeof (V); }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public Type element_type {
 		get { return typeof (Map.Entry<K,V>); }
 	}

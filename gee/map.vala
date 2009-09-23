@@ -190,6 +190,16 @@ public interface Gee.Map<K,V> : GLib.Object, Iterable<Map.Entry<K,V>> {
 	public abstract Map<K,V> read_only_view { owned get; }
 
 	/**
+	 * The type of the keys in this map.
+	 */
+	public abstract Type key_type { get; }
+
+	/**
+	 * The type of the values in this map.
+	 */
+	public abstract Type value_type { get; }
+
+	/**
 	 * Returns an immutable empty map.
 	 *
 	 * @return an immutable empty map

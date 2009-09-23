@@ -190,6 +190,20 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 	/**
 	 * @inheritDoc
 	 */
+	public Type key_type {
+		get { return typeof (K); }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Type value_type {
+		get { return typeof (V); }
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public Type element_type {
 		get { return typeof (Map.Entry<K,V>); }
 	}
