@@ -94,6 +94,11 @@ public abstract class Gee.AbstractMap<K,V> : Object, Map<K,V> {
 	/**
 	 * @inheritDoc
 	 */
+	public abstract MapIterator<K,V> map_iterator ();
+
+	/**
+	 * @inheritDoc
+	 */
 	public bool remove (K key, out V? value = null) {
 		V removed_value;
 		bool result = unset (key, out removed_value);

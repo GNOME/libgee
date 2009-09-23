@@ -352,6 +352,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		stamp++;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public override Gee.MapIterator<K,V> map_iterator () {
+		return new MapIterator<K,V> (this);
+	}
+
 	[Compact]
 	private class Node<K, V> {
 		public enum Color {
@@ -582,7 +589,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			stamp = _map.stamp;
 		}
 
-		public bool next () {
+		public virtual bool next () {
 			assert (stamp == _map.stamp);
 			if (current != null) {
 				if (current.next != null) {
@@ -679,6 +686,49 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public void remove () {
 			assert_not_reached ();
+		}
+	}
+
+	private class MapIterator<K,V> : NodeIterator<K,V>, Gee.MapIterator<K,V> {
+		private bool removed = false;
+
+		public MapIterator (TreeMap<K,V> map) {
+			base (map);
+		}
+
+		public override bool next () {
+			removed = false;
+			return base.next ();
+		}
+
+		public K get_key () {
+			assert (! removed);
+			assert (stamp == _map.stamp);
+			assert (current != null);
+			return current.key;
+		}
+
+		public V get_value () {
+			assert (! removed);
+			assert (stamp == _map.stamp);
+			assert (current != null);
+			return current.value;
+		}
+
+		public void set_value (V value) {
+			assert (! removed);
+			assert (stamp == _map.stamp);
+			assert (current != null);
+			current.value = value;
+		}
+
+		public void unset () {
+			assert (stamp == _map.stamp);
+			assert (current != null);
+			_map.unset (current.key);
+			removed = true;
+			stamp++;
+			assert (stamp == _map.stamp);
 		}
 	}
 }

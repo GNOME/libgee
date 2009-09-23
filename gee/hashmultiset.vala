@@ -95,13 +95,13 @@ public class Gee.HashMultiSet<G> : AbstractCollection<G>, MultiSet<G> {
 	private class Iterator<G> : Object, Gee.Iterator<G> {
 		private HashMultiSet<G> _set;
 
-		private Gee.UpdatableKeyIterator<G, int> _iter;
+		private MapIterator<G, int> _iter;
 		private int _pending = 0;
 		private bool _removed = false;
 
 		public Iterator (HashMultiSet<G> set) {
 			_set = set;
-			_iter = _set._items.updatable_key_iterator ();
+			_iter = _set._items.map_iterator ();
 		}
 
 		public bool next () {
@@ -135,14 +135,14 @@ public class Gee.HashMultiSet<G> : AbstractCollection<G>, MultiSet<G> {
 
 		public new G get () {
 			assert (! _removed);
-			return _iter.get ();
+			return _iter.get_key ();
 		}
 
 		public void remove () {
 			assert (! _removed);
 			_iter.set_value (_pending = _iter.get_value () - 1);
 			if (_pending == 0) {
-				_iter.remove ();
+				_iter.unset ();
 			}
 			_removed = true;
 		}

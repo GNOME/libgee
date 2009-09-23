@@ -139,6 +139,13 @@ public interface Gee.Map<K,V> : GLib.Object {
 	public abstract void clear ();
 
 	/**
+	 * Returns an iterator for this map.
+	 *
+	 * @return a map iterator
+	 */
+	public abstract MapIterator<K,V> map_iterator ();
+
+	/**
 	 * Inserts all items that are contained in the input map to this map.
 	 *
 	 * @param map the map which items are inserted to this map

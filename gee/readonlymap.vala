@@ -142,6 +142,13 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public Gee.MapIterator<K,V> map_iterator () {
+		return new MapIterator<K,V> (_map.map_iterator ());
+	}
+
+	/**
 	 * Unimplemented method (read only map).
 	 */
 	public void set_all (Map<K,V> map) {
@@ -180,5 +187,40 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Map<K,V> {
 		owned get { return this; }
 	}
 
+	protected class MapIterator<K,V> : Object, Gee.MapIterator<K,V> {
+		protected Gee.MapIterator<K,V> _iter;
+
+		public MapIterator (Gee.MapIterator<K,V> iterator) {
+			_iter = iterator;
+		}
+
+		public bool next () {
+			return _iter.next ();
+		}
+
+		public bool has_next () {
+			return _iter.has_next ();
+		}
+
+		public bool first () {
+			return _iter.first ();
+		}
+
+		public K get_key () {
+			return _iter.get_key ();
+		}
+
+		public V get_value () {
+			return _iter.get_value ();
+		}
+
+		public void set_value (V value) {
+			assert_not_reached ();
+		}
+
+		public void unset () {
+			assert_not_reached ();
+		}
+	}
 }
 
