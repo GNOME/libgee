@@ -17,6 +17,7 @@ libgee_la_VALASOURCES = \
 	abstractcollection.vala \
 	abstractlist.vala \
 	abstractmap.vala \
+	abstractmultiset.vala \
 	abstractqueue.vala \
 	abstractset.vala \
 	arraylist.vala \
