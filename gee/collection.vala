@@ -126,5 +126,14 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * Property giving access to the read-only view of this collection.
 	 */
 	public abstract Collection<G> read_only_view { owned get; }
+
+	/**
+	 * Returns an immutable empty collection.
+	 *
+	 * @return an immutable empty collection
+	 */
+	public static Collection<G> empty<G> () {
+		return new HashSet<G> ().read_only_view;
+	}
 }
 

@@ -30,5 +30,13 @@ public interface Gee.Set<G> : Collection<G> {
 	 */
 	public abstract new Set<G> read_only_view { owned get; }
 
+	/**
+	 * Returns an immutable empty set.
+	 *
+	 * @return an immutable empty set
+	 */
+	public static Set<G> empty<G> () {
+		return new HashSet<G> ().read_only_view;
+	}
 }
 

@@ -117,5 +117,14 @@ public interface Gee.List<G> : Collection<G> {
 	 * Property giving access to the read-only view of this list.
 	 */
 	public abstract new List<G> read_only_view { owned get; }
+
+	/**
+	 * Returns an immutable empty list.
+	 *
+	 * @return an immutable empty list
+	 */
+	public static List<G> empty<G> () {
+		return new LinkedList<G> ().read_only_view;
+	}
 }
 

@@ -188,5 +188,14 @@ public interface Gee.Map<K,V> : GLib.Object, Iterable<Map.Entry<K,V>> {
 	 * Property giving access to the read-only view this map.
 	 */
 	public abstract Map<K,V> read_only_view { owned get; }
+
+	/**
+	 * Returns an immutable empty map.
+	 *
+	 * @return an immutable empty map
+	 */
+	public static Map<K,V> empty<K,V> () {
+		return new HashMap<K,V> ().read_only_view;
+	}
 }
 
