@@ -137,6 +137,7 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 			if (_pending == 0) {
 				_iter.unset ();
 			}
+			_set._nitems--;
 			_removed = true;
 		}
 	}
