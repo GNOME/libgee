@@ -154,7 +154,7 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 			if (_read_only_view == null) {
 				instance = new ReadOnlyCollection<G> (this);
 				_read_only_view = instance;
-				instance.add_weak_pointer (&_read_only_view);
+				instance.add_weak_pointer ((void**) (&_read_only_view));
 			}
 			return instance;
 		}

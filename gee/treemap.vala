@@ -48,7 +48,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			if (_keys == null) {
 				keys = new KeySet<K,V> (this);
 				_keys = keys;
-				keys.add_weak_pointer (&_keys);
+				keys.add_weak_pointer ((void**) (&_keys));
 			}
 			return keys;
 		}
@@ -63,7 +63,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			if (_values == null) {
 				values = new ValueCollection<K,V> (this);
 				_values = values;
-				values.add_weak_pointer (&_values);
+				values.add_weak_pointer ((void**) (&_values));
 			}
 			return values;
 		}
@@ -78,7 +78,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			if (_entries == null) {
 				entries = new EntrySet<K,V> (this);
 				_entries = entries;
-				entries.add_weak_pointer (&_entries);
+				entries.add_weak_pointer ((void**) (&_entries));
 			}
 			return entries;
 		}
@@ -421,7 +421,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			if (node.entry == null) {
 				result = new Entry<K,V> (node);
 				node.entry = result;
-				result.add_weak_pointer (&node.entry);
+				result.add_weak_pointer ((void**) (&node.entry));
 			}
 			return result;
 		}

@@ -170,7 +170,7 @@ public abstract class Gee.AbstractMap<K,V> : Object, Iterable<Map.Entry<K,V>>, M
 			if (_read_only_view == null) {
 				instance = new ReadOnlyMap<K,V> (this);
 				_read_only_view = instance;
-				instance.add_weak_pointer (&_read_only_view);
+				instance.add_weak_pointer ((void**) (&_read_only_view));
 			}
 			return instance;
 		}

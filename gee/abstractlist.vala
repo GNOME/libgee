@@ -111,7 +111,7 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 			if (_read_only_view == null) {
 				instance = new ReadOnlyList<G> (this);
 				_read_only_view = instance;
-				instance.add_weak_pointer (&_read_only_view);
+				instance.add_weak_pointer ((void**) (&_read_only_view));
 			}
 			return instance;
 		}
