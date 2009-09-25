@@ -47,7 +47,7 @@ public class TreeMapTests : MapTests {
 		assert (test_tree_map != null);
 
 		// Check the selected compare and equal functions
-		assert (test_tree_map.key_compare_func == strcmp);
+		assert (test_tree_map.key_compare_func == (CompareFunc) strcmp);
 		assert (test_tree_map.value_equal_func == str_equal);
 	}
 

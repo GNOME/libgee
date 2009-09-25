@@ -47,7 +47,7 @@ public class TreeSetTests : SetTests {
 		assert (test_set != null);
 
 		// Check the selected compare function
-		assert (test_set.compare_func == strcmp);
+		assert (test_set.compare_func == (CompareFunc) strcmp);
 	}
 
 	public new void test_gobject_properties() {

@@ -46,7 +46,7 @@ public class PriorityQueueTests : QueueTests {
 		assert (test_queue != null);
 
 		// Check the selected compare function
-		assert (test_queue.compare_func == strcmp);
+		assert (test_queue.compare_func == (CompareFunc) strcmp);
 	}
 
 	public new void test_gobject_properties() {

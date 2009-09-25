@@ -44,6 +44,6 @@ public class TreeMultiSetTests : MultiSetTests {
 		assert (test_multi_set != null);
 
 		// Check the selected compare functions
-		assert (test_multi_set.compare_func == strcmp);
+		assert (test_multi_set.compare_func == (CompareFunc) strcmp);
 	}
 }
