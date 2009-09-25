@@ -810,6 +810,8 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 					return true;
 				} else if (node.brothers_next != null) {
 					_next = node.brothers_next;
+					from_type1_children = false;
+					from_type2_child = false;
 					return true;
 				}
 				from_type1_children = true;
