@@ -36,7 +36,6 @@ public abstract class Gee.TestCase : GLib.Object {
 		this.adaptors += adaptor;
 
 		this.suite.add (new GLib.TestCase (adaptor.name,
-		                                   0,
 		                                   adaptor.set_up,
 		                                   adaptor.run,
 		                                   adaptor.tear_down ));
