@@ -126,11 +126,16 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	 * @inheritDoc
 	 */
 	public override G? poll () {
+		#if DEBUG
+			_dump ("Start poll:");
+		#endif
+
 		// 1a. M inElement <- R.element
 		if (_r == null) {
 			return null;
 		}
 		G min = _r.data;
+		_r.pending_drop = false;
 		_stamp++;
 		_size--;
 
@@ -172,54 +177,59 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			node = next;
 		}
 
-		// 3a. If R'' has no child of type II then goto Step 4.
-		if (r_second.type2_child != null) {
-			// 3b. Let M' be the child of type II of R''. Insert(Q, M'.element)
-			Type2Node<G> m_prime = r_second.type2_child;
-			_remove_type2_node (m_prime);
-			offer (m_prime.data);
+		// For now we can't have type2 node other than R' (left for reference)
+		#if false
+			// 3a. If R'' has no child of type II then goto Step 4.
+			if (r_second.type2_child != null) {
+				// 3b. Let M' be the child of type II of R''. Insert(Q, M'.element)
+				Type2Node<G> m_prime = r_second.type2_child;
+				_remove_type2_node (m_prime);
+				offer (m_prime.data);
 
-			// 3c. For all children N of M do make N a child of R' of Q
-			node = m_prime.type1_children_head;
-			while (node != null) {
-				Type1Node<G> next = node.brothers_next;
-				_remove_type1_node (node);
-				_add_in_r_prime (node);
-				node = next;
+				// 3c. For all children N of M do make N a child of R' of Q
+				node = m_prime.type1_children_head;
+				while (node != null) {
+					Type1Node<G> next = node.brothers_next;
+					_remove_type1_node (node);
+					_add_in_r_prime (node);
+					node = next;
+				}
 			}
-		}
+		#endif
 
 		// 4. Adjust(Q, P, P)
+		if (_p == null) {
+			_p = _r;
+		}
 		_adjust (_p, _p);
 
-		// 5a. if LM is empty then goto Step 6
-		if (_lm_head != null) {
-			// 5b. M <- Head(LM); LM <- Tail(LM)
-			Type2Node<G> m = _lm_head;
+		// For now we can't have type2 node other than R' (left for reference)
+		#if false
+			// 5a. if LM is empty then goto Step 6
+			if (_lm_head != null) {
+				// 5b. M <- Head(LM); LM <- Tail(LM)
+				Type2Node<G> m = _lm_head;
 
-			// 5c. Delete M from Q
-			_remove_type2_node (m);
+				// 5c. Delete M from Q
+				_remove_type2_node (m);
 
-			// 5d. I nsert(Q, M.element)
-			offer (m.data);
+				// 5d. I nsert(Q, M.element)
+				offer (m.data);
 
-			// 5e. For all children N of M do make M a child of R' of Q
-			node = m.type1_children_head;
-			while (node != null) {
-				Type1Node<G> next = node.brothers_next;
-				_remove_type1_node (node);
-				_add_in_r_prime (node);
-				node = next;
+				// 5e. For all children N of M do make M a child of R' of Q
+				node = m.type1_children_head;
+				while (node != null) {
+					Type1Node<G> next = node.brothers_next;
+					_remove_type1_node (node);
+					_add_in_r_prime (node);
+					node = next;
+				}
 			}
-		}
+		#endif
 
 		// 6. While among the children of R' there exist any two different nodes Ri and Rj
 		// such that Ri.degree = Rj.degree do Link(Q, Ri, Rj)
 		while (_check_linkable ()) {}
-
-		if (_p == null) {
-			_p = _r;
-		}
 
 		// 7. Return MinElement
 		return min;
@@ -271,6 +281,10 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	 * @inheritDoc
 	 */
 	public override bool remove (G item) {
+		#if DEBUG
+			_dump ("Start remove: %s".printf ((string) item));
+		#endif
+
 		Iterator<G> iterator = new Iterator<G> (this);
 		while (iterator.next ()) {
 			G an_item = iterator.get ();
@@ -365,15 +379,19 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		// If among the children of R' there exist any two different nodes Ri and Rj
 		// such that Ri.degree = Rj.degree then Link(Q, Ri, Rj)
 		_check_linkable ();
+
+		#if DEBUG
+			_dump ("End _add: %s".printf ((string) n.data));
+		#endif
 	}
 
 	private bool _check_linkable () {
+		#if DEBUG
+			_dump ("Start _check_linkable:");
+		#endif
+
 		if (_lp_head != null) {
 			NodePair<G> pair = _lp_head;
-			if (_lp_head.lp_next != null) {
-				_lp_head.lp_next.lp_prev = null;
-			}
-			_lp_head = _lp_head.lp_next;
 			_link (pair.node1, pair.node2);
 			return true;
 		}
@@ -382,6 +400,10 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 	private Node<G> _re_insert (Type1Node<G> n) {
 		assert (n != _r);
+
+		#if DEBUG
+			_dump ("Start _re_insert: %s".printf ((string) n.data));
+		#endif
 
 		//Parent <- N.parent
 		Node<G> parent = n.parent;
@@ -402,6 +424,10 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			return;
 		}
 
+		#if DEBUG
+			_dump ("Start _adjust: %s, %s".printf ((string) p1.data, (string) p2.data));
+		#endif
+
 		// If P1.lost > P2.lost then M <- P1 else M <- P2
 		Type1Node<G> m;
 		if (p1.lost > p2.lost) {
@@ -421,6 +447,10 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		// P <- ReInsert(Q, M)
 		_p = (Type1Node<G>) _re_insert (m);
+
+		#if DEBUG
+			_dump ("End _adjust: %s, %s".printf ((string) p1.data, (string) p2.data));
+		#endif
 	}
 
 	private void _delete (Node<G> n) {
@@ -432,28 +462,40 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	private void _decrease_key (Node<G> n) {
+		#if DEBUG
+			_dump ("Start _decrease_key: %s".printf ((string) n.data));
+		#endif
+
+		if (n == _r || _r_prime == null) {
+			return;
+		}
+
 		n.pending_drop = true;
 
 		// If (N = R or R') and (R'.element < R.element) then
 		// Swap(R'.element, R.element); return
-		if (n == _r || n == _r_prime) {
-			if (_r_prime != null && _compare (_r_prime, _r) < 0) {
-				_swap_data (_r_prime, _r);
+		if (n == _r_prime && _compare (_r_prime, _r) < 0) {
+			_swap_data (_r_prime, _r);
+			return;
+		}
+
+		// For now we can't have type2 node other than R' (left for reference)
+		#if false
+			// If (N is of type II) and (N.element < N.parent.element) then
+			// Swap(N.element, N.parent.element); N <- N.parent
+			if (n is Type2Node && _compare (n, n.parent) < 0) {
+				_swap_data (n, n.parent);
+				n = n.parent;
 			}
-			return;
-		}
+		#endif
 
-		// If (N is of type II) and (N.element < N.parent.element) then
-		// Swap(N.element, N.parent.element); N <- N.parent
-		if (n is Type2Node && _compare (n, n.parent) < 0) {
-			_swap_data (n, n.parent);
-			n = n.parent;
-		}
-
-		// If N.element >= N.parent.element then return
-		if (n.parent != null && _compare (n, n.parent) >= 0) {
-			return;
-		}
+		// Can't occur as we made n be the most little (left for reference)
+		#if false
+			// If N.element >= N.parent.element then return
+			if (n.parent != null && _compare (n, n.parent) >= 0) {
+				return;
+			}
+		#endif
 
 		// P' <- ReInsert(Q, N)
 		Node<G> p_prime = _re_insert ((Type1Node<G>) n);
@@ -473,23 +515,23 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	private void _add_in_r_prime (Type1Node<G> node) {
+		#if DEBUG
+			_dump ("Start _add_in_r_prime: %s".printf ((string) node.data));
+		#endif
+
 		int degree = node.degree ();
 
 		Type1Node<G>? insertion_point = null;
-		for (int i = degree - 1; i >= 0; i--) {
-			if (i >= _a.length) {
-				continue;
-			}
-			if (_a[i] != null) {
-				insertion_point = _a[i];
-				break;
-			}
+		if (degree < _a.length) {
+			insertion_point = _a[degree];
 		}
 
 		if (insertion_point == null) {
-			node.brothers_prev = _r_prime.type1_children_tail;
-			if (node.brothers_prev != null) {
-				node.brothers_prev.brothers_next = node;
+			if (_r_prime.type1_children_tail != null) {
+				node.brothers_prev = _r_prime.type1_children_tail;
+				_r_prime.type1_children_tail.brothers_next = node;
+			} else {
+				_r_prime.type1_children_head = node;
 			}
 			_r_prime.type1_children_tail = node;
 		} else {
@@ -499,81 +541,87 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			} else {
 				_r_prime.type1_children_head = node;
 			}
-
 			node.brothers_next = insertion_point;
 			insertion_point.brothers_prev = node;
 		}
-		if (_r_prime.type1_children_head == null) {
-			_r_prime.type1_children_head = node;
-		}
 		node.parent = _r_prime;
 
+		// Maintain A, B and LP
 		if (degree >= _a.length) {
 			_a.resize (degree + 1);
 			_b.resize (degree + 1);
 		}
+
+		// If there is already a child of such degree
 		if (_a[degree] == null) {
-			_a[degree] = node;
 			_b[degree] = true;
 		} else {
+			// Else if there is an odd number of child of such degree
 			if (_b[degree] == true) {
-				NodePair<G> pair = new NodePair<G> (node.brothers_prev, node);
-				node.brothers_prev.pair = pair;
+				// Make a pair
+				NodePair<G> pair = new NodePair<G> (node, node.brothers_next);
+				node.brothers_next.pair = pair;
 				node.pair = pair;
 				if (_lp_head == null) {
 					_lp_head = pair;
 					_lp_tail = pair;
 				} else {
 					pair.lp_prev = _lp_tail;
-					if (_lp_tail != null) {
-						_lp_tail.lp_next = pair;
-					}
-					_lp_tail = pair.lp_prev;
+					_lp_tail.lp_next = pair;
+					_lp_tail = pair;
 				}
+				// There is now an even number of child of such degree
 				_b[degree] = false;
 			} else {
 				_b[degree] = true;
 			}
 		}
+		_a[degree] = node;
+
+		#if DEBUG
+			_dump ("End _add_in_r_prime: %s".printf ((string) node.data));
+		#endif
 	}
 
 	private void _remove_type1_node (Type1Node<G> node) {
+		#if DEBUG
+			_dump ("Start _remove_type1_node: %s".printf ((string) node.data));
+		#endif
+
 		if (node.parent == _r_prime) {
-			// Maintain the A and B arrays
-			int degree = node.degree ();
-			if (_a[degree] == node) {
-				Type1Node<G> next = node.brothers_next;
-				if (next != null && next.degree () == degree) {
-					_a[degree] = next;
-					_b[degree] = ! _b[degree];
-				} else {
-					_a[degree] = null;
-					_b[degree] = false;
-
-					int i = degree;
-					while (_a[i] == null) {
-						i--;
-					}
-					_a.resize (i + 1);
-					_b.resize (i + 1);
-				}
+			_updated_degree (node, false);
+		} else {
+			// Maintain LL
+			if (node.ll_prev != null) {
+				node.ll_prev.ll_next = node.ll_next;
+			} else if (_ll_head == node) {
+				_ll_head = node.ll_next;
 			}
-		} else if (node.parent != null && node.parent.parent != _r_prime) {
-			// Increment parent's lost count
-			Type1Node<G> parent = (Type1Node<G>) node.parent;
-			parent.lost++;
+			if (node.ll_next != null) {
+				node.ll_next.ll_prev = node.ll_prev;
+			} else if (_ll_tail == node) {
+				_ll_tail = node.ll_prev;
+			}
 
-			// And add it to LL if needed
-			if (parent.lost > 1) {
-				if (_ll_head == null) {
-					_ll_head = parent;
-					_ll_tail = parent;
-				} else {
-					parent.ll_prev = _ll_tail;
-					if (_ll_tail != null) {
-						_ll_tail.ll_next = parent;
+			if (node.parent != null) {
+				if (node.parent.parent == _r_prime) {
+					_updated_degree ((Type1Node<G>) node.parent, true);
+				} else if (node.parent.parent != null) {
+					Type1Node<G> parent = (Type1Node<G>) node.parent;
+
+					// Increment parent's lost count
+					parent.lost++;
+
+					// And add it to LL if needed
+					if (parent.lost > 1) {
+						if (_ll_tail != null) {
+							parent.ll_prev = _ll_tail;
+							_ll_tail.ll_next = parent;
+						} else {
+						_ll_head = parent;
+						}
+						_ll_tail = parent;
 					}
-					_ll_tail = node.ll_prev;
 				}
 			}
 		}
@@ -583,16 +631,34 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			_p = null;
 		}
 
-		// Maintain LL
-		if (node.ll_prev != null) {
-			node.ll_prev.ll_next = node.ll_next;
-		} else {
-			_ll_head = node.ll_next;
+		// Maintain brothers list
+		node.remove ();
+	}
+
+	private void _updated_degree (Type1Node<G> node, bool child_removed) {
+		int degree = node.degree ();
+
+		// Maintain A and B
+		if (child_removed && _a[degree - 1] == null) {
+			_a[degree - 1] = node;
+			_b[degree - 1] = ! _b[degree - 1];
 		}
-		if (node.ll_next != null) {
-			node.ll_next.ll_prev = node.ll_prev;
-		} else {
-			_ll_tail = node.ll_prev;
+
+		_b[degree] = ! _b[degree];
+		if (_a[degree] == node) {
+			Type1Node<G> next = node.brothers_next;
+			if (next != null && next.degree () == degree) {
+				_a[degree] = next;
+			} else {
+				_a[degree] = null;
+
+				int i = _a.length - 1;
+				while (_a[i] == null) {
+					i--;
+				}
+				_a.resize (i + 1);
+				_b.resize (i + 1);
+			}
 		}
 
 		// Maintain LP
@@ -612,33 +678,71 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 				_lp_tail = pair.lp_prev;
 			}
 		}
-
-		// Maintain brothers list
-		node.remove ();
 	}
 
 	private void _remove_type2_node (Type2Node<G> node) {
 		((Type1Node<G>) node.parent).type2_child = null;
 		node.parent = null;
 
-		// Maintain LM
-		if (node != _r_prime) {
-			if (node.lm_prev != null) {
-				node.lm_prev.lm_next = node.lm_next;
-			} else {
-				_lm_head = node.lm_next;
+		// For now we can't have type2 node other than R' (left for reference)
+		#if false
+			// Maintain LM
+			if (node != _r_prime) {
+				if (node.lm_prev != null) {
+					node.lm_prev.lm_next = node.lm_next;
+				} else if (_lm_head == node) {
+					_lm_head = node.lm_next;
+				}
+				if (node.lm_next != null) {
+					node.lm_next.lm_prev = node.lm_prev;
+				} else if (_lm_tail == node)  {
+					_lm_tail = node.lm_prev;
+				}
+				node.lm_next = null;
+				node.lm_prev = null;
 			}
-			if (node.lm_next != null) {
-				node.lm_next.lm_prev = node.lm_prev;
-			} else {
-				_lm_tail = node.lm_prev;
-			}
-			node.lm_next = null;
-			node.lm_prev = null;
-		}
+		#endif
 	}
 
-	private class Node<G> {
+	#if DEBUG
+	public void _dump (string message) {
+		stdout.printf (">>>> %s\n", message);
+
+		stdout.printf ("A.length = %d:", _a.length);
+		foreach (Node<G>? node in _a) {
+			stdout.printf (" %s;", node != null ? (string) node.data : null);
+		}
+		stdout.printf ("\n");
+
+		stdout.printf ("B.length = %d:", _b.length);
+		foreach (bool even in _b) {
+			stdout.printf (" %s;", even.to_string ());
+		}
+		stdout.printf ("\n");
+
+		stdout.printf ("LP:");
+		unowned NodePair<G>? pair = _lp_head;
+		while (pair != null) {
+			stdout.printf (" (%s,%s);", (string) pair.node1.data, (string) pair.node2.data);
+			pair = pair.lp_next;
+		}
+		stdout.printf ("\n");
+
+		stdout.printf ("LL:");
+		unowned Type1Node<G>? node = _ll_head;
+		while (node != null) {
+			stdout.printf (" %s;", (string) node.data);
+			node = node.ll_next;
+		}
+		stdout.printf ("\n");
+
+		stdout.printf ("%s\n", _r != null ? _r.to_string () : null);
+
+		stdout.printf ("\n");
+	}
+	#endif
+
+	private abstract class Node<G> {
 		public G data;
 		public weak Node<G>? parent = null;
 
@@ -648,32 +752,32 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		public bool pending_drop;
 
-		public Node (G data) {
+		protected Node (G data) {
 			this.data = data;
 		}
 
-		public virtual int degree () {
+		public inline int degree () {
 			return type1_children_count;
 		}
 
-		public string children_to_string () {
+	#if DEBUG
+		public string children_to_string (int level = 0) {
 			StringBuilder builder = new StringBuilder ();
 			bool first = true;
 			Type1Node<G> child = type1_children_head;
 			while (child != null) {
 				if (!first) {
-					builder.append (", ");
-					first = false;
+					builder.append (",\n");
 				}
-				builder.append (child.to_string ());
+				first = false;
+				builder.append (child.to_string (level));
 				child = child.brothers_next;
 			}
 			return builder.str;
 		}
 
-		public virtual string to_string () {
-			return "";
-		}
+		public abstract string to_string (int level = 0);
+	#endif
 	}
 
 	private class Type1Node<G> : Node<G> {
@@ -687,10 +791,6 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		public Type1Node (G data) {
 			base (data);
-		}
-
-		public override int degree () {
-			return base.degree () + (type2_child == null ? 0 : 1);
 		}
 
 		public inline void add (Type1Node<G> node) {
@@ -724,22 +824,63 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			brothers_next = null;
 		}
 
-		public override string to_string () {
-			return "(\"%s\"/%d; %s, %s)".printf ((string) data, (int) lost, children_to_string (), type2_child != null ? type2_child.to_string () : "-");
+		#if DEBUG
+		public override string to_string (int level = 0) {
+			StringBuilder builder = new StringBuilder ();
+			builder.append (string.nfill (level, '\t'));
+			builder.append ("(");
+			builder.append ((string) data);
+			builder.append ("/");
+			builder.append (lost.to_string ());
+			if (type1_children_head != null || type2_child != null) {
+				builder.append (":\n");
+			}
+			if (type1_children_head != null) {
+				builder.append (children_to_string (level + 1));
+			}
+			if (type1_children_head != null && type2_child != null) {
+				builder.append (",\n");
+			}
+			if (type2_child != null) {
+				builder.append (type2_child.to_string (level + 1));
+			}
+			if (type1_children_head != null || type2_child != null) {
+				builder.append ("\n");
+				builder.append (string.nfill (level, '\t'));
+			}
+			builder.append (")");
+			return builder.str;
 		}
+		#endif
 	}
 
 	private class Type2Node<G> : Node<G> {
-		public weak Type2Node<G>? lm_prev = null;
-		public Type2Node<G>? lm_next = null;
+		// For now we can't have type2 node other than R' (left for reference)
+		#if false
+			public weak Type2Node<G>? lm_prev = null;
+			public Type2Node<G>? lm_next = null;
+		#endif
 
 		public Type2Node (G data) {
 			base (data);
 		}
 
-		public override string to_string () {
-			return "[\"%s\"; %s]".printf ((string) data, children_to_string ());
+		#if DEBUG
+		public override string to_string (int level = 0) {
+			StringBuilder builder = new StringBuilder ();
+			builder.append (string.nfill (level, '\t'));
+			builder.append ("[");
+			builder.append ((string) data);
+			if (type1_children_head != null) {
+				builder.append (":\n");
+				builder.append (children_to_string (level + 1));
+				builder.append ("\n");
+				builder.append (string.nfill (level, '\t'));
+			}
+			builder.append ("]");
+			return builder.str;
 		}
+		#endif
 	}
 
 	private class NodePair<G> {
