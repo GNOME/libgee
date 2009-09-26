@@ -22,13 +22,12 @@
  */
 
 /**
- * Skeletal implementation of the {@link Gee.Map} interface.
+ * Skeletal implementation of the {@link Map} interface.
  *
  * Contains common code shared by all map implementations.
  *
- * @see Gee.Map
- * @see Gee.TreeMap
- * @see Gee.HashMap
+ * @see HashMap
+ * @see TreeMap
  */
 public abstract class Gee.AbstractMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V> {
 

@@ -21,14 +21,15 @@
  */
 
 /**
- * A MultiSet is a collection allowing duplicates.
+ * A collection with duplicate elements.
  */
 public interface Gee.MultiSet<G> : Collection<G> {
 	/**
-	 * Returns the number of occurences of an item in this MultiSet
+	 * Returns the number of occurences of an item in this multiset.
 	 *
 	 * @param item the item to count occurences of
-	 * @return the number of occurences of the item in this multiset.
+	 *
+	 * @return     the number of occurences of the item in this multiset.
 	 */
 	public abstract int count (G item);
 }

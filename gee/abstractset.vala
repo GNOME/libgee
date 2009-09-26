@@ -22,12 +22,12 @@
  */
 
 /**
- * Skeletal implementation of the {@link Gee.Set} interface.
+ * Skeletal implementation of the {@link Set} interface.
  *
  * Contains common code shared by all set implementations.
  *
- * @see Gee.TreeSet
- * @see Gee.HashSet
+ * @see HashSet
+ * @see TreeSet
  */
 public abstract class Gee.AbstractSet<G> : Gee.AbstractCollection<G>, Set<G> {
 

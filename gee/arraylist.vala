@@ -27,15 +27,15 @@
 using GLib;
 
 /**
- * Resizable array implementation of the {@link Gee.List} interface.
+ * Resizable array implementation of the {@link List} interface.
  *
  * The storage array grows automatically when needed.
  *
  * This implementation is pretty good for rarely modified data. Because they are
  * stored in an array this structure does not fit for highly mutable data. For an
- * alternative implementation see {@link Gee.LinkedList}.
+ * alternative implementation see {@link LinkedList}.
  *
- * @see Gee.LinkedList
+ * @see LinkedList
  */
 public class Gee.ArrayList<G> : AbstractList<G> {
 	/**

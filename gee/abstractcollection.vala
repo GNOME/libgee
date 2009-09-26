@@ -22,11 +22,13 @@
  */
 
 /**
- * Skeletal implementation of the {@link Gee.Collection} interface.
+ * Skeletal implementation of the {@link Collection} interface.
  *
  * Contains common code shared by all collection implementations.
  *
- * @see Gee.AbstractList
+ * @see AbstractList
+ * @see AbstractSet
+ * @see AbstractMultiSet
  */
 public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collection<G> {
 

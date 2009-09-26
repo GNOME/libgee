@@ -22,12 +22,12 @@
  */
 
 /**
- * Skeletal implementation of the {@link Gee.List} interface.
+ * Skeletal implementation of the {@link List} interface.
  *
  * Contains common code shared by all list implementations.
  *
- * @see Gee.ArrayList
- * @see Gee.LinkedList
+ * @see ArrayList
+ * @see LinkedList
  */
 public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 

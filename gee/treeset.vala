@@ -23,14 +23,14 @@
 using GLib;
 
 /**
- * Left-leaning red-black tree implementation of the {@link Gee.Set} interface.
+ * Left-leaning red-black tree implementation of the {@link Set} interface.
  *
  * This implementation is especially well designed for large quantity of
  * data. The (balanced) tree implementation insure that the set and get
  * methods are in logarithmic complexity. For a linear implementation see
- * {@link Gee.HashSet}.
+ * {@link HashSet}.
  *
- * @see Gee.HashSet
+ * @see HashSet
  */
 public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**

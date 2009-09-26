@@ -25,13 +25,13 @@
 using GLib;
 
 /**
- * Hash table implementation of the {@link Gee.Map} interface.
+ * Hash table implementation of the {@link Map} interface.
  *
  * This implementation is better fit for highly heterogenous key values.
  * In case of high key hashes redundancy or higher amount of data prefer using
- * tree implementation like {@link Gee.TreeMap}.
+ * tree implementation like {@link TreeMap}.
  *
- * @see Gee.TreeMap
+ * @see TreeMap
  */
 public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**

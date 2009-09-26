@@ -21,7 +21,8 @@
  */
 
 /**
- * This interface defines a total ordering among each class implementing it.
+ * This interface defines a total ordering among instances of each class
+ * implementing it.
  */
 public interface Gee.Comparable<G> : Object {
 	/**

@@ -25,13 +25,13 @@
 using GLib;
 
 /**
- * Hash table implementation of the {@link Gee.Set} interface.
+ * Hash table implementation of the {@link Set} interface.
  *
  * This implementation is better fit for highly heterogenous values.
  * In case of high value hashes redundancy or higher amount of data prefer using
- * tree implementation like {@link Gee.TreeSet}.
+ * tree implementation like {@link TreeSet}.
  *
- * @see Gee.TreeSet
+ * @see TreeSet
  */
 public class Gee.HashSet<G> : AbstractSet<G> {
 	/**

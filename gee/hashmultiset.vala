@@ -21,7 +21,7 @@
  */
 
 /**
- * A hash based implementation of the {@link Gee.MultiSet} interface.
+ * Hash table implementation of the {@link MultiSet} interface.
  */
 public class Gee.HashMultiSet<G> : AbstractMultiSet<G> {
 	public HashFunc hash_func {

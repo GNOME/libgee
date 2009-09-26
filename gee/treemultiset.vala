@@ -21,7 +21,8 @@
  */
 
 /**
- * A tree based implementation of the {@link Gee.MultiSet} interface.
+ * Left-leaning red-black tree implementation of the {@link MultiSet}
+ * interface.
  */
 public class Gee.TreeMultiSet<G> : AbstractMultiSet<G> {
 	public CompareFunc compare_func {

@@ -23,13 +23,13 @@
 using GLib;
 
 /**
- * Left-leaning red-black tree implementation of the {@link Gee.Map} interface.
+ * Left-leaning red-black tree implementation of the {@link Map} interface.
  *
  * This implementation is especially well designed for large quantity of
  * data. The (balanced) tree implementation insure that the set and get
  * methods are in logarithmic complexity.
  *
- * @see Gee.HashMap
+ * @see HashMap
  */
 public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	/**

@@ -21,11 +21,11 @@
  */
 
 /**
- * Skeletal implementation of the {@link Gee.Queue} interface.
+ * Skeletal implementation of the {@link Queue} interface.
  *
  * Contains common code shared by all queue implementations.
  *
- * @see Gee.PriorityQueue
+ * @see PriorityQueue
  */
 public abstract class Gee.AbstractQueue<G> : Gee.AbstractCollection<G>, Queue<G> {
 	/**

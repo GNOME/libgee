@@ -23,13 +23,13 @@
 using GLib;
 
 /**
- * Read-only view for {@link Gee.Map} collections.
+ * Read-only view for {@link Map} collections.
  *
- * This class decorates any class which implements the {@link Gee.Map} interface
+ * This class decorates any class which implements the {@link Map} interface
  * by making it read only. Any method which normally modify data will throw an
  * error.
  *
- * @see Gee.Map
+ * @see Map
  */
 internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V> {
 

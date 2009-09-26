@@ -26,7 +26,16 @@ using GLib;
 namespace Gee {
 
 	/**
-	 * Helper class for equal, hash and compare functions.
+	 * Helpers for equal, hash and compare functions.
+	 *
+	 * With those functions, you can retrieve the equal, hash and compare
+	 * functions that best match your element, key or value types. Supported
+	 * types are (non-boxed) primitive, string and `Object` types.
+	 *
+	 * A special care is taken for classes inheriting from the
+	 * {@link Comparable} interface. For such types, an appropriate compare
+	 * function is returned that calls {@link Comparable.compare_to}.
+	 *
 	 */
 	namespace Functions {
 

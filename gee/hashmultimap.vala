@@ -21,7 +21,7 @@
  */
 
 /**
- * A MultiMap implemented using a HashMap of Sets
+ * Hash table implementation of the {@link MultiMap} interface.
  */
 public class Gee.HashMultiMap<K,V> : GLib.Object, MultiMap<K,V> {
 	public int size {

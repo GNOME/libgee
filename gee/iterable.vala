@@ -23,7 +23,7 @@
 using GLib;
 
 /**
- * An object that can provide an {@link Gee.Iterator}.
+ * An object that can provide an {@link Iterator}.
  */
 public interface Gee.Iterable<G> : GLib.Object {
 	/**
@@ -32,10 +32,10 @@ public interface Gee.Iterable<G> : GLib.Object {
 	public abstract Type element_type { get; }
 
 	/**
-	 * Returns a Iterator that can be used for simple iteration over a
+	 * Returns a {@link Iterator} that can be used for simple iteration over a
 	 * collection.
 	 *
-	 * @return a Iterator that can be used for simple iteration over a
+	 * @return a {@link Iterator} that can be used for simple iteration over a
 	 *         collection
 	 */
 	public abstract Iterator<G> iterator ();

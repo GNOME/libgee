@@ -25,12 +25,12 @@
  */
 
 /**
- * Doubly-linked list implementation of the {@link Gee.List} interface.
+ * Doubly-linked list implementation of the {@link List} interface.
  *
  * This implementation is pretty well designed for highly mutable data. When
- * indexed access is privileged prefer using {@link Gee.ArrayList}.
+ * indexed access is privileged prefer using {@link ArrayList}.
  *
- * @see Gee.ArrayList
+ * @see ArrayList
  */
 public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	private int _size = 0;

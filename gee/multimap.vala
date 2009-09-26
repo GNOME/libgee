@@ -21,8 +21,7 @@
  */
 
 /**
- * A MultiMap is a map where you can associate multiple values to the
- * same key.
+ * A map with multiple values per key.
  */
 public interface Gee.MultiMap<K,V> : GLib.Object {
 	/**
@@ -83,14 +82,15 @@ public interface Gee.MultiMap<K,V> : GLib.Object {
 	 * @param key   the key to remove from the map
 	 * @param value the value to remove from the map
 	 *
-	 * @return    true if the map has been changed, false otherwise
+	 * @return      true if the map has been changed, false otherwise
 	 */
 	public abstract bool remove (K key, V value);
 
 	/**
-	 * Removes the specified key and all the associated values from this multimap.
+	 * Removes the specified key and all the associated values from this
+	 * multimap.
 	 *
-	 * @param key   the key to remove from the map
+	 * @param key the key to remove from the map
 	 *
 	 * @return    true if the map has been changed, false otherwise
 	 */

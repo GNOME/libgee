@@ -22,7 +22,10 @@
  */
 
 /**
- * Skeletal implementation of the {@link Gee.MultiSet} interface.
+ * Skeletal implementation of the {@link MultiSet} interface.
+ *
+ * @see HashMultiSet
+ * @see TreeMultiSet
  */
 public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<G> {
 	public override int size {

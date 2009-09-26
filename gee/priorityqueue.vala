@@ -21,7 +21,7 @@
  */
 
 /**
- * A unbounded priority queue implementation of the {@link Gee.Queue}.
+ * Relaxed fibonacci heap priority queue implementation of the {@link Queue}.
  *
  * The elements of the priority queue are ordered according to their natural
  * ordering, or by a compare_func provided at queue construction time. A

@@ -23,13 +23,13 @@
 using GLib;
 
 /**
- * Read-only view for {@link Gee.Collection} collections.
+ * Read-only view for {@link Collection} collections.
  *
- * This class decorates any class which implements the {@link Gee.Collection}
+ * This class decorates any class which implements the {@link Collection}
  * interface by making it read only. Any method which normally modify data will
  * throw an error.
  *
- * @see Gee.Collection
+ * @see Collection
  */
 internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 
