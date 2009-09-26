@@ -63,15 +63,17 @@ geeinclude_HEADERS = \
 	gee.h \
 	$(NULL)
 
-VALAFLAGS = \
+AM_VALAFLAGS = \
 	-H gee.h --vapi gee-1.0.vapi \
 	-h gee-internals.h \
 	--internal-vapi gee-internals-1.0.vapi \
 	--library gee-1.0 --gir Gee-1.0.gir \
+	$(COVERAGE_VALAFLAGS) \
+	$(VALAFLAGS) \
 	$(NULL)
 
 gee-1.0.vapi gee.vala.stamp: $(libgee_la_VALASOURCES)
-	$(VALAC) -C $(VALAFLAGS) $^
+	$(VALAC) -C $(AM_VALAFLAGS) $^
 	touch $@
 
 libgee_la_LIBADD = \

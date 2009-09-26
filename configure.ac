@@ -13,6 +13,7 @@ AC_PROG_LIBTOOL
 AC_PATH_PROG(VALAC, valac, valac)
 AC_SUBST(VALAC)
 
+AC_SUBST(VALAFLAGS)
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
@@ -34,12 +35,12 @@ AM_CONDITIONAL(ENABLE_COVERAGE, test x$enable_coverage != xno)
 
 AS_IF([test "x$enable_coverage" != xno],
 	[COVERAGE_CFLAGS="-fprofile-arcs -ftest-coverage"
+	 COVERAGE_VALAFLAGS="-g"
 	 COVERAGE_LIBS="-lgcov"
 	 AC_SUBST(COVERAGE_CFLAGS)
+	 AC_SUBST(COVERAGE_VALAFLAGS)
 	 AC_SUBST(COVERAGE_LIBS)
 	 
-	 #FIXME: preserve non -Wall/-g/-O flags from users CFLAGS
-	 CFLAGS="-Wall -g -O0"
 	 AC_PATH_PROG(LCOV, lcov, :)
 	 AC_SUBST(LCOV)
 	 AS_IF([test "$LCOV" = :],

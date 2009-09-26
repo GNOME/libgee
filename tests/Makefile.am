@@ -63,7 +63,7 @@ coverage-report:
 	lcov --directory @top_srcdir@/gee \
 		--output-file @top_builddir@/lcov.info \
 		--remove @top_builddir@/lcov.info \
-		/usr/include/\*
+		"/usr/include/*" "*.c" "*.h" "*.vapi"
 
 	$(mkdir_p) @top_builddir@/tests/coverage
 	git_commit=`GIT_DIR=@top_srcdir@/.git git log -1 --pretty=format:%h 2>/dev/null`;\
