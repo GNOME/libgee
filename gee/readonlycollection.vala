@@ -34,14 +34,14 @@ using GLib;
 internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public int size {
 		get { return _collection.size; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool is_empty {
 		get { return _collection.is_empty; }
@@ -60,21 +60,21 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Type element_type {
 		get { return typeof (G); }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Gee.Iterator<G> iterator () {
 		return new Iterator<G> (_collection.iterator ());
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool contains (G item) {
 		return _collection.contains (item);
@@ -109,7 +109,7 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool contains_all (Collection<G> collection) {
 		return _collection.contains_all (collection);
@@ -130,7 +130,7 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G[] to_array() {
 		return _collection.to_array ();

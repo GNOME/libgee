@@ -32,56 +32,56 @@
 public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract ListIterator<G> list_iterator ();
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract new G? get (int index);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract new void set (int index, G item);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract int index_of (G item);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract void insert (int index, G item);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract G remove_at (int index);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract List<G>? slice (int start, int stop);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual G first () {
 		return get (0);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual G last () {
 		return get (size - 1);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual void insert_all (int index, Collection<G> collection) {
 		foreach (G item in collection) {
@@ -91,7 +91,7 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public void sort (CompareFunc? compare = null) {
 		if (compare == null) {
@@ -103,7 +103,7 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 	private weak List<G> _read_only_view;
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual new List<G> read_only_view {
 		owned get {

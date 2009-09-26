@@ -35,7 +35,7 @@ using GLib;
  */
 public class Gee.HashSet<G> : AbstractSet<G> {
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int size {
 		get { return _nnodes; }
@@ -90,7 +90,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool contains (G key) {
 		Node<G>** node = lookup_node (key);
@@ -98,14 +98,14 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool add (G key) {
 		Node<G>** node = lookup_node (key);
@@ -122,7 +122,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool remove (G key) {
 		Node<G>** node = lookup_node (key);
@@ -144,7 +144,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void clear () {
 		for (int i = 0; i < _array_size; i++) {

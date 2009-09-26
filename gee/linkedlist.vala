@@ -56,35 +56,35 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override ListIterator<G> list_iterator () {
 		return new Iterator<G> (this);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int size {
 		get { return this._size; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool contains (G item) {
 		return this.index_of (item) != -1;
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool add (G item) {
 		Node<G> n = new Node<G> (item);
@@ -104,7 +104,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool remove (G item) { // Should remove only the first occurence (a test should be added)
 		for (Node<G> n = this._head; n != null; n = n.next) {
@@ -117,7 +117,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void clear () {
 		++this._stamp;
@@ -126,7 +126,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override G get (int index) {
 		assert (index >= 0);
@@ -138,7 +138,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void set (int index, G item) {
 		assert (index >= 0);
@@ -150,7 +150,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int index_of (G item) {
 		int result = -1;
@@ -167,7 +167,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void insert (int index, G item) {
 		assert (index >= 0);
@@ -200,7 +200,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override G remove_at (int index) {
 		assert (index >= 0);
@@ -214,7 +214,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override List<G>? slice (int start, int stop) {
 		return_val_if_fail (start <= stop, null);
@@ -232,7 +232,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override G first () {
 		assert (_size > 0);
@@ -240,7 +240,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override G last () {
 		assert (_size > 0);
@@ -248,56 +248,56 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public int capacity {
 		get { return UNBOUNDED_CAPACITY; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public int remaining_capacity {
 		get { return UNBOUNDED_CAPACITY; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool is_full {
 		get { return false; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool offer (G element) {
 		return offer_tail (element);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? peek () {
 		return peek_head ();
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? poll () {
 		return poll_head ();
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public int drain (Collection<G> recipient, int amount = -1) {
 		return drain_head (recipient, amount);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool offer_head (G element) {
 		insert (0, element);
@@ -305,7 +305,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? peek_head () {
 		if (this._size == 0) {
@@ -315,7 +315,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? poll_head () {
 		if (this._size == 0) {
@@ -325,7 +325,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public int drain_head (Collection<G> recipient, int amount = -1) {
 		if (amount == -1) {
@@ -341,14 +341,14 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool offer_tail (G element) {
 		return add (element);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? peek_tail () {
 		if (this._size == 0) {
@@ -358,7 +358,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? poll_tail () {
 		if (this._size == 0) {
@@ -368,7 +368,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public int drain_tail (Collection<G> recipient, int amount = -1) {
 		if (amount == -1) {

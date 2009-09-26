@@ -35,14 +35,14 @@ using GLib;
  */
 public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int size {
 		get { return _nnodes; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Set<K> keys {
 		owned get {
@@ -57,7 +57,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Collection<V> values {
 		owned get {
@@ -72,7 +72,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Set<Map.Entry<K,V>> entries {
 		owned get {
@@ -150,7 +150,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool has_key (K key) {
 		Node<K,V>** node = lookup_node (key);
@@ -158,7 +158,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool has (K key, V value) {
 		Node<K,V>** node = lookup_node (key);
@@ -166,7 +166,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override V? get (K key) {
 		Node<K,V>* node = (*lookup_node (key));
@@ -178,7 +178,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void set (K key, V value) {
 		Node<K,V>** node = lookup_node (key);
@@ -194,7 +194,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool unset (K key, out V? value = null) {
 		Node<K,V>** node = lookup_node (key);
@@ -220,7 +220,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void clear () {
 		for (int i = 0; i < _array_size; i++) {
@@ -237,7 +237,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.MapIterator<K,V> map_iterator () {
 		return new MapIterator<K,V> (this);

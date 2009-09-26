@@ -29,37 +29,37 @@
  */
 public abstract class Gee.AbstractQueue<G> : Gee.AbstractCollection<G>, Queue<G> {
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract int capacity { get; }
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract int remaining_capacity { get; }
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract bool is_full { get; }
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract bool offer (G element);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract G? peek ();
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract G? poll ();
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract int drain (Collection<G> recipient, int amount = -1);
 }

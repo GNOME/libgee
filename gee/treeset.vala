@@ -34,7 +34,7 @@ using GLib;
  */
 public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int size {
 		get {return _size;}
@@ -61,7 +61,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool contains (G item) {
 		weak Node<G>? cur = root;
@@ -161,7 +161,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 *
 	 * If the element already exists in the set it will not be added twice.
 	 */
@@ -291,7 +291,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool remove (G item) {
 #if CONSISTENCY_CHECKS
@@ -309,7 +309,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void clear () {
 		root = null;
@@ -318,14 +318,14 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public BidirIterator<G> bidir_iterator () {
 		return new Iterator<G> (this);
@@ -336,7 +336,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G first () {
 		assert (_first != null);
@@ -344,7 +344,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G last () {
 		assert (_last != null);
@@ -352,21 +352,21 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public SortedSet<G> head_set (G before) {
 		return new SubSet<G>.head (this, before);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public SortedSet<G> tail_set (G after) {
 		return new SubSet<G>.tail (this, after);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public SortedSet<G> sub_set (G after, G before) {
 		return new SubSet<G> (this, after, before);
@@ -388,7 +388,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public BidirIterator<G>? iterator_at (G item) {
 		weak Node<G>? node = find_node (item);

@@ -31,39 +31,39 @@
 public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collection<G> {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract int size { get; }
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual bool is_empty {
 		get { return size == 0; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract bool contains (G item);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract bool add (G item);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract bool remove (G item);
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract void clear ();
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual G[] to_array() {
 		G[] array = new G[size];
@@ -75,7 +75,7 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual bool add_all (Collection<G> collection) {
 		if (collection.is_empty) {
@@ -90,7 +90,7 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual bool contains_all (Collection<G> collection) {
 		if (collection.size > size) {
@@ -106,7 +106,7 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual bool remove_all (Collection<G> collection) {
 		bool changed = false;
@@ -117,7 +117,7 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual bool retain_all (Collection<G> collection) {
 		bool changed = false;
@@ -132,21 +132,21 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Type element_type {
 		get { return typeof (G); }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public abstract Iterator<G> iterator ();
 
 	private weak Collection<G> _read_only_view;
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual Collection<G> read_only_view {
 		owned get {

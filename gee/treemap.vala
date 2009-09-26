@@ -33,14 +33,14 @@ using GLib;
  */
 public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int size {
 		get { return _size; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Set<K> keys {
 		owned get {
@@ -55,7 +55,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Collection<V> values {
 		owned get {
@@ -70,7 +70,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Set<Map.Entry<K,V>> entries {
 		owned get {
@@ -145,7 +145,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool has_key (K key) {
 		weak Node<K, V>? cur = root;
@@ -163,7 +163,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool has (K key, V value) {
 		V? own_value = get (key);
@@ -171,7 +171,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override V? get (K key) {
 		weak Node<K, V>? cur = root;
@@ -213,7 +213,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void set (K key, V value) {
 		set_to_node (ref root, key, value, null, null);
@@ -325,7 +325,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool unset (K key, out V? value = null) {
 		V node_value;
@@ -343,7 +343,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void clear () {
 		root = null;
@@ -352,7 +352,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.MapIterator<K,V> map_iterator () {
 		return new MapIterator<K,V> (this);

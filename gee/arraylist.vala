@@ -39,7 +39,7 @@ using GLib;
  */
 public class Gee.ArrayList<G> : AbstractList<G> {
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int size {
 		get { return _size; }
@@ -69,28 +69,28 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override ListIterator<G> list_iterator () {
 		return new Iterator<G> (this);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool contains (G item) {
 		return (index_of (item) != -1);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int index_of (G item) {
 		for (int index = 0; index < _size; index++) {
@@ -102,7 +102,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override G get (int index) {
 		assert (index >= 0);
@@ -112,7 +112,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void set (int index, G item) {
 		assert (index >= 0);
@@ -122,7 +122,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool add (G item) {
 		if (_size == _items.length) {
@@ -134,7 +134,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void insert (int index, G item) {
 		assert (index >= 0);
@@ -149,7 +149,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool remove (G item) {
 		for (int index = 0; index < _size; index++) {
@@ -162,7 +162,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override G remove_at (int index) {
 		assert (index >= 0);
@@ -178,7 +178,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void clear () {
 		for (int index = 0; index < _size; index++) {
@@ -189,7 +189,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override List<G>? slice (int start, int stop) {
 		return_val_if_fail (start <= stop, null);
@@ -205,7 +205,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool add_all (Collection<G> collection) {
 		if (collection.is_empty) {

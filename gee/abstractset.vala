@@ -34,7 +34,7 @@ public abstract class Gee.AbstractSet<G> : Gee.AbstractCollection<G>, Set<G> {
 	private weak Set<G> _read_only_view;
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public virtual new Set<G> read_only_view {
 		owned get {

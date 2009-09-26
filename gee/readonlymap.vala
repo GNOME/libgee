@@ -34,21 +34,21 @@ using GLib;
 internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V> {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public int size {
 		get { return _map.size; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool is_empty {
 		get { return _map.is_empty; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Set<K> keys {
 		owned get {
@@ -57,7 +57,7 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Collection<V> values {
 		owned get {
@@ -66,7 +66,7 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Set<Map.Entry<K,V>> entries {
 		owned get {
@@ -86,28 +86,28 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool has_key (K key) {
 		return _map.has_key (key);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool contains (K key) {
 		return _map.has_key (key);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool has (K key, V value) {
 		return _map.has (key, value);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public new V? get (K key) {
 		return _map.get (key);
@@ -142,7 +142,7 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Gee.MapIterator<K,V> map_iterator () {
 		return new MapIterator<K,V> (_map.map_iterator ());
@@ -170,14 +170,14 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool has_all (Map<K,V> map) {
 		return _map.has_all (map);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public bool contains_all (Map<K,V> map) {
 		return _map.has_all (map);
@@ -188,28 +188,28 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Type key_type {
 		get { return typeof (K); }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Type value_type {
 		get { return typeof (V); }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Type element_type {
 		get { return typeof (Map.Entry<K,V>); }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public Iterator<Map.Entry<K,V>> iterator () {
 		return entries.iterator ();

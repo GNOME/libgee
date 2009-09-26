@@ -68,28 +68,28 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int capacity {
 		get { return UNBOUNDED_CAPACITY; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int remaining_capacity {
 		get { return UNBOUNDED_CAPACITY; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool is_full {
 		get { return false; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool offer (G element) {
 		if (_r == null) {
@@ -113,7 +113,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override G? peek () {
 		if (_r == null) {
@@ -123,7 +123,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override G? poll () {
 		#if DEBUG
@@ -236,7 +236,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int drain (Collection<G> recipient, int amount = -1) {
 		if (amount == -1) {
@@ -252,14 +252,14 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override int size {
 		get { return _size; }
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool contains (G item) {
 		foreach (G an_item in this) {
@@ -271,14 +271,14 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool add (G item) {
 		return offer (item);
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override bool remove (G item) {
 		#if DEBUG
@@ -297,7 +297,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override void clear () {
 		_size = 0;
@@ -315,7 +315,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
