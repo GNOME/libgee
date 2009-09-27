@@ -557,7 +557,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			_b[degree] = true;
 		} else {
 			// Else if there is an odd number of child of such degree
-			if (_b[degree] == true) {
+			if (_b[degree]) {
 				// Make a pair
 				NodePair<G> pair = new NodePair<G> (node, node.brothers_next);
 				node.brothers_next.pair = pair;

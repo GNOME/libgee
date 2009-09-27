@@ -69,26 +69,26 @@ public class PriorityQueueTests : QueueTests {
 		assert (test_queue != null);
 
 		// Add two elements and remove the greatest
-		assert (test_queue.offer ("one") == true);
-		assert (test_queue.offer ("two") == true);
+		assert (test_queue.offer ("one"));
+		assert (test_queue.offer ("two"));
 		assert (test_queue.peek () == "one");
 		assert (test_queue.remove ("two"));
 		assert (test_queue.peek () == "one");
 		assert (test_queue.poll () == "one");
 
 		// Add twelve elements
-		assert (test_queue.offer ("one") == true);
-		assert (test_queue.offer ("two") == true);
-		assert (test_queue.offer ("three") == true);
-		assert (test_queue.offer ("four") == true);
-		assert (test_queue.offer ("five") == true);
-		assert (test_queue.offer ("six") == true);
-		assert (test_queue.offer ("seven") == true);
-		assert (test_queue.offer ("eight") == true);
-		assert (test_queue.offer ("nine") == true);
-		assert (test_queue.offer ("ten") == true);
-		assert (test_queue.offer ("eleven") == true);
-		assert (test_queue.offer ("twelve") == true);
+		assert (test_queue.offer ("one"));
+		assert (test_queue.offer ("two"));
+		assert (test_queue.offer ("three"));
+		assert (test_queue.offer ("four"));
+		assert (test_queue.offer ("five"));
+		assert (test_queue.offer ("six"));
+		assert (test_queue.offer ("seven"));
+		assert (test_queue.offer ("eight"));
+		assert (test_queue.offer ("nine"));
+		assert (test_queue.offer ("ten"));
+		assert (test_queue.offer ("eleven"));
+		assert (test_queue.offer ("twelve"));
 
 		assert (test_queue.peek () == "eight");
 		assert (test_queue.poll () == "eight");

@@ -49,7 +49,7 @@ public abstract class QueueTests : CollectionTests {
 			int capacity = test_queue.capacity;
 			for (int i = 1; i <= capacity; i++) {
 				assert (! test_queue.is_full);
-				assert (test_queue.offer ("one") == true);
+				assert (test_queue.offer ("one"));
 				assert (test_queue.remaining_capacity == capacity - i);
 			}
 			assert (test_queue.is_full);
@@ -72,7 +72,7 @@ public abstract class QueueTests : CollectionTests {
 		assert (test_queue != null);
 
 		// Check offer one element when there is none yet
-		assert (test_queue.offer ("one") == true);
+		assert (test_queue.offer ("one"));
 		assert (test_queue.peek () == "one");
 		assert (test_queue.size == 1);
 		assert (! test_queue.is_empty);
@@ -88,7 +88,7 @@ public abstract class QueueTests : CollectionTests {
 
 		// Check drain one element when there is one
 		recipient.clear ();
-		assert (test_queue.offer ("one") == true);
+		assert (test_queue.offer ("one"));
 		assert (test_queue.drain (recipient, 1) == 1);
 		assert (test_queue.size == 0);
 		assert (test_queue.is_empty);
@@ -104,7 +104,7 @@ public abstract class QueueTests : CollectionTests {
 
 		// Check drain all elements when there is one
 		recipient.clear ();
-		assert (test_queue.offer ("one") == true);
+		assert (test_queue.offer ("one"));
 		assert (test_queue.drain (recipient) == 1);
 		assert (test_queue.size == 0);
 		assert (test_queue.is_empty);
