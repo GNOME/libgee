@@ -326,7 +326,9 @@ public class Gee.TreeSet<G> : AbstractSet<G> {
 #if CONSISTENCY_CHECKS
 	public inline void check () {
 		check_subtree (root);
+#if DEBUG
 		stdout.printf ("%s\n", dump ());
+#endif
 	}
 
 	private inline uint check_subtree (Node<G>? node) {
