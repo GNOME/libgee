@@ -1,4 +1,4 @@
-/* hashmultiset.vala
+/* abstractmultiset.vala
  *
  * Copyright (C) 2009  Ali Sabil
  *

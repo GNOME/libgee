@@ -1,4 +1,4 @@
-/* testlist.vala
+/* testmultimap.vala
  *
  * Copyright (C) 2008  Jürg Billeter
  * Copyright (C) 2009  Didier Villevalois, Julien Peeters

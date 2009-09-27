@@ -1,4 +1,4 @@
-/* testlinkedlistasdeque.vala
+/* testpriorityqueue.vala
  *
  * Copyright (C) 2009  Didier Villevalois
  *

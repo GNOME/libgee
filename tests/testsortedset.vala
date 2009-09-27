@@ -1,4 +1,4 @@
-/* ordered.vala
+/* testsortedset.vala
  *
  * Copyright (C) 2009  Maciej Piechotka
  *

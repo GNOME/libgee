@@ -1,4 +1,4 @@
-/* testfixture.vala
+/* testcase.vala
  *
  * Copyright (C) 2009 Julien Peeters
  *
