@@ -34,6 +34,7 @@ public abstract class MapTests : Gee.TestCase {
 		          test_has_key_size_is_empty);
 		add_test ("[Map] keys", test_keys);
 		add_test ("[Map] values", test_values);
+		add_test ("[Map] entries", test_entries);
 		add_test ("[Map] set all", test_set_all);
 		add_test ("[Map] unset all", test_unset_all);
 		add_test ("[Map] has all", test_has_all);
@@ -240,6 +241,45 @@ public abstract class MapTests : Gee.TestCase {
 		assert (valueCollection.size == 0);
 		valueCollection = test_map.values;
 		assert (valueCollection.size == 0);
+	}
+
+	public void test_entries () {
+		// Check entries on empty map
+		var entryCollection = test_map.entries;
+		assert (entryCollection.size == 0);
+
+		// Check entries on map with one item
+		test_map.set ("one", "value_of_one");
+		assert (entryCollection.size == 1);
+		assert (entryCollection.contains (new TestEntry<string,string> ("one", "value_of_one")));
+		entryCollection = test_map.entries;
+		assert (entryCollection.size == 1);
+		assert (entryCollection.contains (new TestEntry<string,string> ("one", "value_of_one")));
+
+		// Check modify entry set directly
+		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+		                       TestTrapFlags.SILENCE_STDERR)) {
+			assert (! entryCollection.add (new TestEntry<string,string> ("two", "value_of_two")));
+			return;
+		}
+		Test.trap_assert_failed ();
+		Test.trap_assert_stderr ("*code should not be reached*");
+
+		// Check entries on map with multiple items
+		test_map.set ("two", "value_of_two");
+		assert (entryCollection.size == 2);
+		assert (entryCollection.contains (new TestEntry<string,string> ("one", "value_of_one")));
+		assert (entryCollection.contains (new TestEntry<string,string> ("two", "value_of_two")));
+		entryCollection = test_map.entries;
+		assert (entryCollection.size == 2);
+		assert (entryCollection.contains (new TestEntry<string,string> ("one", "value_of_one")));
+		assert (entryCollection.contains (new TestEntry<string,string> ("two", "value_of_two")));
+
+		// Check keys on map clear
+		test_map.clear ();
+		assert (entryCollection.size == 0);
+		entryCollection = test_map.entries;
+		assert (entryCollection.size == 0);
 	}
 
 	public void test_set_all () {
@@ -461,5 +501,18 @@ public abstract class MapTests : Gee.TestCase {
 		test_map.get_property ("size", ref value);
 		assert (value.get_int () == test_map.size);
 		value.unset ();
+	}
+	
+	
+	
+	public class TestEntry<K,V> : Map.Entry<K,V> {
+		public TestEntry (K key, V value) {
+			this._key = key;
+			this.value = value;
+		}
+		
+		public override K key { get {return _key; } }
+		private K _key;
+		public override V value { get; set; }
 	}
 }
