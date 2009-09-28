@@ -791,9 +791,9 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		public bool empty_subset () {
 			switch (type) {
 			case RangeType.HEAD:
-				return !in_range (set._first.key);
+				return set._first == null || !in_range (set._first.key);
 			case RangeType.TAIL:
-				return !in_range (set._last.key);
+				return set._last == null || !in_range (set._last.key);
 			case RangeType.EMPTY:
 				return true;
 			case RangeType.BOUNDED:

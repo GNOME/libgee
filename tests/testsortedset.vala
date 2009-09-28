@@ -428,6 +428,9 @@ public abstract class SortedSetTests : SetTests {
 		}
 
 		public void test_size () {
+			assert (subset.is_empty);
+			assert (subset.size == 0);
+
 			assert (master.add ("one"));
 			assert (master.add ("two"));
 			assert (master.add ("three"));
