@@ -529,7 +529,7 @@ public abstract class MapTests : Gee.TestCase {
 		assert (value.get_int () == test_map.size);
 		value.unset ();
 	}
-	
+
 	public void test_fold () {
 		test_map.set ("one", "one");
 		test_map.set ("two", "two");
@@ -562,16 +562,28 @@ public abstract class MapTests : Gee.TestCase {
 		assert (count == 6);
 	}
 
-
-
-	public class TestEntry<K,V> : Map.Entry<K,V> {
+	public static Map.Entry<string,string> entry_for (string key, string value) {
+		return new TestEntry<string,string> (key, value);
+	}
+	
+	public static bool check_entry (owned Map.Entry<string,string> e, string key, string value) {
+		return e.key == key && e.value == value;
+	}
+	
+	public static void assert_entry (Map.Entry<string,string> e, string key, string value) {
+		assert (e.key == key);
+		assert (e.value == value);
+	}
+	
+	private class TestEntry<K,V> : Map.Entry<K,V> {
 		public TestEntry (K key, V value) {
 			this._key = key;
 			this.value = value;
 		}
-
+		
 		public override K key { get {return _key; } }
 		private K _key;
 		public override V value { get; set; }
 	}
 }
+

@@ -14,6 +14,7 @@ libgee_la_SOURCES = \
 	abstractset.vala \
 	arraylist.vala \
 	bidiriterator.vala \
+	bidirmapiterator.vala \
 	collection.vala \
 	comparable.vala \
 	deque.vala \
@@ -39,6 +40,7 @@ libgee_la_SOURCES = \
 	readonlymap.vala \
 	readonlyset.vala \
 	set.vala \
+	sortedmap.vala \
 	sortedset.vala \
 	timsort.vala \
 	treemap.vala \
