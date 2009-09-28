@@ -27,7 +27,7 @@
  * @see HashMultiMap
  * @see TreeMultiMap
  */
-public abstract class Gee.AbstractMultiMap<K,V> : GLib.Object, MultiMap<K,V> {
+public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	public int size {
 		get { return _nitems; }
 	}

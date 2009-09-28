@@ -125,14 +125,14 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	/**
 	 * Unimplemented method (read only collection).
 	 */
-	public bool retain_all(Collection<G> collection) {
+	public bool retain_all (Collection<G> collection) {
 		assert_not_reached ();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public G[] to_array() {
+	public G[] to_array () {
 		return _collection.to_array ();
 	}
 

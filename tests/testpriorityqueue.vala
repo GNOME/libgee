@@ -49,7 +49,7 @@ public class PriorityQueueTests : QueueTests {
 		assert (test_queue.compare_func == (CompareFunc) strcmp);
 	}
 
-	public new void test_gobject_properties() {
+	public new void test_gobject_properties () {
 		var test_queue = test_collection as PriorityQueue<string>;
 
 		// Check the list exists

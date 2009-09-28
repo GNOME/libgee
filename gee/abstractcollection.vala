@@ -67,7 +67,7 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	/**
 	 * {@inheritDoc}
 	 */
-	public virtual G[] to_array() {
+	public virtual G[] to_array () {
 		G[] array = new G[size];
 		int index = 0;
 		foreach (G element in this) {
@@ -128,7 +128,7 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 		for (int index = 0; index < size_of_items; index++) {
 			if (!collection.contains (items[index])) {
 				changed = changed | remove (items[index]);
-			} 
+			}
 		}
 		return changed;
 	}

@@ -34,7 +34,7 @@
  * {@link remove} are defined and both will fail. After the next call to
  * {@link next} or {@link first}, they will be defined again.
  */
-public interface Gee.Iterator<G> : GLib.Object {
+public interface Gee.Iterator<G> : Object {
 	/**
 	 * Advances to the next element in the iteration.
 	 *

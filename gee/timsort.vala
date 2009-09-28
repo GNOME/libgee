@@ -66,7 +66,7 @@ internal class Gee.TimSort<G> : Object {
 
 		helper.do_sort ();
 
-		// TODO Use a list iterator and use iter.set(item)
+		// TODO Use a list iterator and use iter.set (item)
 		list.clear ();
 		foreach (G item in helper.array) {
 			list.add (item);
@@ -111,9 +111,10 @@ internal class Gee.TimSort<G> : Object {
 			// Get the next run
 			bool descending;
 			Slice<G>* run = compute_longest_run (remaining, out descending);
-#if DEBUG
-	message("New run (%d, %d) %s", run->index, run->length, descending ? "descending" : "ascending");
-#endif
+			#if DEBUG
+				message ("New run (%d, %d) %s", run->index, run->length,
+				         descending ? "descending" : "ascending");
+			#endif
 			if (descending) {
 				run->reverse ();
 			}
@@ -123,9 +124,10 @@ internal class Gee.TimSort<G> : Object {
 				int sorted_count = run->length;
 				run->length = int.min (minimum_length, remaining->length);
 				insertion_sort (run, sorted_count);
-#if DEBUG
-	message("Extended to (%d, %d) and sorted from index %d", run->index, run->length, sorted_count);
-#endif
+				#if DEBUG
+					message ("Extended to (%d, %d) and sorted from index %d",
+					         run->index, run->length, sorted_count);
+				#endif
 			}
 
 			// Move remaining after run
@@ -198,9 +200,9 @@ internal class Gee.TimSort<G> : Object {
 	}
 
 	private void insertion_sort (Slice<G>* a, int offset) {
-#if DEBUG
-	message("Sorting (%d, %d) at %d", a->index, a->length, offset);
-#endif
+		#if DEBUG
+			message ("Sorting (%d, %d) at %d", a->index, a->length, offset);
+		#endif
 		for (int start = a->index + offset; start < a->index + a->length; start++) {
 			int left = a->index;
 			int right = start;
@@ -222,17 +224,18 @@ internal class Gee.TimSort<G> : Object {
 	}
 
 	private void merge_collapse () {
-#if DEBUG
-	message("Merge Collapse");
-#endif
+		#if DEBUG
+			message ("Merge Collapse");
+		#endif
 		int count = pending.length;
 		while (count > 1) {
-#if DEBUG
-	message("Pending count: %d", count);
-	if (count >= 3) {
-		message("pending[count-3]=%p; pending[count-2]=%p; pending[count-1]=%p", pending[count-3], pending[count-2], pending[count-1]);
-	}
-#endif
+			#if DEBUG
+				message ("Pending count: %d", count);
+				if (count >= 3) {
+					message ("pending[count-3]=%p; pending[count-2]=%p; pending[count-1]=%p",
+					         pending[count-3], pending[count-2], pending[count-1]);
+				}
+			#endif
 			if (count >= 3 && pending[count-3]->length <= pending[count-2]->length + pending[count-1]->length) {
 				if (pending[count-3]->length < pending[count-1]->length) {
 					merge_at (count-3);
@@ -245,20 +248,20 @@ internal class Gee.TimSort<G> : Object {
 				break;
 			}
 			count = pending.length;
-#if DEBUG
-	message("New pending count: %d", count);
-#endif
+			#if DEBUG
+				message ("New pending count: %d", count);
+			#endif
 		}
 	}
 
 	private void merge_force_collapse () {
-#if DEBUG
-	message("Merge Force Collapse");
-#endif
+		#if DEBUG
+			message ("Merge Force Collapse");
+		#endif
 		int count = pending.length;
-#if DEBUG
-	message("Pending count: %d", count);
-#endif
+		#if DEBUG
+			message ("Pending count: %d", count);
+		#endif
 		while (count > 1) {
 			if (count >= 3 && pending[count-3]->length < pending[count-1]->length) {
 				merge_at (count-3);
@@ -266,16 +269,16 @@ internal class Gee.TimSort<G> : Object {
 				merge_at (count-2);
 			}
 			count = pending.length;
-#if DEBUG
-	message("New pending count: %d", count);
-#endif
+			#if DEBUG
+				message ("New pending count: %d", count);
+			#endif
 		}
 	}
 
 	private void merge_at (int index) {
-#if DEBUG
-	message("Merge at %d", index);
-#endif
+		#if DEBUG
+			message ("Merge at %d", index);
+		#endif
 		Slice<G>* a = pending[index];
 		Slice<G>* b = pending[index + 1];
 		try {
@@ -287,13 +290,13 @@ internal class Gee.TimSort<G> : Object {
 			pending.move (index + 2, index + 1, pending.length - index - 2);
 			pending.length -= 1;
 
-			int sorted_count = gallop_rightmost (b->peek_first (), a, 0); 
+			int sorted_count = gallop_rightmost (b->peek_first (), a, 0);
 			a->shorten_start (sorted_count);
 			if (a->length == 0) {
 				return;
 			}
 
-			b->length = gallop_leftmost(a->peek_last (), b, b->length - 1);
+			b->length = gallop_leftmost (a->peek_last (), b, b->length - 1);
 			if (b->length == 0) {
 				return;
 			}
@@ -310,9 +313,9 @@ internal class Gee.TimSort<G> : Object {
 	}
 
 	private int gallop_leftmost (G key, Slice<G>* a, int hint) {
-#if DEBUG
-	message("Galop leftmost in (%d, %d), hint=%d", a->index, a->length, hint);
-#endif
+		#if DEBUG
+			message ("Galop leftmost in (%d, %d), hint=%d", a->index, a->length, hint);
+		#endif
 		assert (0 <= hint);
 		assert (hint < a->length);
 
@@ -378,9 +381,9 @@ internal class Gee.TimSort<G> : Object {
 	}
 
 	private int gallop_rightmost (G key, Slice<G>* a, int hint) {
-#if DEBUG
-	message("Galop rightmost in (%d, %d), hint=%d", a->index, a->length, hint);
-#endif
+		#if DEBUG
+			message ("Galop rightmost in (%d, %d), hint=%d", a->index, a->length, hint);
+		#endif
 		assert (0 <= hint);
 		assert (hint < a->length);
 
@@ -446,9 +449,9 @@ internal class Gee.TimSort<G> : Object {
 	}
 
 	private void merge_low (Slice<G>* a, Slice<G>* b) {
-#if DEBUG
-	message("Merge low (%d, %d) (%d, %d)", a->index, a->length, b->index, b->length);
-#endif
+		#if DEBUG
+			message ("Merge low (%d, %d) (%d, %d)", a->index, a->length, b->index, b->length);
+		#endif
 		assert (a->length > 0);
 		assert (b->length > 0);
 		assert (a->index + a->length == b->index);
@@ -542,9 +545,9 @@ internal class Gee.TimSort<G> : Object {
 	}
 
 	private void merge_high (Slice<G>* a, Slice<G>* b) {
-#if DEBUG
-	message("Merge high (%d, %d) (%d, %d)", a->index, a->length, b->index, b->length);
-#endif
+		#if DEBUG
+			message ("Merge high (%d, %d) (%d, %d)", a->index, a->length, b->index, b->length);
+		#endif
 		assert (a->length > 0);
 		assert (b->length > 0);
 		assert (a->index + a->length == b->index);
@@ -655,17 +658,17 @@ internal class Gee.TimSort<G> : Object {
 
 		public void copy () {
 			new_list = new G[length];
-			Memory.copy (&new_list[0], &list[index], sizeof(G) * length);
+			Memory.copy (&new_list[0], &list[index], sizeof (G) * length);
 			list = new_list;
 			index = 0;
 		}
 
 		public inline void merge_in (G[] dest_array, int index, int dest_index, int count) {
-			Memory.move (&dest_array[dest_index], &list[index], sizeof(G) * count);
+			Memory.move (&dest_array[dest_index], &list[index], sizeof (G) * count);
 		}
 
 		public inline void merge_in_reversed (G[] dest_array, int index, int dest_index, int count) {
-			Memory.move (&dest_array[dest_index], &list[index], sizeof(G) * count);
+			Memory.move (&dest_array[dest_index], &list[index], sizeof (G) * count);
 		}
 
 		public inline void shorten_start (int n) {

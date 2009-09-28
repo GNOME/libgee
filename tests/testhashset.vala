@@ -50,7 +50,7 @@ public class HashSetTests : SetTests {
 		assert (test_set.equal_func == str_equal);
 	}
 
-	public new void test_gobject_properties() {
+	public new void test_gobject_properties () {
 		var test_set = test_collection as HashSet<string>;
 
 		// Check the list exists

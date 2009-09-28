@@ -112,7 +112,7 @@ public abstract class QueueTests : CollectionTests {
 		assert (recipient.get (0) == "one");
 	}
 
-	public new void test_gobject_properties() {
+	public new void test_gobject_properties () {
 		var test_queue = test_collection as Gee.Queue<string>;
 
 		// Check the list exists

@@ -51,7 +51,7 @@ public class TreeMapTests : MapTests {
 		assert (test_tree_map.value_equal_func == str_equal);
 	}
 
-	public new void test_gobject_properties() {
+	public new void test_gobject_properties () {
 		var test_tree_map = test_map as TreeMap<string,string>;
 
 		// Check the list exists

@@ -20,7 +20,7 @@
  * 	Julien Peeters <contact@julienpeeters.fr>
  */
 
-public abstract class Gee.TestCase : GLib.Object {
+public abstract class Gee.TestCase : Object {
 
 	private GLib.TestSuite suite;
 	private Adaptor[] adaptors = new Adaptor[0];

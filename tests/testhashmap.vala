@@ -51,7 +51,7 @@ public class HashMapTests : MapTests {
 		assert (test_hash_map.value_equal_func == str_equal);
 	}
 
-	public new void test_gobject_properties() {
+	public new void test_gobject_properties () {
 		var test_hash_map = test_map as HashMap<string,string>;
 
 		// Check the list exists

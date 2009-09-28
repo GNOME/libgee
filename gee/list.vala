@@ -98,7 +98,7 @@ public interface Gee.List<G> : Collection<G> {
 	public abstract G last ();
 
 	/**
-	 * Inserts items into this list for the input collection at the 
+	 * Inserts items into this list for the input collection at the
 	 * specified position.
 	 *
 	 * @param index zero-based index of the items to be inserted

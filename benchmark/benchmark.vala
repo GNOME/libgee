@@ -63,7 +63,7 @@ namespace Gee.Benchmark {
 
 		public void generate_collection (int size, Collection<int32> collection) {
 			int variance = (int) Math.sqrt (size);
-			for(int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) {
 				collection.add (i + GLib.Random.int_range (0, variance) - variance / 2);
 			}
 		}
@@ -80,7 +80,7 @@ namespace Gee.Benchmark {
 			while (index < size) {
 				int width = GLib.Random.int_range (0, variance);
 				int height = GLib.Random.int_range (- variance / 2, variance / 2);
-				for(int i = 0; i < width; i++) {
+				for (int i = 0; i < width; i++) {
 					collection.add (last + height / width);
 				}
 				index += width;
@@ -94,7 +94,7 @@ namespace Gee.Benchmark {
 		public string name { get { return "ReverseSorted"; } }
 
 		public void generate_collection (int size, Collection<int32> collection) {
-			for(int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) {
 				collection.add (size - i - 1);
 			}
 		}
@@ -105,7 +105,7 @@ namespace Gee.Benchmark {
 		public string name { get { return "Sorted"; } }
 
 		public void generate_collection (int size, Collection<int32> collection) {
-			for(int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) {
 				collection.add (i);
 			}
 		}
@@ -171,7 +171,7 @@ namespace Gee.Benchmark {
 				for (int i = 0; i < sizes.length; i++) {
 					int size = sizes[i];
 					for (int j = 0; j < generators.size; j++) {
-						Collection<G> collection = factory.create();
+						Collection<G> collection = factory.create ();
 						generators[j].generate_collection (size, collection);
 
 						for (int k = 0; k < algorithms.size; k++) {

@@ -55,7 +55,7 @@ public class ArrayListTests : ListTests {
 		assert (test_list.equal_func == str_equal);
 	}
 
-	public new void test_gobject_properties() {
+	public new void test_gobject_properties () {
 		var test_list = test_collection as ArrayList<string>;
 
 		// Check the list exists

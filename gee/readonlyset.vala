@@ -39,7 +39,7 @@ internal class Gee.ReadOnlySet<G> : Gee.ReadOnlyCollection<G>, Set<G> {
 	 * @param set the set to decorate.
 	 */
 	public ReadOnlySet (Set<G> set) {
-		base(set);
+		base (set);
 	}
 
 	public virtual new Set<G> read_only_view {

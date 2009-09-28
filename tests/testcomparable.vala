@@ -25,7 +25,7 @@ using Gee;
 public class ComparableTests : Gee.TestCase {
 
 	public ComparableTests () {
-		base("Comparable");
+		base ("Comparable");
 		add_test ("[Comparable] selected functions", test_selected_functions);
 	}
 

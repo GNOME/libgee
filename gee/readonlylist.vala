@@ -127,7 +127,7 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 		owned get { return this; }
 	}
 
-	
+
 	private class Iterator<G> : ReadOnlyCollection.Iterator<G>, BidirIterator<G>, ListIterator<G> {
 		public Iterator (ListIterator<G> iterator) {
 			base (iterator);

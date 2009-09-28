@@ -28,7 +28,7 @@ using Gee;
 public abstract class CollectionTests : Gee.TestCase {
 
 	public CollectionTests (string name) {
-		base(name);
+		base (name);
 		add_test ("[Collection] type correctness", test_type_correctness);
 		add_test ("[Collection] iterator returns all elements once",
 		          test_iterator_returns_all_elements_once);
@@ -262,71 +262,71 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (test_collection != null);
 
 		// Check the collection is initially empty
-		assert (! test_collection.contains("one"));
-		assert (! test_collection.contains("two"));
-		assert (! test_collection.contains("three"));
+		assert (! test_collection.contains ("one"));
+		assert (! test_collection.contains ("two"));
+		assert (! test_collection.contains ("three"));
 		assert (test_collection.size == 0);
 		assert (test_collection.is_empty);
 
 		// Add an element
 		assert (test_collection.add ("one"));
-		assert (test_collection.contains("one"));
-		assert (! test_collection.contains("two"));
-		assert (! test_collection.contains("three"));
+		assert (test_collection.contains ("one"));
+		assert (! test_collection.contains ("two"));
+		assert (! test_collection.contains ("three"));
 		assert (test_collection.size == 1);
 		assert (! test_collection.is_empty);
 
 		// Remove the added element
 		assert (test_collection.remove ("one"));
-		assert (! test_collection.contains("one"));
-		assert (! test_collection.contains("two"));
-		assert (! test_collection.contains("three"));
+		assert (! test_collection.contains ("one"));
+		assert (! test_collection.contains ("two"));
+		assert (! test_collection.contains ("three"));
 		assert (test_collection.size == 0);
 		assert (test_collection.is_empty);
 
 		// Add more elements
 		assert (test_collection.add ("one"));
-		assert (test_collection.contains("one"));
-		assert (! test_collection.contains("two"));
-		assert (! test_collection.contains("three"));
+		assert (test_collection.contains ("one"));
+		assert (! test_collection.contains ("two"));
+		assert (! test_collection.contains ("three"));
 		assert (test_collection.size == 1);
 		assert (! test_collection.is_empty);
 
 		assert (test_collection.add ("two"));
-		assert (test_collection.contains("one"));
-		assert (test_collection.contains("two"));
-		assert (! test_collection.contains("three"));
+		assert (test_collection.contains ("one"));
+		assert (test_collection.contains ("two"));
+		assert (! test_collection.contains ("three"));
 		assert (test_collection.size == 2);
 		assert (! test_collection.is_empty);
 
 		assert (test_collection.add ("three"));
-		assert (test_collection.contains("one"));
-		assert (test_collection.contains("two"));
-		assert (test_collection.contains("three"));
+		assert (test_collection.contains ("one"));
+		assert (test_collection.contains ("two"));
+		assert (test_collection.contains ("three"));
 		assert (test_collection.size == 3);
 		assert (! test_collection.is_empty);
 
 		// Remove one element
 		assert (test_collection.remove ("two"));
-		assert (test_collection.contains("one"));
-		assert (! test_collection.contains("two"));
-		assert (test_collection.contains("three"));
+		assert (test_collection.contains ("one"));
+		assert (! test_collection.contains ("two"));
+		assert (test_collection.contains ("three"));
 		assert (test_collection.size == 2);
 		assert (! test_collection.is_empty);
 
 		// Remove the same element again
 		assert (! test_collection.remove ("two"));
-		assert (test_collection.contains("one"));
-		assert (! test_collection.contains("two"));
-		assert (test_collection.contains("three"));
+		assert (test_collection.contains ("one"));
+		assert (! test_collection.contains ("two"));
+		assert (test_collection.contains ("three"));
 		assert (test_collection.size == 2);
 		assert (! test_collection.is_empty);
 
 		// Remove all elements
 		test_collection.clear ();
-		assert (! test_collection.contains("one"));
-		assert (! test_collection.contains("two"));
-		assert (! test_collection.contains("three"));
+		assert (! test_collection.contains ("one"));
+		assert (! test_collection.contains ("two"));
+		assert (! test_collection.contains ("three"));
 		assert (test_collection.size == 0);
 		assert (test_collection.is_empty);
 	}
@@ -658,7 +658,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		dummy.clear ();
 	}
 
-	public void test_to_array() {
+	public void test_to_array () {
 		// Check the collection exists
 		assert (test_collection != null);
 
@@ -678,7 +678,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		}
 	}
 
-	public void test_gobject_properties() {
+	public void test_gobject_properties () {
 		// Check the collection exists
 		assert (test_collection != null);
 		Value value;

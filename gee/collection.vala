@@ -71,21 +71,21 @@ public interface Gee.Collection<G> : Iterable<G> {
 
 	/**
 	 * Adds all items in the input collection to this collection.
-	 * 
-	 * @param collection the collection which items will be added to this 
+	 *
+	 * @param collection the collection which items will be added to this
 	 *                   collection.
-	 * 
+	 *
 	 * @return     true if the collection has been changed, false otherwise
 	 */
 	public abstract bool add_all (Collection<G> collection);
 
 	/**
-	 * Returns true it this collection contains all items as the input 
+	 * Returns true it this collection contains all items as the input
 	 * collection.
 	 *
-	 * @param collection the collection which items will be compared with 
+	 * @param collection the collection which items will be compared with
 	 *                   this collection.
-	 * 
+	 *
 	 * @return     true if the collection has been changed, false otherwise
 	 */
 	public abstract bool contains_all (Collection<G> collection);
@@ -95,10 +95,10 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * elments in the input collection. If there is several occurrences of
 	 * the same value in this collection they are decremented of the number
 	 * of occurrences in the input collection.
-	 * 
+	 *
 	 * @param collection the collection which items will be compared with
 	 *                   this collection.
-	 * 
+	 *
 	 * @return     true if the collection has been changed, false otherwise
 	 */
 	public abstract bool remove_all (Collection<G> collection);
@@ -107,10 +107,10 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * Removes all items in this collection that are not contained in the input
 	 * collection. In other words all common items of both collections are
 	 * retained in this collection.
-	 * 
-	 * @param collection the collection which items will be compared with 
+	 *
+	 * @param collection the collection which items will be compared with
 	 *                   this collection.
-	 * 
+	 *
 	 * @return     true if the collection has been changed, false otherwise
 	 */
 	public abstract bool retain_all (Collection<G> collection);

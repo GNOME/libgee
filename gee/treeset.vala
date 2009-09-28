@@ -482,8 +482,8 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	private inline uint check_subtree (Node<G>? node) {
 		if (node == null)
 			return 0;
-		assert (!(is_black (node.left) && is_red (node.right))); // Check left-leaning
-		assert (!(is_red (node) && is_red (node.left))); // Check red property
+		assert (! (is_black (node.left) && is_red (node.right))); // Check left-leaning
+		assert (! (is_red (node) && is_red (node.left))); // Check red property
 		uint l = check_subtree (node.left);
 		uint r = check_subtree (node.right);
 		assert (l == r);
@@ -766,7 +766,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		}
 
 		public bool in_range (G item) {
-			return type == RangeType.EMPTY ? false : compare_range(item) == 0;
+			return type == RangeType.EMPTY ? false : compare_range (item) == 0;
 		}
 
 		public int compare_range (G item) {

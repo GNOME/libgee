@@ -387,23 +387,23 @@ public abstract class SortedSetTests : SetTests {
 		}
 		private Type type;
 
-		public SubSet(SortedSetTests test, Type type) {
-			base("%s Subset".printf (type.to_string ()));
+		public SubSet (SortedSetTests test, Type type) {
+			base ("%s Subset".printf (type.to_string ()));
 			this.test = test;
 			this.type = type;
-			add_test("[Collection] size", test_size);
-			add_test("[Collection] contains", test_contains);
-			add_test("[Collection] add", test_add);
-			add_test("[Collection] remove", test_remove);
-			add_test("[Collection] iterator", test_iterator);
-			add_test("[Collection] clear", test_clear);
-			add_test("[SortedSet] iterator at", test_iterator_at);
-			add_test("[SortedSet] lower", test_lower);
-			add_test("[SortedSet] higher", test_higher);
-			add_test("[SortedSet] ceil", test_ceil);
-			add_test("[SortedSet] floor", test_floor);
-			add_test("[SortedSet] subsets", test_subsets);
-			add_test("[SortedSet] boundaries", test_boundaries);
+			add_test ("[Collection] size", test_size);
+			add_test ("[Collection] contains", test_contains);
+			add_test ("[Collection] add", test_add);
+			add_test ("[Collection] remove", test_remove);
+			add_test ("[Collection] iterator", test_iterator);
+			add_test ("[Collection] clear", test_clear);
+			add_test ("[SortedSet] iterator at", test_iterator_at);
+			add_test ("[SortedSet] lower", test_lower);
+			add_test ("[SortedSet] higher", test_higher);
+			add_test ("[SortedSet] ceil", test_ceil);
+			add_test ("[SortedSet] floor", test_floor);
+			add_test ("[SortedSet] subsets", test_subsets);
+			add_test ("[SortedSet] boundaries", test_boundaries);
 		}
 
 		public override void set_up () {

@@ -23,7 +23,7 @@
 /**
  * A map with multiple values per key.
  */
-public interface Gee.MultiMap<K,V> : GLib.Object {
+public interface Gee.MultiMap<K,V> : Object {
 	/**
 	 * The number of key/value pairs in this map.
 	 */

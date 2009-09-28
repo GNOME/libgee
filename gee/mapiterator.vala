@@ -32,7 +32,7 @@
  * will fail. After the next call to {@link next} or {@link first}, they will
  * be defined again.
  */
-public interface Gee.MapIterator<K,V> : GLib.Object {
+public interface Gee.MapIterator<K,V> : Object {
 	/**
 	 * Advances to the next entry in the iteration.
 	 *
