@@ -1,3 +1,47 @@
+libgee 0.5.0
+============
+
+ * API changes
+   * Introduce Functions hash, equal and compare function factory
+   * Introduce Comparable<G> interface
+   * Implementations provides sane defaults when constructed without functions
+   * ReadOnly* made internal in favor of a `read_only_view` properties
+   * Iterator<G> is now mutable and resettable
+   * Introduction of BidirIterator<G> bidirectional iterators
+   * List<G>.list_iterator () returns a specialized ListIterator<G>
+   * Various API contracts clarifications and enhancements
+   * Introduce List<G>.sort () with TimSort implementation
+   * Complete Map API rework
+   * Introduce Queue and Deque interfaces
+   * Introduce MultiSet and MultiMap interfaces (Ali Sabil)
+   * Introduce SortedSet interface (Maciej Pietchotka)
+
+ * New implementations
+   * HashMultiSet and HashMultiMap (Ali Sabil)
+   * TreeMultiSet and TreeMultiMap.
+   * PriorityQueue
+   * LinkedList now implements Deque
+   * TreeSet now implements SortedSet (Maciej Pietchotka)
+
+ * Infrastructure
+   * New test framework and complete tests refactoring (Julien Peters)
+   * New doc/ documentation directory (--enable-doc)
+   * Test coverage analysis using lcov (--enable-coverage)
+   * Basic benchmark framework and sort benchmark (--enable-benchmark)
+   * Use silent rules by default for users of automake 1.11
+
+ * Code Quality
+   * Many bug fixes
+   * Many optimizations
+   * Lots of additional documentation
+   * Better overall encapsulation, dangerous public setters have been removed
+   * Better test coverage (more than 90%)
+
+libgee 0.4.0
+============
+
+ * Bug fixes.
+
 libgee 0.3.0
 ============
 
