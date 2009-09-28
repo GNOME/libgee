@@ -36,21 +36,21 @@ public interface Gee.MapIterator<K,V> : Object {
 	/**
 	 * Advances to the next entry in the iteration.
 	 *
-	 * @return true if the iterator has a next entry
+	 * @return `true` if the iterator has a next entry
 	 */
 	public abstract bool next ();
 
 	/**
 	 * Checks whether there is a next entry in the iteration.
 	 *
-	 * @return true if the iterator has a next entry
+	 * @return `true` if the iterator has a next entry
 	 */
 	public abstract bool has_next ();
 
 	/**
 	 * Rewinds to the first entry in the iteration.
 	 *
-	 * @return true if the iterator has a first entry
+	 * @return `true` if the iterator has a first entry
 	 */
 	public abstract bool first ();
 

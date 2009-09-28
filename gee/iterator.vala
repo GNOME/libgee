@@ -38,21 +38,21 @@ public interface Gee.Iterator<G> : Object {
 	/**
 	 * Advances to the next element in the iteration.
 	 *
-	 * @return true if the iterator has a next element
+	 * @return `true` if the iterator has a next element
 	 */
 	public abstract bool next ();
 
 	/**
 	 * Checks whether there is a next element in the iteration.
 	 *
-	 * @return true if the iterator has a next element
+	 * @return `true` if the iterator has a next element
 	 */
 	public abstract bool has_next ();
 
 	/**
 	 * Rewinds to the first element in the iteration.
 	 *
-	 * @return true if the iterator has a first element
+	 * @return `true` if the iterator has a first element
 	 */
 	public abstract bool first ();
 
