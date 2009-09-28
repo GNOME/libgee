@@ -118,9 +118,12 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * Constructs a new, empty hash map.
 	 *
-	 * @param key_hash_func a key hash function.
-	 * @param key_equal_func a key equality testing function.
-	 * @param value_equal_func a value equallity testing function.
+	 * If not provided, the functions parameters are requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param key_hash_func an optional key hash function
+	 * @param key_equal_func an optional key equality testing function
+	 * @param value_equal_func an optional value equality testing function
 	 */
 	public HashMap (HashFunc? key_hash_func = null, EqualFunc? key_equal_func = null, EqualFunc? value_equal_func = null) {
 		if (key_hash_func == null) {

@@ -64,8 +64,11 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	/**
 	 * Constructs a new, empty hash set.
 	 *
-	 * @param hash_func an optional hash function.
-	 * @param equal_func an optional equality testing function.
+	 * If not provided, the functions parameters are requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param hash_func an optional hash function
+	 * @param equal_func an optional equality testing function
 	 */
 	public HashSet (HashFunc? hash_func = null, EqualFunc? equal_func = null) {
 		if (hash_func == null) {

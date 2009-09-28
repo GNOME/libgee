@@ -46,7 +46,10 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	/**
 	 * Constructs a new, empty linked list.
 	 *
-	 * @param equal_func an optional equality testing function.
+	 * If not provided, the function parameter is requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param equal_func an optional element equality testing function
 	 */
 	public LinkedList (EqualFunc? equal_func = null) {
 		if (equal_func == null) {

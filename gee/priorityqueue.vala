@@ -60,6 +60,14 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	private Type1Node<G>? _ll_head = null;
 	private Type1Node<G>? _ll_tail = null;
 
+	/**
+	 * Constructs a new, empty priority queue.
+	 *
+	 * If not provided, the function parameter is requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param compare_func an optional element comparator function
+	 */
 	public PriorityQueue (CompareFunc? compare_func = null) {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));

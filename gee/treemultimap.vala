@@ -31,6 +31,15 @@ public class Gee.TreeMultiMap<K,V> : AbstractMultiMap<K,V> {
 
 	public CompareFunc value_compare_func { private set; get; }
 
+	/**
+	 * Constructs a new, empty tree multimap.
+	 *
+	 * If not provided, the functions parameters are requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param key_compare_func an optional key comparator function
+	 * @param value_compare_func an optional value comparator function
+	 */
 	public TreeMultiMap (CompareFunc? key_compare_func = null, CompareFunc? value_compare_func = null) {
 		base (new TreeMap<K, Set<V>> (key_compare_func, direct_equal));
 		if (value_compare_func == null) {

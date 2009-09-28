@@ -59,7 +59,10 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	/**
 	 * Constructs a new, empty array list.
 	 *
-	 * @param equal_func an optional elements equality testing function.
+	 * If not provided, the function parameter is requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param equal_func an optional element equality testing function
 	 */
 	public ArrayList (EqualFunc? equal_func = null) {
 		if (equal_func == null) {

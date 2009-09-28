@@ -51,7 +51,10 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	 * Constructs a new, empty tree set sorted according to the specified
 	 * comparator function.
 	 *
-	 * @param compare_func an optional elements comparator function.
+	 * If not provided, the function parameter is requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param compare_func an optional element comparator function
 	 */
 	public TreeSet (CompareFunc? compare_func = null) {
 		if (compare_func == null) {

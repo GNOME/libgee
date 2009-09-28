@@ -104,8 +104,11 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	 * Constructs a new, empty tree map sorted according to the specified
 	 * comparator function.
 	 *
-	 * @param key_compare_func an optional key comparator function.
-	 * @param value_equal_func an optional values equality testing function.
+	 * If not provided, the functions parameters are requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param key_compare_func an optional key comparator function
+	 * @param value_equal_func an optional values equality testing function
 	 */
 	public TreeMap (CompareFunc? key_compare_func = null, EqualFunc? value_equal_func = null) {
 		if (key_compare_func == null) {

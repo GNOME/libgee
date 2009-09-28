@@ -34,6 +34,12 @@ public class Gee.HashMultiSet<G> : AbstractMultiSet<G> {
 
 	/**
 	 * Constructs a new, empty hash multi set.
+	 *
+	 * If not provided, the functions parameters are requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param hash_func an optional element hash function
+	 * @param equal_func an optional element equality testing function
 	 */
 	public HashMultiSet (HashFunc? hash_func = null, EqualFunc? equal_func = null) {
 		base (new HashMap<G, int> (hash_func, equal_func, int_equal));

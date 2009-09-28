@@ -31,6 +31,11 @@ public class Gee.TreeMultiSet<G> : AbstractMultiSet<G> {
 
 	/**
 	 * Constructs a new, empty tree multi set.
+	 *
+	 * If not provided, the function parameter is requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param compare_func an optional element comparator function
 	 */
 	public TreeMultiSet (CompareFunc? compare_func = null) {
 		base (new TreeMap<G, int> (compare_func, int_equal));

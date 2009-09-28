@@ -36,7 +36,19 @@ public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
 
 	public EqualFunc value_equal_func { private set; get; }
 
-	public HashMultiMap (HashFunc? key_hash_func = null, EqualFunc? key_equal_func = null, HashFunc? value_hash_func = null, EqualFunc? value_equal_func = null) {
+	/**
+	 * Constructs a new, empty hash multimap.
+	 *
+	 * If not provided, the functions parameters are requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param key_hash_func an optional key hash function
+	 * @param key_equal_func an optional key equality testing function
+	 * @param value_hash_func an optional value hash function
+	 * @param value_equal_func an optional value equality testing function
+	 */
+	public HashMultiMap (HashFunc? key_hash_func = null, EqualFunc? key_equal_func = null,
+	                     HashFunc? value_hash_func = null, EqualFunc? value_equal_func = null) {
 		base (new HashMap<K, Set<V>> (key_hash_func, key_equal_func, direct_equal));
 		if (value_hash_func == null) {
 			value_hash_func = Functions.get_hash_func_for (typeof (V));
