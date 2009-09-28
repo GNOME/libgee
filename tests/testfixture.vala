@@ -38,7 +38,6 @@ public abstract class TestFixture: Object {
 		this.adaptors += adaptor;
 
 		this.suite.add (new TestCase (adaptor.name,
-		                              0,
 		                              adaptor.setup,
 		                              adaptor.run,
 		                              adaptor.teardown ));
