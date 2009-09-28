@@ -40,6 +40,7 @@ tests_VALASOURCES = \
        testset.vala \
        testsortedset.vala \
        testtreemap.vala \
+       testtreemultimap.vala \
        testtreemultiset.vala \
        testtreeset.vala \
        $(NULL)

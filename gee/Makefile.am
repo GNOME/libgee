@@ -50,6 +50,7 @@ libgee_la_VALASOURCES = \
 	sortedset.vala \
 	timsort.vala \
 	treemap.vala \
+	treemultimap.vala \
 	treemultiset.vala \
 	treeset.vala \
 	$(NULL)
