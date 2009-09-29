@@ -90,7 +90,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.remove ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 2);
@@ -101,7 +101,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.set ("three");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 2);
@@ -112,7 +112,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.insert ("three");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 2);
@@ -123,7 +123,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.add ("three");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 2);
@@ -147,7 +147,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_list.set (0, "two");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 1);
@@ -156,7 +156,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_list.insert (1, "two");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 1);
@@ -165,7 +165,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_list.remove_at (1);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 1);
@@ -174,7 +174,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_list.insert_all (1, dummy);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 1);
@@ -183,7 +183,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_list.sort ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_list.size == 1);

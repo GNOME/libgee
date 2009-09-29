@@ -100,7 +100,7 @@ public abstract class SortedSetTests : SetTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_set.first ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -120,7 +120,7 @@ public abstract class SortedSetTests : SetTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_set.last ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -337,7 +337,7 @@ public abstract class SortedSetTests : SetTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.remove ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -350,7 +350,7 @@ public abstract class SortedSetTests : SetTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.get ();
-			return;
+			Posix.exit (0);
 		}
 		assert (!iterator.previous ());
 
@@ -645,7 +645,7 @@ public abstract class SortedSetTests : SetTests {
 				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 				                       TestTrapFlags.SILENCE_STDERR)) {
 					iter.remove ();
-					return;
+					Posix.exit (0);
 				}
 				Test.trap_assert_failed ();
 			}
@@ -715,11 +715,13 @@ public abstract class SortedSetTests : SetTests {
 				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 				                       TestTrapFlags.SILENCE_STDERR)) {
 					subset.first ();
+					Posix.exit (0);
 				}
 				Test.trap_assert_failed ();
 				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 				                       TestTrapFlags.SILENCE_STDERR)) {
 					subset.last ();
+					Posix.exit (0);
 				}
 				Test.trap_assert_failed ();
 				break;

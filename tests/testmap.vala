@@ -182,7 +182,7 @@ public abstract class MapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (! keys.add ("three"));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		Test.trap_assert_stderr ("*code should not be reached*");
@@ -221,7 +221,7 @@ public abstract class MapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (! values.add ("two"));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		Test.trap_assert_stderr ("*code should not be reached*");
@@ -260,7 +260,7 @@ public abstract class MapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (! entries.add (new TestEntry<string,string> ("two", "value_of_two")));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		Test.trap_assert_stderr ("*code should not be reached*");

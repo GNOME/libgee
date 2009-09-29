@@ -188,7 +188,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.get (0);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -200,7 +200,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.get (1);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -208,7 +208,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.get (-1);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -225,7 +225,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.get (0);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 	}
@@ -241,7 +241,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.set (0, "zero");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (test_list.size == 0);
@@ -260,7 +260,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.set (1, "zero");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (test_list.size == 1);
@@ -277,7 +277,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.insert (1, "zero");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -302,7 +302,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.insert (4, "four");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -317,7 +317,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.insert (-1, "zero");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 	}
@@ -332,14 +332,14 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.remove_at (0);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.remove_at (1);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -376,7 +376,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.remove_at (2);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -384,7 +384,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.remove_at (-1);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 	}
@@ -424,7 +424,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.first ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -445,7 +445,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.first ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 	}
@@ -460,7 +460,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.last ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -481,7 +481,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.last ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 	}
@@ -536,7 +536,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			test_list.insert_all (1, dummy);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -635,7 +635,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			dummy = test_list.slice (1, 4);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -660,7 +660,7 @@ public abstract class ListTests : CollectionTests {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			dummy = test_list.slice (0, 9);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 	}

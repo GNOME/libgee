@@ -100,7 +100,7 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.remove ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -121,7 +121,7 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (ro_collection.add ("two"));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_collection.size == 1);
@@ -130,7 +130,7 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_collection.clear ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_collection.size == 1);
@@ -139,7 +139,7 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (ro_collection.remove ("one"));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_collection.size == 1);
@@ -148,7 +148,7 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (ro_collection.add_all (dummy));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_collection.size == 1);
@@ -157,7 +157,7 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (ro_collection.remove_all (dummy));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_collection.size == 1);
@@ -167,7 +167,7 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (ro_collection.retain_all (dummy));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_collection.size == 1);

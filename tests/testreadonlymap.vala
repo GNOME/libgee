@@ -93,7 +93,7 @@ public class ReadOnlyMapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.remove ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 
@@ -117,7 +117,7 @@ public class ReadOnlyMapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_map.set ("two", "two");
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_map.size == 1);
@@ -127,7 +127,7 @@ public class ReadOnlyMapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_map.clear ();
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_map.size == 1);
@@ -137,7 +137,7 @@ public class ReadOnlyMapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (ro_map.unset ("one"));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_map.size == 1);
@@ -147,7 +147,7 @@ public class ReadOnlyMapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			ro_map.set_all (dummy);
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_map.size == 1);
@@ -157,7 +157,7 @@ public class ReadOnlyMapTests : Gee.TestCase {
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			assert (ro_map.unset_all (dummy));
-			return;
+			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
 		assert (ro_map.size == 1);

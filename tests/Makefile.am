@@ -49,7 +49,7 @@ tests_DEPENDENCIES = $(top_srcdir)/gee/gee-1.0.vapi
 
 tests_SOURCES = tests.vala.stamp $(tests_VALASOURCES:.vala=.c)
 tests.vala.stamp: $(tests_VALASOURCES)
-	$(VALAC) -C --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 $^
+	$(VALAC) -C --basedir $(top_srcdir) --vapidir $(top_srcdir)/gee --pkg gee-1.0 --pkg posix $^
 	touch $@
 tests_LDADD = $(progs_ldadd)
 EXTRA_DIST += $(tests_VALASOURCES)
