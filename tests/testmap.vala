@@ -1,7 +1,7 @@
 /* testmap.vala
  *
- * Copyright (C) 2008  Jürg Billeter, Maciej Piechotka
- * Copyright (C) 2009  Didier Villevalois, Julien Peeters
+ * Copyright (C) 2008  Jürg Billeter
+ * Copyright (C) 2009  Didier Villevalois, Julien Peeters, Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
