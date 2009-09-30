@@ -195,7 +195,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		return null;
 	}
 
-	private void set_to_node (ref Node<K, V>? node, K key, V value, Node<K, V>? prev, Node<K, V>? next) {
+	private bool set_to_node (ref Node<K, V>? node, K key, V value, out V old_value, Node<K, V>? prev, Node<K, V>? next) {
 		if (node == null) {
 			node = new Node<K,V> (key, value, prev, next);
 			if (prev == null) {
@@ -205,25 +205,35 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 				last = node;
 			}
 			_size++;
+			return true;
 		}
 
 		int cmp = key_compare_func (key, node.key);
+		bool changed;
 		if (cmp == 0) {
-			node.value = value;
+			if (value_equal_func (value, node.value)) {
+				changed = false;
+			} else {
+				old_value = (owned) node.value;
+				node.value = value;
+				changed = true;
+			}
 		} else if (cmp < 0) {
-			set_to_node (ref node.left, key, value, node.prev, node);
+			changed = set_to_node (ref node.left, key, value, out old_value, node.prev, node);
 		} else {
-			set_to_node (ref node.right, key, value, node, node.next);
+			changed = set_to_node (ref node.right, key, value, out old_value, node, node.next);
 		}
 
 		fix_up (ref node);
+		return changed;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public override void set (K key, V value) {
-		set_to_node (ref root, key, value, null, null);
+		V old_value;
+		set_to_node (ref root, key, value, out old_value, null, null);
 		root.color = Node.Color.BLACK;
 		stamp++;
 	}
