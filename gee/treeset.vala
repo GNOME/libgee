@@ -657,8 +657,10 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		public void remove () {
 			assert (stamp == _set.stamp);
 			assert (current != null);
-			_set.remove_from_node (ref _set.root, current.key, out _prev, out _next);
-			_set.root.color = Node.Color.BLACK;
+			bool success = _set.remove_from_node (ref _set.root, current.key, out _prev, out _next);
+			assert (success);
+			if (_set.root != null)
+				_set.root.color = Node.Color.BLACK;
 			current = null;
 			assert (stamp++ == _set.stamp++);
 		}
