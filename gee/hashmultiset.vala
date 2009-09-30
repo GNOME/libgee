@@ -42,6 +42,6 @@ public class Gee.HashMultiSet<G> : AbstractMultiSet<G> {
 	 * @param equal_func an optional element equality testing function
 	 */
 	public HashMultiSet (HashFunc? hash_func = null, EqualFunc? equal_func = null) {
-		base (new HashMap<G, int> (hash_func, equal_func, int_equal));
+		base (new HashMap<G, int> (hash_func, equal_func));
 	}
 }
