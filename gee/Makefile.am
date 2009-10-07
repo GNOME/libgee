@@ -12,6 +12,7 @@ libgee_la_SOURCES = \
 	abstractmultiset.vala \
 	abstractqueue.vala \
 	abstractset.vala \
+	abstractsortedset.vala \
 	arraylist.vala \
 	bidiriterator.vala \
 	bidirmapiterator.vala \
@@ -39,6 +40,7 @@ libgee_la_SOURCES = \
 	readonlylist.vala \
 	readonlymap.vala \
 	readonlyset.vala \
+	readonlysortedset.vala \
 	set.vala \
 	sortedmap.vala \
 	sortedset.vala \

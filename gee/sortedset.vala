@@ -1,6 +1,7 @@
 /* sortedset.vala
  *
  * Copyright (C) 2009  Didier Villevalois, Maciej Piechotka
+ * Copyright (C) 2011  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -126,4 +127,18 @@ public interface Gee.SortedSet<G> : Gee.Set<G> {
 	 * @return     the corresponding sub-set of this sorted set
 	 */
 	public abstract SortedSet<G> sub_set (G from, G to);
+
+	/**
+	 * The read-only view of this set.
+	 */
+	public abstract new SortedSet<G> read_only_view { owned get; }
+
+	/**
+	 * Returns an immutable empty sorted set.
+	 *
+	 * @return an immutable empty sorted set
+	 */
+	public static SortedSet<G> empty<G> () {
+		return new TreeSet<G> ().read_only_view;
+	}
 }

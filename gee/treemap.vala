@@ -961,6 +961,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 		public K? ceil (K item) {
 			return _map.lift_null_key (_map.find_ceil (item));
 		}
+
+		public new SortedSet<K> read_only_view {
+			owned get { return this; }
+		}
 	}
 
 	private class SubKeySet<K,V> : AbstractSet<K>, SortedSet<K> {
@@ -1077,6 +1081,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 				return first ();
 			var h = map.lift_null_key (map.find_ceil (key));
 			return h != null && range.in_range (h) ? h : null;
+		}
+
+		public new SortedSet<K> read_only_view {
+			owned get { return this; }
 		}
 	}
 
@@ -1263,6 +1271,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 			weak Node<K,V>? l = _map.find_ceil (item.key);
 			return l != null ? Entry.entry_for<K,V> (l) : null;
 		}
+
+		public new SortedSet<Map.Entry<K, V>> read_only_view {
+			owned get { return this; }
+		}
 	}
 
 	private class SubEntrySet<K,V> : AbstractSet<Map.Entry<K,V>>, SortedSet<Map.Entry<K,V>> {
@@ -1379,6 +1391,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 				return first ();
 			weak Node<K,V>? h = map.find_ceil (entry.key);
 			return h != null && range.in_range (h.key) ? Entry.entry_for<K,V> (h) : null;
+		}
+
+		public new SortedSet<Map.Entry<K, V>> read_only_view {
+			owned get { return this; }
 		}
 	}
 

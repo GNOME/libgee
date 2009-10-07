@@ -1,6 +1,6 @@
 /* treeset.vala
  *
- * Copyright (C) 2009-2010  Maciej Piechotka
+ * Copyright (C) 2009-2011  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,7 @@ using GLib;
  *
  * @see HashSet
  */
-public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
+public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -350,7 +350,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public BidirIterator<G> bidir_iterator () {
+	public override BidirIterator<G> bidir_iterator () {
 		return new Iterator<G> (this);
 	}
 
@@ -361,7 +361,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public G first () {
+	public override G first () {
 		assert (_first != null);
 		return _first.key;
 	}
@@ -369,7 +369,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public G last () {
+	public override G last () {
 		assert (_last != null);
 		return _last.key;
 	}
@@ -377,21 +377,21 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedSet<G> head_set (G before) {
+	public override SortedSet<G> head_set (G before) {
 		return new SubSet<G>.head (this, before);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedSet<G> tail_set (G after) {
+	public override SortedSet<G> tail_set (G after) {
 		return new SubSet<G>.tail (this, after);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedSet<G> sub_set (G after, G before) {
+	public override SortedSet<G> sub_set (G after, G before) {
 		return new SubSet<G> (this, after, before);
 	}
 
@@ -413,7 +413,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public BidirIterator<G>? iterator_at (G item) {
+	public override BidirIterator<G>? iterator_at (G item) {
 		weak Node<G>? node = find_node (item);
 		return node != null ? new Iterator<G>.pointing (this, node) : null;
 	}
@@ -468,28 +468,28 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public G? lower (G item) {
+	public override G? lower (G item) {
 		return lift_null_get (find_lower (item));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public G? higher (G item) {
+	public override G? higher (G item) {
 		return lift_null_get (find_higher (item));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public G? floor (G item) {
+	public override G? floor (G item) {
 		return lift_null_get (find_floor (item));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public G? ceil (G item) {
+	public override G? ceil (G item) {
 		return lift_null_get (find_ceil (item));
 	}
 
@@ -888,7 +888,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		BOUNDED
 	}
 
-	private class SubSet<G> : AbstractSet<G>, SortedSet<G> {
+	private class SubSet<G> : AbstractSortedSet<G> {
 		public SubSet (TreeSet<G> set, G after, G before) {
 			this.set = set;
 			this.range = new Range<G> (set, after, before);
@@ -952,35 +952,35 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			return new SubIterator<G> (set, range);
 		}
 
-		public BidirIterator<G> bidir_iterator () {
+		public override BidirIterator<G> bidir_iterator () {
 			return new SubIterator<G> (set, range);
 		}
 
-		public G first () {
+		public override G first () {
 			weak Node<G>? _first = range.first ();
 			assert (_first != null);
 			return _first.key;
 		}
 
-		public G last () {
+		public override G last () {
 			weak Node<G>? _last = range.last ();
 			assert (_last != null);
 			return _last.key;
 		}
 
-		public SortedSet<G> head_set (G before) {
+		public override SortedSet<G> head_set (G before) {
 			return new SubSet<G>.from_range (set, range.cut_tail (before));
 		}
 
-		public SortedSet<G> tail_set (G after) {
+		public override SortedSet<G> tail_set (G after) {
 			return new SubSet<G>.from_range (set, range.cut_head (after));
 		}
 
-		public SortedSet<G> sub_set (G after, G before) {
+		public override SortedSet<G> sub_set (G after, G before) {
 			return new SubSet<G>.from_range (set, range.cut (after, before));
 		}
 
-		public BidirIterator<G>? iterator_at (G item) {
+		public override BidirIterator<G>? iterator_at (G item) {
 			if (!range.in_range (item))
 				return null;
 			weak Node<G>? n = set.find_node (item);
@@ -989,7 +989,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			return new SubIterator<G>.pointing (set, range, n);
 		}
 
-		public G? lower (G item) {
+		public override G? lower (G item) {
 			var res = range.compare_range (item);
 			if (res > 0)
 				return last ();
@@ -997,7 +997,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			return l != null && range.in_range (l) ? l : null;
 		}
 
-		public G? higher (G item) {
+		public override G? higher (G item) {
 			var res = range.compare_range (item);
 			if (res < 0)
 				return first ();
@@ -1005,7 +1005,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			return h != null && range.in_range (h) ? h : null;
 		}
 
-		public G? floor (G item) {
+		public override G? floor (G item) {
 			var res = range.compare_range (item);
 			if (res > 0)
 				return last ();
@@ -1013,7 +1013,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			return l != null && range.in_range (l) ? l : null;
 		}
 
-		public G? ceil (G item) {
+		public override G? ceil (G item) {
 			var res = range.compare_range (item);
 			if (res < 0)
 				return first ();
