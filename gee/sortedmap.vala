@@ -50,5 +50,19 @@ public interface Gee.SortedMap<K,V> : Gee.Map<K,V> {
 	 * @return a bi-directional map iterator
 	 */
 	public abstract BidirMapIterator<K,V> bidir_map_iterator ();
+	
+	/**
+	 * The read-only view this map.
+	 */
+	public new abstract SortedMap<K,V> read_only_view { owned get; }
+
+	/**
+	 * Returns an immutable empty map.
+	 *
+	 * @return an immutable empty map
+	 */
+	public static Map<K,V> empty<K,V> () {
+		return new TreeMap<K,V> ().read_only_view;
+	}
 }
 

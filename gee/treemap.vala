@@ -31,7 +31,7 @@ using GLib;
  *
  * @see HashMap
  */
-public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
+public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -395,28 +395,28 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedMap<K,V> head_map (K before) {
+	public override SortedMap<K,V> head_map (K before) {
 		return new SubMap<K,V> (this, new Range<K,V>.head (this, before));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedMap<K,V> tail_map (K after) {
+	public override SortedMap<K,V> tail_map (K after) {
 		return new SubMap<K,V> (this, new Range<K,V>.tail (this, after));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedMap<K,V> sub_map (K after, K before) {
+	public override SortedMap<K,V> sub_map (K after, K before) {
 		return new SubMap<K,V> (this, new Range<K,V> (this, after, before));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedSet<K> ascending_keys {
+	public override SortedSet<K> ascending_keys {
 		owned get {
 			var keys = _keys;
 			if (_keys == null) {
@@ -430,7 +430,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 	/**
 	 * @inheritDoc
 	 */
-	public SortedSet<Map.Entry<K,V>> ascending_entries {
+	public override SortedSet<Map.Entry<K,V>> ascending_entries {
 		owned get {
 			var entries = _entries;
 			if (_entries == null) {
@@ -452,7 +452,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 	/**
 	 * @inheritDoc
 	 */
-	public Gee.BidirMapIterator<K,V> bidir_map_iterator () {
+	public override Gee.BidirMapIterator<K,V> bidir_map_iterator () {
 		return new MapIterator<K,V> (this);
 	}
 
@@ -750,7 +750,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 		BOUNDED
 	}
 
-	private class SubMap<K,V> : AbstractMap<K,V>, SortedMap<K,V> {
+	private class SubMap<K,V> : AbstractSortedMap<K,V> {
 		public override int size { get { return keys.size; } }
 		public override bool is_empty { get { return keys.is_empty; } }
 
@@ -834,23 +834,23 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 			return new SubMapIterator<K,V> (map, range);
 		}
 		
-		public BidirMapIterator<K,V> bidir_map_iterator () {
+		public override BidirMapIterator<K,V> bidir_map_iterator () {
 			return new SubMapIterator<K,V> (map, range);
 		}
 
-		public SortedMap<K,V> head_map (K before) {
+		public override SortedMap<K,V> head_map (K before) {
 			return new SubMap<K,V> (map, range.cut_tail (before));
 		}
 
-		public SortedMap<K,V> tail_map (K after) {
+		public override SortedMap<K,V> tail_map (K after) {
 			return new SubMap<K,V> (map, range.cut_head (after));
 		}
 
-		public SortedMap<K,V> sub_map (K after, K before) {
+		public override SortedMap<K,V> sub_map (K after, K before) {
 			return new SubMap<K,V> (map, range.cut (after, before));
 		}
 
-		public SortedSet<K> ascending_keys {
+		public override SortedSet<K> ascending_keys {
 			owned get {
 				var keys = _keys;
 				if (_keys == null) {
@@ -862,7 +862,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V>, SortedMap<K,V> {
 			}
 		}
 
-		public SortedSet<K> ascending_entries {
+		public override SortedSet<K> ascending_entries {
 			owned get {
 				var entries = _entries;
 				if (_entries == null) {

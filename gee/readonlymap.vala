@@ -81,7 +81,7 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 		}
 	}
 
-	private Map<K,V> _map;
+	protected Map<K,V> _map;
 
 	/**
 	 * Constructs a read-only map that mirrors the content of the specified map.

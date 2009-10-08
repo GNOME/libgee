@@ -40,10 +40,12 @@ public abstract class Gee.AbstractSortedMap<K, V> : AbstractMap<K,V>, SortedMap<
 	 * {@inheritDoc}
 	 */
 	public abstract SortedSet<K> ascending_keys { owned get; }
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public abstract SortedSet<Map.Entry<K,V>> ascending_entries { owned get; }
+
 	/**
 	 * {@inheritDoc}
 	 */
