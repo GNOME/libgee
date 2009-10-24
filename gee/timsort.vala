@@ -89,7 +89,7 @@ internal class Gee.TimSort<G> : Object {
 
 	private List<G> list_collection;
 	private G[] array;
-	private unowned G[] list;
+	private void** list;
 	private int index;
 	private int size;
 	private Slice<G>*[] pending;
@@ -206,7 +206,7 @@ internal class Gee.TimSort<G> : Object {
 		for (int start = a->index + offset; start < a->index + a->length; start++) {
 			int left = a->index;
 			int right = start;
-			G pivot = (owned) a->list[right];
+			void* pivot = a->list[right];
 
 			while (left < right) {
 				int p = left + ((right - left) >> 1);
@@ -218,8 +218,8 @@ internal class Gee.TimSort<G> : Object {
 			}
 			assert (left == right);
 
-			a->list.move (left, left + 1, start - left);
-			a->list[left] = (owned) pivot;
+			Memory.move (&a->list[left + 1], &a->list[left], sizeof (G) * (start - left));
+			a->list[left] = pivot;
 		}
 	}
 
@@ -645,29 +645,28 @@ internal class Gee.TimSort<G> : Object {
 	[Compact]
 	private class Slice<G> {
 
-		public unowned G[] list;
-		public G[]? new_list;
+		public void** list;
+		public void** new_list;
 		public int index;
 		public int length;
 
-		public Slice (G[] list, int index, int length) {
+		public Slice (void** list, int index, int length) {
 			this.list = list;
 			this.index = index;
 			this.length = length;
 		}
 
 		public void copy () {
-			new_list = new G[length];
-			Memory.copy (&new_list[0], &list[index], sizeof (G) * length);
+			new_list = Memory.dup (&list[index], (uint) sizeof (G) * length);
 			list = new_list;
 			index = 0;
 		}
 
-		public inline void merge_in (G[] dest_array, int index, int dest_index, int count) {
+		public inline void merge_in (void** dest_array, int index, int dest_index, int count) {
 			Memory.move (&dest_array[dest_index], &list[index], sizeof (G) * count);
 		}
 
-		public inline void merge_in_reversed (G[] dest_array, int index, int dest_index, int count) {
+		public inline void merge_in_reversed (void** dest_array, int index, int dest_index, int count) {
 			Memory.move (&dest_array[dest_index], &list[index], sizeof (G) * count);
 		}
 
@@ -680,21 +679,21 @@ internal class Gee.TimSort<G> : Object {
 			length -= n;
 		}
 
-		public inline unowned G pop_first () {
+		public inline void* pop_first () {
 			length--;
 			return list[index++];
 		}
 
-		public inline unowned G pop_last () {
+		public inline void* pop_last () {
 			length--;
 			return list[index + length];
 		}
 
-		public inline unowned G peek_first () {
+		public inline unowned void* peek_first () {
 			return list[index];
 		}
 
-		public inline unowned G peek_last () {
+		public inline unowned void* peek_last () {
 			return list[index + length - 1];
 		}
 
@@ -707,9 +706,9 @@ internal class Gee.TimSort<G> : Object {
 		}
 
 		private inline void swap (int i, int j) {
-			G temp = (owned) list[i];
-			list[i] = (owned) list[j];
-			list[j] = (owned) temp;
+			void* temp = list[i];
+			list[i] = list[j];
+			list[j] = temp;
 		}
 	}
 }
