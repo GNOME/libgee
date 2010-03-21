@@ -243,7 +243,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		fix_up (ref node);
 	}
 
-	private bool remove_from_node (ref Node<G>? node, G item, out weak Node<G>? prev = null, out weak Node<G>? next = null) {
+	private bool remove_from_node (ref Node<G>? node, G item, out unowned Node<G>? prev = null, out unowned Node<G>? next = null) {
 #if DEBUG
 		stdout.printf ("Removing %s from %s\n", (string)item, node != null ? (string)node.key : null);
 #endif
@@ -375,7 +375,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		return new SubSet<G> (this, after, before);
 	}
 
-	private inline weak Node<G>? find_node (G item) {
+	private inline unowned Node<G>? find_node (G item) {
 		weak Node<G>? cur = root;
 		while (cur != null) {
 			int res = compare_func (item, cur.key);
@@ -398,7 +398,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		return node != null ? new Iterator<G>.pointing (this, node) : null;
 	}
 
-	private inline weak Node<G>? find_nearest (G item) {
+	private inline unowned Node<G>? find_nearest (G item) {
 		weak Node<G>? cur = root;
 		while (cur != null) {
 			int res = compare_func (item, cur.key);
@@ -417,28 +417,28 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		return null;
 	}
 
-	private inline weak Node<G>? find_lower (G item) {
+	private inline unowned Node<G>? find_lower (G item) {
 		weak Node<G>? node = find_nearest (item);
 		if (node == null)
 			return null;
 		return compare_func (item, node.key) <= 0 ? node.prev : node;
 	}
 
-	private inline weak Node<G>? find_higher (G item) {
+	private inline unowned Node<G>? find_higher (G item) {
 		weak Node<G>? node = find_nearest (item);
 		if (node == null)
 			return null;
 		return compare_func (item, node.key) >= 0 ? node.next : node;
 	}
 
-	private inline weak Node<G>? find_floor (G item) {
+	private inline unowned Node<G>? find_floor (G item) {
 		weak Node<G>? node = find_nearest (item);
 		if (node == null)
 			return null;
 		return compare_func (item, node.key) < 0 ? node.prev : node;
 	}
 
-	private inline weak Node<G>? find_ceil (G item) {
+	private inline unowned Node<G>? find_ceil (G item) {
 		weak Node<G>? node = find_nearest (item);
 		if (node == null)
 			return null;
@@ -803,7 +803,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			}
 		}
 
-		public weak Node<G>? first () {
+		public unowned Node<G>? first () {
 			switch (type) {
 			case RangeType.EMPTY:
 				return null;
@@ -814,7 +814,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			}
 		}
 
-		public weak Node<G>? last () {
+		public unowned Node<G>? last () {
 			switch (type) {
 			case RangeType.EMPTY:
 				return null;

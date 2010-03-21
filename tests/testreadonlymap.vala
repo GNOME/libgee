@@ -52,13 +52,13 @@ public class ReadOnlyMapTests : Gee.TestCase {
 		assert (ro_map == another_ro_map);
 
 		ro_map.set_data ("marker", new Object ());
-		assert (another_ro_map.get_data ("marker") != null);
+		assert (another_ro_map.get_data<Object> ("marker") != null);
 
 		another_ro_map = null;
 		ro_map = null;
 
 		another_ro_map = test_map.read_only_view;
-		assert (another_ro_map.get_data ("marker") == null);
+		assert (another_ro_map.get_data<Object> ("marker") == null);
 
 		// Check that the read-only view of the view is itself
 		assert (another_ro_map == another_ro_map.read_only_view);

@@ -61,13 +61,13 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		assert (ro_collection == another_ro_collection);
 
 		ro_collection.set_data ("marker", new Object ());
-		assert (another_ro_collection.get_data ("marker") != null);
+		assert (another_ro_collection.get_data<Object> ("marker") != null);
 
 		another_ro_collection = null;
 		ro_collection = null;
 
 		another_ro_collection = get_ro_view (test_collection);
-		assert (another_ro_collection.get_data ("marker") == null);
+		assert (another_ro_collection.get_data<Object> ("marker") == null);
 
 		// Check that the read-only view of the view is itself
 		assert (another_ro_collection == get_ro_view (another_ro_collection));

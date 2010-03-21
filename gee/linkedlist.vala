@@ -35,8 +35,8 @@
 public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	private int _size = 0;
 	private int _stamp = 0;
-	private Node? _head = null;
-	private Node? _tail = null;
+	private Node<G>? _head = null;
+	private Node<G>? _tail = null;
 
 	/**
 	 * The elements' equality testing function.

@@ -80,15 +80,11 @@ namespace Gee {
 			if (t == typeof (string)) {
 				return (CompareFunc) strcmp;
 			} else if (t.is_a (typeof (Comparable))) {
-				return (CompareFunc) comparable_compare;
+				return (CompareFunc) Comparable.compare_to;
 			} else {
 				return (CompareFunc) direct_compare;
 			}
 		}
-	}
-
-	internal static int comparable_compare (void* a, void* b) {
-		return ((Comparable) a).compare_to ((Comparable) b);
 	}
 
 	/**
