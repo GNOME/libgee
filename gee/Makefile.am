@@ -84,7 +84,7 @@ libgee_la_LIBADD = \
 	$(COVERAGE_LIBS) \
 	$(NULL)
 
-libgee_la_LDFLAGS = -version-info $(LIBGEE_LT_VERSION)
+libgee_la_LDFLAGS = -version-info $(LIBGEE_LT_VERSION) -no-undefined
 
 vapidir = $(datadir)/vala/vapi
 
