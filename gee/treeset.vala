@@ -446,28 +446,28 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? lower (G item) {
 		return lift_null_get (find_lower (item));
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? higher (G item) {
 		return lift_null_get (find_higher (item));
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? floor (G item) {
 		return lift_null_get (find_floor (item));
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public G? ceil (G item) {
 		return lift_null_get (find_ceil (item));
