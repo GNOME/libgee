@@ -1,3 +1,11 @@
+libgee 0.5.1
+============
+
+ * Bug fixes in HashMultiSet, TimSort, TreeMap, TreeMultiSet, and TreeSet.
+ * Fix build with Vala 0.8.0 and later.
+ * Fix build on Windows.
+ * Fix subprocess handling in test infrastructure.
+
 libgee 0.5.0
 ============
 
