@@ -9,7 +9,7 @@ cd $srcdir
 # Automake requires that ChangeLog exists.
 touch ChangeLog
 
-autoreconf -v --install || exit 1
+gnome-autogen.sh || exit 1
 cd $ORIGDIR || exit $?
 
 if test -z "$NOCONFIGURE"; then

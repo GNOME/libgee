@@ -1,6 +1,7 @@
 AC_INIT([libgee], [0.5.2], [ptitjes@free.fr], [libgee])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS(config.h)
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([dist-bzip2])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
