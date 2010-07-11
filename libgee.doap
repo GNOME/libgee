@@ -3,6 +3,7 @@
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
          xmlns="http://usefulinc.com/ns/doap#">
 
   <name xml:lang="en">libgee</name>
@@ -26,6 +27,14 @@
       <foaf:name>Didier Villevalois</foaf:name>
       <foaf:mbox rdf:resource="mailto:ptitjes@free.fr" />
       <gnome:userid>dvillevalois</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Maciej Piechotka</foaf:name>
+      <foaf:mbox rdf:resource="mailto:uzytkownik2@gmail.com" />
+      <gnome:userid>mpiechotka</gnome:userid>
+      <owl:sameAs rdf:resource="maciej.m.piechotka.com.pl/contact.xml#me" />
     </foaf:Person>
   </maintainer>
 
