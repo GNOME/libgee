@@ -9,7 +9,7 @@ cd $srcdir
 # Automake requires that ChangeLog exists.
 touch ChangeLog
 
-gnome-autogen.sh || exit 1
+REQUIRED_M4MACROS=introspection.m4 gnome-autogen.sh || exit 1
 cd $ORIGDIR || exit $?
 
 if test -z "$NOCONFIGURE"; then

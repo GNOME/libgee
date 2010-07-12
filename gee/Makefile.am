@@ -92,10 +92,20 @@ dist_vapi_DATA = \
 	gee-1.0.vapi \
 	$(NULL)
 
-girdir = $(datadir)/gir-1.0
+if HAVE_INTROSPECTION
+girdir = @INTROSPECTION_GIRDIR@
 
-dist_gir_DATA = \
+gir_DATA = \
 	Gee-1.0.gir \
 	$(NULL)
+
+typelibdir = @INTROSPECTION_TYPELIBDIR@
+typelib_DATA = \
+	Gee-1.0.typelib \
+	$(NULL)
+
+Gee-1.0.typelib: Gee-1.0.gir
+	@INTROSPECTION_COMPILER@ --shared-library=libgee -o $@ $^
+endif
 
 EXTRA_DIST += $(libgee_la_VALASOURCES) gee-1.0.vapi Gee-1.0.gir gee.vala.stamp

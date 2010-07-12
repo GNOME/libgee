@@ -59,6 +59,8 @@ PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
+GOBJECT_INTROSPECTION_CHECK([0.9.0])
+
 AC_CONFIG_FILES([Makefile
            gee-1.0.pc
            benchmark/Makefile
