@@ -12,6 +12,3 @@ touch ChangeLog
 REQUIRED_M4MACROS=introspection.m4 gnome-autogen.sh || exit 1
 cd $ORIGDIR || exit $?
 
-if test -z "$NOCONFIGURE"; then
-  $srcdir/configure "$@"
-fi
