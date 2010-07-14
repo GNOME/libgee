@@ -76,6 +76,11 @@ coverage-report:
 	@echo 'file://@abs_top_builddir@/tests/coverage/index.html'
 	@echo
 
+MAINTAINERCLEANFILES = \
+	$(tests_VALASOURCES:.vala=.c) \
+	tests.vala.stamp \
+	$(NULL)
+
 clean-local:
 	-rm -rf coverage
 

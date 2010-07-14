@@ -29,3 +29,9 @@ benchmarks.vala.stamp: $(benchmarks_VALASOURCES)
 	touch $@
 benchmarks_LDADD = $(progs_ldadd)
 EXTRA_DIST += $(benchmarks_VALASOURCES)
+
+MAINTAINERCLEANFILES = \
+	$(benchmarks_VALASOURCES:.vala=.c) \
+	benchmarks.vala.stamp \
+	$(NULL)
+

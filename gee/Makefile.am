@@ -75,7 +75,7 @@ AM_VALAFLAGS = \
 	$(VALAFLAGS) \
 	$(NULL)
 
-gee-1.0.vapi gee.vala.stamp: $(libgee_la_VALASOURCES)
+Gee-1.0.gir gee-internals-1.0.vapi gee-1.0.vapi gee.vala.stamp: $(libgee_la_VALASOURCES)
 	$(VALAC) -C $(AM_VALAFLAGS) $^
 	touch $@
 
@@ -109,3 +109,18 @@ Gee-1.0.typelib: Gee-1.0.gir
 endif
 
 EXTRA_DIST += $(libgee_la_VALASOURCES) gee-1.0.vapi Gee-1.0.gir gee.vala.stamp
+
+MAINTAINERCLEANFILES = \
+	$(libgee_la_VALASOURCES:.vala=.c) \
+	gee.vala.stamp \
+	gee-internals-1.0.vapi \
+	gee-1.0.vapi \
+	Gee-1.0.gir \
+	gee.h \
+	gee-internals.h \
+	$(NULL)
+
+CLEANFILES = \
+	Gee-1.0.typelib \
+	$(NULL)
+
