@@ -18,9 +18,6 @@ AC_PATH_PROG(VALAC, valac, valac)
 AC_SUBST(VALAC)
 
 AC_SUBST(VALAFLAGS)
-AC_SUBST(CFLAGS)
-AC_SUBST(CPPFLAGS)
-AC_SUBST(LDFLAGS)
 
 AC_ARG_ENABLE(doc, AS_HELP_STRING([--enable-doc], [Enable documentation generation]), enable_doc=$enableval, enable_doc=no)
 AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
@@ -61,10 +58,9 @@ AC_SUBST(GLIB_LIBS)
 
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
 
-AC_CONFIG_FILES([Makefile
+AC_OUTPUT([Makefile
            gee-1.0.pc
            benchmark/Makefile
            doc/Makefile
            gee/Makefile
            tests/Makefile])
-AC_OUTPUT
