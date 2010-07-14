@@ -7,6 +7,9 @@ GTESTER_REPORT = gtester-report
 EXTRA_DIST =
 TEST_PROGS =
 
+# useful constants
+NULL = 
+
 ### testing rules
 
 # test: run all tests in cwd and subdirs

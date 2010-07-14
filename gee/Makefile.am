@@ -1,19 +1,10 @@
 include $(top_srcdir)/Makefile.decl
 
-NULL =
-
-AM_CPPFLAGS = \
-	$(GLIB_CFLAGS) \
-	$(COVERAGE_CFLAGS) \
-	$(NULL)
-
-BUILT_SOURCES = gee.vala.stamp
-
 lib_LTLIBRARIES = \
 	libgee.la
 	$(NULL)
 
-libgee_la_VALASOURCES = \
+libgee_la_SOURCES = \
 	abstractcollection.vala \
 	abstractlist.vala \
 	abstractmap.vala \
@@ -55,18 +46,7 @@ libgee_la_VALASOURCES = \
 	treeset.vala \
 	$(NULL)
 
-libgee_la_SOURCES = \
-	gee.vala.stamp \
-	$(libgee_la_VALASOURCES:.vala=.c) \
-	$(NULL)
-
-geeincludedir = $(includedir)/gee-1.0
-
-geeinclude_HEADERS = \
-	gee.h \
-	$(NULL)
-
-AM_VALAFLAGS = \
+libgee_la_VALAFLAGS = \
 	-H gee.h --vapi gee-1.0.vapi \
 	-h gee-internals.h \
 	--internal-vapi gee-internals-1.0.vapi \
@@ -75,16 +55,26 @@ AM_VALAFLAGS = \
 	$(VALAFLAGS) \
 	$(NULL)
 
-Gee-1.0.gir gee-internals-1.0.vapi gee-1.0.vapi gee.vala.stamp: $(libgee_la_VALASOURCES)
-	$(VALAC) -C $(AM_VALAFLAGS) $^
-	touch $@
+libgee_la_CPPFLAGS = \
+	$(GLIB_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
+	$(NULL)
 
 libgee_la_LIBADD = \
 	$(GLIB_LIBS) \
 	$(COVERAGE_LIBS) \
 	$(NULL)
 
-libgee_la_LDFLAGS = -version-info $(LIBGEE_LT_VERSION) -no-undefined
+libgee_la_LDFLAGS = \
+	-version-info $(LIBGEE_LT_VERSION) \
+	-no-undefined \
+	$(NULL)
+
+geeincludedir = $(includedir)/gee-1.0
+
+geeinclude_HEADERS = \
+	gee.h \
+	$(NULL)
 
 vapidir = $(datadir)/vala/vapi
 
@@ -108,19 +98,12 @@ Gee-1.0.typelib: Gee-1.0.gir
 	@INTROSPECTION_COMPILER@ --shared-library=libgee -o $@ $^
 endif
 
-EXTRA_DIST += $(libgee_la_VALASOURCES) gee-1.0.vapi Gee-1.0.gir gee.vala.stamp
-
-MAINTAINERCLEANFILES = \
-	$(libgee_la_VALASOURCES:.vala=.c) \
-	gee.vala.stamp \
-	gee-internals-1.0.vapi \
-	gee-1.0.vapi \
-	Gee-1.0.gir \
-	gee.h \
-	gee-internals.h \
-	$(NULL)
+Gee-1.0.gir gee-internals-1.0.vapi gee-1.0.vapi: libgee.la
 
 CLEANFILES = \
+	gee-1.0.vapi \
+	gee-internals-1.0.vapi \
 	Gee-1.0.typelib \
+	Gee-1.0.gir \
 	$(NULL)
 

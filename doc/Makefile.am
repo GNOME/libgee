@@ -1,7 +1,5 @@
 include $(top_srcdir)/Makefile.decl
 
-NULL =
-
 SRC_DIR = $(top_srcdir)/gee
 
 docdir=$(datadir)/devhelp/references/gee-1.0
