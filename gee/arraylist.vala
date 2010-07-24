@@ -223,6 +223,18 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		return true;
 	}
 
+	/**
+	 * Sorts items by comparing with the specified compare function.
+	 *
+	 * WARNING: This method has only been added as hack and will not
+	 *          exist after the next odd minor version bump (>= 0.7.x).
+	 *
+	 * @param compare_func compare function to use to compare items
+	 */
+	public void sort_with_data (CompareDataFunc compare) {
+		TimSort.sort_with_data<G> (this, compare);
+	}
+
 	private void shift (int start, int delta) {
 		assert (start >= 0);
 		assert (start <= _size);
