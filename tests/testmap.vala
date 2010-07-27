@@ -281,6 +281,37 @@ public abstract class MapTests : Gee.TestCase {
 		entries = test_map.entries;
 		assert (entries.size == 0);
 	}
+	
+	public void test_clear () {
+		test_map.set ("one", "value_of_one");
+		test_map.set ("two", "value_of_two");
+		test_map.set ("three", "value_of_three");
+		
+		test_map.clear ();
+		assert (test_map.size == 0);
+		
+		Set<string> keys = test_map.keys;
+		assert (keys != null);
+		Iterator<string> ikeys = keys.iterator ();
+		assert (ikeys != null);
+		assert (!ikeys.has_next ());
+		
+		Collection<string> vals = test_map.values;
+		assert (vals != null);
+		Iterator<string> ivals = vals.iterator ();
+		assert (ivals != null);
+		assert (!ivals.has_next ());
+		
+		Set<Map.Entry<string, string>> ents = test_map.entries;
+		assert (ents != null);
+		Iterator<Map.Entry<string, string>> ients = ents.iterator ();
+		assert (ients != null);
+		assert (!ients.has_next ());
+		
+		MapIterator<string, string> iter = test_map.map_iterator ();
+		assert (iter != null);
+		assert (!iter.has_next ());
+	}
 
 	public void test_set_all () {
 		var another_map = new HashMap<string,string> (str_hash,

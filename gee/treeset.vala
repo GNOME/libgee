@@ -315,7 +315,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	 * {@inheritDoc}
 	 */
 	public override void clear () {
-		root = null;
+		_first = _last = root = null;
 		_size = 0;
 		stamp++;
 	}

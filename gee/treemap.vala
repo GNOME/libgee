@@ -357,7 +357,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	 * {@inheritDoc}
 	 */
 	public override void clear () {
-		root = null;
+		first = last = root = null;
 		_size = 0;
 		stamp++;
 	}

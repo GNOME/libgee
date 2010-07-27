@@ -36,6 +36,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] contains, size and is_empty",
 		          test_contains_size_and_is_empty);
 		add_test ("[Collection] add and remove", test_add_remove);
+		add_test ("[Collection] clear", test_clear);
 		add_test ("[Collection] add_all", test_add_all);
 		add_test ("[Collection] contains_all", test_contains_all);
 		add_test ("[Collection] remove_all", test_remove_all);
@@ -366,6 +367,40 @@ public abstract class CollectionTests : Gee.TestCase {
 			assert (!test_collection.contains (a));
 		}
 		assert (test_collection.size == 0);
+	}
+
+	public void test_clear () {
+		// Check the collection exists
+		assert (test_collection != null);
+
+		string[] to_add = {
+			"one", "two", "three", "four", "five", "six", "seven", "eight",
+			"nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
+			"fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty",
+			"twenty one", "twenty two", "twenty three", "twenty four",
+			"twenty five", "twenty six", "twenty seven", "twenty eight",
+			"twenty nine", "thirty", "thirty one", "thirty two", "thirty four",
+			"thirty five", "thirty six", "thirty seven", "thirty eight",
+			"thirty nine", "fourty"
+		};
+		var expected_size = 0;
+
+		foreach (var a in to_add) {
+			assert (!test_collection.contains (a));
+			assert (test_collection.size == expected_size++);
+			assert (test_collection.add (a));
+			assert (test_collection.contains (a));
+		}
+		assert (test_collection.size == to_add.length);
+		
+		test_collection.clear ();
+		
+		assert (test_collection.size == 0);
+		
+		Iterator<string> iter = test_collection.iterator ();
+		assert (iter != null);
+		assert (!iter.has_next ());		
+		
 	}
 
 	public void test_add_all () {
