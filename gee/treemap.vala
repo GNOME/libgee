@@ -221,6 +221,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	public override void set (K key, V value) {
 		set_to_node (ref root, key, value, null, null);
 		root.color = Node.Color.BLACK;
+		stamp++;
 	}
 
 	private void move_red_left (ref Node<K, V> root) {
