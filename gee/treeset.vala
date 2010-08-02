@@ -214,6 +214,8 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		Node<G> n = (owned)node;
 		if (&key != null)
 			key = (owned) n.key;
+		else
+			n.key = null;
 		if (n.prev != null) {
 			n.prev.next = n.next;
 		} else {
@@ -224,7 +226,6 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		} else {
 			_last = n.prev;
 		}
-		node.key = null;
 		node = null;
 		_size--;
 	}
@@ -314,8 +315,10 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 
 	private inline void clear_subtree (owned Node<G> node) {
 		node.key = null;
-		clear_subtree ((owned) node.left);
-		clear_subtree ((owned) node.right);
+		if (node.left != null)
+			clear_subtree ((owned) node.left);
+		if (node.right != null)
+			clear_subtree ((owned) node.right);
 	}
 
 	/**
@@ -324,7 +327,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	public override void clear () {
 		if (root != null) {
 			clear_subtree ((owned) root);
-			first = last = null;
+			_first = _last = null;
 		}
 		_size = 0;
 		stamp++;
