@@ -226,8 +226,8 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	/**
 	 * Sorts items by comparing with the specified compare function.
 	 *
-	 * WARNING: This method has only been added as hack and will not
-	 *          exist after the next odd minor version bump (>= 0.7.x).
+	 * @deprecated This method has only been added as hack and will be
+	 * deprecated after the next odd minor version bump (>= 0.7.x).
 	 *
 	 * @param compare_func compare function to use to compare items
 	 */
