@@ -72,11 +72,11 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	}
 
 	public bool contains (K key) {
-		return _storage_map.contains (key);
+		return _storage_map.has_key (key);
 	}
 
 	public new Collection<V> get (K key) {
-		if (_storage_map.contains (key)) {
+		if (_storage_map.has_key (key)) {
 			return _storage_map.get (key).read_only_view;
 		} else {
 			return _empty_value_set;
@@ -84,7 +84,7 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	}
 
 	public new void set (K key, V value) {
-		if (_storage_map.contains (key)) {
+		if (_storage_map.has_key (key)) {
 			if (_storage_map.get (key).add (value)) {
 				_nitems++;
 			}
@@ -97,13 +97,13 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	}
 
 	public bool remove (K key, V value) {
-		if (_storage_map.contains (key)) {
+		if (_storage_map.has_key (key)) {
 			var values = _storage_map.get (key);
 			if (values.contains (value)) {
 				values.remove (value);
 				_nitems--;
 				if (values.size == 0) {
-					_storage_map.remove (key);
+					_storage_map.unset (key);
 				}
 				return true;
 			}
@@ -112,9 +112,9 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	}
 
 	public bool remove_all (K key) {
-		if (_storage_map.contains (key)) {
+		if (_storage_map.has_key (key)) {
 			int size = _storage_map.get (key).size;
-			if (_storage_map.remove (key)) {
+			if (_storage_map.unset (key)) {
 				_nitems -= size;
 				return true;
 			}

@@ -44,14 +44,14 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 
 	public int count (G item) {
 		int result = 0;
-		if (_storage_map.contains (item)) {
+		if (_storage_map.has_key (item)) {
 			result = _storage_map.get (item);
 		}
 		return result;
 	}
 
 	public override bool contains (G item) {
-		return _storage_map.contains (item);
+		return _storage_map.has_key (item);
 	}
 
 	public override Gee.Iterator<G> iterator () {
@@ -59,7 +59,7 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 	}
 
 	public override bool add (G item) {
-		if (_storage_map.contains (item)) {
+		if (_storage_map.has_key (item)) {
 			int current_count = _storage_map.get (item);
 			_storage_map.set (item, current_count + 1);
 		} else {
@@ -70,10 +70,10 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 	}
 
 	public override bool remove (G item) {
-		if (_nitems > 0 && _storage_map.contains (item)) {
+		if (_nitems > 0 && _storage_map.has_key (item)) {
 			int current_count = _storage_map.get (item);
 			if (current_count <= 1) {
-				_storage_map.remove (item);
+				_storage_map.unset (item);
 			} else {
 				_storage_map.set (item, current_count - 1);
 			}

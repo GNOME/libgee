@@ -127,7 +127,7 @@ public abstract class Gee.AbstractMap<K,V> : Object, Iterable<Map.Entry<K,V>>, M
 	public virtual bool unset_all (Map<K,V> map) {
 		bool changed = false;
 		foreach (K key in map.keys) {
-			changed = changed | remove (key);
+			changed = changed | unset (key);
 		}
 		return changed;
 	}

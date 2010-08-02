@@ -342,7 +342,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		public override bool contains (K key) {
-			return _map.contains (key);
+			return _map.has_key (key);
 		}
 
 		public override bool add_all (Collection<K> collection) {
@@ -534,7 +534,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (_stamp == _map._stamp);
 			assert (_node != null);
 			has_next ();
-			_map.remove (_node.key);
+			_map.unset (_node.key);
 			_node = null;
 			_stamp = _map._stamp;
 		}

@@ -82,6 +82,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @deprecated Use {@link has_key} method instead.
 	 */
+	[Deprecated]
 	public abstract bool contains (K key);
 
 	/**
@@ -132,6 +133,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @deprecated Use {@link unset} method instead.
 	 */
+	[Deprecated]
 	public abstract bool remove (K key, out V? value = null);
 
 	/**
@@ -170,6 +172,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @deprecated Use {@link unset_all} method instead.
 	 */
+	[Deprecated]
 	public abstract bool remove_all (Map<K,V> map);
 
 	/**
@@ -186,6 +189,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @deprecated Use {@link has_all} method instead.
 	 */
+	[Deprecated]
 	public abstract bool contains_all (Map<K,V> map);
 
 	/**

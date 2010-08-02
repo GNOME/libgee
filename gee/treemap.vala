@@ -477,7 +477,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 
 		public override bool contains (K key) {
-			return _map.contains (key);
+			return _map.has_key (key);
 		}
 
 		public override bool add_all (Collection<K> collection) {
