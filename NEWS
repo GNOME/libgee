@@ -1,3 +1,10 @@
+libgee 0.5.2
+============
+
+ * Build system enhancements to conform Gnome's style.
+ * Bug fixes in TreeSet, TreeMap and Collection.to_array.
+ * Deprecated Map methods marked with [Deprecated].
+
 libgee 0.5.1
 ============
 
