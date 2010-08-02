@@ -1,4 +1,4 @@
-AC_INIT([libgee], [0.5.2], [ptitjes@free.fr], [libgee])
+AC_INIT([libgee], [0.5.3], [ptitjes@free.fr], [libgee])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
