@@ -33,6 +33,7 @@ public class ArrayListTests : ListTests {
 		add_test ("[ArrayList] GObject properties", test_gobject_properties);
 		add_test ("[ArrayList] small sort (insertion)", test_small_sort);
 		add_test ("[ArrayList] big sort (timsort)", test_big_sort);
+		add_test ("[ArrayList] typed to_array calls", test_typed_to_array);
 	}
 
 	private static const int BIG_SORT_SIZE = 1000000;
@@ -113,6 +114,44 @@ public class ArrayListTests : ListTests {
 
 		for (int i = 1; i < BIG_SORT_SIZE; i++) {
 			assert (big_test_list[i - 1] <= big_test_list[i]);
+		}
+	}
+
+	private void test_typed_to_array () {
+		// Test with a bool collection
+		Gee.List<bool> bool_list = new ArrayList<bool> ();
+		assert (bool_list.add (true));
+		assert (bool_list.add (true));
+		assert (bool_list.add (false));
+
+		bool[] bool_array = bool_list.to_array ();
+		int index = 0;
+		foreach (bool element in bool_list) {
+			assert (element == bool_array[index++]);
+		}
+
+		// Test with an int collection
+		Gee.List<int> int_list = new ArrayList<int> ();
+		assert (int_list.add (1));
+		assert (int_list.add (2));
+		assert (int_list.add (3));
+
+		int[] int_array = int_list.to_array ();
+		index = 0;
+		foreach (int element in int_list) {
+			assert (element == int_array[index++]);
+		}
+
+		// Test with a double collection
+		Gee.List<double?> double_list = new ArrayList<double?> ();
+		assert (double_list.add (1.0d));
+		assert (double_list.add (1.5d));
+		assert (double_list.add (2.0d));
+
+		double[] double_array = double_list.to_array ();
+		index = 0;
+		foreach (double element in double_list) {
+			assert (element == double_array[index++]);
 		}
 	}
 }
