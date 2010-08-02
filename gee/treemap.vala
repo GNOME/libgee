@@ -257,6 +257,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		} else {
 			last = n.next;
 		}
+		node.key = null;
+		node.value = null;
 		node = null;
 		_size--;
 	}
@@ -354,11 +356,21 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		return b;
 	}
 
+	private inline void clear_subtree (owned Node<G> node) {
+		node.key = null;
+		node.value = null;
+		clear_subtree ((owned) node.left);
+		clear_subtree ((owned) node.right);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public override void clear () {
-		first = last = root = null;
+		if (root != null) {
+			clear_subtree ((owned) root);
+			first = last = null;
+		}
 		_size = 0;
 		stamp++;
 	}
