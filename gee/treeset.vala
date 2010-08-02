@@ -224,6 +224,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		} else {
 			_last = n.prev;
 		}
+		node.key = null;
 		node = null;
 		_size--;
 	}
@@ -311,11 +312,20 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		return b;
 	}
 
+	private inline void clear_subtree (owned Node<G> node) {
+		node.key = null;
+		clear_subtree ((owned) node.left);
+		clear_subtree ((owned) node.right);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public override void clear () {
-		_first = _last = root = null;
+		if (root != null) {
+			clear_subtree ((owned) root);
+			first = last = null;
+		}
 		_size = 0;
 		stamp++;
 	}
