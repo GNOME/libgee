@@ -36,7 +36,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	private int _size = 0;
 	private int _stamp = 0;
 	private Node<G>? _head = null;
-	private Node<G>? _tail = null;
+	private weak Node<G>? _tail = null;
 
 	/**
 	 * The elements' equality testing function.
@@ -92,11 +92,12 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	public override bool add (G item) {
 		Node<G> n = new Node<G> (item);
 		if (this._head == null && this._tail == null) {
-			this._head = this._tail = n;
-		} else {
-			this._tail.next = n;
-			n.prev = this._tail;
 			this._tail = n;
+			this._head = (owned) n;
+		} else {
+			n.prev = this._tail;
+			this._tail.next = (owned) n;
+			this._tail = this._tail.next;
 		}
 
 		// Adding items to the list during iterations is allowed.
@@ -110,7 +111,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	 * {@inheritDoc}
 	 */
 	public override bool remove (G item) { // Should remove only the first occurence (a test should be added)
-		for (Node<G> n = this._head; n != null; n = n.next) {
+		for (weak Node<G> n = this._head; n != null; n = n.next) {
 			if (this.equal_func (item, n.data)) {
 				this._remove_node (n);
 				return true;
@@ -124,7 +125,8 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	 */
 	public override void clear () {
 		++this._stamp;
-		this._head = this._tail = null;
+		this._head = null;
+		this._tail = null;
 		this._size = 0;
 	}
 
@@ -181,18 +183,18 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		} else {
 			Node<G> n = new Node<G> (item);
 			if (index == 0) {
-				n.next = this._head;
-				this._head.prev = n;
+				n.next = (owned) this._head;
+				n.next.prev = n;
 				this._head = (owned)n;
 			} else {
-				Node prev = this._head;
+				weak Node prev = this._head;
 				for (int i = 0; i < index - 1; i++) {
 					prev = prev.next;
 				}
 				n.prev = prev;
-				n.next = prev.next;
+				n.next = (owned) prev.next;
 				n.next.prev = n;
-				prev.next = n;
+				prev.next = (owned) n;
 			}
 
 			// Adding items to the list during iterations is allowed.
@@ -225,7 +227,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		return_val_if_fail (stop <= this._size, null);
 
 		List<G> slice = new LinkedList<G> (this.equal_func);
-		Node<G> n = this._get_node_at (start);
+		weak Node<G> n = this._get_node_at (start);
 		for (int i = start; i < stop; i++) {
 			slice.add (n.data);
 			n = n.next;
@@ -386,11 +388,12 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		return amount;
 	}
 
+	[Compact]
 	private class Node<G> { // Maybe a compact class should be used?
 		public G data;
-		public Node<G>? prev = null;
+		public weak Node<G>? prev = null;
 		public Node<G>? next = null;
-		public Node (G data) {
+		public Node (owned G data) {
 			this.data = data;
 		}
 	}
@@ -525,13 +528,18 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 
 			Node<G> n = new Node<G> (item);
 			if (this.position.prev != null) {
-				this.position.prev.next = n;
-				n.prev = this.position.prev;
+				Node<G> position = (owned) this.position.prev.next;
+				n.prev = position.prev;
+				position.prev = n;
+				n.next = (owned) position;
+				weak Node<G> _n = n;
+				_n.prev.next = (owned) n;
 			} else {
-				this._list._head = n;
+				Node<G> position = (owned) this._list._head;
+				position.prev = n;
+				n.next = (owned) position;
+				this._list._head = (owned) n;
 			}
-			this.position.prev = n;
-			n.next = this.position;
 			this._list._size++;
 			this._index++;
 			_stamp = _list._stamp;
@@ -544,13 +552,13 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 			Node<G> n = new Node<G> (item);
 			if (this.position.next != null) {
 				this.position.next.prev = n;
-				n.next = this.position.next;
+				n.next = (owned) this.position.next;
 			} else {
 				this._list._tail = n;
 			}
-			this.position.next = n;
-			n.prev = this.position;
-			this.position = n;
+			this.position.next = (owned) n;
+			this.position.next.prev = this.position;
+			this.position = this.position.next;
 			this._list._size++;
 			this._index++;
 			_stamp = _list._stamp;
@@ -584,21 +592,24 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		return n;
 	}
 
-	private void _remove_node (owned Node<G> n) {
-		if (n == this._head) {
-			this._head = n.next;
+	private void _remove_node (Node<G> _n) {
+		Node<G> n;
+		weak Node<G> next;
+		if (_n == this._head) {
+			n = (owned) this._head;
+			next = this._head = (owned) n.next;
+		} else {
+			n = (owned) _n.prev.next;
+			next = n.prev.next = (owned) n.next;
 		}
 		if (n == this._tail) {
 			this._tail = n.prev;
-		}
-		if (n.prev != null) {
-			n.prev.next = n.next;
-		}
-		if (n.next != null) {
-			n.next.prev = n.prev;
+		} else {
+			next.prev = n.prev;
 		}
 		n.prev = null;
 		n.next = null;
+		n.data = null;
 		++this._stamp;
 		this._size--;
 	}
