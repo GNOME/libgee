@@ -24,8 +24,10 @@
 
 using GLib;
 
-public delegate uint HashDataFunc (void* v);
-public delegate bool EqualDataFunc (void* a, void* b);
+namespace Gee {
+	public delegate uint HashDataFunc (void* v);
+	public delegate bool EqualDataFunc (void* a, void* b);
+}
 
 /**
  * Hash table implementation of the {@link Set} interface.
