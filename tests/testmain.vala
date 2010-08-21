@@ -26,6 +26,7 @@ void main (string[] args) {
 
 	TestSuite.get_root ().add_suite (new ArrayListTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new ComparableTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new FunctionsTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new HashMapTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new HashMultiMapTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new HashMultiSetTests ().get_suite ());

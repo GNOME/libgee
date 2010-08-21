@@ -10,6 +10,7 @@ tests_SOURCES = \
        testcollection.vala \
        testcomparable.vala \
        testdeque.vala \
+       testfunctions.vala \
        testhashmap.vala \
        testhashmultimap.vala \
        testhashmultiset.vala \
