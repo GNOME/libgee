@@ -49,6 +49,8 @@ namespace Gee {
 		public static EqualDataFunc get_equal_func_for (Type t) {
 			if (t == typeof (string)) {
 				return (a, b) => {return str_equal ((string) a, (string) b);};
+			} else if (t.is_a (typeof (Comparable))) {
+				return (a, b) => {return ((Comparable<Comparable>) a).compare_to ((Comparable) b) == 0;};
 			} else {
 				return (a, b) => {return direct_equal (a, b);};
 			}
