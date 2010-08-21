@@ -52,7 +52,7 @@ public class FunctionsTests : Gee.TestCase {
 		assert (cmp (one, two) < 0);
 		
 		assert (!eq (two, one));
-		assert (cmp (two, one) >= 0);
+		assert (cmp (two, one) > 0);
 	}
 
 	public void test_int_func () {
@@ -75,7 +75,7 @@ public class FunctionsTests : Gee.TestCase {
 		assert (cmp (one, two) < 0);
 		
 		assert (!eq (two, one));
-		assert (cmp (two, one) >= 0);
+		assert (cmp (two, one) > 0);
 	}
 
 	public void test_compare_func () {
@@ -103,7 +103,7 @@ public class FunctionsTests : Gee.TestCase {
 		assert (cmp (one, two) < 0);
 		
 		assert (!eq (two, one));
-		assert (cmp (two, one) >= 0);
+		assert (cmp (two, one) > 0);
 	}
 
 	private class MyComparable : GLib.Object, Gee.Comparable<MyComparable> {
