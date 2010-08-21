@@ -8,7 +8,6 @@ tests_SOURCES = \
        testarraylist.vala \
        testcase.vala \
        testcollection.vala \
-       testcomparable.vala \
        testdeque.vala \
        testfunctions.vala \
        testhashmap.vala \
