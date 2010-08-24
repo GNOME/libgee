@@ -49,6 +49,8 @@ namespace Gee {
 		public static EqualDataFunc get_equal_func_for (Type t) {
 			if (t == typeof (string)) {
 				return (a, b) => {return str_equal ((string) a, (string) b);};
+			} else if (t.is_a (typeof (Hashable))) {
+				return (a, b) => {return ((Hashable<Hashable>) a).equal_to ((Hashable) b);};
 			} else if (t.is_a (typeof (Comparable))) {
 				return (a, b) => {return ((Comparable<Comparable>) a).compare_to ((Comparable) b) == 0;};
 			} else {
@@ -66,6 +68,8 @@ namespace Gee {
 		public static HashDataFunc get_hash_func_for (Type t) {
 			if (t == typeof (string)) {
 				return (a) => {return str_hash ((string) a);};
+			} else if (t.is_a (typeof (Hashable))) {
+				return (a) => {return ((Hashable) a).hash();};
 			} else {
 				return (a) => {return direct_hash (a);};
 			}

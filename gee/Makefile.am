@@ -18,6 +18,7 @@ libgee_la_SOURCES = \
 	comparable.vala \
 	deque.vala \
 	functions.vala \
+	hashable.vala \
 	hashmap.vala \
 	hashmultimap.vala \
 	hashmultiset.vala \

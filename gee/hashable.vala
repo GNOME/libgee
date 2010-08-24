@@ -1,6 +1,6 @@
-/* comparable.vala
+/* hashable.vala
  *
- * Copyright (C) 2009  Didier Villevalois
+ * Copyright (C) 2010  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,21 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
- * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
+ * 	Maciej Piechotka <uzytkwonik2@gmail.com>
  */
 
 /**
- * This interface defines a total ordering among instances of each class
+ * This interface defines a hash function amongs instances of each class
  * implementing it.
- *
- * @see Hashable
+ * 
+ * @see Comparable
  */
-public interface Gee.Comparable<G> : Object {
+public interface Gee.Hashable<G> : Object {
+	/**
+	 * Computes hash for an objects. Two hashes of equal objects have to be
+	 * equal. Hash have to not change during lifetime of object.
+	 *
+	 * @return hash of an object
+	 */
+	public abstract uint hash ();
+
 	/**
 	 * Compares this object with the specifed object.
 	 *
-	 * @return a negative integer, zero, or a positive integer as this object
-	 *         is less than, equal to, or greater than the specified object
+	 * @return true if objects are equal
 	 */
-	public abstract int compare_to (G object);
+	public abstract bool equal_to (G object);
 }

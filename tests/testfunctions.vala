@@ -25,7 +25,8 @@ public class FunctionsTests : Gee.TestCase {
 		base ("Functions");
 		add_test ("[Functions] comparing and hashing strings", test_string_func);
 		add_test ("[Functions] comparing and hashing int", test_int_func);
-		add_test ("[Functions] comparing and hashing instances of Comparable", test_compare_func);
+		add_test ("[Functions] comparing instances of Comparable", test_compare_func);
+		add_test ("[Functions] comparing and hashing instances of Hashable", test_hash_func);
 	}
 
 	public void test_string_func () {
@@ -106,8 +107,41 @@ public class FunctionsTests : Gee.TestCase {
 		assert (cmp (two, one) > 0);
 	}
 
+	public void test_hash_func () {
+		MyHashable two = new MyHashable(2);
+		MyHashable one = new MyHashable(1);
+		MyHashable twoCopy = new MyHashable(2);
+		MyHashable minusOne = new MyHashable(-1);
+
+		Gee.EqualDataFunc eq = Gee.Functions.get_equal_func_for (typeof (MyHashable));
+		CompareDataFunc cmp = Gee.Functions.get_compare_func_for (typeof (MyHashable));
+		Gee.HashDataFunc hash = Gee.Functions.get_hash_func_for (typeof (MyHashable));
+
+		assert (eq != null);
+		assert (cmp != null);
+		assert (hash != null);
+
+		assert (eq (two, two));
+		assert (cmp (two, two) == 0);
+		assert (hash (two) == hash (two));
+
+		assert (eq (two, twoCopy));
+		assert (cmp (two, twoCopy) == 0);
+		assert (hash (two) == hash (twoCopy));
+
+		assert (!eq (one, two));
+		assert (cmp (one, two) < 0);
+		
+		assert (!eq (two, one));
+		assert (cmp (two, one) > 0);
+
+		// Check if correct functions taken
+		assert (hash (one) == 1);
+		assert (!eq (minusOne, minusOne));
+	}
+
 	private class MyComparable : GLib.Object, Gee.Comparable<MyComparable> {
-		public MyComparable(int i) {
+		public MyComparable (int i) {
 			this.i = i;
 		}
 
@@ -118,6 +152,32 @@ public class FunctionsTests : Gee.TestCase {
 				return 1;
 			else
 				return -1;
+		}
+
+		int i;
+	}
+
+	private class MyHashable : GLib.Object, Gee.Comparable<MyHashable>, Gee.Hashable<MyHashable> {
+		public MyHashable (int i) {
+			this.i = i;
+		}
+
+		public int compare_to (MyHashable cmp) {
+			if (i == cmp.i)
+				return 0;
+			else if (i >= cmp.i)
+				return 1;
+			else
+				return -1;
+		}
+
+		public uint hash () {
+			return i;
+		}
+
+		public bool equal_to (MyHashable hash) {
+			// -1 break API but it is used for checks
+			return i == hash.i && i != -1;
 		}
 
 		int i;
