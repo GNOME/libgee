@@ -230,10 +230,6 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 			return _iter.has_next ();
 		}
 
-		public bool first () {
-			return _iter.first ();
-		}
-
 		public K get_key () {
 			return _iter.get_key ();
 		}

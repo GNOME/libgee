@@ -24,12 +24,12 @@
  * An iterator over a map.
  *
  * Gee's iterators are "on-track" iterators. They always point to an item
- * except before the first call to {@link next} or {@link first}, or, when an
- * item has been removed, until the next call to {@link next} or {@link first}.
+ * except before the first call to {@link next}, or, when an
+ * item has been removed, until the next call to {@link next}.
  *
  * Please note that when the iterator is out of track, neither {@link get_key},
  * {@link get_value}, {@link set_value} nor {@link unset} are defined and all
- * will fail. After the next call to {@link next} or {@link first}, they will
+ * will fail. After the next call to {@link next}, they will
  * be defined again.
  */
 public interface Gee.MapIterator<K,V> : Object {
@@ -46,13 +46,6 @@ public interface Gee.MapIterator<K,V> : Object {
 	 * @return `true` if the iterator has a next entry
 	 */
 	public abstract bool has_next ();
-
-	/**
-	 * Rewinds to the first entry in the iteration.
-	 *
-	 * @return `true` if the iterator has a first entry
-	 */
-	public abstract bool first ();
 
 	/**
 	 * Returns the current key in the iteration.
@@ -79,7 +72,7 @@ public interface Gee.MapIterator<K,V> : Object {
 	 * Unsets the current entry in the iteration. The cursor is set in an
 	 * in-between state. {@link get_key}, {@link get_value}, {@link set_value}
 	 * and {@link unset} will fail until the next move of the cursor (calling
-	 * {@link next} or {@link first}).
+	 * {@link next}).
 	 */
 	public abstract void unset ();
 }

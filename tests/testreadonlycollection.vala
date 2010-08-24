@@ -94,7 +94,9 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		assert (! iterator.has_next ());
 		assert (! iterator.next ());
 
-		assert (iterator.first ());
+		iterator = ro_collection.iterator ();
+		assert (iterator.has_next ());
+		assert (iterator.next ());
 		assert (iterator.get () == "one");
 
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |

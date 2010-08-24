@@ -39,6 +39,8 @@ public abstract class SortedSetTests : SetTests {
 		          test_bidir_iterator_can_go_backward);
 		add_test ("[SortedSet] bi-directional iterators are mutable",
 		          test_mutable_bidir_iterator);
+		add_test ("[SortedSet] bi-directional iterators can to beginning",
+		          test_bidir_iterator_first);
 		add_test ("[SortedSet] bi-directional iterators can to end",
 		          test_bidir_iterator_last);
 		get_suite ().add_suite (new SubSet (this, SubSet.Type.HEAD).get_suite ());
@@ -297,6 +299,27 @@ public abstract class SortedSetTests : SetTests {
 		assert (iterator.previous ());
 		assert (iterator.get () == "five");
 		assert (!iterator.previous ());
+		assert (iterator.get () == "five");
+	}
+
+	public void test_bidir_iterator_first () {
+		var test_set = test_collection as SortedSet<string>;
+
+		var iterator = test_set.bidir_iterator ();
+
+		assert (!iterator.first ());
+
+		assert (test_set.add ("one"));
+		assert (test_set.add ("two"));
+		assert (test_set.add ("three"));
+		assert (test_set.add ("four"));
+		assert (test_set.add ("five"));
+		assert (test_set.add ("six"));
+
+		iterator = test_set.bidir_iterator ();
+		assert (iterator.last ());
+		assert (iterator.get () == "two");
+		assert (iterator.first ());
 		assert (iterator.get () == "five");
 	}
 

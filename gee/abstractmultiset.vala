@@ -118,17 +118,6 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 			return _pending > 0 || _iter.has_next ();
 		}
 
-		public bool first () {
-			if (_set._nitems == 0) {
-				return false;
-			}
-			_pending = 0;
-			if (_iter.first ()) {
-				_pending = _iter.get_value () - 1;
-			}
-			return true;
-		}
-
 		public new G get () {
 			assert (! _removed);
 			return _iter.get_key ();

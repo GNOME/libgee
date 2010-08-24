@@ -491,16 +491,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			}
 			return (_next != null);
 		}
-
-		public bool first () {
-			assert (_stamp == _map._stamp);
-			if (_map.size == 0) {
-				return false;
-			}
-			_index = -1;
-			_next = null;
-			return next ();
-		}
 	}
 
 	private class KeyIterator<K,V> : NodeIterator<K,V>, Iterator<K> {

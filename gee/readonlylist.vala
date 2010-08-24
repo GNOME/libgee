@@ -141,6 +141,10 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 			return ((ListIterator<G>) _iter).has_previous ();
 		}
 
+		public bool first () {
+			return ((ListIterator<G>) _iter).first ();
+		}
+
 		public bool last () {
 			return ((ListIterator<G>) _iter).last ();
 		}

@@ -151,10 +151,6 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 			return _iter.has_next ();
 		}
 
-		public bool first () {
-			return _iter.first ();
-		}
-
 		public new G get () {
 			return _iter.get ();
 		}

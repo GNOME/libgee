@@ -64,7 +64,6 @@ public abstract class CollectionTests : Gee.TestCase {
 		Iterator<string> iterator = test_collection.iterator ();
 		assert (! iterator.has_next ());
 		assert (! iterator.next ());
-		assert (! iterator.first ());
 
 		// Check for some elements in the collection
 		assert (test_collection.add ("one"));
@@ -113,8 +112,9 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (three_found);
 		assert (three_found_once);
 
-		// Do it twice to check first ()
-		assert (iterator.first ());
+		iterator = test_collection.iterator ();
+		assert (iterator.has_next ());
+		assert (iterator.next ());
 
 		one_found = false;
 		two_found = false;
@@ -218,7 +218,9 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (three_found_once);
 
 		// Check after removal
-		assert (iterator.first ());
+		iterator = test_collection.iterator ();
+		assert (iterator.has_next ());
+		assert (iterator.next ());
 
 		one_found = false;
 		two_found = false;

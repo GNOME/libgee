@@ -981,15 +981,6 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			return false;
 		}
 
-		public bool first () {
-			assert (stamp == queue._stamp);
-			position = queue._r;
-			started = false;
-			from_type1_children = false;
-			from_type2_child = false;
-			return next ();
-		}
-
 		public new G get () {
 			assert (stamp == queue._stamp);
 			assert (position != null);

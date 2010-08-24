@@ -27,12 +27,12 @@
  * An iterator over a collection.
  *
  * Gee's iterators are "on-track" iterators. They always point to an item
- * except before the first call to {@link next} or {@link first}, or, when an
- * item has been removed, until the next call to {@link next} or {@link first}.
+ * except before the first call to {@link next}, or, when an
+ * item has been removed, until the next call to {@link next}.
  *
  * Please note that when the iterator is out of track, neither {@link get} nor
  * {@link remove} are defined and both will fail. After the next call to
- * {@link next} or {@link first}, they will be defined again.
+ * {@link next}, they will be defined again.
  */
 public interface Gee.Iterator<G> : Object {
 	/**
@@ -50,13 +50,6 @@ public interface Gee.Iterator<G> : Object {
 	public abstract bool has_next ();
 
 	/**
-	 * Rewinds to the first element in the iteration.
-	 *
-	 * @return `true` if the iterator has a first element
-	 */
-	public abstract bool first ();
-
-	/**
 	 * Returns the current element in the iteration.
 	 *
 	 * @return the current element in the iteration
@@ -66,7 +59,7 @@ public interface Gee.Iterator<G> : Object {
 	/**
 	 * Removes the current element in the iteration. The cursor is set in an
 	 * in-between state. Both {@link get} and {@link remove} will fail until
-	 * the next move of the cursor (calling {@link next} or {@link first}).
+	 * the next move of the cursor (calling {@link next}).
 	 */
 	public abstract void remove ();
 }

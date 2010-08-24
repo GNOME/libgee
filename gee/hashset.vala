@@ -245,16 +245,6 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			return (_next != null);
 		}
 
-		public bool first () {
-			assert (_stamp == _set._stamp);
-			if (_set.size == 0) {
-				return false;
-			}
-			_index = -1;
-			_next = null;
-			return next ();
-		}
-
 		public new G get () {
 			assert (_stamp == _set._stamp);
 			assert (_node != null);
