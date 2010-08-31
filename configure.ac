@@ -1,4 +1,4 @@
-AC_INIT([libgee], [0.5.3], [ptitjes@free.fr], [libgee])
+AC_INIT([libgee], [0.7.0], [ptitjes@free.fr], [libgee])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -11,7 +11,7 @@ AM_PROG_CC_C_O
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
-LIBGEE_LT_VERSION="2:0:0"
+LIBGEE_LT_VERSION="3:0:0"
 AC_SUBST(LIBGEE_LT_VERSION)
 
 AM_PROG_VALAC([0.9.3])
