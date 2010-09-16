@@ -1,3 +1,9 @@
+libgee 0.5.3
+============
+
+ * Fix memory leaks in TimSort and LinkedList.
+ * Bug fixes in TreeMap and TreeSet.
+
 libgee 0.5.2
 ============
 
