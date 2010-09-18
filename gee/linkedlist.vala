@@ -212,7 +212,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		assert (index < this._size);
 
 		unowned Node<G>? n = this._get_node_at (index);
-		return_if_fail (n != null);
+		assert (n != null);
 		G element = n.data;
 		this._remove_node (n);
 		return element;
