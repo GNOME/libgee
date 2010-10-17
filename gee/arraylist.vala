@@ -362,7 +362,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 			return _index;
 		}
 		
-		public bool at_element {
+		public bool valid {
 			get {
 				stderr.printf ("%d %s\n", _index, _removed ? "true" : "false");
 				return _index >= 0 && _index < _list._size && ! _removed;

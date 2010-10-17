@@ -707,7 +707,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (stamp == _map.stamp);
 		}
 		
-		public bool at_element {
+		public bool valid {
 			get {
 				return current != null;
 			}

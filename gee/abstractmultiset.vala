@@ -133,9 +133,9 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 			_removed = true;
 		}
 		
-		public bool at_element {
+		public bool valid {
 			get {
-				return ! _removed && _iter.at_element;
+				return ! _removed && _iter.valid;
 			}
 		}
 	}

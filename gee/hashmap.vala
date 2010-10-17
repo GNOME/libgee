@@ -492,7 +492,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			return (_next != null);
 		}
 		
-		public bool at_element {
+		public bool valid {
 			get {
 				return _node != null;
 			}

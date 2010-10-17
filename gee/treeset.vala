@@ -698,7 +698,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			}
 		}
 		
-		public bool at_element {
+		public bool valid {
 			get {
 				assert (stamp == _set.stamp);
 				return current != null;
@@ -1073,9 +1073,9 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			iterator.remove ();
 		}
 		
-		public bool at_element {
+		public bool valid {
 			get {
-				return iterator.at_element;
+				return iterator.valid;
 			}
 		}
 

@@ -81,6 +81,6 @@ public interface Gee.MapIterator<K,V> : Object {
 	 * {@link set_value} is legal. It is false at the beginning and after
 	 * {@link unset} call and true otherwise.
 	 */
-	public abstract bool at_element { get; }
+	public abstract bool valid { get; }
 }
 

@@ -260,7 +260,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			_stamp = _set._stamp;
 		}
 		
-		public bool at_element {
+		public bool valid {
 			get {
 				return _node != null;
 			}

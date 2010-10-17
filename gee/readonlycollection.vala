@@ -159,9 +159,9 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 			assert_not_reached ();
 		}
 		
-		public bool at_element {
+		public bool valid {
 			get {
-				return _iter.at_element;
+				return _iter.valid;
 			}
 		}
 	}

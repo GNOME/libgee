@@ -71,7 +71,7 @@ public interface Gee.Iterator<G> : Object {
 	 * Determines wheather the call to {@link get} is legal. It is false at the
 	 * beginning and after {@link remove} call and true otherwise.
 	 */
-	public abstract bool at_element { get; }
+	public abstract bool valid { get; }
 	
 	/**
 	 * Standard aggragation function.
@@ -84,7 +84,7 @@ public interface Gee.Iterator<G> : Object {
 	 */
 	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
 	{
-		if (at_element)
+		if (valid)
 			seed = f (get (), (owned) seed);
 		while (next ())
 			seed = f (get (), (owned) seed);

@@ -1007,7 +1007,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		}
 		
 		
-		public bool at_element {
+		public bool valid {
 			get {
 				return started &&  ! removed && position != null;
 			}
