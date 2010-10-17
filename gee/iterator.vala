@@ -23,6 +23,10 @@
  * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
  */
 
+namespace Gee {
+	public delegate A FoldFunc<A, G> (G g, owned A a);
+}
+
 /**
  * An iterator over a collection.
  *
@@ -68,5 +72,23 @@ public interface Gee.Iterator<G> : Object {
 	 * beginning and after {@link remove} call and true otherwise.
 	 */
 	public abstract bool at_element { get; }
+	
+	/**
+	 * Standard aggragation function.
+	 *
+	 * It takes a function, seed and first element, returns the new seed and
+	 * progress to next element when the operation repeats.
+	 *
+	 * Operation moves the iterator to last element in iteration. If iterator
+	 * points at some element it will be included in iteration
+	 */
+	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
+	{
+		if (at_element)
+			seed = f (get (), (owned) seed);
+		while (next ())
+			seed = f (get (), (owned) seed);
+		return (owned) seed;
+	}
 }
 

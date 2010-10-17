@@ -43,6 +43,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] retain_all", test_retain_all);
 		add_test ("[Collection] to_array", test_to_array);
 		add_test ("[Collection] GObject properties", test_gobject_properties);
+		add_test ("[Collection] fold", test_to_array);
 	}
 
 	protected Collection<string> test_collection;
@@ -744,5 +745,21 @@ public abstract class CollectionTests : Gee.TestCase {
 		test_collection.get_property ("size", ref value);
 		assert (value.get_int () == test_collection.size);
 		value.unset ();
+	}
+	
+	public void test_fold () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+		
+		int count;
+		
+		count = test_collection.iterator ().fold<int> ((x, y) => {return y + 1;}, 0);
+		assert (count == 3);
+		
+		Iterator<string> iter = test_collection.iterator ();
+		assert (iter.next ());
+		count = iter.fold<int> ((x, y) => {return y + 1;}, 0);
+		assert (count == 3);
 	}
 }
