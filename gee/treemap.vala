@@ -706,6 +706,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			_map.stamp++;
 			assert (stamp == _map.stamp);
 		}
+		
+		public bool at_element {
+			get {
+				return current != null;
+			}
+		}
 	}
 
 	private class KeyIterator<K,V> : NodeIterator<K,V>, Gee.Iterator<K>, BidirIterator<K> {

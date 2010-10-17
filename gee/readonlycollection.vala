@@ -158,6 +158,12 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		public void remove () {
 			assert_not_reached ();
 		}
+		
+		public bool at_element {
+			get {
+				return _iter.at_element;
+			}
+		}
 	}
 
 	public virtual Collection<G> read_only_view {

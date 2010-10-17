@@ -697,6 +697,13 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 				return _next != null;
 			}
 		}
+		
+		public bool at_element {
+			get {
+				assert (stamp == _set.stamp);
+				return current != null;
+			}
+		}
 
 		private weak Node<G>? current = null;
 		private weak Node<G>? _next = null;
@@ -1064,6 +1071,12 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		public void remove () {
 			assert (iterator != null);
 			iterator.remove ();
+		}
+		
+		public bool at_element {
+			get {
+				return iterator.at_element;
+			}
 		}
 
 		private new TreeSet<G> set;

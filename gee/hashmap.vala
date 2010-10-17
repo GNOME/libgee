@@ -491,6 +491,12 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			}
 			return (_next != null);
 		}
+		
+		public bool at_element {
+			get {
+				return _node != null;
+			}
+		}
 	}
 
 	private class KeyIterator<K,V> : NodeIterator<K,V>, Iterator<K> {

@@ -77,14 +77,19 @@ public abstract class CollectionTests : Gee.TestCase {
 		bool two_found_once = true;
 		bool three_found_once = true;
 		iterator = test_collection.iterator ();
+		bool at_element = iterator.at_element;
+		assert (! at_element);
 		while (true) {
 			has_next = iterator.has_next ();
+			assert (at_element == iterator.at_element);
 			assert (has_next == iterator.next ());
+			assert (at_element = iterator.at_element);
 			if (! has_next) {
 				break;
 			}
 
 			string element = iterator.get ();
+			assert (iterator.at_element);
 			if (element == "one") {
 				if (one_found) {
 					one_found_once = false;
@@ -104,7 +109,9 @@ public abstract class CollectionTests : Gee.TestCase {
 		}
 		has_next = iterator.has_next ();
 		assert (! has_next);
+		assert (iterator.at_element);
 		assert (has_next == iterator.next ());
+		assert (iterator.at_element);
 		assert (one_found);
 		assert (one_found_once);
 		assert (two_found);
@@ -114,6 +121,7 @@ public abstract class CollectionTests : Gee.TestCase {
 
 		iterator = test_collection.iterator ();
 		assert (iterator.has_next ());
+		assert (! iterator.at_element);
 		assert (iterator.next ());
 
 		one_found = false;
@@ -185,6 +193,7 @@ public abstract class CollectionTests : Gee.TestCase {
 			if (! has_next) {
 				break;
 			}
+			assert (iterator.at_element);
 
 			string element = iterator.get ();
 			if (element == "one") {
@@ -200,6 +209,7 @@ public abstract class CollectionTests : Gee.TestCase {
 
 				// Remove this element
 				iterator.remove ();
+				assert (! iterator.at_element);
 			} else if (element == "three") {
 				if (three_found) {
 					three_found_once = false;

@@ -259,6 +259,12 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			_node = null;
 			_stamp = _set._stamp;
 		}
+		
+		public bool at_element {
+			get {
+				return _node != null;
+			}
+		}
 	}
 }
 

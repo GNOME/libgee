@@ -75,5 +75,12 @@ public interface Gee.MapIterator<K,V> : Object {
 	 * {@link next}).
 	 */
 	public abstract void unset ();
+	
+	/**
+	 * Determines wheather the call to {@link get_key}, {@link get_value} and 
+	 * {@link set_value} is legal. It is false at the beginning and after
+	 * {@link unset} call and true otherwise.
+	 */
+	public abstract bool at_element { get; }
 }
 

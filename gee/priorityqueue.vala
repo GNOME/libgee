@@ -925,6 +925,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 				return false;
 			}
 			removed = false;
+			started = true;
 			position = _next;
 			_next = null;
 			return (position != null);
@@ -943,7 +944,6 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		private bool _has_next() {
 			if (!started) {
-				started = true;
 				return _next != null;
 			} else if (_next is Type1Node) {
 				var node = _next as Type1Node<G>;
@@ -1004,6 +1004,13 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			assert (stamp == queue._stamp);
 			assert (position != null);
 			return position;
+		}
+		
+		
+		public bool at_element {
+			get {
+				return started &&  ! removed && position != null;
+			}
 		}
 	}
 }

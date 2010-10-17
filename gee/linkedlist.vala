@@ -570,6 +570,12 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 
 			return this._index;
 		}
+		
+		public bool at_element {
+			get {
+				return !this.removed && this.position != null;
+			}
+		}
 	}
 
 	private unowned Node<G>? _get_node_at (int index) {

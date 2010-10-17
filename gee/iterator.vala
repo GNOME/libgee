@@ -62,5 +62,11 @@ public interface Gee.Iterator<G> : Object {
 	 * the next move of the cursor (calling {@link next}).
 	 */
 	public abstract void remove ();
+	
+	/**
+	 * Determines wheather the call to {@link get} is legal. It is false at the
+	 * beginning and after {@link remove} call and true otherwise.
+	 */
+	public abstract bool at_element { get; }
 }
 
