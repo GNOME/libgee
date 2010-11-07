@@ -25,6 +25,7 @@
 
 namespace Gee {
 	public delegate A FoldFunc<A, G> (G g, owned A a);
+	public delegate void ForallFunc<G> (G g);
 }
 
 /**
@@ -97,7 +98,7 @@ public interface Gee.Iterator<G> : Object {
 	 * Operation moves the iterator to last element in iteration. If iterator
 	 * points at some element it will be included in iteration.
 	 */
-	public virtual void forall (ForallFunc<G> f) {
+	public new virtual void foreach (ForallFunc<G> f) {
 		if (valid)
 			f (get ());
 		while (next ())
