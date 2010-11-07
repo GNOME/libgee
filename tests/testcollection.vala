@@ -43,7 +43,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] retain_all", test_retain_all);
 		add_test ("[Collection] to_array", test_to_array);
 		add_test ("[Collection] GObject properties", test_gobject_properties);
-		add_test ("[Collection] fold", test_to_array);
+		add_test ("[Collection] fold", test_fold);
 	}
 
 	protected Collection<string> test_collection;

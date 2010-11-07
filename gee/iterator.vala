@@ -80,7 +80,7 @@ public interface Gee.Iterator<G> : Object {
 	 * progress to next element when the operation repeats.
 	 *
 	 * Operation moves the iterator to last element in iteration. If iterator
-	 * points at some element it will be included in iteration
+	 * points at some element it will be included in iteration.
 	 */
 	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
 	{
@@ -89,6 +89,19 @@ public interface Gee.Iterator<G> : Object {
 		while (next ())
 			seed = f (get (), (owned) seed);
 		return (owned) seed;
+	}
+	
+	/**
+	 * Apply function to each element returned by iterator. 
+	 *
+	 * Operation moves the iterator to last element in iteration. If iterator
+	 * points at some element it will be included in iteration.
+	 */
+	public virtual void forall (ForallFunc<G> f) {
+		if (valid)
+			f (get ());
+		while (next ())
+			f (get ());
 	}
 }
 
