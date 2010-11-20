@@ -57,6 +57,11 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		}
 		this.equal_func = equal_func;
 	}
+	
+	~LinkedList () {
+		while (_head != null)
+			_remove_node (_head);
+	}
 
 	/**
 	 * {@inheritDoc}
