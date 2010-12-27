@@ -83,13 +83,27 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 
 		Iterator<string> iterator = ro_collection.iterator ();
 
-		assert (iterator.has_next ());
-		assert (iterator.next ());
-		assert (iterator.get () == "one");
+		bool one_found = false;
+		bool two_found = false;
 
-		assert (iterator.has_next ());
-		assert (iterator.next ());
-		assert (iterator.get () == "two");
+		while (iterator.next ()) {
+			assert (iterator.valid);
+			switch(iterator.get ()) {
+			case "one":
+				assert (! one_found);
+				one_found = true;
+				break;
+			case "two":
+				assert (! two_found);
+				two_found = true;
+				break;
+			default:
+				assert_not_reached ();
+			}
+		}
+
+		assert (one_found);
+		assert (two_found);
 
 		assert (! iterator.has_next ());
 		assert (! iterator.next ());
@@ -97,7 +111,6 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		iterator = ro_collection.iterator ();
 		assert (iterator.has_next ());
 		assert (iterator.next ());
-		assert (iterator.get () == "one");
 
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
