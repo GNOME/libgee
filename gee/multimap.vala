@@ -28,6 +28,12 @@ public interface Gee.MultiMap<K,V> : Object {
 	 * The number of key/value pairs in this map.
 	 */
 	public abstract int size { get; }
+	
+	/**
+	 * Specifies whether this collection can change - i.e. wheather {@link add},
+	 * {@link remove} etc. are legal operations.
+	 */
+	public abstract bool read_only { get; }
 
 	/**
 	 * Returns the keys of this multimap as a read-only set.

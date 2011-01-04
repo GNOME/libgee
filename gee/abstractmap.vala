@@ -42,6 +42,11 @@ public abstract class Gee.AbstractMap<K,V> : Object, Iterable<Map.Entry<K,V>>, M
 	public virtual bool is_empty {
 		get { return size == 0; }
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public abstract bool read_only { get; }
 
 	/**
 	 * {@inheritDoc}

@@ -33,6 +33,12 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * Specifies whether this collection is empty.
 	 */
 	public abstract bool is_empty { get; }
+	
+	/**
+	 * Specifies whether this collection can change - i.e. wheather {@link add},
+	 * {@link remove} etc. are legal operations.
+	 */
+	public abstract bool read_only { get; }
 
 	/**
 	 * Determines whether this collection contains the specified item.

@@ -46,6 +46,13 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	public bool is_empty {
 		get { return _collection.is_empty; }
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public bool read_only {
+		get { return true; }
+	}
 
 	protected Collection<G> _collection;
 

@@ -47,6 +47,11 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	/**
 	 * {@inheritDoc}
 	 */
+	public abstract bool read_only { get; }
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public abstract bool contains (G item);
 
 	/**

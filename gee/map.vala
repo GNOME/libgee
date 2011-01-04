@@ -33,6 +33,12 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * Specifies whether this map is empty.
 	 */
 	public abstract bool is_empty { get; }
+	
+	/**
+	 * Specifies whether this collection can change - i.e. wheather {@link add},
+	 * {@link remove} etc. are legal operations.
+	 */
+	public abstract bool read_only { get; }
 
 	/**
 	 * The read-only view of the keys of this map.

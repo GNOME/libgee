@@ -95,6 +95,13 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	public override bool is_full {
 		get { return false; }
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public override bool read_only {
+		get { return false; }
+	}
 
 	/**
 	 * {@inheritDoc}

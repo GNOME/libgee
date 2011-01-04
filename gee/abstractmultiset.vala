@@ -32,6 +32,10 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 		get { return _nitems; }
 	}
 
+	public override bool read_only {
+		get { return false; }
+	}
+
 	protected Map<G, int> _storage_map;
 	private int _nitems = 0;
 

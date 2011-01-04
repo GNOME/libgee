@@ -44,6 +44,13 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	public override int size {
 		get { return _size; }
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public override bool read_only {
+		get { return false; }
+	}
 
 	/**
 	 * The elements' equality testing function.

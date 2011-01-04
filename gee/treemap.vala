@@ -38,6 +38,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 	public override int size {
 		get { return _size; }
 	}
+	
+	public override bool read_only {
+		get { return false; }
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -479,6 +483,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			get { return _map.size; }
 		}
 
+		public override bool read_only {
+			get { return true; }
+		}
+
 		public override bool add (K key) {
 			assert_not_reached ();
 		}
@@ -521,6 +529,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public override int size {
 			get { return _map.size; }
+		}
+
+		public override bool read_only {
+			get { return true; }
 		}
 
 		public override bool add (V key) {
@@ -571,6 +583,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public override int size {
 			get { return _map.size; }
+		}
+
+		public override bool read_only {
+			get { return true; }
 		}
 
 		public override bool add (Map.Entry<K, V> entry) {

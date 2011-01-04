@@ -39,6 +39,13 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	public override int size {
 		get {return _size;}
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public override bool read_only {
+		get { return false; }
+	}
 
 	/**
 	 * The elements' comparator function.
@@ -895,6 +902,10 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 					i++;
 				return i;
 			}
+		}
+
+		public override bool read_only {
+			get { return true; }
 		}
 
 		public override bool is_empty {

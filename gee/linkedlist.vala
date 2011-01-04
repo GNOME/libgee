@@ -83,6 +83,13 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	public override int size {
 		get { return this._size; }
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public override bool read_only {
+		get { return false; }
+	}
 
 	/**
 	 * {@inheritDoc}

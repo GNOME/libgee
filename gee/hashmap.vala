@@ -40,6 +40,13 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	public override int size {
 		get { return _nnodes; }
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public override bool read_only {
+		get { return false; }
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -329,6 +336,10 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			get { return _map.size; }
 		}
 
+		public override bool read_only {
+			get { return true; }
+		}
+
 		public override bool add (K key) {
 			assert_not_reached ();
 		}
@@ -372,6 +383,10 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public override int size {
 			get { return _map.size; }
+		}
+
+		public override bool read_only {
+			get { return true; }
 		}
 
 		public override bool add (V value) {
@@ -422,6 +437,10 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public override int size {
 			get { return _map.size; }
+		}
+
+		public override bool read_only {
+			get { return true; }
 		}
 
 		public override bool add (Map.Entry<K, V> entry) {

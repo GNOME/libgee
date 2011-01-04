@@ -45,6 +45,13 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	public override int size {
 		get { return _nnodes; }
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public override bool read_only {
+		get { return false; }
+	}
 
 	/**
 	 * The elements' hash function.

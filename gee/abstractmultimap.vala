@@ -31,6 +31,10 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	public int size {
 		get { return _nitems; }
 	}
+	
+	public bool read_only {
+		get { return false; }
+	}
 
 	protected Map<K, Collection<V>> _storage_map;
 	private int _nitems = 0;
