@@ -133,6 +133,12 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 			_removed = true;
 		}
 		
+		public bool read_only {
+			get {
+				return false;
+			}
+		}
+		
 		public bool valid {
 			get {
 				return ! _removed && _iter.valid;

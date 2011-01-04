@@ -75,6 +75,13 @@ public interface Gee.Iterator<G> : Object {
 	public abstract bool valid { get; }
 	
 	/**
+	 * Determines wheather the call to {@link remove} is legal assuming the
+	 * iterator is valid. The value must not change in runtime hence the user
+	 * of iterator may cache it.
+	 */
+	public abstract bool read_only { get; }
+	
+	/**
 	 * Standard aggragation function.
 	 *
 	 * It takes a function, seed and first element, returns the new seed and

@@ -492,6 +492,12 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			return (_next != null);
 		}
 		
+		public virtual bool read_only {
+			get {
+				return true;
+			}
+		}
+		
 		public bool valid {
 			get {
 				return _node != null;
@@ -546,6 +552,18 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (_node != null);
 			_map.set (_node.key, value);
 			_stamp = _map._stamp;
+		}
+		
+		public bool mutable {
+			get {
+				return true;
+			}
+		}
+		
+		public override bool read_only {
+			get {
+				return false;
+			}
 		}
 	}
 

@@ -707,6 +707,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (stamp == _map.stamp);
 		}
 		
+		public virtual bool read_only {
+			get {
+				return true;
+			}
+		}
+		
 		public bool valid {
 			get {
 				return current != null;
@@ -771,6 +777,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 			assert (stamp == _map.stamp);
 			assert (current != null);
 			current.value = value;
+		}
+		
+		public override bool read_only {
+			get {
+				return false;
+			}
+		}
+		
+		public bool mutable {
+			get {
+				return true;
+			}
 		}
 	}
 }

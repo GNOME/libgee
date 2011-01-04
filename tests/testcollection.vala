@@ -210,6 +210,7 @@ public abstract class CollectionTests : Gee.TestCase {
 				two_found = true;
 
 				// Remove this element
+				assert (! iterator.read_only);
 				iterator.remove ();
 				assert (! iterator.valid);
 			} else if (element == "three") {

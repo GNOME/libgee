@@ -362,6 +362,12 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 			return _index;
 		}
 		
+		public bool read_only {
+			get {
+				return false;
+			}
+		}
+		
 		public bool valid {
 			get {
 				return _index >= 0 && _index < _list._size && ! _removed;

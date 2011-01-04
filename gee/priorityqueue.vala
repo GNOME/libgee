@@ -1006,6 +1006,11 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			return position;
 		}
 		
+		public bool read_only {
+			get {
+				return false;
+			}
+		}
 		
 		public bool valid {
 			get {

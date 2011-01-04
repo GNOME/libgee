@@ -112,6 +112,7 @@ public class ReadOnlyCollectionTests : Gee.TestCase {
 		assert (iterator.has_next ());
 		assert (iterator.next ());
 
+		assert (iterator.read_only);
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
 			iterator.remove ();

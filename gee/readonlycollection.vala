@@ -164,6 +164,12 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 				return _iter.valid;
 			}
 		}
+		
+		public bool read_only {
+			get {
+				return true;
+			}
+		}
 	}
 
 	public virtual Collection<G> read_only_view {

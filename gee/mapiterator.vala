@@ -82,5 +82,19 @@ public interface Gee.MapIterator<K,V> : Object {
 	 * {@link unset} call and true otherwise.
 	 */
 	public abstract bool valid { get; }
+	
+	/**
+	 * Determines wheather the call to {@link set_value} is legal assuming the
+	 * iterator is valid. The value must not change in runtime hence the user
+	 * of iterator may cache it.
+	 */
+	public abstract bool mutable { get; }
+	
+	/**
+	 * Determines wheather the call to {@link unset} is legal assuming the
+	 * iterator is valid. The value must not change in runtime hence the user
+	 * of iterator may cache it.
+	 */
+	public abstract bool read_only { get; }
 }
 

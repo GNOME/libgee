@@ -246,6 +246,18 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 			assert_not_reached ();
 		}
 		
+		public bool read_only {
+			get {
+				return true;
+			}
+		}
+		
+		public bool mutable {
+			get {
+				return false;
+			}
+		}
+		
 		public bool valid {
 			get {
 				return _iter.valid;

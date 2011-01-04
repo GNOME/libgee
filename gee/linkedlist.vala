@@ -576,6 +576,12 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 			return this._index;
 		}
 		
+		public bool read_only {
+			get {
+				return false;
+			}
+		}
+		
 		public bool valid {
 			get {
 				return !this.removed && this.position != null;
