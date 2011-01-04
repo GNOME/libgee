@@ -39,6 +39,8 @@ public abstract class MapTests : Gee.TestCase {
 		add_test ("[Map] unset all", test_unset_all);
 		add_test ("[Map] has all", test_has_all);
 		add_test ("[Map] GObject properties", test_gobject_properties);
+		add_test ("[Map] fold", test_fold);
+		add_test ("[Map] foreach", test_foreach);
 	}
 
 	protected Map<string, string> test_map;
@@ -526,6 +528,38 @@ public abstract class MapTests : Gee.TestCase {
 		test_map.get_property ("size", ref value);
 		assert (value.get_int () == test_map.size);
 		value.unset ();
+	}
+	
+	public void test_fold () {
+		test_map.set ("one", "one");
+		test_map.set ("two", "two");
+		test_map.set ("three", "three");
+		
+		int count;
+		
+		count = test_map.map_iterator ().fold<int> ((x, y, z) => {return z + 1;}, 0);
+		assert (count == 3);
+		
+		var iter = test_map.map_iterator ();
+		assert (iter.next ());
+		count = iter.fold<int> ((x, y, z) => {return z + 1;}, 0);
+		assert (count == 3);
+	}
+	
+	public void test_foreach () {
+		test_map.set ("one", "one");
+		test_map.set ("two", "two");
+		test_map.set ("three", "three");
+		
+		int count = 0;
+		
+		test_map.map_iterator ().foreach ((x, y) => {count++;});
+		assert (count == 3);
+		
+		var iter = test_map.map_iterator ();
+		assert (iter.next ());
+		iter.foreach ((x, y) => {count++;});
+		assert (count == 6);
 	}
 
 

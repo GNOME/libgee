@@ -21,6 +21,11 @@
  * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
  */
 
+namespace Gee {
+	public delegate A FoldMapFunc<A, K, V> (K k, V v, owned A a);
+	public delegate void ForallMapFunc<K, V> (K k, V v);
+}
+
 /**
  * An iterator over a map.
  *
@@ -97,5 +102,36 @@ public interface Gee.MapIterator<K,V> : Object {
 	 * of iterator may cache it.
 	 */
 	public abstract bool read_only { get; }
+	
+	/**
+	 * Standard aggragation function.
+	 *
+	 * It takes a function, seed and first element, returns the new seed and
+	 * progress to next element when the operation repeats.
+	 *
+	 * Operation moves the iterator to last element in iteration. If iterator
+	 * points at some element it will be included in iteration.
+	 */
+	public virtual A fold<A> (FoldMapFunc<A, K, V> f, owned A seed)
+	{
+		if (valid)
+			seed = f (get_key (), get_value (), (owned) seed);
+		while (next ())
+			seed = f (get_key (), get_value (), (owned) seed);
+		return (owned) seed;
+	}
+	
+	/**
+	 * Apply function to each element returned by iterator. 
+	 *
+	 * Operation moves the iterator to last element in iteration. If iterator
+	 * points at some element it will be included in iteration.
+	 */
+	public new virtual void foreach (ForallMapFunc<K, V> f) {
+		if (valid)
+			f (get_key (), get_value ());
+		while (next ())
+			f (get_key (), get_value ());
+	}
 }
 
