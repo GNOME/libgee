@@ -1,3 +1,8 @@
+libgee 0.6.1
+============
+
+ * Fix memory leaks in LinkedList.
+
 libgee 0.6.0
 ============
 
