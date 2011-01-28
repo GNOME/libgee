@@ -59,8 +59,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	}
 	
 	~LinkedList () {
-		while (_head != null)
-			_remove_node (_head);
+		this.clear ();
 	}
 
 	/**
@@ -136,6 +135,10 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	 * {@inheritDoc}
 	 */
 	public override void clear () {
+		while (_head != null) {
+			_remove_node (_head);
+		}
+
 		++this._stamp;
 		this._head = null;
 		this._tail = null;
