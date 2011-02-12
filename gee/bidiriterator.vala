@@ -27,28 +27,28 @@ public interface Gee.BidirIterator<G> : Gee.Iterator<G> {
 	/**
 	 * Rewinds to the previous element in the iteration.
 	 *
-	 * @return `true` if the iterator has a previous element
+	 * @return ``true`` if the iterator has a previous element
 	 */
 	public abstract bool previous ();
 
 	/**
 	 * Checks whether there is a previous element in the iteration.
 	 *
-	 * @return `true` if the iterator has a previous element
+	 * @return ``true`` if the iterator has a previous element
 	 */
 	public abstract bool has_previous ();
 
 	/**
 	 * Rewinds to the first element in the iteration.
 	 *
-	 * @return `true` if the iterator has a first element
+	 * @return ``true`` if the iterator has a first element
 	 */
 	public abstract bool first ();
 
 	/**
 	 * Advances to the last element in the iteration.
 	 *
-	 * @return `true` if the iterator has a last element
+	 * @return ``true`` if the iterator has a last element
 	 */
 	public abstract bool last ();
 }

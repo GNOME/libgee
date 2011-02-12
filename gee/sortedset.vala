@@ -117,8 +117,8 @@ public interface Gee.SortedSet<G> : Gee.Set<G> {
 
 	/**
 	 * Returns the right-open sub-set of this sorted set, thus containing
-	 * elements equal or higher than the specified `from` element, and stricly
-	 * lower than the specified `to` element.
+	 * elements equal or higher than the specified ``from`` element, and stricly
+	 * lower than the specified ``to`` element.
 	 *
 	 * @param from the lower inclusive bound for the sub-set
 	 * @param to   the higher exclusive bound for the sub-set
