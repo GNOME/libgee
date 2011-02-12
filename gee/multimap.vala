@@ -55,7 +55,7 @@ public interface Gee.MultiMap<K,V> : Object {
 	 *
 	 * @param key the key to locate in the map
 	 *
-	 * @return    `true` if key is found, `false` otherwise
+	 * @return    ``true`` if key is found, ``false`` otherwise
 	 */
 	public abstract bool contains (K key);
 
@@ -82,7 +82,7 @@ public interface Gee.MultiMap<K,V> : Object {
 	 * @param key   the key to remove from the map
 	 * @param value the value to remove from the map
 	 *
-	 * @return      `true` if the map has been changed, `false` otherwise
+	 * @return      ``true`` if the map has been changed, ``false`` otherwise
 	 */
 	public abstract bool remove (K key, V value);
 
@@ -92,7 +92,7 @@ public interface Gee.MultiMap<K,V> : Object {
 	 *
 	 * @param key the key to remove from the map
 	 *
-	 * @return    `true` if the map has been changed, `false` otherwise
+	 * @return    ``true`` if the map has been changed, ``false`` otherwise
 	 */
 	public abstract bool remove_all (K key);
 

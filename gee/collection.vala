@@ -39,7 +39,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @param item the item to locate in the collection
 	 *
-	 * @return     `true` if item is found, `false` otherwise
+	 * @return     ``true`` if item is found, ``false`` otherwise
 	 */
 	public abstract bool contains (G item);
 
@@ -49,7 +49,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @param item the item to add to the collection
 	 *
-	 * @return     `true` if the collection has been changed, `false` otherwise
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public abstract bool add (G item);
 
@@ -59,7 +59,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @param item the item to remove from the collection
 	 *
-	 * @return     `true` if the collection has been changed, `false` otherwise
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public abstract bool remove (G item);
 
@@ -75,18 +75,18 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * @param collection the collection which items will be added to this
 	 *                   collection.
 	 *
-	 * @return     `true` if the collection has been changed, `false` otherwise
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public abstract bool add_all (Collection<G> collection);
 
 	/**
-	 * Returns `true` it this collection contains all items as the input
+	 * Returns ``true`` it this collection contains all items as the input
 	 * collection.
 	 *
 	 * @param collection the collection which items will be compared with
 	 *                   this collection.
 	 *
-	 * @return     `true` if the collection has been changed, `false` otherwise
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public abstract bool contains_all (Collection<G> collection);
 
@@ -99,7 +99,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * @param collection the collection which items will be compared with
 	 *                   this collection.
 	 *
-	 * @return     `true` if the collection has been changed, `false` otherwise
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public abstract bool remove_all (Collection<G> collection);
 
@@ -111,7 +111,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * @param collection the collection which items will be compared with
 	 *                   this collection.
 	 *
-	 * @return     `true` if the collection has been changed, `false` otherwise
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public abstract bool retain_all (Collection<G> collection);
 

@@ -69,7 +69,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @param key the key to locate in the map
 	 *
-	 * @return    `true` if key is found, `false` otherwise
+	 * @return    ``true`` if key is found, ``false`` otherwise
 	 */
 	public abstract bool has_key (K key);
 
@@ -78,7 +78,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @param key the key to locate in the map
 	 *
-	 * @return    `true` if key is found, `false` otherwise
+	 * @return    ``true`` if key is found, ``false`` otherwise
 	 *
 	 * @deprecated Use {@link has_key} method instead.
 	 */
@@ -91,7 +91,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @param key the key to locate in the map
 	 * @param value the corresponding value
 	 *
-	 * @return    `true` if key is found, `false` otherwise
+	 * @return    ``true`` if key is found, ``false`` otherwise
 	 */
 	public abstract bool has (K key, V value);
 
@@ -100,7 +100,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @param key the key whose value is to be retrieved
 	 *
-	 * @return    the value associated with the key, or `null` if the key
+	 * @return    the value associated with the key, or ``null`` if the key
 	 *            couldn't be found
 	 */
 	public abstract V? get (K key);
@@ -119,7 +119,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @param key   the key to remove from the map
 	 * @param value the receiver variable for the removed value
 	 *
-	 * @return    `true` if the map has been changed, `false` otherwise
+	 * @return    ``true`` if the map has been changed, ``false`` otherwise
 	 */
 	public abstract bool unset (K key, out V? value = null);
 
@@ -129,7 +129,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @param key   the key to remove from the map
 	 * @param value the receiver variable for the removed value
 	 *
-	 * @return    `true` if the map has been changed, `false` otherwise
+	 * @return    ``true`` if the map has been changed, ``false`` otherwise
 	 *
 	 * @deprecated Use {@link unset} method instead.
 	 */
@@ -176,14 +176,14 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	public abstract bool remove_all (Map<K,V> map);
 
 	/**
-	 * Returns `true` it this map contains all items as the input map.
+	 * Returns ``true`` it this map contains all items as the input map.
 	 *
 	 * @param map the map which items will be compared with this map
 	 */
 	public abstract bool has_all (Map<K,V> map);
 
 	/**
-	 * Returns `true` it this map contains all items as the input map.
+	 * Returns ``true`` it this map contains all items as the input map.
 	 *
 	 * @param map the map which items will be compared with this map
 	 *

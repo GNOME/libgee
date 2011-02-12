@@ -52,14 +52,14 @@ public interface Gee.Deque<G> : Queue<G> {
 	 *
 	 * @param element the element to offer to the queue
 	 *
-	 * @return        `true` if the element was added to the queue
+	 * @return        ``true`` if the element was added to the queue
 	 */
 	public abstract bool offer_head (G element);
 
 	/**
 	 * Peeks (retrieves, but not remove) an element from this queue.
 	 *
-	 * @return the element peeked from the queue (or `null` if none was
+	 * @return the element peeked from the queue (or ``null`` if none was
 	 *         available)
 	 */
 	public abstract G? peek_head ();
@@ -67,7 +67,7 @@ public interface Gee.Deque<G> : Queue<G> {
 	/**
 	 * Polls (retrieves and remove) an element from the head of this queue.
 	 *
-	 * @return the element polled from the queue (or `null` if none was
+	 * @return the element polled from the queue (or ``null`` if none was
 	 *         available)
 	 */
 	public abstract G? poll_head ();
@@ -88,7 +88,7 @@ public interface Gee.Deque<G> : Queue<G> {
 	 *
 	 * @param element the element to offer to the queue
 	 *
-	 * @return        `true` if the element was added to the queue
+	 * @return        ``true`` if the element was added to the queue
 	 */
 	public abstract bool offer_tail (G element);
 
@@ -96,7 +96,7 @@ public interface Gee.Deque<G> : Queue<G> {
 	 * Peeks (retrieves, but not remove) an element from the tail of this
 	 * queue.
 	 *
-	 * @return the element peeked from the queue (or `null` if none was
+	 * @return the element peeked from the queue (or ``null`` if none was
 	 *         available)
 	 */
 	public abstract G? peek_tail ();
@@ -104,7 +104,7 @@ public interface Gee.Deque<G> : Queue<G> {
 	/**
 	 * Polls (retrieves and remove) an element from the tail of this queue.
 	 *
-	 * @return the element polled from the queue (or `null` if none was
+	 * @return the element polled from the queue (or ``null`` if none was
 	 *         available)
 	 */
 	public abstract G? poll_tail ();
