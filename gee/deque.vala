@@ -32,7 +32,7 @@
  * The Deque interface inherits from the {@link Queue} interface. Thus, to use
  * a deque as a queue, you can equivalently use the folowing method set:
  *
- * ||<)(> "Queue method" ||<)(>  "Deque method" ||
+ * ||<)(> ''Queue method'' ||<)(>  ''Deque method'' ||
  * || {@link Queue.offer}  || {@link offer_tail}    ||
  * || {@link Queue.peek}   || {@link peek_head}     ||
  * || {@link Queue.poll}   || {@link poll_head}     ||
@@ -41,7 +41,7 @@
  * To use a deque as a stack, just use the method set that acts at the head of
  * the deque:
  *
- * ||<)(> "Operation" ||<)(>  "Deque method" ||
+ * ||<)(> ''Operation'' ||<)(>  ''Deque method'' ||
  * || push an element   || {@link offer_head}    ||
  * || peek an element   || {@link peek_head}     ||
  * || pop an element    || {@link poll_head}     ||
