@@ -9,6 +9,7 @@ tests_SOURCES = \
        testbidirlist.vala \
        testcase.vala \
        testcollection.vala \
+       testconcurrentlist.vala \
        testdeque.vala \
        testfunctions.vala \
        testhashmap.vala \

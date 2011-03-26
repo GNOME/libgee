@@ -22,6 +22,7 @@ libgee_0_8_la_SOURCES = \
 	bidirmapiterator.vala \
 	collection.vala \
 	comparable.vala \
+	concurrentlist.vala \
 	deque.vala \
 	functions.vala \
 	hashable.vala \
