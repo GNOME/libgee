@@ -5,6 +5,7 @@ lib_LTLIBRARIES = \
 	$(NULL)
 
 libgee_0_8_la_SOURCES = \
+	abstractbidirlist.vala \
 	abstractcollection.vala \
 	abstractlist.vala \
 	abstractmap.vala \
@@ -16,6 +17,8 @@ libgee_0_8_la_SOURCES = \
 	abstractsortedset.vala \
 	arraylist.vala \
 	bidiriterator.vala \
+	bidirlist.vala \
+	bidirlistiterator.vala \
 	bidirmapiterator.vala \
 	collection.vala \
 	comparable.vala \
@@ -39,6 +42,7 @@ libgee_0_8_la_SOURCES = \
 	multiset.vala \
 	priorityqueue.vala \
 	queue.vala \
+	readonlybidirlist.vala \
 	readonlycollection.vala \
 	readonlylist.vala \
 	readonlymap.vala \

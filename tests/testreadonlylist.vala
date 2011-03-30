@@ -28,7 +28,11 @@ using Gee;
 public class ReadOnlyListTests : ReadOnlyCollectionTests {
 
 	public ReadOnlyListTests () {
-		base.with_name ("ReadOnlyList");
+		this.with_name ("ReadOnlyList");
+	}
+
+	public ReadOnlyListTests.with_name (string name) {
+		base.with_name (name);
 		add_test ("[ReadOnlyList] immutable iterator", test_immutable_iterator);
 		add_test ("[ReadOnlyList] immutable", test_immutable);
 		add_test ("[ReadOnlyList] accurate view", test_accurate_view);
@@ -74,18 +78,8 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		assert (! iterator.has_next ());
 		assert (! iterator.next ());
 
-		assert (iterator.has_previous ());
-		assert (iterator.previous ());
-		assert (iterator.get () == "one");
-		assert (iterator.index () == 0);
-
-		assert (iterator.last ());
-		assert (iterator.get () == "two");
-		assert (iterator.index () == 1);
-
-		assert (iterator.first ());
-		assert (iterator.get () == "one");
-		assert (iterator.index () == 0);
+		iterator = ro_list.list_iterator ();
+		assert (iterator.next ());
 
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
@@ -109,12 +103,6 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 		assert (ro_list.get (1) == "two");
 		assert (iterator.index () == 0);
 
-		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-		                       TestTrapFlags.SILENCE_STDERR)) {
-			iterator.insert ("three");
-			Posix.exit (0);
-		}
-		Test.trap_assert_failed ();
 		assert (ro_list.size == 2);
 		assert (ro_list.get (0) == "one");
 		assert (ro_list.get (1) == "two");

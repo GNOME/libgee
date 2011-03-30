@@ -6,6 +6,7 @@ TEST_PROGS += tests
 
 tests_SOURCES = \
        testarraylist.vala \
+       testbidirlist.vala \
        testcase.vala \
        testcollection.vala \
        testdeque.vala \
@@ -23,6 +24,7 @@ tests_SOURCES = \
        testmultiset.vala \
        testpriorityqueue.vala \
        testqueue.vala \
+       testreadonlybidirlist.vala \
        testreadonlycollection.vala \
        testreadonlylist.vala \
        testreadonlymap.vala \

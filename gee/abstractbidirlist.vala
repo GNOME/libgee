@@ -1,6 +1,6 @@
-/* listiterator.vala
+/* bidirlistiterator.vala
  *
- * Copyright (C) 2009  Didier Villevalois
+ * Copyright (C) 2011  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,28 +17,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
- * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
+ * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 
-/**
- * A list iterator. This supports bi-directionnal and index-based iteration.
- */
-public interface Gee.ListIterator<G> : Gee.Iterator<G> {
-	/**
-	 * Sets the current item in the iteration to the specified new item.
-	 */
-	public abstract void set (G item);
+public abstract class Gee.AbstractBidirList<G> : AbstractList<G>, BidirList<G> {
 
 	/**
-	 * Adds the specified item after the current item in the iteration. The
-	 * cursor is moved to point to the new added item.
+	 * {@inheritDoc}
 	 */
-	public abstract void add (G item);
+	public abstract BidirListIterator<G> bidir_list_iterator ();
+
+	private weak BidirList<G> _read_only_view;
 
 	/**
-	 * Returns the current index in the iteration.
-	 *
-	 * @return the current index
+	 * {@inheritDoc}
 	 */
-	public abstract int index ();
+	public virtual new BidirList<G> read_only_view {
+		owned get {
+			BidirList<G> instance = _read_only_view;
+			if (_read_only_view == null) {
+				instance = new ReadOnlyBidirList<G> (this);
+				_read_only_view = instance;
+				instance.add_weak_pointer ((void**) (&_read_only_view));
+			}
+			return instance;
+		}
+	}
 }
+

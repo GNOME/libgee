@@ -24,7 +24,7 @@
 
 using Gee;
 
-public class LinkedListTests : ListTests {
+public class LinkedListTests : BidirListTests {
 
 	public LinkedListTests () {
 		base ("LinkedList");

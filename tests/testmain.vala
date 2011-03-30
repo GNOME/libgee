@@ -33,6 +33,7 @@ void main (string[] args) {
 	TestSuite.get_root ().add_suite (new LinkedListTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new LinkedListAsDequeTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new PriorityQueueTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new ReadOnlyBidirListTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new ReadOnlyCollectionTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new ReadOnlyListTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new ReadOnlyMapTests ().get_suite ());

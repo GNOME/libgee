@@ -25,7 +25,7 @@
 
 using Gee;
 
-public class ArrayListTests : ListTests {
+public class ArrayListTests : BidirListTests {
 
 	public ArrayListTests () {
 		base ("ArrayList");

@@ -32,7 +32,7 @@
  *
  * @see ArrayList
  */
-public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
+public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	private int _size = 0;
 	private int _stamp = 0;
 	private Node<G>? _head = null;
@@ -73,6 +73,13 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	 * {@inheritDoc}
 	 */
 	public override ListIterator<G> list_iterator () {
+		return new Iterator<G> (this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public override BidirListIterator<G> bidir_list_iterator () {
 		return new Iterator<G> (this);
 	}
 
@@ -413,7 +420,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		}
 	}
 
-	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G> {
+	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G>, BidirListIterator<G> {
 		private bool started = false;
 		private bool removed = false;
 		private unowned Node<G>? position;

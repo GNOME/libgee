@@ -83,10 +83,6 @@ public abstract class ListTests : CollectionTests {
 		var iterator = test_list.list_iterator ();
 		assert (! iterator.has_next ());
 		assert (! iterator.next ());
-		assert (! iterator.has_previous ());
-		assert (! iterator.previous ());
-		assert (! iterator.first ());
-		assert (! iterator.last ());
 
 		// Check iterate list
 		assert (test_list.add ("one"));
@@ -104,45 +100,18 @@ public abstract class ListTests : CollectionTests {
 		iterator.set ("new two");
 		assert (test_list.size == 3);
 		assert (iterator.index () == 1);
-		iterator.insert ("before two");
+		iterator.add ("after two");
 		assert (test_list.size == 4);
 		assert (iterator.index () == 2);
-		iterator.add ("after two");
-		assert (test_list.size == 5);
-		assert (iterator.index () == 3);
 		assert (iterator.next());
 		assert (iterator.get () == "three");
-		assert (iterator.index () == 4);
+		assert (iterator.index () == 3);
 		iterator.set ("new three");
 		assert (! iterator.has_next ());
 		assert (! iterator.next ());
 
-		assert (iterator.first ());
-		assert (iterator.get () == "new one");
-		assert (iterator.index () == 0);
-		assert (! iterator.has_previous ());
-		assert (! iterator.previous ());
-
-		assert (iterator.last ());
-		assert (iterator.get () == "new three");
-		assert (iterator.index () == 4);
-		assert (! iterator.has_next ());
-		assert (! iterator.next ());
-
-		assert (iterator.has_previous ());
-		assert (iterator.previous ());
-		assert (iterator.get () == "after two");
-		assert (iterator.index () == 3);
-		assert (iterator.has_previous ());
-		assert (iterator.previous ());
-		assert (iterator.get () == "new two");
-		assert (iterator.index () == 2);
-		assert (iterator.has_previous ());
-		assert (iterator.previous ());
-		assert (iterator.get () == "before two");
-		assert (iterator.index () == 1);
-		assert (iterator.has_previous ());
-		assert (iterator.previous ());
+		iterator = test_list.list_iterator ();
+		assert (iterator.next ());
 		assert (iterator.get () == "new one");
 		assert (iterator.index () == 0);
 	}

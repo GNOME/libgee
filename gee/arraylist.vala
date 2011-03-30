@@ -37,7 +37,7 @@ using GLib;
  *
  * @see LinkedList
  */
-public class Gee.ArrayList<G> : AbstractList<G> {
+public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -89,6 +89,13 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override ListIterator<G> list_iterator () {
+		return new Iterator<G> (this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public override BidirListIterator<G> bidir_list_iterator () {
 		return new Iterator<G> (this);
 	}
 
@@ -256,7 +263,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		_items.resize (value);
 	}
 
-	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G> {
+	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G>, BidirListIterator<G> {
 		private ArrayList<G> _list;
 		private int _index = -1;
 		private bool _removed = false;

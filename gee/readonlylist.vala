@@ -128,32 +128,12 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	}
 
 
-	private class Iterator<G> : ReadOnlyCollection.Iterator<G>, BidirIterator<G>, ListIterator<G> {
+	protected class Iterator<G> : ReadOnlyCollection.Iterator<G>, ListIterator<G> {
 		public Iterator (ListIterator<G> iterator) {
 			base (iterator);
 		}
 
-		public bool previous () {
-			return ((ListIterator<G>) _iter).previous ();
-		}
-
-		public bool has_previous () {
-			return ((ListIterator<G>) _iter).has_previous ();
-		}
-
-		public bool first () {
-			return ((ListIterator<G>) _iter).first ();
-		}
-
-		public bool last () {
-			return ((ListIterator<G>) _iter).last ();
-		}
-
 		public new void set (G item) {
-			assert_not_reached ();
-		}
-
-		public void insert (G item) {
 			assert_not_reached ();
 		}
 
