@@ -114,5 +114,15 @@ public class PriorityQueueTests : QueueTests {
 		assert (test_queue.poll () == "twelve");
 		assert (test_queue.peek () == "two");
 		assert (test_queue.poll () == "two");
+
+		// Add decreasing elements
+		assert (test_queue.offer ("2"));
+		assert (test_queue.offer ("1"));
+
+		
+		assert (test_queue.peek () == "1");
+		assert (test_queue.poll () == "1");
+		assert (test_queue.peek () == "2");
+		assert (test_queue.poll () == "2");
 	}
 }

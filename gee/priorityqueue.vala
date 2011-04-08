@@ -107,6 +107,8 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			_r_prime = new Type2Node<G> (element);
 			_r_prime.parent = _r;
 			_r.type2_child = _r_prime;
+			if (_compare (_r_prime, _r) < 0)
+				_swap_data (_r_prime, _r);
 		} else {
 			// Form a tree with a single node N of type I consisting of element e
 			Type1Node<G> node = new Type1Node<G> (element);
