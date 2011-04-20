@@ -175,7 +175,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 	public override int index_of (G item) {
 		int result = -1;
 		int idx = 0;
-		foreach (G node_item in this) {
+		foreach (G node_item in (Collection)this) {
 			if (this.equal_func (item, node_item)) {
 				result = idx;
 				break;
@@ -596,6 +596,21 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 			get {
 				return !this.removed && this.position != null;
 			}
+		}
+
+		public void foreach (ForallFunc<G> f) {
+			assert (_stamp == _list._stamp);
+			if (!started) {
+				position = _list._head;
+				if (position != null)
+					started = true;
+			}
+			removed = false;
+			while (position != null) {
+				f (position.data);
+				position = position.next;
+			}
+			position = _list._tail;
 		}
 	}
 

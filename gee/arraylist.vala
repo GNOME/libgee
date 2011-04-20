@@ -380,6 +380,17 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 				return _index >= 0 && _index < _list._size && ! _removed;
 			}
 		}
+
+		public void foreach (ForallFunc<G> f) {
+			assert (_stamp == _list._stamp);
+			if (_index < 0 || _removed)
+				_index++;
+			while (_index < _list._size) {
+				f (_list._items[_index]);
+				_index++;
+			}
+			_index = _list._size;
+		}
 	}
 }
 

@@ -718,6 +718,21 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 			}
 		}
 
+		public void foreach (ForallFunc<G> f) {
+			assert (stamp == _set.stamp);
+			if (current != null) {
+				f (current.key);
+				_next = current.next;
+			} else if (!started) {
+				_next = _set._first;
+			}
+			while (_next != null) {
+				current = _next;
+				f (current.key);
+				_next = current.next;
+			}
+		}
+
 		private weak Node<G>? current = null;
 		private weak Node<G>? _next = null;
 		private weak Node<G>? _prev = null;

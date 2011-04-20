@@ -177,6 +177,11 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 				return true;
 			}
 		}
+
+		public void foreach (ForallFunc<G> f) {
+			_iter.foreach (f);
+		}
+
 	}
 
 	public virtual Collection<G> read_only_view {

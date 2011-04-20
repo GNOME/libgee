@@ -1026,5 +1026,20 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 				return started &&  ! removed && position != null;
 			}
 		}
+
+		/*public void foreach (ForallFunc<G> f) {
+			assert (stamp == queue._stamp);
+			if (position != null)
+				f (position.data);
+			else if (_next != null)
+				removed = false;
+			if (_next == null)
+				_has_next ();
+			while (_next != null) {
+				position = _next;
+				f (position.data);
+				_has_next ();
+			}
+		}*/
 	}
 }
