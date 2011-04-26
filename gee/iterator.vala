@@ -90,13 +90,12 @@ public interface Gee.Iterator<G> : Object {
 	 *
 	 * Operation moves the iterator to last element in iteration. If iterator
 	 * points at some element it will be included in iteration.
+	 *
+	 * Note: Default implementation uses {@link foreach}.
 	 */
 	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
 	{
-		if (valid)
-			seed = f (get (), (owned) seed);
-		while (next ())
-			seed = f (get (), (owned) seed);
+		this.foreach ((item) => {seed = f (item, (owned) seed);});
 		return (owned) seed;
 	}
 	
