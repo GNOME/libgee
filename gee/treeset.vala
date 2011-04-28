@@ -712,7 +712,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		return compare_func (a, b) > 0 ? a : b;
 	}
 
-	private struct Range<G> {
+	private class Range<G> {
 		public Range (TreeSet<G> set, G after, G before) {
 			this.set = set;
 			if (set.compare_func (after, before) < 0) {
@@ -746,14 +746,14 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		public Range<G> cut_head (G after) {
 			switch (type) {
 			case RangeType.HEAD:
-				return Range<G> (set, after, before);
+				return new Range<G> (set, after, before);
 			case RangeType.TAIL:
-				return Range<G>.tail (set, set.max (after, this.after));
+				return new Range<G>.tail (set, set.max (after, this.after));
 			case RangeType.EMPTY:
 				return this;
 			case RangeType.BOUNDED:
 				var _after = set.max (after, this.after);
-				return Range<G> (set, _after, before);
+				return new Range<G> (set, _after, before);
 			default:
 				assert_not_reached ();
 			}
@@ -762,14 +762,14 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		public Range<G> cut_tail (G before) {
 			switch (type) {
 			case RangeType.HEAD:
-				return Range<G>.head (set, set.min (before, this.before));
+				return new Range<G>.head (set, set.min (before, this.before));
 			case RangeType.TAIL:
-				return Range<G> (set, after, before);
+				return new Range<G> (set, after, before);
 			case RangeType.EMPTY:
 				return this;
 			case RangeType.BOUNDED:
 				var _before = set.min (before, this.before);
-				return Range<G> (set, after, _before);
+				return new Range<G> (set, after, _before);
 			default:
 				assert_not_reached ();
 			}
@@ -780,7 +780,7 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 				return this;
 			var _before = type != RangeType.TAIL ? set.min (before, this.before) : before;
 			var _after = type != RangeType.HEAD ? set.max (after, this.after) : after;
-			return Range<G> (set, _after, _before);
+			return new Range<G> (set, _after, _before);
 		}
 
 		public bool in_range (G item) {
@@ -856,17 +856,17 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 	private class SubSet<G> : AbstractSet<G>, SortedSet<G> {
 		public SubSet (TreeSet<G> set, G after, G before) {
 			this.set = set;
-			this.range = Range<G> (set, after, before);
+			this.range = new Range<G> (set, after, before);
 		}
 
 		public SubSet.head (TreeSet<G> set, G before) {
 			this.set = set;
-			this.range = Range<G>.head (set, before);
+			this.range = new Range<G>.head (set, before);
 		}
 
 		public SubSet.tail (TreeSet<G> set, G after) {
 			this.set = set;
-			this.range = Range<G>.tail (set, after);
+			this.range = new Range<G>.tail (set, after);
 		}
 
 		public SubSet.from_range (TreeSet<G> set, Range<G> range) {
