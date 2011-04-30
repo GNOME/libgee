@@ -25,8 +25,8 @@
  */
 
 namespace Gee {
-	public delegate A FoldFunc<A, G> (G g, owned A a);
-	public delegate void ForallFunc<G> (G g);
+	public delegate A FoldFunc<A, G> (owned G g, owned A a);
+	public delegate void ForallFunc<G> (owned G g);
 }
 
 /**
@@ -95,7 +95,7 @@ public interface Gee.Iterator<G> : Object {
 	 */
 	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
 	{
-		this.foreach ((item) => {seed = f (item, (owned) seed);});
+		this.foreach ((item) => {seed = f ((owned) item, (owned) seed);});
 		return (owned) seed;
 	}
 	
