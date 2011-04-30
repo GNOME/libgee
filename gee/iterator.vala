@@ -29,6 +29,7 @@ namespace Gee {
 	public delegate void ForallFunc<G> (owned G g);
 	public delegate Lazy<A>? UnfoldFunc<A> ();
 	public delegate Iterator.Stream StreamFunc<A, G> (Iterator.Stream state, owned G? g, out Lazy<A>? lazy);
+	public delegate A MapFunc<A, G> (owned G g);
 }
 
 /**
@@ -202,6 +203,35 @@ public interface Gee.Iterator<G> : Object {
 				assert_not_reached ();
 			}
 		}, initial);
+	}
+
+	/**
+	 * Maps the iterator. It produces iterator that is get by applying
+	 * map function to the values of this iterator.
+	 *
+	 * The value is lazy evaluated but previous value is guaranteed to be
+	 * evaluated before {@link next} call.
+	 *
+	 * If the current iterator is {@link valid} so is the resulting. Using
+	 * the iterator after this called is not allowed.
+	 *
+	 * @param f Mapping function
+	 * @return Iterator listing mapped value
+	 */
+	public virtual Iterator<A> map<A> (MapFunc<A, G> f) {
+		return stream<A>((state, item, out val) => {
+			switch (state) {
+			case Stream.YIELD:
+				return Stream.CONTINUE;
+			case Stream.CONTINUE:
+				val = new Lazy<A>(() => {return (f ((owned)item));});
+				return Stream.YIELD;
+			case Stream.END:
+				return Stream.END;
+			default:
+				assert_not_reached ();
+			}
+		});
 	}
 
 	public enum Stream {

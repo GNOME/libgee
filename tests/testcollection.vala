@@ -47,6 +47,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] GObject properties", test_gobject_properties);
 		add_test ("[Collection] fold", test_fold);
 		add_test ("[Collection] foreach", test_foreach);
+		add_test ("[Collection] map", test_map);
 	}
 
 	protected Collection<string> test_collection;
@@ -782,4 +783,46 @@ public abstract class CollectionTests : Gee.TestCase {
 		iter.foreach ((x) => {count++;});
 		assert (count == 6);
 	}
+
+	public void test_map () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+
+		bool one = false;
+		bool two = false;
+		bool three = false;
+
+		int i = 0;
+		var iter = test_collection.iterator().map<int> ((str) => {
+			if (str == "one") {
+				assert (!one);
+				one = true;
+			} else if (str == "two") {
+				assert (!two);
+				two = true;
+			} else if (str == "three") {
+				assert (!three);
+				three = true;
+			} else {
+				assert_not_reached ();
+			}
+			return i++;
+		});
+		int j = 0;
+		while (iter.next ()) {
+			assert (i == j);
+			assert (j == iter.get ());
+			assert (j == iter.get ());
+			j++;
+			assert (i == j);
+		}
+
+		assert (i == j);
+		assert (i == test_collection.size);
+		assert (one);
+		assert (two);
+		assert (three);
+	}
 }
+
