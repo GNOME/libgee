@@ -52,6 +52,7 @@ libgee_la_SOURCES = \
 	treemultimap.vala \
 	treemultiset.vala \
 	treeset.vala \
+	unfolditerator.vala \
 	$(NULL)
 
 libgee_la_VALAFLAGS = \

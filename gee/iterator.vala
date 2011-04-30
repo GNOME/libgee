@@ -27,6 +27,7 @@
 namespace Gee {
 	public delegate A FoldFunc<A, G> (owned G g, owned A a);
 	public delegate void ForallFunc<G> (owned G g);
+	public delegate Lazy<A>? UnfoldFunc<A> ();
 }
 
 /**
@@ -110,6 +111,17 @@ public interface Gee.Iterator<G> : Object {
 			f (get ());
 		while (next ())
 			f (get ());
+	}
+
+	/**
+	 * Create iterator from unfolding function. The lazy value is
+         * force-evaluated before progressing to next element.
+         *
+         * @param f Unfolding function
+         * @param current If iterator is to be valid it contains the current value of it
+	 */
+	public static Iterator<A> unfold<A> (owned UnfoldFunc<A> f, owned Lazy<G>? current = null) {
+		return new UnfoldIterator<A> ((owned) f, (owned) current);
 	}
 }
 

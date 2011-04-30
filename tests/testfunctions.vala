@@ -27,6 +27,7 @@ public class FunctionsTests : Gee.TestCase {
 		add_test ("[Functions] comparing and hashing int", test_int_func);
 		add_test ("[Functions] comparing instances of Comparable", test_compare_func);
 		add_test ("[Functions] comparing and hashing instances of Hashable", test_hash_func);
+		add_test ("[Iterator] unfold", test_unfold);
 	}
 
 	public void test_string_func () {
@@ -138,6 +139,29 @@ public class FunctionsTests : Gee.TestCase {
 		// Check if correct functions taken
 		assert (hash (one) == 1);
 		assert (!eq (minus_one, minus_one));
+	}
+
+	public void test_unfold () {
+		int i = 0;
+		int j = -1;
+		var iter = Gee.Iterator.unfold<int> (() => {
+			assert (j + 1 == i);
+			if (i == 10)
+				return null;
+			int k = i++;
+			return new Gee.Lazy<int> (() => {
+				assert (k + 1 == i);
+				j = k;
+				return k;
+			});
+		});
+		int k = 0;
+		while (iter.next ()) {
+			assert (iter.get () == k);
+			assert (iter.get () == k);
+			k++;
+		}
+		assert (k == 10);
 	}
 
 	private class MyComparable : GLib.Object, Gee.Comparable<MyComparable> {

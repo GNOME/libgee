@@ -2,6 +2,7 @@
  *
  * Copyright (C) 2008  Jürg Billeter
  * Copyright (C) 2009  Didier Villevalois, Julien Peeters
+ * Copyright (C) 2011  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +22,7 @@
  * 	Jürg Billeter <j@bitron.ch>
  * 	Didier 'Ptitjes' Villevalois <ptitjes@free.fr>
  * 	Julien Peeters <contact@julienpeeters.fr>
+ *      Maciej Piechotka <uzytkownik2@gmail.com>
  */
 
 using Gee;
