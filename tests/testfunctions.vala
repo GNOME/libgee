@@ -28,6 +28,7 @@ public class FunctionsTests : Gee.TestCase {
 		add_test ("[Functions] comparing instances of Comparable", test_compare_func);
 		add_test ("[Functions] comparing and hashing instances of Hashable", test_hash_func);
 		add_test ("[Iterator] unfold", test_unfold);
+		add_test ("[Iterator] concat", test_concat);
 	}
 
 	public void test_string_func () {
@@ -162,6 +163,32 @@ public class FunctionsTests : Gee.TestCase {
 			k++;
 		}
 		assert (k == 10);
+	}
+
+	public void test_concat () {
+		int i = 0;
+		var iter_ = Gee.Iterator.unfold<Gee.Iterator<int>> (() => {
+			if (i >= 3)
+				return null;
+			int j = i++*3;
+			int start = j;
+			var iter = Gee.Iterator.unfold<int> (() => {
+				if (j == start + 3)
+					return null;
+				return new Gee.Lazy<int>.from_value (j++);
+			});
+			return new Gee.Lazy<Gee.Iterator<int>>.from_value (iter);
+		});
+
+		int j = 0;
+		var iter = Gee.Iterator.concat<int> (iter_);
+		while (iter.next()) {
+			assert (j == iter.get ());
+			assert (j == iter.get ());
+			j++;
+		}
+		assert (i == 3);
+		assert (j == 9);
 	}
 
 	private class MyComparable : GLib.Object, Gee.Comparable<MyComparable> {

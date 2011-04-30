@@ -123,5 +123,32 @@ public interface Gee.Iterator<G> : Object {
 	public static Iterator<A> unfold<A> (owned UnfoldFunc<A> f, owned Lazy<G>? current = null) {
 		return new UnfoldIterator<A> ((owned) f, (owned) current);
 	}
+
+	/**
+	 * Concatinate iterators.
+	 *
+	 * @param iters Iterators of iterators
+	 * @return Iterator containg values of each iterator
+	 */
+	public static Iterator<G> concat<G> (Iterator<Iterator<G>> iters) {
+		Iterator<G>? current = null;
+		if (iters.valid)
+			current = iters.get ();
+		return unfold<G> (() => {
+			while (true) {
+				if (current == null) {
+					if (iters.next ()) {
+						current = iters.get ();
+					} else {
+						return null;
+					}
+				} else if (current.next ()) {
+					return new Lazy<G>.from_value (current.get ());
+				} else {
+					current = null;
+				}
+			}
+		});
+	}
 }
 
