@@ -28,6 +28,7 @@ libgee_la_SOURCES = \
 	hashset.vala \
 	iterable.vala \
 	iterator.vala \
+	lazy.vala \
 	linkedlist.vala \
 	list.vala \
 	listiterator.vala \
