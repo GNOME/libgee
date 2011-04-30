@@ -28,6 +28,7 @@ namespace Gee {
 	public delegate A FoldFunc<A, G> (owned G g, owned A a);
 	public delegate void ForallFunc<G> (owned G g);
 	public delegate Lazy<A>? UnfoldFunc<A> ();
+	public delegate Iterator.Stream StreamFunc<A, G> (Iterator.Stream state, owned G? g, out Lazy<A>? lazy);
 }
 
 /**
@@ -111,6 +112,102 @@ public interface Gee.Iterator<G> : Object {
 			f (get ());
 		while (next ())
 			f (get ());
+	}
+
+
+	/**
+	 * Stream function is an abstract function allowing writing many
+	 * operations.
+	 *
+	 * The stream function accepts three parameter:
+	 *
+	 *   1. state. It is usually the last returned value from function but
+	 *      it may be Stream.END when the previous value was Stream.CONTINUE
+	 *      and threre was no next element.
+	 *   2. input. It is valid only if first argument is Stream.CONTINUE
+	 *   3. output. It is valid only if result is Stream.YIELD
+	 *
+	 * It may return one of 3 results:
+	 *
+	 *   1. Stream.YIELD. It means that value was yielded and can be passed
+	 *      to outgoint iterator
+	 *   2. Stream.CONTINUE. It means that the function needs to be rerun
+	 *      with next element (or Stream.END if it is end of stream). If
+	 *      the state argument is Stream.END the function MUST NOT return
+	 *      this value.
+	 *   3. Stream.END. It means that the last argument was yielded.
+	 *
+	 * If the function yields the value immidiatly then the returning iterator
+	 * is {@link valid} and points to this value as well as in case when the
+	 * parent iterator is {@link valid} and function yields after consuming
+	 * 1 input. In other case returned iterator is invalid.
+	 *
+	 * Usage of the parent is invalid before the {@link next} or
+	 * {@link has_next} returns false and the value will be force-evaluated.
+	 *
+	 * @param f function generating stream
+	 * @return iterator containing values yielded by stream
+	 */
+	public virtual Iterator<A> stream<A> (owned StreamFunc<A, G> f_) {
+		Stream str;
+		Lazy<A>? initial = null;
+		bool need_next = true;
+		StreamFunc<A, G> f = (owned)f_;
+		str = f (Stream.YIELD, null, out initial);
+		switch (str) {
+		case Stream.CONTINUE:
+			if (valid) {
+				str = f (Stream.CONTINUE, get (), out initial);
+				switch (str) {
+				case Stream.YIELD:
+				case Stream.CONTINUE:
+					break;
+				case Stream.END:
+					return unfold<A> (() => {return null;});
+				default:
+					assert_not_reached ();
+				}
+			}
+			break;
+		case Stream.YIELD:
+			if (valid)
+				need_next = false;
+			break;
+		case Stream.END:
+			return unfold<A> (() => {return null;});
+		default:
+			assert_not_reached ();
+		}
+		return unfold<A> (() => {
+			Lazy<A>? val;
+			str = f (Stream.YIELD, null, out val);
+			while (str == Stream.CONTINUE) {
+				if (need_next) {
+					if (!next ()) {
+						str = f (Stream.END, null, out val);
+						assert (str != Stream.CONTINUE);
+						break;
+					}
+				} else {
+					need_next = true;
+				}
+				str = f (Stream.CONTINUE, get (), out val);
+			}
+			switch (str) {
+			case Stream.YIELD:
+				return val;
+			case Stream.END:
+				return null;
+			default:
+				assert_not_reached ();
+			}
+		}, initial);
+	}
+
+	public enum Stream {
+		YIELD,
+		CONTINUE,
+		END
 	}
 
 	/**
