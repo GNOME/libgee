@@ -48,6 +48,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] fold", test_fold);
 		add_test ("[Collection] foreach", test_foreach);
 		add_test ("[Collection] map", test_map);
+		add_test ("[Collection] scan", test_scan);
 	}
 
 	protected Collection<string> test_collection;
@@ -820,6 +821,44 @@ public abstract class CollectionTests : Gee.TestCase {
 
 		assert (i == j);
 		assert (i == test_collection.size);
+		assert (one);
+		assert (two);
+		assert (three);
+	}
+
+	public void test_scan () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+
+		bool one = false;
+		bool two = false;
+		bool three = false;
+
+		var iter = test_collection.iterator().scan<int> ((str, cur) => {
+			if (str == "one") {
+				assert (!one);
+				one = true;
+			} else if (str == "two") {
+				assert (!two);
+				two = true;
+			} else if (str == "three") {
+				assert (!three);
+				three = true;
+			} else {
+				assert_not_reached ();
+			}
+			return cur + 1;
+		}, 0);
+
+		int j = 0;
+		do {
+			assert (j == iter.get ());
+			assert (j == iter.get ());
+			j++;
+		} while (iter.next ());
+
+		assert (j == test_collection.size + 1);
 		assert (one);
 		assert (two);
 		assert (three);

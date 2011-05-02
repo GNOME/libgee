@@ -234,6 +234,40 @@ public interface Gee.Iterator<G> : Object {
 		});
 	}
 
+	/**
+	 * Creates a new iterator that is initialy pointing to seed. Then
+	 * subsequent values are obtained after applying the function to previous
+	 * value and the current item.
+	 *
+	 * The resulting iterator is always valid and it contains the seed value.
+	 *
+	 * @param f Folding function
+	 * @param seed original seed value
+	 * @return Iterator containing values of subsequent values of seed
+	 */
+	public virtual Iterator<A> scan<A> (FoldFunc<A, G> f, owned A seed) {
+		bool seed_emitted = false;
+		return stream<A>((state, item, out val) => {
+			switch (state) {
+			case Stream.YIELD:
+				if (seed_emitted) {
+					return Stream.CONTINUE;
+				} else {
+					val = new Lazy<A>.from_value (seed);
+					seed_emitted = true;
+					return Stream.YIELD;
+				}
+			case Stream.CONTINUE:
+				val = new Lazy<A> (() => {seed = f ((owned)item, (owned) seed); return seed;});
+				return Stream.YIELD;
+			case Stream.END:
+				return Stream.END;
+			default:
+				assert_not_reached ();
+			}
+		});
+	}
+
 	public enum Stream {
 		YIELD,
 		CONTINUE,
