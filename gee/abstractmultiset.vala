@@ -92,7 +92,7 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 		_nitems = 0;
 	}
 
-	private class Iterator<G> : Object, Gee.Iterator<G> {
+	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G> {
 		private AbstractMultiSet<G> _set;
 
 		private MapIterator<G, int> _iter;
@@ -147,6 +147,23 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 			get {
 				return ! _removed && _iter.valid;
 			}
+		}
+
+		public void foreach (ForallFunc<G> f) {
+			if(!_removed && _iter.valid)
+				f(_iter.get_key());
+			if(_iter.valid)
+				for(int i = _pending - 1; i > 0; --i)
+					f(_iter.get_key());
+			while(_iter.next())
+				for(int i = _iter.get_value(); i > 0; --i)
+					f(_iter.get_key());
+			_pending = 0;
+			_removed = false;
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}
 	}
 }

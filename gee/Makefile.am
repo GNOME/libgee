@@ -48,6 +48,7 @@ libgee_la_SOURCES = \
 	sortedmap.vala \
 	sortedset.vala \
 	timsort.vala \
+	traversable.vala \
 	treemap.vala \
 	treemultimap.vala \
 	treemultiset.vala \

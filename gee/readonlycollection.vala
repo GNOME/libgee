@@ -143,7 +143,7 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 		return _collection.to_array ();
 	}
 
-	protected class Iterator<G> : Object, Gee.Iterator<G> {
+	protected class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G> {
 		protected Gee.Iterator<G> _iter;
 
 		public Iterator (Gee.Iterator<G> iterator) {
@@ -182,6 +182,9 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 			_iter.foreach (f);
 		}
 
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
+		}
 	}
 
 	public virtual Collection<G> read_only_view {

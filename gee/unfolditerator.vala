@@ -20,7 +20,7 @@
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 
-internal class Gee.UnfoldIterator<G> : Object, Iterator<G> {
+internal class Gee.UnfoldIterator<G> : Object, Traversable<G>, Iterator<G> {
 	public UnfoldIterator (owned UnfoldFunc<G> func, owned Lazy<G>? current = null) {
 		_current = (owned)current;
 		_func = (owned)func;
@@ -84,6 +84,10 @@ internal class Gee.UnfoldIterator<G> : Object, Iterator<G> {
 			f (_current);
 		}
 		_end = true;
+	}
+
+	public Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+		return Iterator.stream_impl<G, A>(this, (owned)f);
 	}
 
 	private UnfoldFunc<G> _func;

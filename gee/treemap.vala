@@ -1624,7 +1624,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 				return iterator != null && iterator.valid;
 			}
 		}
-		
+
 		protected virtual NodeIterator<K,V> iterator_pointing_at (Node<K,V> node) {
 			return new NodeIterator<K,V>.pointing (_map, node);
 		}
@@ -1634,7 +1634,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		protected NodeIterator<K,V>? iterator = null;
 	}
 
-	private class KeyIterator<K,V> : NodeIterator<K, V>, Gee.Iterator<K>, BidirIterator<K> {
+	private class KeyIterator<K,V> : NodeIterator<K, V>, Traversable<K>, Gee.Iterator<K>, BidirIterator<K> {
 		public KeyIterator (TreeMap<K,V> map) {
 			base (map);
 		}
@@ -1648,9 +1648,31 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			assert (current != null);
 			return current.key;
 		}
+
+		public void foreach (ForallFunc<K> f) {
+			if (current != null) {
+				f (current.key);
+				current = current.next;
+			} else if (_next == null) {
+				current = _map.first;
+				started = true;
+			} else {
+				current = _next;
+				if (current != null) {
+					_next = null;
+					_prev = null;
+				}
+			}
+			for (; current != null; current = current.next)
+				f (current.key);
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
+			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
+		}
 	}
 
-	private class SubKeyIterator<K,V> : SubNodeIterator<K,V>, Gee.Iterator<K>, BidirIterator<K> {
+	private class SubKeyIterator<K,V> : SubNodeIterator<K,V>, Traversable<K>, Gee.Iterator<K>, BidirIterator<K> {
 		public SubKeyIterator (TreeMap<K,V> map, Range<K,V> range) {
 			base (map, range);
 		}
@@ -1663,9 +1685,20 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			assert (valid);
 			return iterator.current.key;
 		}
+
+		public void foreach (ForallFunc<K> f) {
+			if (valid)
+				f (iterator.current.key);
+			while (iterator.next ())
+				f (iterator.current.key);
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
+			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
+		}
 	}
 
-	private class ValueIterator<K,V> : NodeIterator<K,V>, Gee.Iterator<V>, Gee.BidirIterator<V> {
+	private class ValueIterator<K,V> : NodeIterator<K,V>, Traversable<V>, Gee.Iterator<V>, Gee.BidirIterator<V> {
 		public ValueIterator (TreeMap<K,V> map) {
 			base (map);
 		}
@@ -1679,9 +1712,31 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			assert (valid);
 			return current.value;
 		}
+
+		public void foreach (ForallFunc<V> f) {
+			if (current != null) {
+				f (current.key);
+				current = current.next;
+			} else if (_next == null) {
+				current = _map.first;
+				started = true;
+			} else {
+				current = _next;
+				if (current != null) {
+					_next = null;
+					_prev = null;
+				}
+			}
+			for (; current != null; current = current.next)
+				f (current.key);
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
+			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
+		}
 	}
 
-	private class SubValueIterator<K,V> : SubNodeIterator<K,V>, Gee.Iterator<K>, BidirIterator<K> {
+	private class SubValueIterator<K,V> : SubNodeIterator<K,V>, Traversable<V>, Gee.Iterator<V>, BidirIterator<V> {
 		public SubValueIterator (TreeMap<K,V> map, Range<K,V> range) {
 			base (map, range);
 		}
@@ -1694,9 +1749,20 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			assert (valid);
 			return iterator.current.value;
 		}
+
+		public void foreach (ForallFunc<V> f) {
+			if (valid)
+				f (iterator.current.key);
+			while (iterator.next ())
+				f (iterator.current.key);
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
+			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
+		}
 	}
 
-	private class EntryIterator<K,V> : NodeIterator<K,V>, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
+	private class EntryIterator<K,V> : NodeIterator<K,V>, Traversable<Map.Entry<K, V>>, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
 		public EntryIterator (TreeMap<K,V> map) {
 			base (map);
 		}
@@ -1714,9 +1780,31 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		public new void remove () {
 			unset ();
 		}
+
+		public void foreach (ForallFunc<Map.Entry<K, V>> f) {
+			if (current != null) {
+				f (Entry.entry_for<K,V> (current));
+				current = current.next;
+			} else if (_next == null) {
+				current = _map.first;
+				started = true;
+			} else {
+				current = _next;
+				if (current != null) {
+					_next = null;
+					_prev = null;
+				}
+			}
+			for (; current != null; current = current.next)
+				f (Entry.entry_for<K,V> (current));
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K, V>, A> f) {
+			return Gee.Iterator.stream_impl<Map.Entry<K, V>, A>(this, (owned)f);
+		}
 	}
 
-	private class SubEntryIterator<K,V> : SubNodeIterator<K,V>, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
+	private class SubEntryIterator<K,V> : SubNodeIterator<K,V>, Traversable<Map.Entry<K, V>>, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
 		public SubEntryIterator (TreeMap<K,V> map, Range<K,V> range) {
 			base (map, range);
 		}
@@ -1732,6 +1820,17 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 
 		public new void remove () {
 			unset ();
+		}
+
+		public void foreach (ForallFunc<Map.Entry<K, V>> f) {
+			if (valid)
+				f (Entry.entry_for<K,V> (iterator.current));
+			while (iterator.next ())
+				f (Entry.entry_for<K,V> (iterator.current));
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K, V>, A> f) {
+			return Gee.Iterator.stream_impl<Map.Entry<K, V>, A>(this, (owned)f);
 		}
 	}
 	

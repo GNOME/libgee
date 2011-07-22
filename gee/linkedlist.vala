@@ -413,7 +413,7 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 		}
 	}
 
-	private class Iterator<G> : Object, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G> {
+	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G> {
 		private bool started = false;
 		private bool removed = false;
 		private unowned Node<G>? position;
@@ -611,6 +611,10 @@ public class Gee.LinkedList<G> : AbstractList<G>, Queue<G>, Deque<G> {
 				position = position.next;
 			}
 			position = _list._tail;
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}
 	}
 

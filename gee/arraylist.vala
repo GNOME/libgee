@@ -256,7 +256,7 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 		_items.resize (value);
 	}
 
-	private class Iterator<G> : Object, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G> {
+	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G> {
 		private ArrayList<G> _list;
 		private int _index = -1;
 		private bool _removed = false;
@@ -390,6 +390,10 @@ public class Gee.ArrayList<G> : AbstractList<G> {
 				_index++;
 			}
 			_index = _list._size;
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}
 	}
 }

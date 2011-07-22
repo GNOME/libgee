@@ -575,7 +575,7 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 		public weak Node<G>? next;
 	}
 
-	private class Iterator<G> : Object, Gee.Iterator<G>, BidirIterator<G> {
+	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G> {
 		private TreeSet<G> _set;
 
 		// concurrent modification protection
@@ -731,6 +731,10 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 				f (current.key);
 				_next = current.next;
 			}
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}
 
 		private weak Node<G>? current = null;
@@ -1025,7 +1029,7 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 		private Range<G> range;
 	}
 
-	private class SubIterator<G> : Object, Gee.Iterator<G>, BidirIterator<G> {
+	private class SubIterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G> {
 		public SubIterator (TreeSet<G> set, Range<G> range) {
 			this.set = set;
 			this.range = range;
@@ -1115,6 +1119,17 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 			get {
 				return iterator.valid;
 			}
+		}
+
+		public void foreach(ForallFunc<G> f) {
+			if(valid)
+				f(get());
+			while(next())
+				f(get());
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}
 
 		private new TreeSet<G> set;

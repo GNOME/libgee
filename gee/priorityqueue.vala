@@ -912,7 +912,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		}
 	}
 
-	private class Iterator<G> : Object, Gee.Iterator<G> {
+	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G> {
 		private PriorityQueue<G> queue;
 		private bool started = false;
 		private bool from_type1_children = false;
@@ -1027,19 +1027,15 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			}
 		}
 
-		/*public void foreach (ForallFunc<G> f) {
-			assert (stamp == queue._stamp);
-			if (position != null)
+		public void foreach (ForallFunc<G> f) {
+			if (valid)
 				f (position.data);
-			else if (_next != null)
-				removed = false;
-			if (_next == null)
-				_has_next ();
-			while (_next != null) {
-				position = _next;
+			while (next ())
 				f (position.data);
-				_has_next ();
-			}
-		}*/
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
+		}
 	}
 }

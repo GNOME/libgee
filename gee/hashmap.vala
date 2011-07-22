@@ -474,7 +474,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 	private abstract class NodeIterator<K,V> : Object {
 		protected HashMap<K,V> _map;
-		private int _index = -1;
+		protected int _index = -1;
 		protected weak Node<K,V> _node;
 		protected weak Node<K,V> _next;
 
@@ -524,7 +524,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
-	private class KeyIterator<K,V> : NodeIterator<K,V>, Iterator<K> {
+	private class KeyIterator<K,V> : NodeIterator<K,V>, Traversable<K>, Iterator<K> {
 		public KeyIterator (HashMap map) {
 			base (map);
 		}
@@ -537,6 +537,29 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public void remove () {
 			assert_not_reached ();
+		}
+
+		public void foreach(ForallFunc<K> f) {
+			if (_node != null) {
+				f(_node.key);
+				if(_next == null)
+					_next = _node.next;
+			}
+			do {
+				while(_next != null) {
+					_node = _next;
+					f(_node.key);
+					_next = _next.next;
+				}
+                                if (_index + 1 < _map._array_size)
+					_next = _map._nodes[++_index];
+				else
+					break;
+			} while(true);
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
+			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
 		}
 	}
 
@@ -586,7 +609,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
-	private class ValueIterator<K,V> : NodeIterator<K,V>, Iterator<K> {
+	private class ValueIterator<K,V> : NodeIterator<K,V>, Traversable<V>, Iterator<V> {
 		public ValueIterator (HashMap map) {
 			base (map);
 		}
@@ -600,9 +623,32 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		public void remove () {
 			assert_not_reached ();
 		}
+
+		public void foreach(ForallFunc<V> f) {
+			if (_node != null) {
+				f(_node.value);
+				if(_next == null)
+					_next = _node.next;
+			}
+			do {
+				while(_next != null) {
+					_node = _next;
+					f(_node.value);
+					_next = _next.next;
+				}
+                                if (_index + 1 < _map._array_size)
+					_next = _map._nodes[++_index];
+				else
+					break;
+			} while(true);
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
+			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
+		}
 	}
 
-	private class EntryIterator<K,V> : NodeIterator<K,V>, Iterator<Map.Entry<K,V>> {
+	private class EntryIterator<K,V> : NodeIterator<K,V>, Traversable<Map.Entry<K,V>>, Iterator<Map.Entry<K,V>> {
 		public EntryIterator (HashMap map) {
 			base (map);
 		}
@@ -615,6 +661,29 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public void remove () {
 			assert_not_reached ();
+		}
+
+		public void foreach(ForallFunc<Map.Entry<K,V>> f) {
+			if (_node != null) {
+				f(Entry<K,V>.entry_for<K,V> (_node));
+				if(_next == null)
+					_next = _node.next;
+			}
+			do {
+				while(_next != null) {
+					_node = _next;
+					f(Entry<K,V>.entry_for<K,V> (_node));
+					_next = _next.next;
+				}
+                                if (_index + 1 < _map._array_size)
+					_next = _map._nodes[++_index];
+				else
+					break;
+			} while(true);
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K,V>, A> f) {
+			return Gee.Iterator.stream_impl<Map.Entry<K,V>, A>(this, (owned)f);
 		}
 	}
 }

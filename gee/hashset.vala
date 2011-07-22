@@ -213,7 +213,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 		}
 	}
 
-	private class Iterator<G> : Object, Gee.Iterator<G> {
+	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G> {
 		private HashSet<G> _set;
 		private int _index = -1;
 		private weak Node<G> _node;
@@ -293,6 +293,10 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 					_next = _set._nodes[_index];
 				}
 			}
+		}
+
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}
 	}
 }
