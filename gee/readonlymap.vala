@@ -31,7 +31,7 @@ using GLib;
  *
  * @see Map
  */
-internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V> {
+internal class Gee.ReadOnlyMap<K,V> : Object, Traversable<Map.Entry<K,V>>, Iterable<Map.Entry<K,V>>, Map<K,V> {
 
 	/**
 	 * {@inheritDoc}
@@ -220,6 +220,20 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V>
 	 */
 	public Iterator<Map.Entry<K,V>> iterator () {
 		return entries.iterator ();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void foreach (ForallFunc<Map.Entry<K, V>> f) {
+		_map.foreach (f);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K, V>, A> f) {
+		return _map.stream<A> ((owned) f);
 	}
 
 	protected class MapIterator<K,V> : Object, Gee.MapIterator<K,V> {

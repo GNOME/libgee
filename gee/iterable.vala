@@ -25,7 +25,7 @@ using GLib;
 /**
  * An object that can provide an {@link Iterator}.
  */
-public interface Gee.Iterable<G> : Object {
+public interface Gee.Iterable<G> : Object, Traversable<G> {
 	/**
 	 * The type of the elements in this collection.
 	 */

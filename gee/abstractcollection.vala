@@ -30,7 +30,7 @@
  * @see AbstractSet
  * @see AbstractMultiSet
  */
-public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collection<G> {
+public abstract class Gee.AbstractCollection<G> : Object, Traversable<G>, Iterable<G>, Collection<G> {
 
 	/**
 	 * {@inheritDoc}
@@ -273,6 +273,14 @@ public abstract class Gee.AbstractCollection<G> : Object, Iterable<G>, Collectio
 	 * {@inheritDoc}
 	 */
 	public abstract Iterator<G> iterator ();
+
+	public virtual void foreach (ForallFunc<G> f) {
+		iterator ().foreach (f);
+	}
+
+	public virtual Iterator<A> stream<A> (owned StreamFunc<G, A> f) {
+		return iterator ().stream<A> ((owned) f);
+	}
 
 	private weak Collection<G> _read_only_view;
 

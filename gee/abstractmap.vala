@@ -29,7 +29,7 @@
  * @see HashMap
  * @see TreeMap
  */
-public abstract class Gee.AbstractMap<K,V> : Object, Iterable<Map.Entry<K,V>>, Map<K,V> {
+public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>, Iterable<Map.Entry<K,V>>, Map<K,V> {
 
 	/**
 	 * {@inheritDoc}
@@ -206,5 +206,19 @@ public abstract class Gee.AbstractMap<K,V> : Object, Iterable<Map.Entry<K,V>>, M
 	 */
 	public Iterator<Map.Entry<K,V>> iterator () {
 		return entries.iterator ();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public virtual void foreach (ForallFunc<Map.Entry<K,V>> f) {
+		iterator ().foreach (f);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public virtual Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K,V>, A> f) {
+		return iterator ().stream<A> ((owned) f);
 	}
 }

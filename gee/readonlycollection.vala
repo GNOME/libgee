@@ -31,7 +31,7 @@ using GLib;
  *
  * @see Collection
  */
-internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
+internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Traversable<G>, Collection<G> {
 
 	/**
 	 * {@inheritDoc}
@@ -64,6 +64,20 @@ internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Collection<G> {
 	 */
 	public ReadOnlyCollection (Collection<G> collection) {
 		this._collection = collection;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void foreach (ForallFunc<G> f) {
+		_collection.foreach (f);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Gee.Iterator<A> stream<A> (owned StreamFunc<A> f) {
+		return _collection.stream<A> (f);
 	}
 
 	/**
