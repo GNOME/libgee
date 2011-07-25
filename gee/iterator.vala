@@ -86,7 +86,7 @@ public interface Gee.Iterator<G> : Object, Traversable<G> {
 		switch (str) {
 		case Traversable.Stream.CONTINUE:
 			if (self.valid) {
-				str = f (Traversable.Stream.CONTINUE, self.get (), out initial);
+				str = f (Traversable.Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out initial);
 				switch (str) {
 				case Traversable.Stream.YIELD:
 				case Traversable.Stream.CONTINUE:
@@ -120,7 +120,7 @@ public interface Gee.Iterator<G> : Object, Traversable<G> {
 				} else {
 					need_next = true;
 				}
-				str = f (Traversable.Stream.CONTINUE, self.get (), out val);
+				str = f (Traversable.Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out val);
 			}
 			switch (str) {
 			case Traversable.Stream.YIELD:

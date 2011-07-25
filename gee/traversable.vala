@@ -26,7 +26,7 @@ namespace Gee {
 	public delegate A FoldFunc<A, G> (owned G g, owned A a);
 	public delegate void ForallFunc<G> (owned G g);
 	public delegate Lazy<A>? UnfoldFunc<A> ();
-	public delegate Traversable.Stream StreamFunc<G, A> (Traversable.Stream state, owned G? g, out Lazy<A>? lazy);
+	public delegate Traversable.Stream StreamFunc<G, A> (Traversable.Stream state, owned Lazy<G>? g, out Lazy<A>? lazy);
 	public delegate A MapFunc<A, G> (owned G g);
 }
 
@@ -111,7 +111,11 @@ public interface Gee.Traversable<G> : Object
 			case Stream.YIELD:
 				return Stream.CONTINUE;
 			case Stream.CONTINUE:
-				val = new Lazy<A>(() => {return (f ((owned)item));});
+				val = new Lazy<A>(() => {
+					A tmp = item.get ();
+					item = null;
+					return (f ((owned)tmp));
+				});
 				return Stream.YIELD;
 			case Stream.END:
 				return Stream.END;
@@ -145,7 +149,12 @@ public interface Gee.Traversable<G> : Object
 					return Stream.YIELD;
 				}
 			case Stream.CONTINUE:
-				val = new Lazy<A> (() => {seed = f ((owned)item, (owned) seed); return seed;});
+				val = new Lazy<A> (() => {
+					A tmp = item.get ();
+					item = null;
+					seed = f ((owned) tmp, (owned) seed);
+					return seed;
+				});
 				return Stream.YIELD;
 			case Stream.END:
 				return Stream.END;
