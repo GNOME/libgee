@@ -1670,6 +1670,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
 			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
 		}
+
+		public Gee.Iterator<K> filter (owned Predicate<K> f) {
+			return Traversable.filter_impl<K> (this, (owned)f);
+		}
 	}
 
 	private class SubKeyIterator<K,V> : SubNodeIterator<K,V>, Traversable<K>, Gee.Iterator<K>, BidirIterator<K> {
@@ -1695,6 +1699,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
 			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
+		}
+
+		public Gee.Iterator<K> filter (owned Predicate<K> f) {
+			return Traversable.filter_impl<K> (this, (owned)f);
 		}
 	}
 
@@ -1734,6 +1742,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
 			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
 		}
+
+		public Gee.Iterator<V> filter (owned Predicate<V> f) {
+			return Traversable.filter_impl<V> (this, (owned)f);
+		}
 	}
 
 	private class SubValueIterator<K,V> : SubNodeIterator<K,V>, Traversable<V>, Gee.Iterator<V>, BidirIterator<V> {
@@ -1759,6 +1771,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
 			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
+		}
+
+		public Gee.Iterator<V> filter (owned Predicate<V> f) {
+			return Traversable.filter_impl<V> (this, (owned)f);
 		}
 	}
 
@@ -1802,6 +1818,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K, V>, A> f) {
 			return Gee.Iterator.stream_impl<Map.Entry<K, V>, A>(this, (owned)f);
 		}
+
+		public Gee.Iterator<Map.Entry<K, V>> filter (owned Predicate<Map.Entry<K, V>> f) {
+			return Traversable.filter_impl<Map.Entry<K, V>> (this, (owned)f);
+		}
 	}
 
 	private class SubEntryIterator<K,V> : SubNodeIterator<K,V>, Traversable<Map.Entry<K, V>>, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
@@ -1831,6 +1851,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K, V>, A> f) {
 			return Gee.Iterator.stream_impl<Map.Entry<K, V>, A>(this, (owned)f);
+		}
+
+		public Gee.Iterator<Map.Entry<K, V>> filter (owned Predicate<Map.Entry<K, V>> f) {
+			return Traversable.filter_impl<Map.Entry<K, V>> (this, (owned)f);
 		}
 	}
 	

@@ -221,4 +221,8 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 	public virtual Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K,V>, A> f) {
 		return iterator ().stream<A> ((owned) f);
 	}
+
+	public Gee.Iterator<Map.Entry<K,V>> filter (owned Predicate<Map.Entry<K,V>> f) {
+		return Traversable.filter_impl<Map.Entry<K,V>> (this, (owned)f);
+	}
 }

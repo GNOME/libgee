@@ -236,6 +236,10 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Traversable<Map.Entry<K,V>>, Itera
 		return _map.stream<A> ((owned) f);
 	}
 
+	public Iterator<Map.Entry<K, V>> filter (owned Predicate<Map.Entry<K, V>> f) {
+		return Traversable.filter_impl<Map.Entry<K, V>> (this, (owned)f);
+	}
+
 	protected class MapIterator<K,V> : Object, Gee.MapIterator<K,V> {
 		protected Gee.MapIterator<K,V> _iter;
 

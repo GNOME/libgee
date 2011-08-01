@@ -28,6 +28,7 @@ namespace Gee {
 	public delegate Lazy<A>? UnfoldFunc<A> ();
 	public delegate Traversable.Stream StreamFunc<G, A> (Traversable.Stream state, owned Lazy<G>? g, out Lazy<A>? lazy);
 	public delegate A MapFunc<A, G> (owned G g);
+	public delegate bool Predicate<G> (G g);
 }
 
 public interface Gee.Traversable<G> : Object
@@ -161,6 +162,29 @@ public interface Gee.Traversable<G> : Object
 			default:
 				assert_not_reached ();
 			}
+		});
+	}
+
+	public abstract Iterator<G> filter (owned Predicate<G> f);
+
+	public static Iterator<G> filter_impl<G> (Traversable<G> input, owned Predicate<G> pred) {
+		return input.stream<G> ((state, item, out val) => {
+			switch (state) {
+			case Stream.YIELD:
+				return Stream.CONTINUE;
+			case Stream.CONTINUE:
+				G g = item.get ();
+				if (pred (g)) {
+					val = item;
+					return Stream.YIELD;
+				} else {
+					return Stream.CONTINUE;
+				}
+			case Stream.END:
+				return Stream.END;
+			default:
+				assert_not_reached ();
+			};
 		});
 	}
 
