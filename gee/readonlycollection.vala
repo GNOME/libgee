@@ -31,7 +31,7 @@ using GLib;
  *
  * @see Collection
  */
-internal class Gee.ReadOnlyCollection<G> : Object, Iterable<G>, Traversable<G>, Collection<G> {
+internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, Collection<G> {
 
 	/**
 	 * {@inheritDoc}
