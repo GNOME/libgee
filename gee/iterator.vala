@@ -77,11 +77,18 @@ public interface Gee.Iterator<G> : Object, Traversable<G> {
 	 */
 	public abstract bool read_only { get; }
 
-	public static Iterator<A> stream_impl<G, A> (Iterator<G> self, owned StreamFunc<A, G> f_) {
+	/**
+	 * Default implementation of {@link Iterator.stream}.
+	 *
+	 * @param self Current Iterator
+	 * @param f Stream function
+	 * @returns Transformed stream
+	 * @see stream
+	 */
+	public static Iterator<A> stream_impl<G, A> (Iterator<G> self, owned StreamFunc<G, A> f) {
 		Traversable.Stream str;
 		Lazy<A>? initial = null;
 		bool need_next = true;
-		StreamFunc<G, A> f = (owned)f_;
 		str = f (Traversable.Stream.YIELD, null, out initial);
 		switch (str) {
 		case Traversable.Stream.CONTINUE:

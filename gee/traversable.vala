@@ -31,13 +31,34 @@ namespace Gee {
 	public delegate bool Predicate<G> (G g);
 }
 
+/**
+ * It's a common interface for {@link Iterator} and {@link Iterable}. It
+ * provides a fast, high level functions.
+ *
+ * ''{@link Iterator} implementation:'' Please note that most of the functions
+ * affect the state of the iterator by moving it forward.
+ * Even if the iterator is {@link BidirIterator bidirectional} it ''must not''
+ * rewind the state.
+ *
+ * ''{@link Iterable} implementation:'' {@link Iterator.valid validity}
+ * of returned iterator is the same as for {@link Iterator.valid invalid}
+ * iterator. In other words the following code is semantically equivalemnt:
+ *
+ * {{
+ *     var x = iterable.function (args);
+ *     var x = iterable.iterator ().function(args);
+ * }}
+ *
+ * @since 0.7.0
+ */
 public interface Gee.Traversable<G> : Object
 {	
 	/**
 	 * Apply function to each element returned by iterator. 
 	 *
-	 * Operation moves the iterator to last element in iteration. If iterator
-	 * points at some element it will be included in iteration.
+	 * ''{@link Iterator} implementation:'' Operation moves the iterator
+	 * to last element in iteration. If iterator points at some element it
+	 * will be included in iteration.
 	 */
 	public new abstract void foreach (ForallFunc<G> f);
 
@@ -48,33 +69,38 @@ public interface Gee.Traversable<G> : Object
 	 * The stream function accepts three parameter:
 	 *
 	 *   1. state. It is usually the last returned value from function but
-	 *      it may be Stream.END when the previous value was Stream.CONTINUE
-	 *      and threre was no next element.
-	 *   2. input. It is valid only if first argument is Stream.CONTINUE
+	 *      it may be {@link Stream.END} when {@link Stream.CONTINUE} was
+	 *      returned and threre was no more elements.
+	 *   2. input. It is valid only if first argument is
+	 *      {@link Stream.CONTINUE}
 	 *   3. output. It is valid only if result is Stream.YIELD
 	 *
 	 * It may return one of 3 results:
 	 *
-	 *   1. Stream.YIELD. It means that value was yielded and can be passed
-	 *      to outgoint iterator
-	 *   2. Stream.CONTINUE. It means that the function needs to be rerun
-	 *      with next element (or Stream.END if it is end of stream). If
-	 *      the state argument is Stream.END the function MUST NOT return
-	 *      this value.
+	 *   1. {@link Stream.YIELD}. It means that value was yielded and can
+	 *      be passed to outgoint iterator.
+	 *   2. {@link Stream.CONTINUE}. It means that the function needs to be
+	 *      called with next element or with {@link Stream.END} if it is
+	 *      end of stream). If the state element was Stream.END during the
+	 *      current iteration function ''must not'' return {@link Stream.CONTINUE}
 	 *   3. Stream.END. It means that the last argument was yielded.
 	 *
 	 * If the function yields the value immidiatly then the returning iterator
 	 * is {@link valid} and points to this value as well as in case when the
-	 * parent iterator is {@link valid} and function yields after consuming
-	 * 1 input. In other case returned iterator is invalid.
+	 * parent iterator is {@link Iterator.valid valid} and function yields
+	 * after consuming 1 input. In other case returned iterator is invalid.
 	 *
-	 * Usage of the parent is invalid before the {@link next} or
-	 * {@link has_next} returns false and the value will be force-evaluated.
+	 * ''{@link Iterator} implementation:'' If iterator is
+	 * {@link Iterator.valid valid} the current value should be fed
+	 * immidiatly to function if during initial call function returns
+	 * {@link Stream.CONTINUE}. The parent iterator cannot be used before
+	 * the functions return {@link Stream.END} afterwards it points on the
+	 * last element consumed.
 	 *
 	 * @param f function generating stream
 	 * @return iterator containing values yielded by stream
 	 */
-	public abstract Iterator<A> stream<A> (owned StreamFunc<G, A> f_);
+	public abstract Iterator<A> stream<A> (owned StreamFunc<G, A> f);
 
 	/**
 	 * Standard aggragation function.
@@ -82,10 +108,13 @@ public interface Gee.Traversable<G> : Object
 	 * It takes a function, seed and first element, returns the new seed and
 	 * progress to next element when the operation repeats.
 	 *
-	 * Operation moves the iterator to last element in iteration. If iterator
-	 * points at some element it will be included in iteration.
+	 * ''Note:'' Default implementation uses {@link foreach}.
 	 *
-	 * Note: Default implementation uses {@link foreach}.
+	 * ''{@link Iterator} implementation:'' Operation moves the iterator to
+	 * last element in iteration. If iterator is
+	 * {@link Iterator.valid valid} the current element will be considered
+	 * as well.
+	 *
 	 */
 	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
 	{
@@ -94,14 +123,17 @@ public interface Gee.Traversable<G> : Object
 	}
 
 	/**
-	 * Maps the iterator. It produces iterator that is get by applying
-	 * map function to the values of this iterator.
+	 * Produces an iterator pointing at elements generated by function passed.
 	 *
-	 * The value is lazy evaluated but previous value is guaranteed to be
-	 * evaluated before {@link next} call.
+	 * Iterator is lazy evaulated but value is force-evaulated when
+	 * iterator {@link Iterator.nextmoves to next element}.
 	 *
-	 * If the current iterator is {@link valid} so is the resulting. Using
-	 * the iterator after this called is not allowed.
+	 * ''Note:'' Default implementation uses {@link stream}.
+	 *
+	 * ''{@link Iterator} implementation:'' If the parent iterator is
+	 * {@link Iterator.valid valid} so is the returned one. Using the parent
+	 * iterator is not allowed befor the inner iterator {@link Iterator.next
+	 * next} return false and then it points on its last element.
 	 *
 	 * @param f Mapping function
 	 * @return Iterator listing mapped value
@@ -129,9 +161,15 @@ public interface Gee.Traversable<G> : Object
 	/**
 	 * Creates a new iterator that is initialy pointing to seed. Then
 	 * subsequent values are obtained after applying the function to previous
-	 * value and the current item.
+	 * value and the subsequent items.
 	 *
 	 * The resulting iterator is always valid and it contains the seed value.
+	 *
+	 * ''Note:'' Default implementation uses {@link stream}.
+	 *
+	 * ''{@link Iterator} implementation:'' Using the parent
+	 * iterator is not allowed befor the inner iterator {@link Iterator.next
+	 * next} return false and then it points on its last element.
 	 *
 	 * @param f Folding function
 	 * @param seed original seed value
@@ -165,8 +203,31 @@ public interface Gee.Traversable<G> : Object
 		});
 	}
 
+	/**
+	 * Creates a new iterator that contains only values that fullfills the
+	 * pedicate.
+	 *
+	 * ''Note:'' There is implementation {@link filter_impl}.
+	 *
+	 * ''{@link Iterator} implementation:'' Resulting iterator is valid  Using the parent
+	 * iterator is not allowed befor the inner iterator {@link Iterator.next
+	 * next} return false and then it points on its last element.
+	 *
+	 * @param f Folding function
+	 * @param seed original seed value
+	 * @return Iterator containing values of subsequent values of seed
+	 */
 	public abstract Iterator<G> filter (owned Predicate<G> f);
 
+	/**
+	 * Implementation based on {@link stream} for {@link filter}.
+	 *
+	 * @param input The current Traversable
+	 * @param pred Predicate
+	 * @returns Filtered iterator
+	 * @see filter
+	 * @see stream
+	 */
 	public static Iterator<G> filter_impl<G> (Traversable<G> input, owned Predicate<G> pred) {
 		return input.stream<G> ((state, item, out val) => {
 			switch (state) {
