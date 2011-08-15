@@ -35,7 +35,7 @@ endif
 .PHONY: coverage
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = gee-1.0.pc
+pkgconfig_DATA = gee-0.8.pc
 
 dist-hook: gen-ChangeLog
 
@@ -53,6 +53,6 @@ EXTRA_DIST += \
 	ChangeLog.pre-0-1-5 \
 	gitlog-to-changelog \
 	MAINTAINERS \
-	gee-1.0.pc.in \
+	gee-0.8.pc.in \
 	$(NULL)
 

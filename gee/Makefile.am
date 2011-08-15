@@ -1,10 +1,10 @@
 include $(top_srcdir)/Makefile.decl
 
 lib_LTLIBRARIES = \
-	libgee.la
+	libgee-0.8.la
 	$(NULL)
 
-libgee_la_SOURCES = \
+libgee_0_8_la_SOURCES = \
 	abstractcollection.vala \
 	abstractlist.vala \
 	abstractmap.vala \
@@ -56,31 +56,31 @@ libgee_la_SOURCES = \
 	unfolditerator.vala \
 	$(NULL)
 
-libgee_la_VALAFLAGS = \
-	-H gee.h --vapi gee-1.0.vapi \
+libgee_0_8_la_VALAFLAGS = \
+	-H gee.h --vapi gee-0.8.vapi \
 	-h gee-internals.h \
-	--internal-vapi gee-internals-1.0.vapi \
-	--library gee-1.0 --gir Gee-1.0.gir \
+	--internal-vapi gee-internals-0.8.vapi \
+	--library gee-0.8 --gir Gee-0.8.gir \
 	$(COVERAGE_VALAFLAGS) \
 	$(VALAFLAGS) \
 	$(NULL)
 
-libgee_la_CPPFLAGS = \
+libgee_0_8_la_CPPFLAGS = \
 	$(GLIB_CFLAGS) \
 	$(COVERAGE_CFLAGS) \
 	$(NULL)
 
-libgee_la_LIBADD = \
+libgee_0_8_la_LIBADD = \
 	$(GLIB_LIBS) \
 	$(COVERAGE_LIBS) \
 	$(NULL)
 
-libgee_la_LDFLAGS = \
+libgee_0_8_la_LDFLAGS = \
 	-version-info $(LIBGEE_LT_VERSION) \
 	-no-undefined \
 	$(NULL)
 
-geeincludedir = $(includedir)/gee-1.0
+geeincludedir = $(includedir)/gee-0.8
 
 geeinclude_HEADERS = \
 	gee.h \
@@ -89,31 +89,31 @@ geeinclude_HEADERS = \
 vapidir = $(datadir)/vala/vapi
 
 dist_vapi_DATA = \
-	gee-1.0.vapi \
+	gee-0.8.vapi \
 	$(NULL)
 
 if HAVE_INTROSPECTION
 girdir = @INTROSPECTION_GIRDIR@
 
 gir_DATA = \
-	Gee-1.0.gir \
+	Gee-0.8.gir \
 	$(NULL)
 
 typelibdir = @INTROSPECTION_TYPELIBDIR@
 typelib_DATA = \
-	Gee-1.0.typelib \
+	Gee-0.8.typelib \
 	$(NULL)
 
-Gee-1.0.typelib: Gee-1.0.gir
-	@INTROSPECTION_COMPILER@ --shared-library=libgee -o $@ $^
+Gee-0.8.typelib: Gee-0.8.gir
+	@INTROSPECTION_COMPILER@ --shared-library=libgee-0.8 -o $@ $^
 endif
 
-Gee-1.0.gir gee-internals-1.0.vapi gee-1.0.vapi: libgee.la
+Gee-0.8.gir gee-internals-0.8.vapi gee-0.8.vapi: libgee-0.8.la
 
 CLEANFILES = \
-	gee-1.0.vapi \
-	gee-internals-1.0.vapi \
-	Gee-1.0.typelib \
-	Gee-1.0.gir \
+	gee-0.8.vapi \
+	gee-internals-0.8.vapi \
+	Gee-0.8.typelib \
+	Gee-0.8.gir \
 	$(NULL)
 

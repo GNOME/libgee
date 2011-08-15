@@ -37,13 +37,13 @@ tests_SOURCES = \
        $(NULL)
 
 tests_DEPENDENCIES = \
-	$(top_srcdir)/gee/gee-1.0.vapi \
+	$(top_srcdir)/gee/gee-0.8.vapi \
 	$(NULL)
 
 tests_VALAFLAGS = \
 	--basedir $(top_srcdir) \
 	--vapidir $(top_srcdir)/gee \
-	--pkg gee-1.0 --pkg posix \
+	--pkg gee-0.8 --pkg posix \
 	$(NULL)
 
 tests_CPPFLAGS = \
@@ -52,7 +52,7 @@ tests_CPPFLAGS = \
 	$(NULL)
 
 tests_LDADD = \
-	$(GLIB_LIBS) ../gee/libgee.la \
+	$(GLIB_LIBS) ../gee/libgee-0.8.la \
 	$(NULL)
 
 coverage-reset:

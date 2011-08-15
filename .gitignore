@@ -26,9 +26,9 @@ compile
 stamp-h1
 *.pc
 lcov.info
-doc/gee-1.0
-gee/gee-1.0.vapi
-gee/gee-internals-1.0.vapi
+doc/gee-0.8
+gee/gee-0.8.vapi
+gee/gee-internals-0.8.vapi
 benchmark/benchmarks
 tests/tests
 tests/coverage

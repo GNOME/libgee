@@ -11,7 +11,7 @@ benchmarks_SOURCES = \
 benchmarks_VALAFLAGS = \
 	--basedir $(top_srcdir) \
 	--vapidir $(top_srcdir)/gee \
-	--pkg gee-internals-1.0 \
+	--pkg gee-internals-0.8 \
 	$(NULL)
 
 benchmarks_CPPFLAGS = \
@@ -21,7 +21,7 @@ benchmarks_CPPFLAGS = \
 
 benchmarks_LDADD = \
 	$(GLIB_LIBS) \
-	../gee/libgee.la \
+	../gee/libgee-0.8.la \
 	$(NULL)
 
 benchmarks_LDFLAGS = \

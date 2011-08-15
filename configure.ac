@@ -11,7 +11,7 @@ AM_PROG_CC_C_O
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
-LIBGEE_LT_VERSION="3:0:0"
+LIBGEE_LT_VERSION="0:0:0"
 AC_SUBST(LIBGEE_LT_VERSION)
 
 AM_PROG_VALAC([0.9.3])
@@ -59,7 +59,7 @@ AC_SUBST(GLIB_LIBS)
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
 
 AC_OUTPUT([Makefile
-           gee-1.0.pc
+           gee-0.8.pc
            benchmark/Makefile
            doc/Makefile
            gee/Makefile
