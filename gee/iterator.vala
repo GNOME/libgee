@@ -115,8 +115,9 @@ public interface Gee.Iterator<G> : Object, Traversable<G> {
 			assert_not_reached ();
 		}
 		return unfold<A> (() => {
-			Lazy<A>? val;
-			str = f (Traversable.Stream.YIELD, null, out val);
+			Lazy<A>? val = null;
+			if (str != Traversable.Stream.CONTINUE)
+				str = f (Traversable.Stream.YIELD, null, out val);
 			while (str == Traversable.Stream.CONTINUE) {
 				if (need_next) {
 					if (!self.next ()) {
