@@ -48,11 +48,31 @@ namespace Gee {
 		 */
 		public static EqualDataFunc get_equal_func_for (Type t) {
 			if (t == typeof (string)) {
-				return (a, b) => {return str_equal ((string) a, (string) b);};
+				return (a, b) => {
+					if (a == b)
+						return true;
+					else if (a == null || b == null)
+						return false;
+					else
+						return str_equal ((string) a, (string) b);
+				};
 			} else if (t.is_a (typeof (Hashable))) {
-				return (a, b) => {return ((Hashable<Hashable>) a).equal_to ((Hashable) b);};
+				return (a, b) => {
+					if (a == b)
+						return true;
+					else if (a == null || b == null)
+						return false;
+					else
+						return ((Hashable<Hashable>) a).equal_to ((Hashable) b);
+				};
 			} else if (t.is_a (typeof (Comparable))) {
-				return (a, b) => {return ((Comparable<Comparable>) a).compare_to ((Comparable) b) == 0;};
+				return (a, b) => {					
+					if (a == b)
+						return true;
+					else if (a == null || b == null)
+						return false;
+					else
+						return ((Comparable<Comparable>) a).compare_to ((Comparable) b) == 0;};
 			} else {
 				return (a, b) => {return direct_equal (a, b);};
 			}
@@ -67,9 +87,19 @@ namespace Gee {
 		 */
 		public static HashDataFunc get_hash_func_for (Type t) {
 			if (t == typeof (string)) {
-				return (a) => {return str_hash ((string) a);};
+				return (a) => {
+					if (a == null)
+						return (uint)0xdeadbeef;
+					else
+						return str_hash ((string) a);
+				};
 			} else if (t.is_a (typeof (Hashable))) {
-				return (a) => {return ((Hashable) a).hash();};
+				return (a) => {
+					if (a == null)
+						return (uint)0xdeadbeef;
+					else
+						return ((Hashable) a).hash();
+				};
 			} else {
 				return (a) => {return direct_hash (a);};
 			}
@@ -84,9 +114,27 @@ namespace Gee {
 		 */
 		public static CompareDataFunc get_compare_func_for (Type t) {
 			if (t == typeof (string)) {
-				return (a, b) => {return strcmp((string) a, (string) b);};
+				return (a, b) => {
+					if (a == b)
+						return 0;
+					else if (a == null)
+						return -1;
+					else if (b == null)
+						return 1;
+					else
+						return strcmp((string) a, (string) b);
+				};
 			} else if (t.is_a (typeof (Comparable))) {
-				return (a, b) => {return ((Comparable<Comparable>) a).compare_to ((Comparable) b);};
+				return (a, b) => {
+					if (a == b)
+						return 0;
+					else if (a == null)
+						return -1;
+					else if (b == null)
+						return 1;
+					else
+						return ((Comparable<Comparable>) a).compare_to ((Comparable) b);
+				};
 			} else {
 				return (_val1, _val2) => {
 					long val1 = (long)_val1, val2 = (long)_val2;

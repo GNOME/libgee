@@ -114,6 +114,7 @@ public class FunctionsTests : Gee.TestCase {
 		MyHashable one = new MyHashable(1);
 		MyHashable two_copy = new MyHashable(2);
 		MyHashable minus_one = new MyHashable(-1);
+		MyHashable minus_one2 = new MyHashable(-1);
 
 		Gee.EqualDataFunc eq = Gee.Functions.get_equal_func_for (typeof (MyHashable));
 		CompareDataFunc cmp = Gee.Functions.get_compare_func_for (typeof (MyHashable));
@@ -139,7 +140,7 @@ public class FunctionsTests : Gee.TestCase {
 
 		// Check if correct functions taken
 		assert (hash (one) == 1);
-		assert (!eq (minus_one, minus_one));
+		assert (!eq (minus_one, minus_one2));
 	}
 
 	public void test_unfold () {
