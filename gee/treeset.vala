@@ -741,6 +741,10 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 			return Traversable.filter_impl<G> (this, (owned)f);
 		}
 
+		public Gee.Iterator<G> chop (int offset, int length = -1) {
+			return Traversable.chop_impl<G> (this, offset, length);
+		}
+
 		private weak Node<G>? current = null;
 		private weak Node<G>? _next = null;
 		private weak Node<G>? _prev = null;
@@ -1138,6 +1142,10 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 
 		public Gee.Iterator<G> filter (owned Predicate<G> f) {
 			return Traversable.filter_impl<G> (this, (owned)f);
+		}
+
+		public Gee.Iterator<G> chop (int offset, int length = -1) {
+			return Traversable.chop_impl<G> (this, offset, length);
 		}
 
 		private new TreeSet<G> set;

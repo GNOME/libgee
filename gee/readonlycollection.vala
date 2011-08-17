@@ -80,8 +80,18 @@ internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, 
 		return _collection.stream<A> ((owned)f);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Gee.Iterator<G> filter (owned Predicate<G> f) {
 		return _collection.filter ((owned)f);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Gee.Iterator<G> chop (int offset, int length = -1) {
+		return _collection.chop (offset, length);
 	}
 
 	/**
@@ -206,6 +216,10 @@ internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, 
 
 		public Gee.Iterator<G> filter (owned Predicate<G> f) {
 			return _iter.filter ((owned)f);
+		}
+
+		public Gee.Iterator<G> chop (int offset, int length = -1) {
+			return _iter.chop ( offset, length);
 		}
 	}
 

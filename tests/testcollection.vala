@@ -50,6 +50,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] map", test_map);
 		add_test ("[Collection] scan", test_scan);
 		add_test ("[Collection] filter", test_filter);
+		add_test ("[Collection] chop", test_chop);
 	}
 
 	protected Collection<string> test_collection;
@@ -899,6 +900,27 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (one);
 		assert (two);
 		assert (three);
+	}
+
+	public void test_chop () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+
+		bool one = false;
+		bool two = false;
+		bool three = false;
+
+		var iter = test_collection.iterator().chop (1, 1);
+		assert (!iter.valid);
+		var iter2 = test_collection.iterator();
+
+		assert (iter2.next ());
+		assert (iter2.next ());
+		assert (iter.next ());
+		assert (iter2.get () == iter.get ());
+		assert (!iter.next ());
+		assert (iter2.next ());
 	}
 }
 

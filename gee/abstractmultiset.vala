@@ -169,5 +169,9 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 		public Gee.Iterator<G> filter (owned Predicate<G> f) {
 			return Traversable.filter_impl<G> (this, (owned)f);
 		}
+
+		public Gee.Iterator<G> chop (int offset, int length = -1) {
+			return Traversable.chop_impl<G> (this, offset, length);
+		}
 	}
 }

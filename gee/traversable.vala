@@ -209,7 +209,7 @@ public interface Gee.Traversable<G> : Object
 	 *
 	 * ''Note:'' There is implementation {@link filter_impl}.
 	 *
-	 * ''{@link Iterator} implementation:'' Resulting iterator is valid  Using the parent
+	 * ''{@link Iterator} implementation:'' Resulting iterator is valid. Using the parent
 	 * iterator is not allowed befor the inner iterator {@link Iterator.next
 	 * next} return false and then it points on its last element.
 	 *
@@ -218,6 +218,27 @@ public interface Gee.Traversable<G> : Object
 	 * @return Iterator containing values of subsequent values of seed
 	 */
 	public abstract Iterator<G> filter (owned Predicate<G> f);
+
+	/**
+	 * Creates a new iterator which contains elements from iterable. The
+	 * first argument states the offset i.e. number of elements the iterator
+	 * skips by default.
+	 *
+	 * ''Note:'' There is implementation {@link chop_impl}.
+	 *
+	 * ''{@link Iterator} implementation:'' Resulting iterator is valid when
+	 * parent iterator is valid and the offset is 0. Using the parent
+	 * iterator is not allowed befor the inner iterator {@link Iterator.next
+	 * next} return false and then it points on its last element.
+	 *
+	 * ''{@link Iterable} implementation:'' Resurling iterator is invalid.
+	 *
+	 * @param offset the offset to first element the iterator is pointing to
+	 * @param length maximum number of elements iterator may return. Negative
+	 *        value means that the number is unbounded
+	 */
+	public abstract Iterator<G> chop (int offset, int length = -1);
+
 
 	/**
 	 * Implementation based on {@link stream} for {@link filter}.
@@ -239,6 +260,44 @@ public interface Gee.Traversable<G> : Object
 					val = item;
 					return Stream.YIELD;
 				} else {
+					return Stream.CONTINUE;
+				}
+			case Stream.END:
+				return Stream.END;
+			default:
+				assert_not_reached ();
+			};
+		});
+	}
+
+	/**
+	 * Implementation based on {@link stream} for {@link filter}.
+	 *
+	 * @param input The current Traversable
+	 * @param offset The offset
+	 * @param length The length
+	 */
+	public static Iterator<G> chop_impl<G> (Traversable<G> input, int offset, int length) {
+		assert (offset >= 0);
+		return input.stream<G> ((state, item, out val) => {
+			switch (state) {
+			case Stream.YIELD:
+				if (offset > 0) {
+					return Stream.CONTINUE;
+				} else if (length > 0) {
+					length--;
+					return length != 0 ? Stream.CONTINUE : Stream.END;
+				} else if (length == 0) {
+					return Stream.END;
+				} else {
+					return Stream.CONTINUE;
+				}
+			case Stream.CONTINUE:
+				if (offset == 0) {
+					val = item;
+					return Stream.YIELD;
+				} else {
+					offset--;
 					return Stream.CONTINUE;
 				}
 			case Stream.END:
