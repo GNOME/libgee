@@ -1,3 +1,14 @@
+libgee 0.7.0
+============
+ * Build system using the automake 1.11 vala support
+ * Move to delegates with targets and move them to Gee namespace
+ * Gee.Hashable interface
+ * Improve Iterator allowing to, among others, query about state of iterator
+ * Allow checking if Iterator or Collection is read-only
+ * Introducing highier-level function via Traversable interface
+ * Introduce support for lazy values
+ * Allow to install in parallel with 0.6
+
 libgee 0.5.2
 ============
 
