@@ -1,3 +1,8 @@
+libgee 0.6.2.1
+==============
+
+ * Add check-news to AM_INIT_AUTOMAKE
+
 libgee 0.6.2
 ============
 
