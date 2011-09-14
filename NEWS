@@ -1,3 +1,9 @@
+libgee 0.6.2
+============
+
+ * Fix adding second element to priority queue.
+ * Fix problem with key used in range is freed.
+
 libgee 0.6.1
 ============
 
