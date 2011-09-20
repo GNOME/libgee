@@ -104,12 +104,7 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 	 * {@inheritDoc}
 	 */
 	public bool remove (K key, out V? value = null) {
-		V removed_value;
-		bool result = unset (key, out removed_value);
-		if (&value != null) {
-			value = removed_value;
-		}
-		return result;
+		return unset (key, out value);
 	}
 
 	/**

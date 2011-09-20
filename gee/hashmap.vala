@@ -211,9 +211,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		if (*node != null) {
 			Node<K,V> next = (owned) (*node)->next;
 
-			if (&value != null) {
-				value = (owned) (*node)->value;
-			}
+			value = (owned) (*node)->value;
 
 			(*node)->key = null;
 			(*node)->value = null;
@@ -225,6 +223,8 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			resize ();
 			_stamp++;
 			return true;
+		} else {
+			value = null;
 		}
 		return false;
 	}

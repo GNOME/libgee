@@ -142,6 +142,7 @@ public interface Gee.Traversable<G> : Object
 		return stream<A>((state, item, out val) => {
 			switch (state) {
 			case Stream.YIELD:
+				val = null;
 				return Stream.CONTINUE;
 			case Stream.CONTINUE:
 				val = new Lazy<A>(() => {
@@ -151,6 +152,7 @@ public interface Gee.Traversable<G> : Object
 				});
 				return Stream.YIELD;
 			case Stream.END:
+				val = null;
 				return Stream.END;
 			default:
 				assert_not_reached ();
@@ -181,6 +183,7 @@ public interface Gee.Traversable<G> : Object
 			switch (state) {
 			case Stream.YIELD:
 				if (seed_emitted) {
+					val = null;
 					return Stream.CONTINUE;
 				} else {
 					val = new Lazy<A>.from_value (seed);
@@ -196,6 +199,7 @@ public interface Gee.Traversable<G> : Object
 				});
 				return Stream.YIELD;
 			case Stream.END:
+				val = null;
 				return Stream.END;
 			default:
 				assert_not_reached ();
@@ -253,6 +257,7 @@ public interface Gee.Traversable<G> : Object
 		return input.stream<G> ((state, item, out val) => {
 			switch (state) {
 			case Stream.YIELD:
+				val = null;
 				return Stream.CONTINUE;
 			case Stream.CONTINUE:
 				G g = item.get ();
@@ -260,9 +265,11 @@ public interface Gee.Traversable<G> : Object
 					val = item;
 					return Stream.YIELD;
 				} else {
+					val = null;
 					return Stream.CONTINUE;
 				}
 			case Stream.END:
+				val = null;
 				return Stream.END;
 			default:
 				assert_not_reached ();
@@ -282,6 +289,7 @@ public interface Gee.Traversable<G> : Object
 		return input.stream<G> ((state, item, out val) => {
 			switch (state) {
 			case Stream.YIELD:
+				val = null;
 				if (offset > 0) {
 					return Stream.CONTINUE;
 				} else if (length > 0) {
@@ -297,10 +305,12 @@ public interface Gee.Traversable<G> : Object
 					val = item;
 					return Stream.YIELD;
 				} else {
+					val = null;
 					offset--;
 					return Stream.CONTINUE;
 				}
 			case Stream.END:
+				val = null;
 				return Stream.END;
 			default:
 				assert_not_reached ();

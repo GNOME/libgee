@@ -195,8 +195,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		return null;
 	}
 
-	private bool set_to_node (ref Node<K, V>? node, K key, V value, out V old_value, Node<K, V>? prev, Node<K, V>? next) {
+	private bool set_to_node (ref Node<K, V>? node, K key, V value, out V? old_value, Node<K, V>? prev, Node<K, V>? next) {
 		if (node == null) {
+			old_value = null;
 			node = new Node<K,V> (key, value, prev, next);
 			if (prev == null) {
 				first = node;
@@ -212,6 +213,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		bool changed;
 		if (cmp == 0) {
 			if (value_equal_func (value, node.value)) {
+				old_value = null;
 				changed = false;
 			} else {
 				old_value = (owned) node.value;
@@ -257,12 +259,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 
 	private void fix_removal (ref Node<K,V> node, out K? key = null, out V? value) {
 		Node<K,V> n = (owned) node;
-		if (&key != null)
-			key = (owned) n.key;
-		else
-			n.key = null;
-		if (&value != null)
-			value = (owned) n.value;
+		key = (owned) n.key;
+		value = (owned) n.value;
 		if (n.prev != null) {
 			n.prev.next = n.next;
 		} else {
@@ -293,12 +291,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		fix_up (ref node);
 	}
 
-	private bool remove_from_node (ref Node<K, V>? node, K key, out V value, out unowned Node<K, V>? prev = null, out unowned Node<K, V>? next = null) {
+	private bool remove_from_node (ref Node<K, V>? node, K key, out V? value, out unowned Node<K, V>? prev = null, out unowned Node<K, V>? next = null) {
 		if (node == null) {
+			value = null;
+			next = null;
+			prev = null;
 			return false;
 		} else if (key_compare_func (key, node.key) < 0) {
 			weak Node<K,V> left = node.left;
 			if (left == null) {
+				value = null;
+				next = null;
+				prev = null;
 				return false;
 			}
 			if (node.left != null && is_black (left) && is_black (left.left)) {
@@ -314,10 +318,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 
 			weak Node<K,V>? r = node.right;
 			if (key_compare_func (key, node.key) == 0 && r == null) {
-				if (&prev != null)
-					prev = node.prev;
-				if (&next != null)
-					next = node.next;
+				prev = node.prev;
+				next = node.next;
 				fix_removal (ref node, null, out value);
 				return true;
 			}
@@ -326,10 +328,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			}
 			if (key_compare_func (key, node.key) == 0) {
 				value = (owned) node.value;
-				if (&prev != null)
-					prev = node.prev;
-				if (&next != null)
-					next = node;
+				prev = node.prev;
+				next = node;
 				remove_minimal (ref node.right, out node.key, out node.value);
 				fix_up (ref node);
 				return true;
@@ -357,12 +357,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 	 * {@inheritDoc}
 	 */
 	public override bool unset (K key, out V? value = null) {
-		V node_value;
-		bool b = remove_from_node (ref root, key, out node_value);
-
-		if (&value != null) {
-			value = (owned) node_value;
-		}
+		bool b = remove_from_node (ref root, key, out value);
 
 		if (root != null) {
 			root.color = Node.Color.BLACK;
@@ -822,6 +817,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		}
 
 		public override bool unset (K key, out V? value = null) {
+			value = null;
 			return range.in_range (key) && map.unset (key, out value);
 		}
 

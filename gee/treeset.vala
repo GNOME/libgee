@@ -219,10 +219,7 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 
 	private inline void fix_removal (ref Node<G> node, out G? key = null) {
 		Node<G> n = (owned)node;
-		if (&key != null)
-			key = (owned) n.key;
-		else
-			n.key = null;
+		key = (owned) n.key;
 		if (n.prev != null) {
 			n.prev.next = n.next;
 		} else {
@@ -257,10 +254,14 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 		stdout.printf ("Removing %s from %s\n", (string)item, node != null ? (string)node.key : null);
 #endif
 		if (node == null) {
+			prev = null;
+			next = null;
 			return false;
 		} else if (compare_func (item, node.key) < 0) {
 			weak Node<G> left = node.left;
 			if (left == null) {
+				prev = null;
+				next = null;
 				return false;
 			}
 			if (is_black (left) && is_black (left.left)) {
@@ -276,10 +277,8 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 
 			weak Node<G>? r = node.right;
 			if (compare_func (item, node.key) == 0 && r == null) {
-				if (&prev != null)
-					prev = node.prev;
-				if (&next != null)
-					next = node.next;
+				prev = node.prev;
+				next = node.next;
 				fix_removal (ref node, null);
 				return true;
 			}
@@ -287,10 +286,8 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 				move_red_right (ref node);
 			}
 			if (compare_func (item, node.key) == 0) {
-				if (&prev != null)
-					prev = node.prev;
-				if (&next != null)
-					next = node;
+				prev = node.prev;
+				next = node;
 				remove_minimal (ref node.right, out node.key);
 				fix_up (ref node);
 				return true;
