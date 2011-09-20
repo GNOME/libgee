@@ -26,6 +26,7 @@ libgee_0_8_la_SOURCES = \
 	hashmultimap.vala \
 	hashmultiset.vala \
 	hashset.vala \
+	hazardpointer.vala \
 	iterable.vala \
 	iterator.vala \
 	lazy.vala \
