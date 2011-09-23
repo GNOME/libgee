@@ -44,6 +44,7 @@ tests_VALAFLAGS = \
 	--basedir $(top_srcdir) \
 	--vapidir $(top_srcdir)/gee \
 	--pkg gee-0.8 --pkg posix \
+	$(VALAFLAGS) \
 	$(NULL)
 
 tests_CPPFLAGS = \
