@@ -1,3 +1,9 @@
+libgee 0.7.1
+============
+ * Implement hazard pointers and concurrent linked lists
+ * Respect VALAFLAGS when building tests
+ * Fix a few compiling warnings
+
 libgee 0.7.0
 ============
  * Build system using the automake 1.11 vala support
