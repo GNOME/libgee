@@ -673,6 +673,8 @@ public abstract class Gee.SortedMapTests : MapTests {
 				contains = {};
 				not_contains = {"one", "two", "three", "four", "five", "six"};
 				break;
+			default:
+				assert_not_reached ();
 			}
 		}
 		

@@ -31,8 +31,8 @@ public abstract class Gee.TestCase : Object {
 		this.suite = new GLib.TestSuite (name);
 	}
 
-	public void add_test (string name, TestMethod test) {
-		var adaptor = new Adaptor (name, test, this);
+	public void add_test (string name, owned TestMethod test) {
+		var adaptor = new Adaptor (name, (owned)test, this);
 		this.adaptors += adaptor;
 
 		this.suite.add (new GLib.TestCase (adaptor.name,
@@ -58,10 +58,10 @@ public abstract class Gee.TestCase : Object {
 		private TestCase test_case;
 
 		public Adaptor (string name,
-		                TestMethod test,
+		                owned TestMethod test,
 		                TestCase test_case) {
 			this.name = name;
-			this.test = test;
+			this.test = (owned)test;
 			this.test_case = test_case;
 		}
 

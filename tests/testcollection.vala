@@ -907,10 +907,6 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (test_collection.add ("two"));
 		assert (test_collection.add ("three"));
 
-		bool one = false;
-		bool two = false;
-		bool three = false;
-
 		var iter = test_collection.iterator().chop (1, 1);
 		assert (!iter.valid);
 		var iter2 = test_collection.iterator();
