@@ -663,7 +663,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 				_a[degree] = null;
 
 				int i = _a.length - 1;
-				while (a >= 0 && _a[i] == null) {
+				while (i >= 0 && _a[i] == null) {
 					i--;
 				}
 				_a.resize (i + 1);
