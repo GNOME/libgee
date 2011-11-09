@@ -1,3 +1,8 @@
+libgee 0.6.3
+============
+
+ * Fix buffer underflow.
+
 libgee 0.6.2.1
 ==============
 
