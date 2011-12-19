@@ -5,6 +5,7 @@ lib_LTLIBRARIES = \
 	$(NULL)
 
 libgee_0_8_la_SOURCES = \
+	assemblyinfo.vala \
 	abstractbidirlist.vala \
 	abstractcollection.vala \
 	abstractlist.vala \
