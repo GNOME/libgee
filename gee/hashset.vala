@@ -279,6 +279,10 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			}
 		}
 
+		public Type element_type {
+			get { return typeof (G); }
+		}
+
 		public void foreach (ForallFunc<G> f) {
 			assert (_stamp == _set._stamp);
 			if (_node != null)

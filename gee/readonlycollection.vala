@@ -193,17 +193,21 @@ internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, 
 		public void remove () {
 			assert_not_reached ();
 		}
-		
+
 		public bool valid {
 			get {
 				return _iter.valid;
 			}
 		}
-		
+
 		public bool read_only {
 			get {
 				return true;
 			}
+		}
+
+		public Type element_type {
+			get { return typeof (G); }
 		}
 
 		public void foreach (ForallFunc<G> f) {

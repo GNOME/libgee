@@ -30,12 +30,22 @@ public abstract class MultiMapTests : Gee.TestCase {
 
 	public MultiMapTests (string name) {
 		base (name);
+		add_test ("[MultiMap] type correctness", test_type_correctness);
 		add_test ("[MultiMap] size", test_size);
 		add_test ("[MultiMap] getting and setting", test_getting_setting);
 		add_test ("[MultiMap] keys, all keys and values", test_keys_all_keys_values);
 	}
 
 	protected MultiMap<string,string> test_multi_map;
+
+	public void test_type_correctness () {
+		// Check the multimap exists
+		assert (test_multi_map != null);
+
+		// Check the advertised key and value types
+		assert (test_multi_map.key_type == typeof (string));
+		assert (test_multi_map.value_type == typeof (string));
+	}
 
 	private void test_size () {
 		// Check the map exists

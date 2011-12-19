@@ -1035,6 +1035,10 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			}
 		}
 
+		public Type element_type {
+			get { return typeof (G); }
+		}
+
 		public void foreach (ForallFunc<G> f) {
 			if (valid)
 				f (position.data);

@@ -338,6 +338,10 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			_index++;
 		}
 
+		public Type element_type {
+			get { return typeof (G); }
+		}
+
 		public new void foreach (ForallFunc<G> f) {
 			HazardPointer.Context ctx = new HazardPointer.Context ();
 			if (_started && !_removed)

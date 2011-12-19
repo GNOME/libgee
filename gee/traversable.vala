@@ -51,8 +51,7 @@ namespace Gee {
  *
  * @since 0.7.0
  */
-public interface Gee.Traversable<G> : Object
-{	
+public interface Gee.Traversable<G> : Object {
 	/**
 	 * Apply function to each element returned by iterator. 
 	 *

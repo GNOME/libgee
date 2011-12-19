@@ -106,4 +106,14 @@ public interface Gee.MultiMap<K,V> : Object {
 	 * Removes all items from this collection.
 	 */
 	public abstract void clear ();
+
+	/**
+	 * The type of the keys in this multimap.
+	 */
+	public abstract Type key_type { get; }
+
+	/**
+	 * The type of the values in this multimap.
+	 */
+	public abstract Type value_type { get; }
 }

@@ -162,6 +162,10 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 			_removed = false;
 		}
 
+		public Type element_type {
+			get { return typeof (G); }
+		}
+
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
 			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}

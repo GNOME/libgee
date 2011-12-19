@@ -715,6 +715,10 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 			}
 		}
 
+		public Type element_type {
+			get { return typeof (G); }
+		}
+
 		public void foreach (ForallFunc<G> f) {
 			assert (stamp == _set.stamp);
 			if (current != null) {
@@ -1124,6 +1128,10 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 			get {
 				return iterator.valid;
 			}
+		}
+
+		public Type element_type {
+			get { return typeof (G); }
 		}
 
 		public void foreach(ForallFunc<G> f) {

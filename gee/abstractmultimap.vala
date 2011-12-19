@@ -130,4 +130,8 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 		_storage_map.clear ();
 		_nitems = 0;
 	}
+
+	public Type key_type { get { return typeof(K); } }
+
+	public Type value_type { get { return typeof(V); } }
 }
