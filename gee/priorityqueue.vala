@@ -53,7 +53,11 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	private Type2Node<G>? _lm_head = null;
 	private Type2Node<G>? _lm_tail = null;
 	private Type1Node<G>? _p = null;
+#if VALA_0_16
+	private Type1Node<G>?[] _a = new Type1Node<G>?[0];
+#else
 	private Type1Node<G>?[] _a = new Type1Node<G>[0];
+#endif
 	private NodePair<G>? _lp_head = null;
 	private NodePair<G>? _lp_tail = null;
 	private bool[] _b = new bool[0];
@@ -316,7 +320,11 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		_lm_head = null;
 		_lm_tail = null;
 		_p = null;
+#if VALA_0_16
+		_a = new Type1Node<G>?[0];
+#else
 		_a = new Type1Node<G>[0];
+#endif
 		_lp_head = null;
 		_lp_tail = null;
 		_b = new bool[0];
