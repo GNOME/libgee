@@ -14,6 +14,7 @@ lib_LTLIBRARIES = \
 	$(NULL)
 
 libgee_la_VALASOURCES = \
+	assemblyinfo.vala \
 	abstractcollection.vala \
 	abstractlist.vala \
 	abstractmap.vala \
