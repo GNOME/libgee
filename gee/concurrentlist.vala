@@ -53,7 +53,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	~ConcurrentList () {
 		HazardPointer.Context ctx = new HazardPointer.Context ();
 		_head = null;
-		HazardPointer.set_pointer<Node<G>> (&_tail, null);
+		HazardPointer.set_pointer<Node<G>?> (&_tail, null);
 	}
 
 	/**
@@ -398,8 +398,8 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		}
 
 		inline ~Node () {
-			HazardPointer.set_pointer<Node<G>> (&_succ, null, 3);
-			HazardPointer.set_pointer<Node<G>> (&_backlink, null);
+			HazardPointer.set_pointer<Node<G>?> (&_succ, null, 3);
+			HazardPointer.set_pointer<Node<G>?> (&_backlink, null);
 #if DEBUG
 			G? old_data = HazardPointer.exchange_pointer (&_data, null);
 			stderr.printf ("  Freeing node %p (with data %p)\n", this, old_data);
@@ -573,7 +573,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 #if DEBUG
 			stderr.printf ("      Setting backlink from %p to %p\n", this, backlink);
 #endif
-			HazardPointer.compare_and_exchange_pointer<Node<G>> (&_backlink, null, backlink);
+			HazardPointer.compare_and_exchange_pointer<Node<G>?> (&_backlink, null, backlink);
 		}
 
 		public Node<G> *_succ;
