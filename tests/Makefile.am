@@ -6,6 +6,7 @@ TEST_PROGS += tests
 
 tests_SOURCES = \
        testarraylist.vala \
+       testarrayqueue.vala \
        testbidirlist.vala \
        testcase.vala \
        testcollection.vala \

@@ -17,6 +17,7 @@ libgee_0_8_la_SOURCES = \
 	abstractsortedmap.vala \
 	abstractsortedset.vala \
 	arraylist.vala \
+	arrayqueue.vala \
 	bidiriterator.vala \
 	bidirlist.vala \
 	bidirlistiterator.vala \
