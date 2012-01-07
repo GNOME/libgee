@@ -31,6 +31,13 @@ public abstract class Gee.AbstractQueue<G> : Gee.AbstractCollection<G>, Queue<G>
 	/**
 	 * {@inheritDoc}
 	 */
+	public override bool add (G item) {
+		return offer (item);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public abstract int capacity { get; }
 
 	/**
@@ -61,5 +68,13 @@ public abstract class Gee.AbstractQueue<G> : Gee.AbstractCollection<G>, Queue<G>
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract int drain (Collection<G> recipient, int amount = -1);
+	public virtual int drain (Collection<G> recipient, int amount = -1) {
+		G? item = null;
+		int drained = 0;
+		while((amount == -1 || --amount >= 0) && (item = poll ()) != null) {
+			recipient.add(item);
+			drained++;
+		}
+		return drained;
+	}
 }
