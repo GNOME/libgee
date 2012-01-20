@@ -20,6 +20,6 @@
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 
-[CCode (gir_namespace = "Gee", gir_version = "0.8")]
+[CCode (gir_namespace = "Gee", gir_version = "1.0")]
 namespace Gee {}
 
