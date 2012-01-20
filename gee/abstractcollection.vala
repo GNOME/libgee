@@ -187,8 +187,13 @@ public abstract class Gee.AbstractCollection<G> : Object, Traversable<G>, Iterab
 		return array;
 	}
 
+#if VALA_0_16
+	private static float?[] to_float_array(Collection<float?> coll) {
+		float?[] array = new float?[coll.size];
+#else
 	private static float[] to_float_array(Collection<float?> coll) {
 		float[] array = new float[coll.size];
+#endif
 		int index = 0;
 		foreach (float element in coll) {
 			array[index++] = element;
@@ -196,8 +201,13 @@ public abstract class Gee.AbstractCollection<G> : Object, Traversable<G>, Iterab
 		return array;
 	}
 
+#if VALA_0_16
+	private static double?[] to_double_array(Collection<double?> coll) {
+		double?[] array = new double?[coll.size];
+#else
 	private static double[] to_double_array(Collection<double?> coll) {
 		double[] array = new double[coll.size];
+#endif
 		int index = 0;
 		foreach (double element in coll) {
 			array[index++] = element;

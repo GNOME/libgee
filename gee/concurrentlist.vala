@@ -408,7 +408,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 #endif
 		}
 
-		public static inline bool proceed<G> (ref Node<G> prev, ref Node<G> curr, bool force = false) {
+		public static inline bool proceed<G> (ref Node<G>? prev, ref Node<G> curr, bool force = false) {
 			Node<G> next = curr.get_next ();
 			while (next != null) {
 				State next_state = next.get_state ();
