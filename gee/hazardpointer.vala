@@ -539,6 +539,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 			stderr.printf ("Exiting context %p (policy %s, parent %p)\n", this, _policy != null ? _policy.to_string () : null, _parent);
 #endif
 			int size = _to_free.size;
+			bool clean_parent = false;
 			if (size > 0) {
 				ArrayList<FreeNode *>? remaining;
 				if (_parent == null || size >= THRESHOLD)
@@ -548,11 +549,15 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 				if (remaining != null) {
 					assert (_parent != null);
 					_parent->_to_free.add_all (remaining);
-					if (_parent->_to_free.size >= THRESHOLD)
-						HazardPointer.try_free (_parent->_to_free);
+					clean_parent = true;
 				}
 			}
+#if DEBUG
+			stderr.printf ("Setting current context to %p\n", _parent);
+#endif
 			_current_context.set (_parent, null);
+			if (clean_parent)
+				HazardPointer.try_free (_parent->_to_free);
 		}
 
 		/**
