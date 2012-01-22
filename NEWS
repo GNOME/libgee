@@ -1,3 +1,9 @@
+libgee 0.7.2
+============
+ * Require *_type property for all collections
+ * Add ArrayQueue
+ * Few bug fixes
+
 libgee 0.7.1
 ============
  * Implement hazard pointers and concurrent linked lists
