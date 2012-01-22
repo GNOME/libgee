@@ -113,7 +113,7 @@ typelib_DATA = \
 	$(NULL)
 
 Gee-0.8.typelib: Gee-0.8.gir
-	@INTROSPECTION_COMPILER@ --shared-library=libgee-0.8 -o $@ $^
+	@INTROSPECTION_COMPILER@ -o $@ $^
 endif
 
 Gee-0.8.gir gee-internals-0.8.vapi gee-0.8.vapi: libgee-0.8.la
