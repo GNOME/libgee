@@ -1,3 +1,9 @@
+libgee 0.6.4
+============
+
+ * Fix compilation with vala master
+ * Fix creation of GObject introspection files
+
 libgee 0.6.3
 ============
 
