@@ -21,7 +21,7 @@
  */
 
 /**
- * Resizable array implementation of the {@link Dequeu} interface.
+ * Resizable array implementation of the {@link Deque} interface.
  *
  * The storage array grows automatically when needed.
  *

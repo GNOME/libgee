@@ -100,7 +100,7 @@ public interface Gee.SortedSet<G> : Gee.Set<G> {
 	 * Returns the sub-set of this sorted set containing elements strictly
 	 * lower than the specified element.
 	 *
-	 * @param from the lower inclusive bound for the sub-set
+	 * @param before the lower inclusive bound for the sub-set
 	 *
 	 * @return     the corresponding sub-set of this sorted set
 	 */
@@ -110,7 +110,7 @@ public interface Gee.SortedSet<G> : Gee.Set<G> {
 	 * Returns the sub-set of this sorted set containing elements equal or
 	 * higher than the specified element.
 	 *
-	 * @param to the higher exclusive bound for the sub-set
+	 * @param after the higher exclusive bound for the sub-set
 	 *
 	 * @return   the corresponding sub-set of this sorted set
 	 */

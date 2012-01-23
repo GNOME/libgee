@@ -72,7 +72,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 * @param aptr Atomic pointer.
 	 * @param mask Mask of bits.
 	 * @param mask_out Result of mask.
-	 * @returns Hazard pointer containing the element.
+	 * @return Hazard pointer containing the element.
 	 */
 	public static HazardPointer<G>? get_hazard_pointer<G> (G **aptr, size_t mask = 0, out size_t mask_out = null) {
 		unowned Node node = acquire ();
@@ -99,7 +99,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 * @param aptr Atomic pointer.
 	 * @param mask Mask of flags.
 	 * @param mask_out Result of mask.
-	 * @returns A copy of object from atomic pointer.
+	 * @return A copy of object from atomic pointer.
 	 */
 	public static G? get_pointer<G> (G **aptr, size_t mask = 0, out size_t mask_out = null) {
 		unowned Node node = acquire ();
@@ -125,7 +125,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 * @param mask Mask of flags.
 	 * @param new_mask New mask.
 	 * @param old_mask Previous mask mask.
-	 * @returns Hazard pointer containing old value.
+	 * @return Hazard pointer containing old value.
 	 */
 	public static HazardPointer<G>? exchange_hazard_pointer<G> (G **aptr, owned G? new_ptr, size_t mask = 0, size_t new_mask = 0, out size_t old_mask = null) {
 		unowned Node? new_node = null;
@@ -176,7 +176,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 * @param mask Mask of flags.
 	 * @param new_mask New mask.
 	 * @param old_mask Previous mask mask.
-	 * @returns Value that was previously stored.
+	 * @return Value that was previously stored.
 	 */
 	public static G? exchange_pointer<G> (G **aptr, owned G? new_ptr, size_t mask = 0, size_t new_mask = 0, out size_t old_mask = null) {
 		HazardPointer<G>? ptr = exchange_hazard_pointer<G> (aptr, new_ptr, mask, new_mask, out old_mask);
@@ -189,10 +189,10 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 *
 	 * @param aptr Atomic pointer.
 	 * @param old_ptr Old pointer.
-	 * @param new_ptr New value.
+	 * @param _new_ptr New value.
 	 * @param old_mask Old mask.
 	 * @param new_mask New mask.
-	 * @returns Value that was previously stored.
+	 * @return Value that was previously stored.
 	 */
 	public static bool compare_and_exchange_pointer<G> (G **aptr, G? old_ptr, owned G? _new_ptr, size_t mask = 0, size_t old_mask = 0, size_t new_mask = 0) {
 		G *new_ptr = (owned)_new_ptr;
@@ -214,8 +214,8 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	/**
 	 * Gets the pointer hold by hazard pointer.
 	 *
-	 * @params other_thread Have to be set to ``true'' if accessed from thread that did not create this thread.
-	 * @returns The value hold by pointer.
+	 * @param other_thread Have to be set to ``true`` if accessed from thread that did not create this thread.
+	 * @return The value hold by pointer.
 	 */
 	public inline new unowned G get (bool other_thread = false) {
 		return _node[other_thread];
@@ -224,7 +224,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	/**
 	 * Free the pointer.
 	 *
-	 * @params DestroyNotify method freeing object
+	 * @param notify method freeing object
 	 */
 	public void release (DestroyNotify notify) {
 		unowned G item = _node[false];
@@ -236,7 +236,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 * Sets default policy (i.e. default policy for user-created contexts).
 	 * The policy must be concrete and should not be blocking.
 	 *
-	 * @params policy New default policy.
+	 * @param policy New default policy.
 	 */
 	public static void set_default_policy (Policy policy) requires (policy.is_concrete ()) {
 		if (policy.is_blocking ())
@@ -248,7 +248,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 * Sets thread exit policy (i.e. default policy for the top-most Context).
 	 * The policy must be concrete and should not be unsafe.
 	 *
-	 * @params policy New thread policy.
+	 * @param policy New thread policy.
 	 */
 	public static void set_thread_exit_policy (Policy policy) requires (policy.is_concrete ()) {
 		if (!policy.is_safe ())
@@ -261,7 +261,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 *
 	 * The method can be only set before any objects is released and is not thread-safe.
 	 *
-	 * @params policy New release policy.
+	 * @param policy New release policy.
 	 */
 	public static bool set_release_policy (ReleasePolicy policy) {
 		int old_policy = AtomicInt.get (ref release_policy);
@@ -311,7 +311,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		/**
 		 * Checks if the policy is concrete or if it depends on global variables.
 		 *
-		 * @returns ``true'' if this policy does not depend on global variables
+		 * @return ``true`` if this policy does not depend on global variables
 		 */
 		public bool is_concrete () {
 			switch (this) {
@@ -332,7 +332,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		 * Checks if policy blocks or is lock-free.
 		 * Please note that it works on a concrete policy only.
 		 *
-		 * @returns ``true'' if the policy may block the thread.
+		 * @return ``true`` if the policy may block the thread.
 		 */
 		public bool is_blocking () requires (this.is_concrete ()) {
 			switch (this) {
@@ -351,7 +351,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		 * Checks if policy guarantees freeing all elements.
 		 * Please note that it works on a concrete policy only.
 		 *
-		 * @returns ``true'' if the policy guarantees freeing all elements.
+		 * @return ``true`` if the policy guarantees freeing all elements.
 		 */
 		public bool is_safe () requires (this.is_concrete ()) {
 			switch (this) {
@@ -369,7 +369,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		/**
 		 * Finds concrete policy which corresponds to given policy.
 		 *
-		 * @returns Policy that corresponds to given policy at given time in given thread.
+		 * @return Policy that corresponds to given policy at given time in given thread.
 		 */
 		public Policy to_concrete () ensures (result.is_concrete ()) {
 			switch (this) {
@@ -391,7 +391,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		/**
 		 * Runs the policy.
 		 * @param to_free List containing elements to free.
-		 * @returns Non-empty list of not freed elements or ``null'' if all elements have been disposed.
+		 * @return Non-empty list of not freed elements or ``null`` if all elements have been disposed.
 		 */
 		internal ArrayList<FreeNode *>? perform (owned ArrayList<FreeNode *> to_free) {
 			switch (this.to_concrete ()) {
@@ -505,7 +505,8 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 * {{{
 	 *   Context ctx = new Context ();
 	 *   lock_free_collection.operation1 ();
-	 *   // Normally on exit the thread exit operation would be executed but here the default operation of child context is executed.
+	 *   // Normally on exit the thread exit operation would be executed but here the default operation of
+	 *   // child context is executed.
 	 *   lock_free_collection.operation2 ();
 	 * }}}
 	 *
@@ -647,7 +648,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	/**
 	 * Tries to free from list.
 	 *
-	 * @return ``true'' if list is empty.
+	 * @return ``true`` if list is empty.
 	 */
 	internal static bool try_free (ArrayList<FreeNode *> to_free) {
 		Collection<void *> used = new HashSet<void *>();

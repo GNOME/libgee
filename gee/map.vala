@@ -35,7 +35,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	public abstract bool is_empty { get; }
 	
 	/**
-	 * Specifies whether this collection can change - i.e. wheather {@link add},
+	 * Specifies whether this collection can change - i.e. wheather {@link set},
 	 * {@link remove} etc. are legal operations.
 	 */
 	public abstract bool read_only { get; }

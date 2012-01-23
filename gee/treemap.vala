@@ -423,7 +423,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		}
 	}
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override SortedSet<Map.Entry<K,V>> ascending_entries {
 		owned get {
@@ -438,14 +438,14 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 	}
 	
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.MapIterator<K,V> map_iterator () {
 		return new MapIterator<K,V> (this);
 	}
 	
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public override Gee.BidirMapIterator<K,V> bidir_map_iterator () {
 		return new MapIterator<K,V> (this);
