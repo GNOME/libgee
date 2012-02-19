@@ -19,6 +19,7 @@
  *
  * Author:
  * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
+ * 	Will <tcosprojects@gmail.com>
  */
 
 using Gee;
@@ -44,7 +45,7 @@ namespace Gee.Benchmark {
 		}
 	}
 
-	void main (string[] args) {
+	public void benchmark_sorts () {
 		var algorithms = new ArrayList<Algorithm<int32>> ();
 		algorithms.add (new TimSort<int32> ());
 		algorithms.add (new MergeSort<int32> ());
@@ -57,7 +58,7 @@ namespace Gee.Benchmark {
 		generators.add (new SortedInt32 ());
 
 		Benchmark<int32> benchmark =
-			new Benchmark<int32> (new ArrayListFactory<int32> (),
+		    new Benchmark<int32> (new ArrayListFactory<int32> (),
 		                          algorithms,
 		                          generators,
 		                          new int[] { 10,
@@ -71,3 +72,93 @@ namespace Gee.Benchmark {
 		benchmark.run ();
 	}
 }
+
+internal class Gee.MergeSort<G> {
+
+	public static void sort<G> (List<G> list, CompareDataFunc compare) {
+		if (list is ArrayList) {
+			MergeSort.sort_arraylist<G> ((ArrayList<G>) list, compare);
+		} else {
+			MergeSort.sort_list<G> (list, compare);
+		}
+	}
+
+	public static void sort_list<G> (List<G> list, CompareDataFunc compare) {
+		MergeSort<G> helper = new MergeSort<G> ();
+
+		helper.list_collection = list;
+		helper.array = list.to_array ();
+		helper.list = helper.array;
+		helper.index = 0;
+		helper.size = list.size;
+		helper.compare = compare;
+
+		helper.do_sort ();
+
+		// TODO Use a list iterator and use iter.set(item)
+		list.clear ();
+		foreach (G item in helper.array) {
+			list.add (item);
+		}
+	}
+
+	public static void sort_arraylist<G> (ArrayList<G> list, CompareDataFunc compare) {
+		MergeSort<G> helper = new MergeSort<G> ();
+
+		helper.list_collection = list;
+		helper.list = list._items;
+		helper.index = 0;
+		helper.size = list._size;
+		helper.compare = compare;
+
+		helper.do_sort ();
+	}
+
+	private List<G> list_collection;
+	private G[] array;
+	private unowned G[] list;
+	private int index;
+	private int size;
+	private CompareDataFunc compare;
+
+	private void do_sort () {
+		if (this.size <= 1) {
+			return;
+		}
+
+		var work_area = new G[this.size];
+
+		merge_sort_aux (index, this.size, work_area);
+	}
+
+	private void merge_sort_aux (int left, int right, G[] work_area) {
+		if (right == left + 1) {
+			return;
+		} else {
+			int size = right - left;
+			int middle = size / 2;
+			int lbegin = left;
+			int rbegin = left + middle;
+
+			merge_sort_aux (left, left + middle, work_area);
+			merge_sort_aux (left + middle, right, work_area);
+
+			for (int i = 0; i < size; i++) {
+				if (lbegin < left + middle && (rbegin == right ||
+					compare (list[lbegin], list[rbegin]) <= 0)) {
+
+					work_area[i] = list[lbegin];
+					lbegin++;
+				} else {
+					work_area[i] = list[rbegin];
+					rbegin++;
+				}
+			}
+
+			for (int i = left; i < right; i++) {
+				list[i] = work_area[i - left];
+			}
+		}
+	}
+}
+

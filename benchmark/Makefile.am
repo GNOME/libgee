@@ -5,7 +5,6 @@ noinst_PROGRAMS = benchmarks
 benchmarks_SOURCES = \
 	benchmark.vala \
 	benchmarksorts.vala \
-	mergesort.vala \
 	$(NULL)
 
 benchmarks_VALAFLAGS = \

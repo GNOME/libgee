@@ -2,6 +2,7 @@
  *
  * Copyright (C) 2008  Jürg Billeter
  * Copyright (C) 2009  Didier Villevalois
+
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +25,36 @@
 using Gee;
 
 namespace Gee.Benchmark {
+	OptionEntry run_benchmark_option(string long_name, char short_name, string description, ref bool do_run) {
+		return OptionEntry() {
+			long_name = long_name,
+			short_name = short_name,
+			flags = 0,
+			arg = OptionArg.NONE,
+			arg_data = &do_run,
+			description = description,
+			arg_description = null
+		};
+	}
+
+	int main (string[] args) {
+		bool run_sort = false;
+		OptionEntry[] entries = {
+			run_benchmark_option("run-sort", 's', "Run sorting benchmark", ref run_sort)
+		};
+		var context = new OptionContext ("Run various benchmarks");
+		context.add_main_entries (entries, "gee-benchmark");
+		try {
+			context.parse (ref args);
+		} catch (OptionError e) {
+			stdout.printf ("option parsing failed: %s\n", e.message);
+			return 2;
+		}
+		if(run_sort) {
+			benchmark_sorts ();
+		}
+		return 0;
+	}
 
 	public interface Factory<G> : Object {
 
