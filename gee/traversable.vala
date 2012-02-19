@@ -91,12 +91,12 @@ public interface Gee.Traversable<G> : Object {
 	 * parent iterator is {@link Iterator.valid} and function yields
 	 * after consuming 1 input. In other case returned iterator is invalid.
 	 *
-	 * ''{@link Iterator} implementation:'' If iterator is
-	 * {@link Iterator.valid} the current value should be fed
-	 * immediately to function if during initial call function returns
-	 * {@link Stream.CONTINUE}. The parent iterator cannot be used before
-	 * the functions return {@link Stream.END} afterwards it points on the
-	 * last element consumed.
+	 * Note: In {@link Iterator} implementation: if iterator is
+	 *    {@link Iterator.valid} the current value should be fed
+	 *    immediately to function if during initial call function returns
+	 *    {@link Stream.CONTINUE}. The parent iterator cannot be used before
+	 *    the functions return {@link Stream.END} afterwards it points on the
+	 *    last element consumed.
 	 *
 	 * @param f function generating stream
 	 * @return iterator containing values yielded by stream
@@ -109,12 +109,12 @@ public interface Gee.Traversable<G> : Object {
 	 * It takes a function, seed and first element, returns the new seed and
 	 * progress to next element when the operation repeats.
 	 *
-	 * ''Note:'' Default implementation uses {@link foreach}.
+	 * Note: Default implementation uses {@link foreach}.
 	 *
-	 * ''{@link Iterator} implementation:'' Operation moves the iterator to
-	 * last element in iteration. If iterator is
-	 * {@link Iterator.valid} the current element will be considered
-	 * as well.
+	 * Note: In {@link Iterator} implementation operation moves the
+	 *    iterator to last element in iteration. If iterator is
+	 *    {@link Iterator.valid} the current element will be considered
+	 *    as well.
 	 *
 	 */
 	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
@@ -129,12 +129,14 @@ public interface Gee.Traversable<G> : Object {
 	 * Iterator is lazy evaluated but value is force-evaluated when
 	 * iterator moves to next element. ({@link Iterator.next})
 	 *
-	 * ''Note:'' Default implementation uses {@link stream}.
+	 * Note: Default implementation uses {@link stream}.
 	 *
-	 * ''{@link Iterator} implementation:'' If the parent iterator is
-	 * {@link Iterator.valid} so is the returned one. Using the parent
-	 * iterator is not allowed before the inner iterator {@link Iterator.next}
-	 * return false and then it points on its last element.
+	 * Note: In {@link Iterator} implementation if the parent iterator is
+	 *    {@link Iterator.valid} so is the returned one. Using the parent
+	 *    iterator is not allowed before the inner iterator {@link Iterator.next}
+	 *    return false and then it points on its last element.
+	 *    The resulting iterator is {@link Iterator.valid} if the parent
+	 *    iterator is.
 	 *
 	 * @param f Mapping function
 	 * @return Iterator listing mapped value
@@ -168,11 +170,12 @@ public interface Gee.Traversable<G> : Object {
 	 *
 	 * The resulting iterator is always valid and it contains the seed value.
 	 *
-	 * ''Note:'' Default implementation uses {@link stream}.
+	 * Note: Default implementation uses {@link stream}.
 	 *
-	 * ''{@link Iterator} implementation:'' Using the parent
-	 * iterator is not allowed befor the inner iterator {@link Iterator.next}
-	 * return false and then it points on its last element.
+	 * Note: When the method is called on {@link Iterator} using the parent
+	 *    iterator is not allowed befor the inner iterator
+	 *    {@link Iterator.next} return false and then it points on its last
+	 *    element. The resulting iterator is {@link Iterator.valid}.
 	 *
 	 * @param f Folding function
 	 * @param seed original seed value
@@ -212,11 +215,14 @@ public interface Gee.Traversable<G> : Object {
 	 * Creates a new iterator that contains only values that fullfills the
 	 * predicate.
 	 *
-	 * ''Note:'' There is implementation {@link filter_impl}.
+	 * Note: There is implementation {@link filter_impl}.
 	 *
-	 * ''{@link Iterator} implementation:'' Resulting iterator is valid. Using the parent
-	 * iterator is not allowed before the inner iterator {@link Iterator.next}
-	 * return false and then it points on its last element.
+	 * Note: When the method is called on {@link Iterator} using the parent
+	 *    iterator is not allowed befor the inner iterator
+	 *    {@link Iterator.next} return false and then it points on its last
+	 *    element. The resulting iterator is {@link Iterator.valid} if parent
+	 *    iterator is {@link Iterator.valid} and value it is pointing on
+	 *    fullfills the predicate.
 	 *
 	 * @param f Folding function
 	 * @return Iterator containing values of subsequent values of seed
@@ -228,14 +234,14 @@ public interface Gee.Traversable<G> : Object {
 	 * first argument states the offset i.e. number of elements the iterator
 	 * skips by default.
 	 *
-	 * ''Note:'' There is implementation {@link chop_impl}.
+	 * Note: There is implementation {@link chop_impl}.
 	 *
-	 * ''{@link Iterator} implementation:'' Resulting iterator is valid when
-	 * parent iterator is valid and the offset is 0. Using the parent
-	 * iterator is not allowed before the inner iterator {@link Iterator.next}
-	 * return false and then it points on its last element.
-	 *
-	 * ''{@link Iterable} implementation:'' Resulting iterator is invalid.
+	 * Note: In {@link Iterator} implementation resulting iterator is
+	 *    {@link Iterator.valid} when parent iterator is
+	 *    {@link Iterator.valid} and the offset is 0. Using the parent
+	 *    iterator is not allowed before the inner iterator
+	 *    {@link Iterator.next} return false and then it points on its last
+	 *    element.
 	 *
 	 * @param offset the offset to first element the iterator is pointing to
 	 * @param length maximum number of elements iterator may return. Negative
