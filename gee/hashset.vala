@@ -140,22 +140,11 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	 * {@inheritDoc}
 	 */
 	public override bool remove (G key) {
-		Node<G>** node = lookup_node (key);
-		if (*node != null) {
-			assert (*node != null);
-			Node<G> next = (owned) (*node)->next;
-
-			(*node)->key = null;
-			delete *node;
-
-			*node = (owned) next;
-
-			_nnodes--;
+		bool b = remove_helper(key);
+		if(b) {
 			resize ();
-			_stamp++;
-			return true;
 		}
-		return false;
+		return b;
 	}
 
 	/**
@@ -172,6 +161,24 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 		}
 		_nnodes = 0;
 		resize ();
+	}
+
+	private inline bool remove_helper (G key) {
+		Node<G>** node = lookup_node (key);
+		if (*node != null) {
+			assert (*node != null);
+			Node<G> next = (owned) (*node)->next;
+
+			(*node)->key = null;
+			delete *node;
+
+			*node = (owned) next;
+
+			_nnodes--;
+			_stamp++;
+			return true;
+		}
+		return false;
 	}
 
 	private void resize () {
@@ -262,7 +269,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			assert (_stamp == _set._stamp);
 			assert (_node != null);
 			has_next ();
-			_set.remove (_node.key);
+			_set.remove_helper (_node.key);
 			_node = null;
 			_stamp = _set._stamp;
 		}
