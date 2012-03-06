@@ -200,26 +200,11 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	 * {@inheritDoc}
 	 */
 	public override bool unset (K key, out V? value = null) {
-		Node<K,V>** node = lookup_node (key);
-		if (*node != null) {
-			Node<K,V> next = (owned) (*node)->next;
-
-			if (&value != null) {
-				value = (owned) (*node)->value;
-			}
-
-			(*node)->key = null;
-			(*node)->value = null;
-			delete *node;
-
-			*node = (owned) next;
-
-			_nnodes--;
-			resize ();
-			_stamp++;
-			return true;
+		bool b = unset_helper (key, out value);
+		if(b) {
+			resize();
 		}
-		return false;
+		return b;
 	}
 
 	/**
@@ -246,7 +231,31 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		return new MapIterator<K,V> (this);
 	}
 
-	private void resize () {
+	private inline bool unset_helper (K key, out V? value = null) {
+		Node<K,V>** node = lookup_node (key);
+		if (*node != null) {
+			Node<K,V> next = (owned) (*node)->next;
+
+			if (&value != NULL) {
+				value = (owned) (*node)->value;
+			}
+
+			(*node)->key = null;
+			(*node)->value = null;
+			delete *node;
+
+			*node = (owned) next;
+
+			_nnodes--;
+			_stamp++;
+			return true;
+		} else {
+			value = null;
+		}
+		return false;
+	}
+
+	private inline void resize () {
 		if ((_array_size >= 3 * _nnodes && _array_size >= MIN_SIZE) ||
 		    (3 * _array_size <= _nnodes && _array_size < MAX_SIZE)) {
 			int new_array_size = (int) SpacedPrimes.closest (_nnodes);
