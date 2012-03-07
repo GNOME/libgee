@@ -236,7 +236,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		if (*node != null) {
 			Node<K,V> next = (owned) (*node)->next;
 
-			if (&value != NULL) {
+			if (&value != null) {
 				value = (owned) (*node)->value;
 			}
 
