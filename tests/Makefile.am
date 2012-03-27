@@ -8,6 +8,8 @@ tests_SOURCES = \
        testarraylist.vala \
        testarrayqueue.vala \
        testbidirlist.vala \
+       testbidirsortedset.vala \
+       testbidirsortedmap.vala \
        testcase.vala \
        testcollection.vala \
        testconcurrentlist.vala \

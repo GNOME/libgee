@@ -24,7 +24,6 @@ using GLib;
 using Gee;
 
 public abstract class SortedSetTests : SetTests {
-
 	public SortedSetTests (string name) {
 		base (name);
 		add_test ("[SortedSet] first", test_first);
@@ -35,18 +34,10 @@ public abstract class SortedSetTests : SetTests {
 		add_test ("[SortedSet] higher", test_higher);
 		add_test ("[SortedSet] floor", test_floor);
 		add_test ("[SortedSet] ceil", test_ceil);
-		add_test ("[SortedSet] bi-directional iterators can go backward",
-		          test_bidir_iterator_can_go_backward);
-		add_test ("[SortedSet] bi-directional iterators are mutable",
-		          test_mutable_bidir_iterator);
-		add_test ("[SortedSet] bi-directional iterators can to beginning",
-		          test_bidir_iterator_first);
-		add_test ("[SortedSet] bi-directional iterators can to end",
-		          test_bidir_iterator_last);
-		get_suite ().add_suite (new SubSet (this, SubSet.Type.HEAD).get_suite ());
-		get_suite ().add_suite (new SubSet (this, SubSet.Type.TAIL).get_suite ());
-		get_suite ().add_suite (new SubSet (this, SubSet.Type.SUB).get_suite ());
-		get_suite ().add_suite (new SubSet (this, SubSet.Type.EMPTY).get_suite ());
+		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.HEAD).get_suite ());
+		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.TAIL).get_suite ());
+		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.SUB).get_suite ());
+		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.EMPTY).get_suite ());
 	}
 
 	public void test_ordering () {
@@ -255,141 +246,7 @@ public abstract class SortedSetTests : SetTests {
 		assert (test_set.ceil ("s") == "six");
 	}
 
-	public void test_bidir_iterator_can_go_backward () {
-		var test_set = test_collection as SortedSet<string>;
-
-		var iterator = test_set.bidir_iterator ();
-		assert (!iterator.has_previous ());
-
-		assert (test_set.add ("one"));
-		assert (test_set.add ("two"));
-		assert (test_set.add ("three"));
-		assert (test_set.add ("four"));
-		assert (test_set.add ("five"));
-		assert (test_set.add ("six"));
-
-		iterator = test_set.bidir_iterator ();
-		assert (iterator.next ());
-		assert (iterator.get () == "five");
-		assert (!iterator.has_previous ());
-		assert (iterator.next ());
-		assert (iterator.get () == "four");
-		assert (iterator.has_previous ());
-		assert (iterator.next ());
-		assert (iterator.get () == "one");
-		assert (iterator.has_previous ());
-		assert (iterator.next ());
-		assert (iterator.get () == "six");
-		assert (iterator.has_previous ());
-		assert (iterator.next ());
-		assert (iterator.get () == "three");
-		assert (iterator.has_previous ());
-		assert (iterator.next ());
-		assert (iterator.get () == "two");
-		assert (iterator.has_previous ());
-		assert (!iterator.next ());
-		assert (iterator.previous ());
-		assert (iterator.get () == "three");
-		assert (iterator.previous ());
-		assert (iterator.get () == "six");
-		assert (iterator.previous ());
-		assert (iterator.get () == "one");
-		assert (iterator.previous ());
-		assert (iterator.get () == "four");
-		assert (iterator.previous ());
-		assert (iterator.get () == "five");
-		assert (!iterator.previous ());
-		assert (iterator.get () == "five");
-	}
-
-	public void test_bidir_iterator_first () {
-		var test_set = test_collection as SortedSet<string>;
-
-		var iterator = test_set.bidir_iterator ();
-
-		assert (!iterator.first ());
-
-		assert (test_set.add ("one"));
-		assert (test_set.add ("two"));
-		assert (test_set.add ("three"));
-		assert (test_set.add ("four"));
-		assert (test_set.add ("five"));
-		assert (test_set.add ("six"));
-
-		iterator = test_set.bidir_iterator ();
-		assert (iterator.last ());
-		assert (iterator.get () == "two");
-		assert (iterator.first ());
-		assert (iterator.get () == "five");
-	}
-
-	public void test_bidir_iterator_last () {
-		var test_set = test_collection as SortedSet<string>;
-
-		var iterator = test_set.bidir_iterator ();
-
-		assert (!iterator.last ());
-
-		assert (test_set.add ("one"));
-		assert (test_set.add ("two"));
-		assert (test_set.add ("three"));
-		assert (test_set.add ("four"));
-		assert (test_set.add ("five"));
-		assert (test_set.add ("six"));
-
-		iterator = test_set.bidir_iterator ();
-		assert (iterator.last ());
-		assert (iterator.get () == "two");
-	}
-
-	public void test_mutable_bidir_iterator () {
-		var test_set = test_collection as SortedSet<string>;
-
-		var iterator = test_set.bidir_iterator ();
-		assert (!iterator.has_previous ());
-
-		assert (test_set.add ("one"));
-		assert (test_set.add ("two"));
-		assert (test_set.add ("three"));
-		assert (test_set.add ("four"));
-		assert (test_set.add ("five"));
-		assert (test_set.add ("six"));
-
-		iterator = test_set.bidir_iterator ();
-
-		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-		                       TestTrapFlags.SILENCE_STDERR)) {
-			iterator.remove ();
-			Posix.exit (0);
-		}
-		Test.trap_assert_failed ();
-
-		assert (iterator.next ());
-		assert (iterator.get () == "five");
-		iterator.remove ();
-		assert (!test_set.contains ("five"));
-		assert (iterator.has_next ());
-		assert (!iterator.has_previous ());
-		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-		                       TestTrapFlags.SILENCE_STDERR)) {
-			iterator.get ();
-			Posix.exit (0);
-		}
-		assert (!iterator.previous ());
-
-		assert (iterator.next ());
-		assert (iterator.get () == "four");
-		assert (iterator.next ());
-		assert (iterator.get () == "one");
-		iterator.remove ();
-		assert (!test_set.contains ("one"));
-		assert (iterator.has_next ());
-		assert (iterator.has_previous ());
-		assert (iterator.previous ());
-		assert (iterator.get () == "four");
-	}
-
-	public class SubSet : Gee.TestCase {
+	protected class SubSetTests : Gee.TestCase {
 		private SortedSet<string> master;
 		private SortedSet<string> subset;
 		private SortedSetTests test;
@@ -410,7 +267,7 @@ public abstract class SortedSetTests : SetTests {
 		}
 		private Type type;
 
-		public SubSet (SortedSetTests test, Type type) {
+		public SubSetTests (SortedSetTests test, Type type) {
 			base ("%s Subset".printf (type.to_string ()));
 			this.test = test;
 			this.type = type;
@@ -644,27 +501,15 @@ public abstract class SortedSetTests : SetTests {
 			assert (i == contains.length);
 
 
-			var iter = subset.bidir_iterator ();
+			var iter = subset.iterator ();
 			if (type != Type.EMPTY) {
-				assert (iter.last ());
-				assert (iter.get () == contains[contains.length - 1]);
-				assert (iter.first ());
-
+				assert (iter.has_next ());
+				assert (iter.next ());
 				assert (iter.get () == contains[0]);
 				assert (iter.has_next ());
 				assert (iter.next ());
 				assert (iter.get () == contains[1]);
-				assert (iter.has_previous ());
-				iter.remove ();
-				assert (iter.has_previous ());
-				if (type != Type.HEAD)
-					assert (iter.has_next ());
-				else
-					assert (!iter.has_next ());
-				assert (iter.previous ());
-				assert (iter.get () == contains[0]);
 			} else {
-				assert (!iter.first ());
 				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 				                       TestTrapFlags.SILENCE_STDERR)) {
 					iter.remove ();

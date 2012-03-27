@@ -77,34 +77,5 @@ internal class Gee.ReadOnlySortedMap<K,V> : ReadOnlyMap<K,V>, SortedMap<K,V> {
 			return (_map as SortedMap<K,V>).ascending_entries.read_only_view;
 		}
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Gee.BidirMapIterator<K,V> bidir_map_iterator () {
-		return new BidirMapIterator<K,V> ((_map as SortedMap<K,V>).bidir_map_iterator ());
-	}
-
-	protected class BidirMapIterator<K,V> : Gee.ReadOnlyMap.MapIterator<K,V>, Gee.BidirMapIterator<K,V> {
-		public BidirMapIterator (Gee.BidirMapIterator<K,V> iterator) {
-			base (iterator);
-		}
-
-		public bool first () {
-			return (_iter as Gee.BidirMapIterator<K,V>).first ();
-		}
-
-		public bool previous () {
-			return (_iter as Gee.BidirMapIterator<K,V>).previous ();
-		}
-
-		public bool has_previous () {
-			return (_iter as Gee.BidirMapIterator<K,V>).has_previous ();
-		}
-
-		public bool last () {
-			return (_iter as Gee.BidirMapIterator<K,V>).last ();
-		}
-	}
 }
 

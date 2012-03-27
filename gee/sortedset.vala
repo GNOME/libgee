@@ -40,14 +40,6 @@ public interface Gee.SortedSet<G> : Gee.Set<G> {
 	public abstract G last ();
 
 	/**
-	 * Returns a {@link BidirIterator} that can be used for bi-directional
-	 * iteration over this sorted set.
-	 *
-	 * @return a {@link BidirIterator} over this sorted set
-	 */
-	public abstract BidirIterator<G> bidir_iterator ();
-
-	/**
 	 * Returns a {@link BidirIterator} initialy pointed at the specified
 	 * element.
 	 *
@@ -56,7 +48,7 @@ public interface Gee.SortedSet<G> : Gee.Set<G> {
 	 * @return        a {@link BidirIterator} over this sorted set, or null if
 	 *                the specified element is not in this set
 	 */
-	public abstract BidirIterator<G>? iterator_at (G element);
+	public abstract Iterator<G>? iterator_at (G element);
 
 	/**
 	 * Returns the element which is strictly lower than the specified element.

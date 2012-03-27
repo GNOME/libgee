@@ -57,16 +57,9 @@ internal class Gee.ReadOnlySortedSet<G> : ReadOnlySet<G>, SortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Gee.BidirIterator<G> bidir_iterator () {
-		return new BidirIterator<G> ((_collection as SortedSet<G>).bidir_iterator ());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Gee.BidirIterator<G>? iterator_at (G element) {
+	public Gee.Iterator<G>? iterator_at (G element) {
 		var iter = (_collection as SortedSet<G>).iterator_at (element);
-		return (iter != null) ? new BidirIterator<G> (iter) : null;
+		return (iter != null) ? new Iterator<G> (iter) : null;
 	}
 
 	/**
@@ -124,28 +117,6 @@ internal class Gee.ReadOnlySortedSet<G> : ReadOnlySet<G>, SortedSet<G> {
 	public new SortedSet<G> read_only_view {
 		owned get {
 			return this;
-		}
-	}
-
-	protected class BidirIterator<G> : Gee.ReadOnlyCollection.Iterator<G>, Gee.BidirIterator<G> {
-		public BidirIterator (Gee.BidirIterator<G> iterator) {
-			base (iterator);
-		}
-
-		public bool first () {
-			return (_iter as Gee.BidirIterator<G>).first ();
-		}
-
-		public bool previous () {
-			return (_iter as Gee.BidirIterator<G>).previous ();
-		}
-
-		public bool has_previous () {
-			return (_iter as Gee.BidirIterator<G>).has_previous ();
-		}
-
-		public bool last () {
-			return (_iter as Gee.BidirIterator<G>).last ();
 		}
 	}
 }

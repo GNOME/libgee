@@ -31,7 +31,7 @@ using GLib;
  *
  * @see HashMap
  */
-public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
+public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -745,7 +745,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		BOUNDED
 	}
 
-	private class SubMap<K,V> : AbstractSortedMap<K,V> {
+	private class SubMap<K,V> : AbstractBidirSortedMap<K,V> {
 		public override int size { get { return keys.size; } }
 		public override bool is_empty { get { return keys.is_empty; } }
 
@@ -874,7 +874,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		private Range<K,V> range;
 	}
 
-	private class KeySet<K,V> : AbstractSet<K>, SortedSet<K> {
+	private class KeySet<K,V> : AbstractBidirSortedSet<K> {
 		private TreeMap<K,V> _map;
 
 		public KeySet (TreeMap<K,V> map) {
@@ -909,61 +909,57 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return _map.has_key (key);
 		}
 
-		public K first () {
+		public override K first () {
 			assert (_map.first != null);
 			return _map.first.key;
 		}
 
-		public K last () {
+		public override K last () {
 			assert (_map.last != null);
 			return _map.last.key;
 		}
 
-		public BidirIterator<K> bidir_iterator () {
+		public override BidirIterator<K> bidir_iterator () {
 			return new KeyIterator<K,V> (_map);
 		}
 
-		public SortedSet<K> head_set (K before) {
+		public override SortedSet<K> head_set (K before) {
 			return new SubKeySet<K,V> (_map, new Range<K,V>.head (_map, before));
 		}
 
-		public SortedSet<K> tail_set (K after) {
+		public override SortedSet<K> tail_set (K after) {
 			return new SubKeySet<K,V> (_map, new Range<K,V>.tail (_map, after));
 		}
 
-		public SortedSet<K> sub_set (K after, K before) {
+		public override SortedSet<K> sub_set (K after, K before) {
 			return new SubKeySet<K,V> (_map, new Range<K,V> (_map, after, before));
 		}
 
-		public BidirIterator<K>? iterator_at (K item) {
+		public override Iterator<K>? iterator_at (K item) {
 			weak Node<K,V>? node = _map.find_node (item);
 			if (node == null)
 				return null;
 			return new KeyIterator<K,V>.pointing (_map, node);
 		}
 
-		public K? lower (K item) {
+		public override K? lower (K item) {
 			return _map.lift_null_key (_map.find_lower (item));
 		}
 
-		public K? higher (K item) {
+		public override K? higher (K item) {
 			return _map.lift_null_key (_map.find_higher (item));
 		}
 
-		public K? floor (K item) {
+		public override K? floor (K item) {
 			return _map.lift_null_key (_map.find_floor (item));
 		}
 
-		public K? ceil (K item) {
+		public override K? ceil (K item) {
 			return _map.lift_null_key (_map.find_ceil (item));
-		}
-
-		public new SortedSet<K> read_only_view {
-			owned get { return this; }
 		}
 	}
 
-	private class SubKeySet<K,V> : AbstractSet<K>, SortedSet<K> {
+	private class SubKeySet<K,V> : AbstractBidirSortedSet<K> {
 		public TreeMap<K,V> map { private set; get; }
 		public Range<K,V> range { private set; get; }
 
@@ -1010,35 +1006,35 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return range.in_range(key) && map.has_key (key);
 		}
 
-		public BidirIterator<K> bidir_iterator () {
+		public override BidirIterator<K> bidir_iterator () {
 			return new SubKeyIterator<K,V> (map, range);
 		}
 
-		public K first () {
+		public override K first () {
 			weak Node<K,V>? _first = range.first ();
 			assert (_first != null);
 			return _first.key;
 		}
 
-		public K last () {
+		public override K last () {
 			weak Node<K,V>? _last = range.last ();
 			assert (_last != null);
 			return _last.key;
 		}
 
-		public SortedSet<K> head_set (K before) {
+		public override SortedSet<K> head_set (K before) {
 			return new SubKeySet<K,V> (map, range.cut_tail (before));
 		}
 
-		public SortedSet<K> tail_set (K after) {
+		public override SortedSet<K> tail_set (K after) {
 			return new SubKeySet<K,V> (map, range.cut_head (after));
 		}
 
-		public SortedSet<K> sub_set (K after, K before) {
+		public override SortedSet<K> sub_set (K after, K before) {
 			return new SubKeySet<K,V> (map, range.cut (after, before));
 		}
 
-		public BidirIterator<K>? iterator_at (K key) {
+		public override Iterator<K>? iterator_at (K key) {
 			if (!range.in_range (key))
 				return null;
 			weak Node<K,V>? n = map.find_node (key);
@@ -1047,7 +1043,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return new SubKeyIterator<K,V>.pointing (map, range, n);
 		}
 
-		public K? lower (K key) {
+		public override K? lower (K key) {
 			var res = range.compare_range (key);
 			if (res > 0)
 				return last ();
@@ -1055,7 +1051,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return l != null && range.in_range (l) ? l : null;
 		}
 
-		public K? higher (K key) {
+		public override K? higher (K key) {
 			var res = range.compare_range (key);
 			if (res < 0)
 				return first ();
@@ -1063,7 +1059,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return h != null && range.in_range (h) ? h : null;
 		}
 
-		public K? floor (K key) {
+		public override K? floor (K key) {
 			var res = range.compare_range (key);
 			if (res > 0)
 				return last ();
@@ -1071,16 +1067,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return l != null && range.in_range (l) ? l : null;
 		}
 
-		public K? ceil (K key) {
+		public override K? ceil (K key) {
 			var res = range.compare_range (key);
 			if (res < 0)
 				return first ();
 			var h = map.lift_null_key (map.find_ceil (key));
 			return h != null && range.in_range (h) ? h : null;
-		}
-
-		public new SortedSet<K> read_only_view {
-			owned get { return this; }
 		}
 	}
 
@@ -1180,7 +1172,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 		}
 	}
 
-	private class EntrySet<K,V> : AbstractSet<Map.Entry<K, V>>, SortedSet<Map.Entry<K, V>> {
+	private class EntrySet<K,V> : AbstractBidirSortedSet<Map.Entry<K, V>> {
 		private TreeMap<K,V> _map;
 
 		public EntrySet (TreeMap<K,V> map) {
@@ -1215,65 +1207,61 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return _map.has (entry.key, entry.value);
 		}
 
-		public Map.Entry<K, V>/*?*/ first () {
+		public override Map.Entry<K, V>/*?*/ first () {
 			assert (_map.first != null);
 			return Entry.entry_for<K,V> (_map.first);
 		}
 
-		public Map.Entry<K, V>/*?*/ last () {
+		public override Map.Entry<K, V>/*?*/ last () {
 			assert (_map.last != null);
 			return Entry.entry_for<K,V> (_map.last);
 		}
 
-		public BidirIterator<Map.Entry<K, V>> bidir_iterator () {
+		public override BidirIterator<Map.Entry<K, V>> bidir_iterator () {
 			return new EntryIterator<K,V> (_map);
 		}
 
-		public SortedSet<Map.Entry<K, V>> head_set (Map.Entry<K, V> before) {
+		public override SortedSet<Map.Entry<K, V>> head_set (Map.Entry<K, V> before) {
 			return new SubEntrySet<K,V> (_map, new Range<K,V>.head (_map, before.key));
 		}
 
-		public SortedSet<Map.Entry<K, V>> tail_set (Map.Entry<K, V> after) {
+		public override SortedSet<Map.Entry<K, V>> tail_set (Map.Entry<K, V> after) {
 			return new SubEntrySet<K,V> (_map, new Range<K,V>.tail (_map, after.key));
 		}
 
-		public SortedSet<K> sub_set (Map.Entry<K, V> after, Map.Entry<K, V> before) {
+		public override SortedSet<K> sub_set (Map.Entry<K, V> after, Map.Entry<K, V> before) {
 			return new SubEntrySet<K,V> (_map, new Range<K,V> (_map, after.key, before.key));
 		}
 
-		public BidirIterator<Map.Entry<K, V>>? iterator_at (Map.Entry<K, V> item) {
+		public override Iterator<Map.Entry<K, V>>? iterator_at (Map.Entry<K, V> item) {
 			weak Node<K,V>? node = _map.find_node (item.key);
 			if (node == null || !_map.value_equal_func (node.value, item.value))
 				return null;
 			return new EntryIterator<K,V>.pointing (_map, node);
 		}
 
-		public Map.Entry<K, V>/*?*/ lower (Map.Entry<K, V> item) {
+		public override Map.Entry<K, V>/*?*/ lower (Map.Entry<K, V> item) {
 			weak Node<K,V>? l = _map.find_lower (item.key);
 			return l != null ? Entry.entry_for<K,V> (l) : null;
 		}
 
-		public Map.Entry<K, V>/*?*/ higher (Map.Entry<K, V> item) {
+		public override Map.Entry<K, V>/*?*/ higher (Map.Entry<K, V> item) {
 			weak Node<K,V>? l = _map.find_higher (item.key);
 			return l != null ? Entry.entry_for<K,V> (l) : null;
 		}
 
-		public Map.Entry<K, V>/*?*/ floor (Map.Entry<K, V> item) {
+		public override Map.Entry<K, V>/*?*/ floor (Map.Entry<K, V> item) {
 			weak Node<K,V>? l = _map.find_floor (item.key);
 			return l != null ? Entry.entry_for<K,V> (l) : null;
 		}
 
-		public Map.Entry<K, V>/*?*/ ceil (Map.Entry<K, V> item) {
+		public override Map.Entry<K, V>/*?*/ ceil (Map.Entry<K, V> item) {
 			weak Node<K,V>? l = _map.find_ceil (item.key);
 			return l != null ? Entry.entry_for<K,V> (l) : null;
 		}
-
-		public new SortedSet<Map.Entry<K, V>> read_only_view {
-			owned get { return this; }
-		}
 	}
 
-	private class SubEntrySet<K,V> : AbstractSet<Map.Entry<K,V>>, SortedSet<Map.Entry<K,V>> {
+	private class SubEntrySet<K,V> : AbstractBidirSortedSet<Map.Entry<K,V>> {
 		public TreeMap<K,V> map { private set; get; }
 		public Range<K,V> range { private set; get; }
 
@@ -1320,35 +1308,35 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return range.in_range(entry.key) && map.has (entry.key, entry.value);
 		}
 
-		public BidirIterator<K> bidir_iterator () {
+		public override BidirIterator<K> bidir_iterator () {
 			return new SubEntryIterator<K,V> (map, range);
 		}
 
-		public Map.Entry<K,V> first () {
+		public override Map.Entry<K,V> first () {
 			weak Node<K,V>? _first = range.first ();
 			assert (_first != null);
 			return Entry.entry_for<K,V> (_first);
 		}
 
-		public Map.Entry<K,V> last () {
+		public override Map.Entry<K,V> last () {
 			weak Node<K,V>? _last = range.last ();
 			assert (_last != null);
 			return Entry.entry_for<K,V> (_last);
 		}
 
-		public SortedSet<K> head_set (Map.Entry<K,V> before) {
+		public override SortedSet<K> head_set (Map.Entry<K,V> before) {
 			return new SubEntrySet<K,V> (map, range.cut_tail (before.key));
 		}
 
-		public SortedSet<K> tail_set (Map.Entry<K,V> after) {
+		public override SortedSet<K> tail_set (Map.Entry<K,V> after) {
 			return new SubEntrySet<K,V> (map, range.cut_head (after.key));
 		}
 
-		public SortedSet<K> sub_set (Map.Entry<K,V> after, Map.Entry<K,V> before) {
+		public override SortedSet<K> sub_set (Map.Entry<K,V> after, Map.Entry<K,V> before) {
 			return new SubEntrySet<K,V> (map, range.cut (after.key, before.key));
 		}
 
-		public BidirIterator<Map.Entry<K,V>>? iterator_at (Map.Entry<K,V> entry) {
+		public override Iterator<Map.Entry<K,V>>? iterator_at (Map.Entry<K,V> entry) {
 			if (!range.in_range (entry.key))
 				return null;
 			weak Node<K,V>? n = map.find_node (entry.key);
@@ -1357,7 +1345,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return new SubEntryIterator<K,V>.pointing (map, range, n);
 		}
 
-		public Map.Entry<K,V>/*?*/ lower (Map.Entry<K,V> entry) {
+		public override Map.Entry<K,V>/*?*/ lower (Map.Entry<K,V> entry) {
 			var res = range.compare_range (entry.key);
 			if (res > 0)
 				return last ();
@@ -1365,7 +1353,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return l != null && range.in_range (l.key) ? Entry.entry_for<K,V> (l) : null;
 		}
 
-		public Map.Entry<K,V>/*?*/ higher (Map.Entry<K,V> entry) {
+		public override Map.Entry<K,V>/*?*/ higher (Map.Entry<K,V> entry) {
 			var res = range.compare_range (entry.key);
 			if (res < 0)
 				return first ();
@@ -1373,7 +1361,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return h != null && range.in_range (h.key) ? Entry.entry_for<K,V> (h) : null;
 		}
 
-		public Map.Entry<K,V>/*?*/ floor (Map.Entry<K,V> entry) {
+		public override Map.Entry<K,V>/*?*/ floor (Map.Entry<K,V> entry) {
 			var res = range.compare_range (entry.key);
 			if (res > 0)
 				return last ();
@@ -1381,27 +1369,23 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return l != null && range.in_range (l.key) ? Entry.entry_for<K,V> (l) : null;
 		}
 
-		public Map.Entry<K,V>/*?*/ ceil (Map.Entry<K,V> entry) {
+		public override Map.Entry<K,V>/*?*/ ceil (Map.Entry<K,V> entry) {
 			var res = range.compare_range (entry.key);
 			if (res < 0)
 				return first ();
 			weak Node<K,V>? h = map.find_ceil (entry.key);
 			return h != null && range.in_range (h.key) ? Entry.entry_for<K,V> (h) : null;
 		}
-
-		public new SortedSet<Map.Entry<K, V>> read_only_view {
-			owned get { return this; }
-		}
 	}
 
 	private class NodeIterator<K, V> : Object {
 		protected TreeMap<K,V> _map;
-		
+
 		// concurrent modification protection
 		protected int stamp;
-		
+
 		protected bool started = false;
-		
+
 		internal weak Node<K, V>? current;
 		protected weak Node<K, V>? _next;
 		protected weak Node<K, V>? _prev;
@@ -1507,13 +1491,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			_map.stamp++;
 			assert (stamp == _map.stamp);
 		}
-		
+
 		public virtual bool read_only {
 			get {
 				return true;
 			}
 		}
-		
+
 		public bool valid {
 			get {
 				return current != null;
@@ -1901,7 +1885,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			return Traversable.chop_impl<Map.Entry<K, V>> (this, offset, length);
 		}
 	}
-	
+
 	private class MapIterator<K,V> : NodeIterator<K,V>, Gee.MapIterator<K,V>, BidirMapIterator<K,V> {
 		public MapIterator (TreeMap<K,V> map) {
 			base (map);
@@ -1937,7 +1921,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractSortedMap<K,V> {
 			}
 		}
 	}
-	
+
 	private class SubMapIterator<K,V> : SubNodeIterator<K,V>, Gee.MapIterator<K,V>, BidirMapIterator<K,V> {
 		public SubMapIterator (TreeMap<K,V> map, Range<K,V> range) {
 			base (map, range);

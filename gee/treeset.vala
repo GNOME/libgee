@@ -32,7 +32,7 @@ using GLib;
  *
  * @see HashSet
  */
-public class Gee.TreeSet<G> : AbstractSortedSet<G> {
+public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -410,7 +410,7 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override BidirIterator<G>? iterator_at (G item) {
+	public override Gee.Iterator<G>? iterator_at (G item) {
 		weak Node<G>? node = find_node (item);
 		return node != null ? new Iterator<G>.pointing (this, node) : null;
 	}
@@ -901,7 +901,7 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 		BOUNDED
 	}
 
-	private class SubSet<G> : AbstractSortedSet<G> {
+	private class SubSet<G> : AbstractBidirSortedSet<G> {
 		public SubSet (TreeSet<G> set, G after, G before) {
 			this.set = set;
 			this.range = new Range<G> (set, after, before);
@@ -993,7 +993,7 @@ public class Gee.TreeSet<G> : AbstractSortedSet<G> {
 			return new SubSet<G>.from_range (set, range.cut (after, before));
 		}
 
-		public override BidirIterator<G>? iterator_at (G item) {
+		public override Gee.Iterator<G>? iterator_at (G item) {
 			if (!range.in_range (item))
 				return null;
 			weak Node<G>? n = set.find_node (item);

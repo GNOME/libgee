@@ -31,14 +31,10 @@ public abstract class Gee.SortedMapTests : MapTests {
 		add_test ("[SortedMap] higher", test_higher);
 		add_test ("[SortedMap] floor", test_floor);
 		add_test ("[SortedMap] ceil", test_ceil);
-		add_test ("[SortedMap] bi-directional iterators can go backward",
-		          test_bidir_iterator_can_go_backward);
-		add_test ("[SortedSet] bi-directional iterators can to end",
-		          test_bidir_iterator_last);
-		get_suite ().add_suite (new SubMap (this, SubMap.Type.HEAD).get_suite ());
-		get_suite ().add_suite (new SubMap (this, SubMap.Type.TAIL).get_suite ());
-		get_suite ().add_suite (new SubMap (this, SubMap.Type.SUB).get_suite ());
-		get_suite ().add_suite (new SubMap (this, SubMap.Type.EMPTY).get_suite ());
+		get_suite ().add_suite (new SubMapTests (this, SubMapTests.Type.HEAD).get_suite ());
+		get_suite ().add_suite (new SubMapTests (this, SubMapTests.Type.TAIL).get_suite ());
+		get_suite ().add_suite (new SubMapTests (this, SubMapTests.Type.SUB).get_suite ());
+		get_suite ().add_suite (new SubMapTests (this, SubMapTests.Type.EMPTY).get_suite ());
 	}
 
 	public void test_key_ordering () {
@@ -126,7 +122,7 @@ public abstract class Gee.SortedMapTests : MapTests {
 		assert (keys.first () == "eight");
 		/*assert_entry (entries.first (), "eight", "eight");*/
 	}
-	
+
 	public void test_last () {
 		var test_sorted_map = test_map as SortedMap<string,string>;
 		var keys = test_sorted_map.ascending_keys;
@@ -386,205 +382,7 @@ public abstract class Gee.SortedMapTests : MapTests {
 		assert_entry (entries.ceil (entry_for ("s", "six")), "six", "six");
 	}
 
-	public void test_bidir_iterator_can_go_backward () {
-		var test_sorted_map = test_map as SortedMap<string,string>;
-		var keys = test_sorted_map.ascending_keys;
-		var entries = test_sorted_map.ascending_entries;
-
-		var keys_iterator = keys.bidir_iterator ();
-		var entries_iterator = entries.bidir_iterator ();
-		var map_iterator = test_sorted_map.bidir_map_iterator ();
-
-		assert (!keys_iterator.has_previous ());
-		assert (!entries_iterator.has_previous ());
-
-		assert (!map_iterator.has_previous ());
-		assert (!keys_iterator.previous ());
-		assert (!entries_iterator.has_previous ());
-
-		assert (!map_iterator.previous ());
-
-		test_sorted_map.set ("one", "one");
-		test_sorted_map.set ("two", "two");
-		test_sorted_map.set ("three", "three");
-		test_sorted_map.set ("four", "four");
-		test_sorted_map.set ("five", "five");
-		test_sorted_map.set ("six", "six");
-
-		keys_iterator = keys.bidir_iterator ();
-		entries_iterator = entries.bidir_iterator ();
-		map_iterator = test_sorted_map.bidir_map_iterator ();
-
-		assert (keys_iterator.next ());
-		assert (entries_iterator.next ());
-
-		assert (map_iterator.next ());
-		assert (keys_iterator.get () == "five");
-		assert_entry (entries_iterator.get (), "five", "five");
-
-		assert (map_iterator.get_key () == "five");
-		assert (map_iterator.get_value () == "five");
-
-		assert (!keys_iterator.has_previous ());
-		assert (!entries_iterator.has_previous ());
-
-		assert (!map_iterator.has_previous ());
-		assert (keys_iterator.next ());
-		assert (entries_iterator.next ());
-
-		assert (map_iterator.next ());
-		assert (keys_iterator.get () == "four");
-		assert_entry (entries_iterator.get (), "four", "four");
-
-		assert (map_iterator.get_key () == "four");
-		assert (map_iterator.get_value () == "four");
-
-		assert (keys_iterator.has_previous ());
-		assert (entries_iterator.has_previous ());
-
-		assert (map_iterator.has_previous ());
-		assert (keys_iterator.next ());
-		assert (entries_iterator.next ());
-
-		assert (map_iterator.next ());
-		assert (keys_iterator.get () == "one");
-		assert_entry (entries_iterator.get (), "one", "one");
-
-		assert (map_iterator.get_key () == "one");
-		assert (map_iterator.get_value () == "one");
-
-		assert (keys_iterator.has_previous ());
-		assert (entries_iterator.has_previous ());
-
-		assert (map_iterator.has_previous ());
-		assert (keys_iterator.next ());
-		assert (entries_iterator.next ());
-
-		assert (map_iterator.next ());
-		assert (keys_iterator.get () == "six");
-		assert_entry (entries_iterator.get (), "six", "six");
-
-		assert (map_iterator.get_key () == "six");
-		assert (map_iterator.get_value () == "six");
-		assert (keys_iterator.has_previous ());
-
-		assert (entries_iterator.has_previous ());
-		assert (map_iterator.has_previous ());
-		assert (keys_iterator.next ());
-
-		assert (entries_iterator.next ());
-		assert (map_iterator.next ());
-		assert (keys_iterator.get () == "three");
-
-		assert_entry (entries_iterator.get (), "three", "three");
-		assert (map_iterator.get_key () == "three");
-		assert (map_iterator.get_value () == "three");
-
-		assert (keys_iterator.has_previous ());
-		assert (entries_iterator.has_previous ());
-		assert (map_iterator.has_previous ());
-
-		assert (keys_iterator.next ());
-		assert (entries_iterator.next ());
-		assert (map_iterator.next ());
-
-		assert (keys_iterator.get () == "two");
-		assert_entry (entries_iterator.get (), "two", "two");
-		assert (map_iterator.get_key () == "two");
-		assert (map_iterator.get_value () == "two");
-
-		assert (keys_iterator.has_previous ());
-		assert (entries_iterator.has_previous ());
-		assert (map_iterator.has_previous ());
-
-		assert (!keys_iterator.next ());
-		assert (!entries_iterator.next ());
-		assert (!map_iterator.next ());
-
-		assert (keys_iterator.previous ());
-		assert (entries_iterator.previous ());
-		assert (map_iterator.previous ());
-
-		assert (keys_iterator.get () == "three");
-		assert_entry (entries_iterator.get (), "three", "three");
-		assert (map_iterator.get_key () == "three");
-		assert (map_iterator.get_value () == "three");
-
-		assert (keys_iterator.previous ());
-		assert (entries_iterator.previous ());
-		assert (map_iterator.previous ());
-
-		assert (keys_iterator.get () == "six");
-		assert_entry (entries_iterator.get (), "six", "six");
-		assert (map_iterator.get_key () == "six");
-		assert (map_iterator.get_value () == "six");
-
-		assert (keys_iterator.previous ());
-		assert (entries_iterator.previous ());
-		assert (map_iterator.previous ());
-
-		assert (keys_iterator.get () == "one");
-		assert_entry (entries_iterator.get (), "one", "one");
-		assert (map_iterator.get_key () == "one");
-		assert (map_iterator.get_value () == "one");
-
-		assert (keys_iterator.previous ());
-		assert (entries_iterator.previous ());
-		assert (map_iterator.previous ());
-
-		assert (keys_iterator.get () == "four");
-		assert_entry (entries_iterator.get (), "four", "four");
-		assert (map_iterator.get_key () == "four");
-		assert (map_iterator.get_value () == "four");
-
-		assert (keys_iterator.previous ());
-		assert (entries_iterator.previous ());
-		assert (map_iterator.previous ());
-
-		assert (keys_iterator.get () == "five");
-		assert_entry (entries_iterator.get (), "five", "five");
-		assert (map_iterator.get_key () == "five");
-		assert (map_iterator.get_value () == "five");
-
-		assert (!keys_iterator.previous ());
-		assert (!entries_iterator.previous ());
-		assert (!map_iterator.previous ());
-
-		assert (keys_iterator.get () == "five");
-		assert_entry (entries_iterator.get (), "five", "five");
-		assert (map_iterator.get_key () == "five");
-		assert (map_iterator.get_value () == "five");
-	}
-
-	public void test_bidir_iterator_last () {
-		var test_sorted_map = test_map as SortedMap<string,string>;
-		var keys = test_sorted_map.ascending_keys;
-		var entries = test_sorted_map.ascending_entries;
-
-		var keys_iterator = keys.bidir_iterator ();
-		var entries_iterator = entries.bidir_iterator ();
-
-		assert (!keys_iterator.last ());
-		assert (!entries_iterator.last ());
-
-		test_sorted_map.set ("one", "one");
-		test_sorted_map.set ("two", "two");
-		test_sorted_map.set ("three", "three");
-		test_sorted_map.set ("four", "four");
-		test_sorted_map.set ("five", "five");
-		test_sorted_map.set ("six", "six");
-
-		keys_iterator = keys.bidir_iterator ();
-		entries_iterator = entries.bidir_iterator ();
-
-		assert (keys_iterator.last ());
-		assert (entries_iterator.last ());
-
-		assert (keys_iterator.get () == "two");
-		assert_entry (entries_iterator.get (), "two", "two");
-	}
-
-	public class SubMap : Gee.TestCase {
+	public class SubMapTests : Gee.TestCase {
 		private SortedMap<string,string> master;
 		private SortedMap<string,string> submap;
 		private SortedMapTests test;
@@ -605,7 +403,7 @@ public abstract class Gee.SortedMapTests : MapTests {
 		}
 		private Type type;
 		
-		public SubMap (SortedMapTests test, Type type) {
+		public SubMapTests (SortedMapTests test, Type type) {
 			base ("%s Submap".printf (type.to_string ()));
 			this.test = test;
 			this.type = type;
@@ -881,45 +679,36 @@ public abstract class Gee.SortedMapTests : MapTests {
 		public void test_iterators () {
 			string[] contains, not_contains;
 
-			var _map_iter = submap.bidir_map_iterator ();
+			var _map_iter = submap.map_iterator ();
 
 			assert (!_map_iter.has_next ());
 			assert (!_map_iter.next ());
-			assert (!_map_iter.has_previous ());
-			assert (!_map_iter.previous ());
-			
+
 			set_default_values (out contains, out not_contains);
-			
+
 			var i = 0;
-			_map_iter = submap.bidir_map_iterator ();
+			_map_iter = submap.map_iterator ();
 			while (_map_iter.next ()) {
 				assert (_map_iter.get_key () == contains[i]);
 				assert (_map_iter.get_value () == contains[i]);
 				i++;
 			}
 			assert (i == contains.length);
-			
+
 			i = 0;
 			foreach (var k in submap.keys)
 				assert (k == contains[i++]);
 			assert (i == contains.length);
-			
+
 			i = 0;
 			foreach (var e in submap.entries) {
 				MapTests.assert_entry (e, contains[i], contains[i]);
 				i++;
 			}
 			assert (i == contains.length);
-			
-			var keys_iter = submap.ascending_keys.bidir_iterator ();
-			var entries_iter = submap.ascending_entries.bidir_iterator ();
-			var map_iter = submap.bidir_map_iterator ();
-			if (type != Type.EMPTY) {
-				assert (map_iter.last ());
-				assert (map_iter.get_key () == contains[contains.length - 1]);
-				assert (map_iter.get_value () == contains[contains.length - 1]);
 
-				map_iter = submap.bidir_map_iterator ();
+			if (type != Type.EMPTY) {
+				var map_iter = submap.map_iterator ();
 				assert (map_iter.next ());
 
 				assert (map_iter.get_key () == contains[0]);
@@ -930,77 +719,36 @@ public abstract class Gee.SortedMapTests : MapTests {
 				assert (map_iter.get_key () == contains[1]);
 				assert (map_iter.get_value () == contains[1]);
 
-				assert (map_iter.has_previous ());
-				map_iter.unset ();
-				assert (map_iter.has_previous ());
-				if (type != Type.HEAD)
-					assert (map_iter.has_next ());
-				else
-					assert (!map_iter.has_next ());
-				assert (map_iter.previous ());
-				assert (map_iter.get_key () == contains[0]);
-				assert (map_iter.get_value () == contains[0]);
-				
 				// Repeat for keys
 				master.clear ();
 				set_default_values (out contains, out not_contains);
-				
-				assert (keys_iter.last ());
-				assert (keys_iter.get () == contains[contains.length - 1]);
-				assert (keys_iter.first ());
+				var keys_iter = submap.ascending_keys.iterator ();
+
+				assert (keys_iter.has_next ());
+				assert (keys_iter.next ());
 
 				assert (keys_iter.get () == contains[0]);
 				assert (keys_iter.has_next ());
 				assert (keys_iter.next ());
 				assert (keys_iter.get () == contains[1]);
-				assert (keys_iter.has_previous ());
-				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-				                       TestTrapFlags.SILENCE_STDERR)) {
-					keys_iter.remove ();
-					Posix.exit (0);
-				}
-				assert (keys_iter.has_previous ());
-				if (type != Type.HEAD)
-					assert (keys_iter.has_next ());
-				else
-					assert (!keys_iter.has_next ());
-				assert (keys_iter.previous ());
-				assert (keys_iter.get () == contains[0]);
 				
 				// Repeat for entries
 				master.clear ();
 				set_default_values (out contains, out not_contains);
+				var entries_iter = submap.ascending_entries.iterator ();
 
-				assert (entries_iter.last ());
-				MapTests.assert_entry (entries_iter.get (), contains[contains.length - 1], contains[contains.length - 1]);
-				assert (entries_iter.first ());
+				assert (entries_iter.has_next ());
+				assert (entries_iter.next ());
 
 				MapTests.assert_entry (entries_iter.get (), contains[0], contains[0]);
 				assert (entries_iter.has_next ());
 				assert (entries_iter.next ());
 				MapTests.assert_entry (entries_iter.get (), contains[1], contains[1]);
-				assert (entries_iter.has_previous ());
-				entries_iter.remove ();
-				assert (entries_iter.has_previous ());
-				if (type != Type.HEAD)
-					assert (entries_iter.has_next ());
-				else
-					assert (!entries_iter.has_next ());
-				assert (entries_iter.previous ());
-				MapTests.assert_entry (entries_iter.get (), contains[0], contains[0]);
 			} else {
-				assert (!keys_iter.first ());
-				assert (!keys_iter.last ());
+				var keys_iter = submap.ascending_keys.iterator ();
 				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 				                       TestTrapFlags.SILENCE_STDERR)) {
 					keys_iter.remove ();
-					Posix.exit (0);
-				}
-				Test.trap_assert_failed ();
-				assert (!entries_iter.first ());
-				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-				                       TestTrapFlags.SILENCE_STDERR)) {
-					entries_iter.remove ();
 					Posix.exit (0);
 				}
 				Test.trap_assert_failed ();

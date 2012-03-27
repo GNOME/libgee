@@ -23,7 +23,7 @@
 
 using Gee;
 
-public class TreeSetTests : SortedSetTests {
+public class TreeSetTests : BidirSortedSetTests {
 
 	public TreeSetTests () {
 		base ("TreeSet");

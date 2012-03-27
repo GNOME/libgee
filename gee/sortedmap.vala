@@ -25,10 +25,12 @@ public interface Gee.SortedMap<K,V> : Gee.Map<K,V> {
 	 * Returns map containing pairs with key strictly lower the the argument.
 	 */
 	public abstract SortedMap<K,V> head_map (K before);
+
 	/**
 	 * Returns map containing pairs with key equal or larger then the argument.
 	 */
 	public abstract SortedMap<K,V> tail_map (K after);
+
 	/**
 	 * Returns right-open map (i.e. containing all pair which key is strictly
 	 * lower then the second argument and equal or bigger then the first one).
@@ -36,21 +38,17 @@ public interface Gee.SortedMap<K,V> : Gee.Map<K,V> {
 	 * Null as one parameter means that it should include all from this side.
 	 */
 	public abstract SortedMap<K,V> sub_map (K before, K after);
+
 	/**
 	 * Returns the keys in ascending order.
 	 */
 	public abstract SortedSet<K> ascending_keys { owned get; }
+
 	/**
 	 * Returns the entries in ascending order.
 	 */
 	public abstract SortedSet<Map.Entry<K,V>> ascending_entries { owned get; }
-	/**
-	 * Returns a bi-directional iterator for this map.
-	 *
-	 * @return a bi-directional map iterator
-	 */
-	public abstract BidirMapIterator<K,V> bidir_map_iterator ();
-	
+
 	/**
 	 * The read-only view this map.
 	 */

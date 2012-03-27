@@ -7,6 +7,8 @@ lib_LTLIBRARIES = \
 libgee_0_8_la_SOURCES = \
 	assemblyinfo.vala \
 	abstractbidirlist.vala \
+	abstractbidirsortedset.vala \
+	abstractbidirsortedmap.vala \
 	abstractcollection.vala \
 	abstractlist.vala \
 	abstractmap.vala \
@@ -22,6 +24,8 @@ libgee_0_8_la_SOURCES = \
 	bidirlist.vala \
 	bidirlistiterator.vala \
 	bidirmapiterator.vala \
+	bidirsortedset.vala \
+	bidirsortedmap.vala \
 	collection.vala \
 	comparable.vala \
 	concurrentlist.vala \
@@ -46,6 +50,8 @@ libgee_0_8_la_SOURCES = \
 	priorityqueue.vala \
 	queue.vala \
 	readonlybidirlist.vala \
+	readonlybidirsortedset.vala \
+	readonlybidirsortedmap.vala \
 	readonlycollection.vala \
 	readonlylist.vala \
 	readonlymap.vala \

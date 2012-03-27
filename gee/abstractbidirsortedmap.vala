@@ -1,6 +1,6 @@
-/* abstractsortedset.vala
+/* abstractbidirsortedmap.vala
  *
- * Copyright (C) 2009-2011  Maciej Piechotka
+ * Copyright (C) 2012  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,73 +21,28 @@
  */
 
 /**
- * Skeletal implementation of the {@link SortedSet} interface.
+ * Skeletal implementation of the {@link BidirSortedSet} interface.
  *
  * Contains common code shared by all set implementations.
  *
  * @see TreeSet
  */
-public abstract class Gee.AbstractSortedSet<G> : Gee.AbstractSet<G>, SortedSet<G> {
+public abstract class Gee.AbstractBidirSortedMap<K,V> : Gee.AbstractSortedMap<K,V>, BidirSortedMap<K,V> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract G first ();
+	public abstract BidirMapIterator<K,V> bidir_map_iterator ();
+
+	private weak BidirSortedMap<K,V> _read_only_view;
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract G last ();
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract Iterator<G>? iterator_at (G element);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract G? lower (G element);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract G? higher (G element);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract G? floor (G element);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract G? ceil (G element);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract SortedSet<G> head_set (G before);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract SortedSet<G> tail_set (G after);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract SortedSet<G> sub_set (G from, G to);
-
-	private weak SortedSet<G> _read_only_view;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public virtual new SortedSet<G> read_only_view {
+	public virtual new BidirSortedMap<K,V> read_only_view {
 		owned get {
-			SortedSet<G> instance = _read_only_view;
+			BidirSortedMap<K,V> instance = _read_only_view;
 			if (_read_only_view == null) {
-				instance = new ReadOnlySortedSet<G> (this);
+				instance = new ReadOnlyBidirSortedMap<K,V> (this);
 				_read_only_view = instance;
 				instance.add_weak_pointer ((void**) (&_read_only_view));
 			}

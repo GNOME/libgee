@@ -1,7 +1,6 @@
-/* testtreemap.vala
+/* bidirsortedmap.vala
  *
- * Copyright (C) 2008  Maciej Piechotka
- * Copyright (C) 2009  Didier Villevalois, Julien Peeters
+ * Copyright (C) 2012  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,22 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * Author:
- * 	Julien Peeters <contact@julienpeeters.fr>
+ * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 
-using Gee;
+public interface Gee.BidirSortedMap<K,V> : SortedMap<K,V> {
+	/**
+	 * Returns a bi-directional iterator for this map.
+	 *
+	 * @return a bi-directional map iterator
+	 */
+	public abstract BidirMapIterator<K,V> bidir_map_iterator ();
 
-public class TreeMapTests : BidirSortedMapTests {
+	/**
+	 * The read-only view of this set.
+	 */
+	public abstract new BidirSortedMap<K,V> read_only_view { owned get; }
 
-	public TreeMapTests () {
-		base ("TreeMap");
-	}
-
-	public override void set_up () {
-		test_map = new TreeMap<string,string> ();
-	}
-
-	public override void tear_down () {
-		test_map = null;
+	/**
+	 * Returns an immutable empty sorted set.
+	 *
+	 * @return an immutable empty sorted set
+	 */
+	public static BidirSortedMap<K,V> empty<K,V> () {
+		return new TreeMap<K,V> ().read_only_view;
 	}
 }
+
