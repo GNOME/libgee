@@ -1,4 +1,4 @@
-/* sortedset.vala
+/* bidirsortedset.vala
  *
  * Copyright (C) 2012  Maciej Piechotka
  *
