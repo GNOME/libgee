@@ -572,14 +572,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
 			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
 		}
-
-		public Gee.Iterator<K> filter (owned Predicate<K> f) {
-			return Traversable.filter_impl<K> (this, (owned)f);
-		}
-
-		public Gee.Iterator<K> chop (int offset, int length = -1) {
-			return Traversable.chop_impl<K> (this, offset, length);
-		}
 	}
 
 	private class MapIterator<K,V> : NodeIterator<K,V>, Gee.MapIterator<K,V> {
@@ -669,14 +661,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
 			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
 		}
-
-		public Gee.Iterator<V> filter (owned Predicate<V> f) {
-			return Traversable.filter_impl<V> (this, (owned)f);
-		}
-
-		public Gee.Iterator<V> chop (int offset, int length = -1) {
-			return Traversable.chop_impl<V> (this, offset, length);
-		}
 	}
 
 	private class EntryIterator<K,V> : NodeIterator<K,V>, Traversable<Map.Entry<K,V>>, Iterator<Map.Entry<K,V>> {
@@ -719,14 +703,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K,V>, A> f) {
 			return Gee.Iterator.stream_impl<Map.Entry<K,V>, A>(this, (owned)f);
-		}
-
-		public Gee.Iterator<Map.Entry<K,V>> filter (owned Predicate<Map.Entry<K,V>> f) {
-			return Traversable.filter_impl<Map.Entry<K,V>> (this, (owned)f);
-		}
-
-		public Iterator<Map.Entry<K,V>> chop (int offset, int length = -1) {
-			return Traversable.chop_impl<Map.Entry<K,V>> (this, offset, length);
 		}
 	}
 }

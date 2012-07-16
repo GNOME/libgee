@@ -292,14 +292,6 @@ public abstract class Gee.AbstractCollection<G> : Object, Traversable<G>, Iterab
 		return iterator ().stream<A> ((owned) f);
 	}
 
-	public virtual Iterator<G> filter (owned Predicate<G> f) {
-		return Traversable.filter_impl<G> (this, (owned) f);
-	}
-
-	public virtual Iterator<G> chop (int offset, int length = -1) {
-		return Traversable.chop_impl<G> (this, offset, length);
-	}
-
 	private weak Collection<G> _read_only_view;
 
 	/**

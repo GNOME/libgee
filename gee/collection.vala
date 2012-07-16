@@ -23,6 +23,7 @@
 /**
  * A generic collection of objects.
  */
+[GenericAccessors]
 public interface Gee.Collection<G> : Iterable<G> {
 	/**
 	 * The number of items in this collection.

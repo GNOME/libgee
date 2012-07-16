@@ -627,14 +627,6 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
 			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}
-
-		public Gee.Iterator<G> filter (owned Predicate<G> f) {
-			return Traversable.filter_impl<G> (this, (owned)f);
-		}
-
-		public Gee.Iterator<G> chop (int offset, int length = -1) {
-			return Traversable.chop_impl<G> (this, offset, length);
-		}
 	}
 
 	private unowned Node<G>? _get_node_at (int index) {

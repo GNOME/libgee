@@ -53,6 +53,7 @@ namespace Gee {
  *
  * @since 0.7.0
  */
+[GenericAccessors]
 public interface Gee.Traversable<G> : Object {
 	/**
 	 * Apply function to each element returned by iterator. 
@@ -215,8 +216,6 @@ public interface Gee.Traversable<G> : Object {
 	 * Creates a new iterator that contains only values that fullfills the
 	 * predicate.
 	 *
-	 * Note: There is implementation {@link filter_impl}.
-	 *
 	 * Note: When the method is called on {@link Iterator} using the parent
 	 *    iterator is not allowed befor the inner iterator
 	 *    {@link Iterator.next} return false and then it points on its last
@@ -227,40 +226,8 @@ public interface Gee.Traversable<G> : Object {
 	 * @param f Folding function
 	 * @return Iterator containing values of subsequent values of seed
 	 */
-	public abstract Iterator<G> filter (owned Predicate<G> f);
-
-	/**
-	 * Creates a new iterator which contains elements from iterable. The
-	 * first argument states the offset i.e. number of elements the iterator
-	 * skips by default.
-	 *
-	 * Note: There is implementation {@link chop_impl}.
-	 *
-	 * Note: In {@link Iterator} implementation resulting iterator is
-	 *    {@link Iterator.valid} when parent iterator is
-	 *    {@link Iterator.valid} and the offset is 0. Using the parent
-	 *    iterator is not allowed before the inner iterator
-	 *    {@link Iterator.next} return false and then it points on its last
-	 *    element.
-	 *
-	 * @param offset the offset to first element the iterator is pointing to
-	 * @param length maximum number of elements iterator may return. Negative
-	 *        value means that the number is unbounded
-	 */
-	public abstract Iterator<G> chop (int offset, int length = -1);
-
-
-	/**
-	 * Implementation based on {@link stream} for {@link filter}.
-	 *
-	 * @param input The current Traversable
-	 * @param pred Predicate
-	 * @return Filtered iterator
-	 * @see filter
-	 * @see stream
-	 */
-	public static Iterator<G> filter_impl<G> (Traversable<G> input, owned Predicate<G> pred) {
-		return input.stream<G> ((state, item, out val) => {
+	public virtual Iterator<G> filter (owned Predicate<G> pred) {
+		return stream<G> ((state, item, out val) => {
 			switch (state) {
 			case Stream.YIELD:
 				val = null;
@@ -284,15 +251,24 @@ public interface Gee.Traversable<G> : Object {
 	}
 
 	/**
-	 * Implementation based on {@link stream} for {@link filter}.
+	 * Creates a new iterator which contains elements from iterable. The
+	 * first argument states the offset i.e. number of elements the iterator
+	 * skips by default.
 	 *
-	 * @param input The current Traversable
-	 * @param offset The offset
-	 * @param length The length
+	 * Note: In {@link Iterator} implementation resulting iterator is
+	 *    {@link Iterator.valid} when parent iterator is
+	 *    {@link Iterator.valid} and the offset is 0. Using the parent
+	 *    iterator is not allowed before the inner iterator
+	 *    {@link Iterator.next} return false and then it points on its last
+	 *    element.
+	 *
+	 * @param offset the offset to first element the iterator is pointing to
+	 * @param length maximum number of elements iterator may return. Negative
+	 *        value means that the number is unbounded
 	 */
-	public static Iterator<G> chop_impl<G> (Traversable<G> input, int offset, int length) {
+	public virtual Iterator<G> chop (int offset, int length = -1) {
 		assert (offset >= 0);
-		return input.stream<G> ((state, item, out val) => {
+		return stream<G> ((state, item, out val) => {
 			switch (state) {
 			case Stream.YIELD:
 				val = null;

@@ -38,6 +38,7 @@ namespace Gee {
  * will fail. After the next call to {@link next}, they will
  * be defined again.
  */
+[GenericAccessors]
 public interface Gee.MapIterator<K,V> : Object {
 	/**
 	 * Advances to the next entry in the iteration.

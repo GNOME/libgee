@@ -361,14 +361,6 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			return Gee.Iterator.stream_impl<G, A> (this, (owned)f);
 		}
 
-		public Gee.Iterator<G> filter (owned Predicate<G> f) {
-			return Traversable.filter_impl<G> (this, (owned)f);
-		}
-
-		public Gee.Iterator<G> chop (int offset, int length = -1) {
-			return Traversable.chop_impl<G> (this, offset, length);
-		}
-
 		private bool _started;
 		private bool _removed;
 		private int _index;
