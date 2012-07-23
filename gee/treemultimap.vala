@@ -25,11 +25,11 @@
  * interface.
  */
 public class Gee.TreeMultiMap<K,V> : AbstractMultiMap<K,V> {
-	public CompareDataFunc key_compare_func {
+	public CompareDataFunc<K> key_compare_func {
 		get { return ((TreeMap<K, Set<V>>) _storage_map).key_compare_func; }
 	}
 
-	public CompareDataFunc value_compare_func { private set; get; }
+	public CompareDataFunc<V> value_compare_func { private set; get; }
 
 	/**
 	 * Constructs a new, empty tree multimap.
@@ -40,7 +40,7 @@ public class Gee.TreeMultiMap<K,V> : AbstractMultiMap<K,V> {
 	 * @param key_compare_func an optional key comparator function
 	 * @param value_compare_func an optional value comparator function
 	 */
-	public TreeMultiMap (owned CompareDataFunc? key_compare_func = null, owned CompareDataFunc? value_compare_func = null) {
+	public TreeMultiMap (owned CompareDataFunc<K>? key_compare_func = null, owned CompareDataFunc<V>? value_compare_func = null) {
 		base (new TreeMap<K, Set<V>> (key_compare_func, Functions.get_equal_func_for (typeof (Set<V>))));
 		if (value_compare_func == null) {
 			value_compare_func = Functions.get_compare_func_for (typeof (V));

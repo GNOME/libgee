@@ -93,7 +93,7 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void sort (owned CompareDataFunc? compare = null) {
+	public void sort (owned CompareDataFunc<G>? compare = null) {
 		if (compare == null) {
 			compare = Functions.get_compare_func_for (typeof (G));
 		}

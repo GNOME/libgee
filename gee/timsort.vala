@@ -46,7 +46,7 @@
  */
 internal class Gee.TimSort<G> : Object {
 
-	public static void sort<G> (List<G> list, CompareDataFunc compare) {
+	public static void sort<G> (List<G> list, CompareDataFunc<G> compare) {
 		if (list is ArrayList) {
 			TimSort.sort_arraylist<G> ((ArrayList<G>) list, compare);
 		} else {

@@ -72,7 +72,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	 *
 	 * @param compare_func an optional element comparator function
 	 */
-	public PriorityQueue (owned CompareDataFunc? compare_func = null) {
+	public PriorityQueue (owned CompareDataFunc<G>? compare_func = null) {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}

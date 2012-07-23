@@ -101,12 +101,12 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * The keys' equality testing function.
 	 */
-	public EqualDataFunc<K> key_equal_func { private set; get; }
+	public EqualDataFunc key_equal_func { private set; get; }
 
 	/**
 	 * The values' equality testing function.
 	 */
-	public EqualDataFunc<V> value_equal_func { private set; get; }
+	public EqualDataFunc value_equal_func { private set; get; }
 
 	private int _array_size;
 	private int _nnodes;

@@ -91,7 +91,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	/**
 	 * The keys' comparator function.
 	 */
-	public CompareDataFunc key_compare_func { private set; get; }
+	public CompareDataFunc<K> key_compare_func { private set; get; }
 
 	/**
 	 * The values' equality testing function.
@@ -114,7 +114,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	 * @param key_compare_func an optional key comparator function
 	 * @param value_equal_func an optional values equality testing function
 	 */
-	public TreeMap (owned CompareDataFunc? key_compare_func = null, owned EqualDataFunc? value_equal_func = null) {
+	public TreeMap (owned CompareDataFunc<K>? key_compare_func = null, owned EqualDataFunc? value_equal_func = null) {
 		if (key_compare_func == null) {
 			key_compare_func = Functions.get_compare_func_for (typeof (K));
 		}

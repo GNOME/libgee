@@ -116,7 +116,7 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void sort (owned CompareDataFunc? compare = null) {
+	public void sort (owned CompareDataFunc<G>? compare = null) {
 		assert_not_reached ();
 	}
 
