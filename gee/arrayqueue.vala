@@ -40,7 +40,7 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 	 *
 	 * @param equal_func an optional element equality testing function
 	 */
-	public ArrayQueue (owned EqualDataFunc? equal_func = null) {
+	public ArrayQueue (owned EqualDataFunc<G>? equal_func = null) {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
@@ -48,7 +48,7 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 		this._items = new G[10];
 	}
 
-	public EqualDataFunc equal_func { private set; get; }
+	public EqualDataFunc<G> equal_func { private set; get; }
 
 	/**
 	 * {@inheritDoc}

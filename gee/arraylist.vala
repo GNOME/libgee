@@ -55,7 +55,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	/**
 	 * The elements' equality testing function.
 	 */
-	public EqualDataFunc equal_func { private set; get; }
+	public EqualDataFunc<G> equal_func { private set; get; }
 
 	internal G[] _items = new G[4];
 	internal int _size;
@@ -71,7 +71,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	 *
 	 * @param equal_func an optional element equality testing function
 	 */
-	public ArrayList (owned EqualDataFunc? equal_func = null) {
+	public ArrayList (owned EqualDataFunc<G>? equal_func = null) {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}

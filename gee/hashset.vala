@@ -25,8 +25,8 @@
 using GLib;
 
 namespace Gee {
-	public delegate uint HashDataFunc (void* v);
-	public delegate bool EqualDataFunc (void* a, void* b);
+	public delegate uint HashDataFunc<T> (T v);
+	public delegate bool EqualDataFunc<T> (T a, T b);
 }
 
 /**

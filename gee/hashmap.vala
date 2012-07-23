@@ -101,12 +101,12 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * The keys' equality testing function.
 	 */
-	public EqualDataFunc key_equal_func { private set; get; }
+	public EqualDataFunc<K> key_equal_func { private set; get; }
 
 	/**
 	 * The values' equality testing function.
 	 */
-	public EqualDataFunc value_equal_func { private set; get; }
+	public EqualDataFunc<V> value_equal_func { private set; get; }
 
 	private int _array_size;
 	private int _nnodes;
@@ -132,7 +132,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	 * @param key_equal_func an optional key equality testing function
 	 * @param value_equal_func an optional value equality testing function
 	 */
-	public HashMap (owned HashDataFunc? key_hash_func = null, owned EqualDataFunc? key_equal_func = null, owned EqualDataFunc? value_equal_func = null) {
+	public HashMap (owned HashDataFunc<K>? key_hash_func = null, owned EqualDataFunc<K>? key_equal_func = null, owned EqualDataFunc<V>? value_equal_func = null) {
 		if (key_hash_func == null) {
 			key_hash_func = Functions.get_hash_func_for (typeof (K));
 		}

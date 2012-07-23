@@ -32,7 +32,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	/**
 	 * The elements' equality testing function.
 	 */
-	public Gee.EqualDataFunc equal_func { private set; get; }
+	public Gee.EqualDataFunc<G> equal_func { private set; get; }
 
 	/**
 	 * Construct new, empty single linked list
@@ -42,7 +42,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 *
 	 * @param equal_func an optional element equality testing function
 	 */
-	public ConcurrentList (owned Gee.EqualDataFunc? equal_func = null) {
+	public ConcurrentList (owned Gee.EqualDataFunc<G>? equal_func = null) {
 		if (equal_func == null)
 			equal_func = Gee.Functions.get_equal_func_for (typeof (G));
 		this.equal_func = (owned)equal_func;

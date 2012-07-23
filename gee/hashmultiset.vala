@@ -24,11 +24,11 @@
  * Hash table implementation of the {@link MultiSet} interface.
  */
 public class Gee.HashMultiSet<G> : AbstractMultiSet<G> {
-	public HashDataFunc hash_func {
+	public HashDataFunc<G> hash_func {
 		get { return ((HashMap<G, int>) _storage_map).key_hash_func; }
 	}
 
-	public EqualDataFunc equal_func {
+	public EqualDataFunc<G> equal_func {
 		get { return ((HashMap<G, int>) _storage_map).key_equal_func; }
 	}
 
@@ -41,7 +41,7 @@ public class Gee.HashMultiSet<G> : AbstractMultiSet<G> {
 	 * @param hash_func an optional element hash function
 	 * @param equal_func an optional element equality testing function
 	 */
-	public HashMultiSet (HashDataFunc? hash_func = null, EqualDataFunc? equal_func = null) {
+	public HashMultiSet (HashDataFunc<G>? hash_func = null, EqualDataFunc<G>? equal_func = null) {
 		base (new HashMap<G, int> (hash_func, equal_func));
 	}
 }

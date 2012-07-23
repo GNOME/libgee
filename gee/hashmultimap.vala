@@ -28,13 +28,13 @@ public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
 		get { return ((HashMap<K, Set<V>>) _storage_map).key_hash_func; }
 	}
 
-	public EqualDataFunc key_equal_func {
+	public EqualDataFunc<K> key_equal_func {
 		get { return ((HashMap<K, Set<V>>) _storage_map).key_equal_func; }
 	}
 
 	public HashDataFunc<V> value_hash_func { private set; get; }
 
-	public EqualDataFunc value_equal_func { private set; get; }
+	public EqualDataFunc<V> value_equal_func { private set; get; }
 
 	/**
 	 * Constructs a new, empty hash multimap.
