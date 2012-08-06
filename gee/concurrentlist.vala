@@ -401,8 +401,11 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			HazardPointer.set_pointer<Node<G>?> (&_succ, null, 3);
 			HazardPointer.set_pointer<Node<G>?> (&_backlink, null);
 #if DEBUG
-			G? old_data = HazardPointer.exchange_pointer (&_data, null);
-			stderr.printf ("  Freeing node %p (with data %p)\n", this, old_data);
+			HazardPointer<G?>? old_data = HazardPointer.exchange_hazard_pointer (&_data, null);
+			stderr.printf ("  Freeing node %p (with data %p)\n", this, old_data != null ? old_data.get() : null);
+			if (old_data != null) {
+				old_data.release (HazardPointer.get_destroy_notify<G?> ());
+			}
 #else
 			HazardPointer.set_pointer<G> (&_data, null);
 #endif

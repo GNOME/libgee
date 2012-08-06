@@ -28,11 +28,17 @@ public class ConcurrentListTests : ListTests {
 	}
 
 	public override void set_up () {
+		if (!policy_set) {
+			HazardPointer.set_release_policy(HazardPointer.ReleasePolicy.MAIN_LOOP);
+			policy_set = true;
+		}
 		test_collection = new Gee.ConcurrentList<string> ();
 	}
 
 	public override void tear_down () {
 		test_collection = null;
 	}
+
+	private static bool policy_set = false;
 }
 

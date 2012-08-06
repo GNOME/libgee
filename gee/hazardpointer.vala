@@ -164,8 +164,10 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 */
 	public static void set_pointer<G> (G **aptr, owned G? new_ptr, size_t mask = 0, size_t new_mask = 0) {
 		HazardPointer<G>? ptr = exchange_hazard_pointer<G> (aptr, new_ptr, mask, new_mask, null);
-		if (ptr != null)
-			ptr.release (get_destroy_notify<G> ());
+		if (ptr != null) {
+			DestroyNotify<G> notify = get_destroy_notify<G> ();
+			ptr.release ((owned)notify);
+		}
 	}
 
 	/**
@@ -200,7 +202,8 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		void *old_rptr = (void *)((size_t)(old_ptr) | (mask & old_mask));
 		bool success = AtomicPointer.compare_and_exchange((void **)aptr, old_rptr, new_rptr);
 		if (success) {
-			Context.get_current_context ()->release_ptr (old_ptr, get_destroy_notify<G> ());
+			DestroyNotify<G> notify = get_destroy_notify<G> ();
+			Context.get_current_context ()->release_ptr (old_ptr, (owned)notify);
 		} else if (new_ptr != null) {
 			delete new_ptr;
 		}
@@ -226,10 +229,10 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 *
 	 * @param notify method freeing object
 	 */
-	public void release (DestroyNotify notify) {
+	public void release (owned DestroyNotify notify) {
 		unowned G item = _node[false];
 		_node.set (null);
-		Context.get_current_context ()->release_ptr (item, notify);
+		Context.get_current_context ()->release_ptr (item, (owned)notify);
 	}
 
 	/**
@@ -600,10 +603,10 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		/**
 		 * Add pointer to freed array.
 		 */
-		internal inline void release_ptr (void *ptr, DestroyNotify notify) {
+		internal inline void release_ptr (void *ptr, owned DestroyNotify notify) {
 			FreeNode *node = new FreeNode ();
 			node->pointer = ptr;
-			node->destroy_notify = notify;
+			node->destroy_notify = (owned)notify;
 			_to_free.add (node);
 			if (_to_free.size >= THRESHOLD)
 				HazardPointer.try_free (_to_free);
