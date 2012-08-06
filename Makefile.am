@@ -1,5 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 ACLOCAL_AMFLAGS = -I m4
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-introspection=no
 
 if ENABLE_DOC
 DOC_SUBDIR = \
