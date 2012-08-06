@@ -1,3 +1,11 @@
+libgee 0.7.3
+============
+ * Update documentation
+ * Fix iteration order in hashtables
+ * Split SortedMap/SortedSet into bi-directional and uni-directional parts
+ * Simplify CompareDataFunc/HashDataFunc/EqualDataFunc
+ * Fix HazardPointers
+
 libgee 0.7.2
 ============
  * Require *_type property for all collections
