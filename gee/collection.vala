@@ -33,7 +33,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	/**
 	 * Specifies whether this collection is empty.
 	 */
-	public abstract bool is_empty { get; }
+	public virtual bool is_empty { get { return size == 0; } }
 	
 	/**
 	 * Specifies whether this collection can change - i.e. wheather {@link add},
@@ -84,7 +84,17 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
-	public abstract bool add_all (Collection<G> collection);
+	public virtual bool add_all (Collection<G> collection) {
+		if (collection.is_empty) {
+			return false;
+		}
+
+		bool changed = false;
+		foreach (G item in collection) {
+			changed = changed | add (item);
+		}
+		return changed;
+	}
 
 	/**
 	 * Returns ``true`` it this collection contains all items as the input
@@ -95,7 +105,18 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
-	public abstract bool contains_all (Collection<G> collection);
+	public virtual bool contains_all (Collection<G> collection) {
+		if (collection.size > size) {
+			return false;
+		}
+
+		foreach (G item in collection) {
+			if (!contains (item)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Removes the subset of items in this collection corresponding to the
@@ -108,7 +129,13 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
-	public abstract bool remove_all (Collection<G> collection);
+	public virtual bool remove_all (Collection<G> collection) {
+		bool changed = false;
+		foreach (G item in collection) {
+			changed = changed | remove (item);
+		}
+		return changed;
+	}
 
 	/**
 	 * Removes all items in this collection that are not contained in the input
@@ -120,14 +147,155 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
-	public abstract bool retain_all (Collection<G> collection);
+	public virtual bool retain_all (Collection<G> collection) {
+		bool changed = false;
+		G[] items = to_array ();
+		int size_of_items = size;
+		for (int index = 0; index < size_of_items; index++) {
+			if (!collection.contains (items[index])) {
+				changed = changed | remove (items[index]);
+			}
+		}
+		return changed;
+	}
 
 	/**
 	 * Returns an array containing all of items from this collection.
 	 *
 	 * @return an array containing all of items from this collection
 	 */
-	public abstract G[] to_array();
+	public virtual G[] to_array () {
+		var t = typeof (G);
+		if (t == typeof (bool)) {
+			return (G[]) to_bool_array ((Collection<bool>) this);
+		} else if (t == typeof (char)) {
+			return (G[]) to_char_array ((Collection<char>) this);
+		} else if (t == typeof (uchar)) {
+			return (G[]) to_uchar_array ((Collection<uchar>) this);
+		} else if (t == typeof (int)) {
+			return (G[]) to_int_array ((Collection<int>) this);
+		} else if (t == typeof (uint)) {
+			return (G[]) to_uint_array ((Collection<uint>) this);
+		} else if (t == typeof (int64)) {
+			return (G[]) to_int64_array ((Collection<int64>) this);
+		} else if (t == typeof (uint64)) {
+			return (G[]) to_uint64_array ((Collection<uint64>) this);
+		} else if (t == typeof (long)) {
+			return (G[]) to_long_array ((Collection<long>) this);
+		} else if (t == typeof (ulong)) {
+			return (G[]) to_ulong_array ((Collection<ulong>) this);
+		} else if (t == typeof (float)) {
+			return (G[]) to_float_array ((Collection<float>) this);
+		} else if (t == typeof (double)) {
+			return (G[]) to_double_array ((Collection<double>) this);
+		} else {
+			G[] array = new G[size];
+			int index = 0;
+			foreach (G element in this) {
+				array[index++] = element;
+			}
+			return array;
+		}
+	}
+
+	private static bool[] to_bool_array (Collection<bool> coll) {
+		bool[] array = new bool[coll.size];
+		int index = 0;
+		foreach (bool element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static char[] to_char_array (Collection<char> coll) {
+		char[] array = new char[coll.size];
+		int index = 0;
+		foreach (char element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static uchar[] to_uchar_array (Collection<uchar> coll) {
+		uchar[] array = new uchar[coll.size];
+		int index = 0;
+		foreach (uchar element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static int[] to_int_array (Collection<int> coll) {
+		int[] array = new int[coll.size];
+		int index = 0;
+		foreach (int element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static uint[] to_uint_array (Collection<uint> coll) {
+		uint[] array = new uint[coll.size];
+		int index = 0;
+		foreach (uint element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static int64[] to_int64_array (Collection<int64?> coll) {
+		int64[] array = new int64[coll.size];
+		int index = 0;
+		foreach (int64 element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static uint64[] to_uint64_array (Collection<uint64?> coll) {
+		uint64[] array = new uint64[coll.size];
+		int index = 0;
+		foreach (uint64 element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static long[] to_long_array (Collection<long> coll) {
+		long[] array = new long[coll.size];
+		int index = 0;
+		foreach (long element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static ulong[] to_ulong_array (Collection<ulong> coll) {
+		ulong[] array = new ulong[coll.size];
+		int index = 0;
+		foreach (ulong element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static float?[] to_float_array (Collection<float?> coll) {
+		float?[] array = new float?[coll.size];
+		int index = 0;
+		foreach (float element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
+
+	private static double?[] to_double_array (Collection<double?> coll) {
+		double?[] array = new double?[coll.size];
+		int index = 0;
+		foreach (double element in coll) {
+			array[index++] = element;
+		}
+		return array;
+	}
 
 	/**
 	 * The read-only view of this collection.

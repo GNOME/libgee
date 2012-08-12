@@ -988,7 +988,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 		}
 
-		public override bool is_empty { get { return range.empty_submap (); } }
+		public bool is_empty { get { return range.empty_submap (); } }
 
 		public override bool add (K key) {
 			assert_not_reached ();
@@ -1147,7 +1147,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 		}
 
-		public override bool is_empty { get { return range.empty_submap (); } }
+		public bool is_empty { get { return range.empty_submap (); } }
 
 		public override bool add (V key) {
 			assert_not_reached ();
@@ -1290,7 +1290,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 		}
 
-		public override bool is_empty { get { return range.empty_submap (); } }
+		public bool is_empty { get { return range.empty_submap (); } }
 
 		public override bool add (Map.Entry<K,V> entry) {
 			assert_not_reached ();

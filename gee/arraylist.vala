@@ -224,7 +224,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override bool add_all (Collection<G> collection) {
+	public bool add_all (Collection<G> collection) {
 		if (collection.is_empty) {
 			return false;
 		}

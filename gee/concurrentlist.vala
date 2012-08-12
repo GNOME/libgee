@@ -81,7 +81,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override bool is_empty {
+	public bool is_empty {
 		get {
 			return !iterator ().next ();
 		}

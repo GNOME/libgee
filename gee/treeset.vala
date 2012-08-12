@@ -928,7 +928,7 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			get { return true; }
 		}
 
-		public override bool is_empty {
+		public bool is_empty {
 			get {
 				return range.empty_subset ();
 			}

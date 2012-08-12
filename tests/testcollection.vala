@@ -744,11 +744,6 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (value.get_gtype () == test_collection.element_type);
 		value.unset ();
 
-		value = Value (typeof (bool));
-		test_collection.get_property ("is-empty", ref value);
-		assert (value.get_boolean () == test_collection.is_empty);
-		value.unset ();
-
 		value = Value (typeof (int));
 		test_collection.get_property ("size", ref value);
 		assert (value.get_int () == test_collection.size);

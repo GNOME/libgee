@@ -55,7 +55,7 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 	 */
 	public override int size { get { return _length; } }
 
-	public override bool is_empty { get { return _length == 0; } }
+	public bool is_empty { get { return _length == 0; } }
 
 	/**
 	 * {@inheritDoc}
