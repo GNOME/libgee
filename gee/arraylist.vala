@@ -402,10 +402,6 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 			}
 			_index = _list._size;
 		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
-			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
-		}
 	}
 }
 

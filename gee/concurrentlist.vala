@@ -357,10 +357,6 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			}
 		}
 
-		public Gee.Iterator<G> stream<A> (owned StreamFunc<G, A> f) {
-			return Gee.Iterator.stream_impl<G, A> (this, (owned)f);
-		}
-
 		private bool _started;
 		private bool _removed;
 		private int _index;

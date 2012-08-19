@@ -1650,10 +1650,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			for (; current != null; current = current.next)
 				f (current.key);
 		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
-			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
-		}
 	}
 
 	private class SubKeyIterator<K,V> : SubNodeIterator<K,V>, Traversable<K>, Gee.Iterator<K>, BidirIterator<K> {
@@ -1679,10 +1675,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 				f (iterator.current.key);
 			while (iterator.next ())
 				f (iterator.current.key);
-		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
-			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
 		}
 	}
 
@@ -1722,10 +1714,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			for (; current != null; current = current.next)
 				f (current.key);
 		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
-			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
-		}
 	}
 
 	private class SubValueIterator<K,V> : SubNodeIterator<K,V>, Traversable<V>, Gee.Iterator<V>, BidirIterator<V> {
@@ -1751,10 +1739,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 				f (iterator.current.key);
 			while (iterator.next ())
 				f (iterator.current.key);
-		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
-			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
 		}
 	}
 
@@ -1798,10 +1782,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			for (; current != null; current = current.next)
 				f (Entry.entry_for<K,V> (current));
 		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K, V>, A> f) {
-			return Gee.Iterator.stream_impl<Map.Entry<K, V>, A>(this, (owned)f);
-		}
 	}
 
 	private class SubEntryIterator<K,V> : SubNodeIterator<K,V>, Traversable<Map.Entry<K, V>>, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
@@ -1831,10 +1811,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 				f (Entry.entry_for<K,V> (iterator.current));
 			while (iterator.next ())
 				f (Entry.entry_for<K,V> (iterator.current));
-		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K, V>, A> f) {
-			return Gee.Iterator.stream_impl<Map.Entry<K, V>, A>(this, (owned)f);
 		}
 	}
 

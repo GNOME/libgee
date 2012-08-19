@@ -568,10 +568,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 					break;
 			} while(true);
 		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, K> f) {
-			return Gee.Iterator.stream_impl<K, A>(this, (owned)f);
-		}
 	}
 
 	private class MapIterator<K,V> : NodeIterator<K,V>, Gee.MapIterator<K,V> {
@@ -657,10 +653,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 					break;
 			} while(true);
 		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, V> f) {
-			return Gee.Iterator.stream_impl<V, A>(this, (owned)f);
-		}
 	}
 
 	private class EntryIterator<K,V> : NodeIterator<K,V>, Traversable<Map.Entry<K,V>>, Iterator<Map.Entry<K,V>> {
@@ -699,10 +691,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 				else
 					break;
 			} while(true);
-		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K,V>, A> f) {
-			return Gee.Iterator.stream_impl<Map.Entry<K,V>, A>(this, (owned)f);
 		}
 	}
 }

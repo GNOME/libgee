@@ -1045,9 +1045,5 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			while (next ())
 				f (position.data);
 		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
-			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
-		}
 	}
 }

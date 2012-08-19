@@ -322,10 +322,6 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 			}
 		}
 
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<G, A> f) {
-			return Gee.Iterator.stream_impl<G, A> (this, (owned)f);
-		}
-
 		private ArrayQueue _queue;
 		private int _stamp;
 		private int _offset = -1;

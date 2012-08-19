@@ -734,10 +734,6 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			}
 		}
 
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
-			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
-		}
-
 		private weak Node<G>? current = null;
 		private weak Node<G>? _next = null;
 		private weak Node<G>? _prev = null;
@@ -1131,10 +1127,6 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 				f(get());
 			while(next())
 				f(get());
-		}
-
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
-			return Gee.Iterator.stream_impl<G, A>(this, (owned)f);
 		}
 
 		private new TreeSet<G> set;

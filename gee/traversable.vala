@@ -102,7 +102,70 @@ public interface Gee.Traversable<G> : Object {
 	 * @param f function generating stream
 	 * @return iterator containing values yielded by stream
 	 */
-	public abstract Iterator<A> stream<A> (owned StreamFunc<G, A> f);
+	public virtual Iterator<A> stream<A> (owned StreamFunc<G, A> f) {
+		Iterator<G>? self;
+		Iterable<G>? iself;
+		// Yes - I've heard of polimorphism ;) but I don't want users to need to implement the method.
+		if ((self = this as Iterator<G>) != null) { 
+			Traversable.Stream str;
+			Lazy<A>? initial = null;
+			bool need_next = true;
+			str = f (Stream.YIELD, null, out initial);
+			switch (str) {
+			case Stream.CONTINUE:
+				if (self.valid) {
+					str = f (Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out initial);
+					switch (str) {
+					case Stream.YIELD:
+					case Stream.CONTINUE:
+						break;
+					case Stream.END:
+						return Iterator.unfold<A> (() => {return null;});
+					default:
+						assert_not_reached ();
+					}
+				}
+				break;
+			case Stream.YIELD:
+				if (self.valid)
+					need_next = false;
+				break;
+			case Stream.END:
+				return Iterator.unfold<A> (() => {return null;});
+			default:
+				assert_not_reached ();
+			}
+			return Iterator.unfold<A> (() => {
+				Lazy<A>? val = null;
+				if (str != Stream.CONTINUE)
+					str = f (Traversable.Stream.YIELD, null, out val);
+				while (str == Stream.CONTINUE) {
+					if (need_next) {
+						if (!self.next ()) {
+							str = f (Traversable.Stream.END, null, out val);
+							assert (str != Traversable.Stream.CONTINUE);
+							break;
+						}
+					} else {
+						need_next = true;
+					}
+					str = f (Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out val);
+				}
+				switch (str) {
+				case Stream.YIELD:
+					return val;
+				case Stream.END:
+					return null;
+				default:
+					assert_not_reached ();
+				}
+			}, initial);
+		} else if ((iself = this as Iterable<G>) != null) {
+			return iself.iterator().stream<A> ((owned) f);
+		} else {
+			assert_not_reached ();
+		}
+	}
 
 	/**
 	 * Standard aggregation function.
@@ -299,6 +362,12 @@ public interface Gee.Traversable<G> : Object {
 			};
 		});
 	}
+
+	
+	/**
+	 * The type of the elements in this collection.
+	 */
+	public virtual Type element_type { get { return typeof (G); } }
 
 	public enum Stream {
 		YIELD,

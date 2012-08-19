@@ -90,10 +90,6 @@ internal class Gee.UnfoldIterator<G> : Object, Traversable<G>, Iterator<G> {
 		_end = true;
 	}
 
-	public Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
-		return Iterator.stream_impl<G, A>(this, (owned)f);
-	}
-
 	private UnfoldFunc<G> _func;
 	private Lazy<G>? _current;
 	private Lazy<G>? _next;
