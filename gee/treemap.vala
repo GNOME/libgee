@@ -747,7 +747,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 	private class SubMap<K,V> : AbstractBidirSortedMap<K,V> {
 		public override int size { get { return keys.size; } }
-		public override bool is_empty { get { return keys.is_empty; } }
+		public bool is_empty { get { return keys.is_empty; } }
 
 		public SubMap (TreeMap<K,V> map, Range<K,V> range) {
 			this.map = map;

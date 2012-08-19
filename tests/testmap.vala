@@ -519,11 +519,6 @@ public abstract class MapTests : Gee.TestCase {
 		assert (test_map != null);
 		Value value;
 
-		value = Value (typeof (bool));
-		test_map.get_property ("is-empty", ref value);
-		assert (value.get_boolean () == test_map.is_empty);
-		value.unset ();
-
 		value = Value (typeof (int));
 		test_map.get_property ("size", ref value);
 		assert (value.get_int () == test_map.size);

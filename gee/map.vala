@@ -23,6 +23,7 @@
 /**
  * An object that maps keys to values.
  */
+[GenericAccessors]
 public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	/**
 	 * The number of items in this map.
@@ -32,7 +33,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	/**
 	 * Specifies whether this map is empty.
 	 */
-	public abstract bool is_empty { get; }
+	public virtual bool is_empty { get { return size == 0; } }
 	
 	/**
 	 * Specifies whether this collection can change - i.e. wheather {@link set},
@@ -89,7 +90,9 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @deprecated Use {@link has_key} method instead.
 	 */
 	[Deprecated]
-	public abstract bool contains (K key);
+	public bool contains (K key) {
+		return has_key(key);
+	}
 
 	/**
 	 * Determines whether this map has the specified key/value entry.
@@ -140,7 +143,9 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @deprecated Use {@link unset} method instead.
 	 */
 	[Deprecated]
-	public abstract bool remove (K key, out V? value = null);
+	public bool remove (K key, out V? value = null) {
+		return unset (key, out value);
+	}
 
 	/**
 	 * Removes all items from this collection. Must not be called on
@@ -160,7 +165,11 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @param map the map which items are inserted to this map
 	 */
-	public abstract void set_all (Map<K,V> map);
+	public virtual void set_all (Map<K,V> map) {
+		foreach (Map.Entry<K,V> entry in map.entries) {
+			set (entry.key, entry.value);
+		}
+	}
 
 	/**
 	 * Removes all items from this map that are common to the input map
@@ -168,7 +177,13 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @param map the map which common items are deleted from this map
 	 */
-	public abstract bool unset_all (Map<K,V> map);
+	public virtual bool unset_all (Map<K,V> map) {
+		bool changed = false;
+		foreach (K key in map.keys) {
+			changed = changed | unset (key);
+		}
+		return changed;	
+	}
 
 	/**
 	 * Removes all items from this map that are common to the input map
@@ -179,14 +194,23 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @deprecated Use {@link unset_all} method instead.
 	 */
 	[Deprecated]
-	public abstract bool remove_all (Map<K,V> map);
+	public bool remove_all (Map<K,V> map) {
+		return unset_all (map);
+	}
 
 	/**
 	 * Returns ``true`` it this map contains all items as the input map.
 	 *
 	 * @param map the map which items will be compared with this map
 	 */
-	public abstract bool has_all (Map<K,V> map);
+	public virtual bool has_all (Map<K,V> map) {
+		foreach (Map.Entry<K,V> entry in map.entries) {
+			if (!has (entry.key, entry.value)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Returns ``true`` it this map contains all items as the input map.
@@ -196,7 +220,9 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @deprecated Use {@link has_all} method instead.
 	 */
 	[Deprecated]
-	public abstract bool contains_all (Map<K,V> map);
+	public bool contains_all (Map<K,V> map) {
+		return has_all (map);
+	}
 
 	/**
 	 * The read-only view this map.
@@ -206,12 +232,12 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	/**
 	 * The type of the keys in this map.
 	 */
-	public abstract Type key_type { get; }
+	public Type key_type { get { return typeof(K); } }
 
 	/**
 	 * The type of the values in this map.
 	 */
-	public abstract Type value_type { get; }
+	public Type value_type { get { return typeof(V); } }
 
 	/**
 	 * Returns an immutable empty map.

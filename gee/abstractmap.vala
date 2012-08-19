@@ -35,13 +35,6 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 	 * {@inheritDoc}
 	 */
 	public abstract int size { get; }
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public virtual bool is_empty {
-		get { return size == 0; }
-	}
 	
 	/**
 	 * {@inheritDoc}
@@ -71,13 +64,6 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 	/**
 	 * {@inheritDoc}
 	 */
-	public bool contains (K key) {
-		return has_key (key);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public abstract bool has (K key, V value);
 
 	/**
@@ -103,60 +89,7 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 	/**
 	 * {@inheritDoc}
 	 */
-	public bool remove (K key, out V? value = null) {
-		return unset (key, out value);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public abstract void clear ();
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public virtual void set_all (Map<K,V> map) {
-		foreach (Map.Entry<K,V> entry in map.entries) {
-			set (entry.key, entry.value);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public virtual bool unset_all (Map<K,V> map) {
-		bool changed = false;
-		foreach (K key in map.keys) {
-			changed = changed | unset (key);
-		}
-		return changed;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public bool remove_all (Map<K,V> map) {
-		return unset_all (map);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public virtual bool has_all (Map<K,V> map) {
-		foreach (Map.Entry<K,V> entry in map.entries) {
-			if (!has (entry.key, entry.value)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public bool contains_all (Map<K,V> map) {
-		return has_all (map);
-	}
 
 	private weak Map<K,V> _read_only_view;
 
@@ -173,20 +106,6 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 			}
 			return instance;
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Type key_type {
-		get { return typeof (K); }
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Type value_type {
-		get { return typeof (V); }
 	}
 
 	/**
