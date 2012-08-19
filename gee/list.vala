@@ -23,6 +23,7 @@
 /**
  * An ordered collection.
  */
+[GenericAccessors]
 public interface Gee.List<G> : Collection<G> {
 	/**
 	 * Returns a ListIterator that can be used for iteration over this list.
@@ -88,14 +89,18 @@ public interface Gee.List<G> : Collection<G> {
 	 *
 	 * @return      first item in the list
 	 */
-	public abstract G first ();
+	public virtual G first () {
+		return get (0);
+	}
 
 	/**
 	 * Returns the last item of the list. Fails if the list is empty.
 	 *
 	 * @return      last item in the list
 	 */
-	public abstract G last ();
+	public virtual G last () {
+		return get (size - 1);
+	}
 
 	/**
 	 * Inserts items into this list for the input collection at the
@@ -104,14 +109,24 @@ public interface Gee.List<G> : Collection<G> {
 	 * @param index zero-based index of the items to be inserted
 	 * @param collection collection of items to be inserted
 	 */
-	public abstract void insert_all (int index, Collection<G> collection);
+	public virtual void insert_all (int index, Collection<G> collection) {
+		foreach (G item in collection) {
+			insert(index, item);
+			index++;
+		}
+	}
 
 	/**
 	 * Sorts items by comparing with the specified compare function.
 	 *
 	 * @param compare_func compare function to use to compare items
 	 */
-	public abstract void sort (owned CompareDataFunc<G>? compare_func = null);
+	public virtual void sort (owned CompareDataFunc<G>? compare_func = null) {
+		if (compare_func == null) {
+			compare_func = Functions.get_compare_func_for (typeof (G));
+		}
+		TimSort.sort<G> (this, compare_func);
+	}
 
 	/**
 	 * The read-only view of this list.

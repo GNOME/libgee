@@ -66,40 +66,6 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 	 */
 	public abstract List<G>? slice (int start, int stop);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public virtual G first () {
-		return get (0);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public virtual G last () {
-		return get (size - 1);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public virtual void insert_all (int index, Collection<G> collection) {
-		foreach (G item in collection) {
-			insert(index, item);
-			index++;
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void sort (owned CompareDataFunc<G>? compare = null) {
-		if (compare == null) {
-			compare = Functions.get_compare_func_for (typeof (G));
-		}
-		TimSort.sort<G> (this, compare);
-	}
-
 	private weak List<G> _read_only_view;
 
 	/**

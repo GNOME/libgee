@@ -261,7 +261,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override G first () {
+	public G first () {
 		assert (_size > 0);
 		return _head.data;
 	}
@@ -269,7 +269,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override G last () {
+	public G last () {
 		assert (_size > 0);
 		return _tail.data;
 	}
