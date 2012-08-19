@@ -87,6 +87,13 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 	/**
 	 * {@inheritDoc}
 	 */
+	public override bool add (G element) {
+		return offer_tail (element);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public override bool contains (G item) {
 		return find_index(item) != -1;
 	}
@@ -114,13 +121,6 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 			_items[(_start + i) % _items.length] = null;
 		}
 		_start = _length = 0;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public override bool offer (G element) {
-		return offer_tail (element);
 	}
 
 	/**

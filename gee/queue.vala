@@ -43,6 +43,7 @@
  * inserted into a Queue, as ``null`` is also used as a special return value by
  * the poll method to indicate that the queue contains no elements.
  */
+[GenericAccessors]
 public interface Gee.Queue<G> : Collection<G> {
 
 	/**
@@ -73,7 +74,9 @@ public interface Gee.Queue<G> : Collection<G> {
 	 *
 	 * @return        ``true`` if the element was added to the queue
 	 */
-	public abstract bool offer (G element);
+	public virtual bool offer (G element) {
+		return add (element);
+	}
 
 	/**
 	 * Peeks (retrieves, but not remove) an element from this queue.
@@ -100,5 +103,13 @@ public interface Gee.Queue<G> : Collection<G> {
 	 *
 	 * @return          the amount of elements that were actually drained
 	 */
-	public abstract int drain (Collection<G> recipient, int amount = -1);
+	public virtual int drain (Collection<G> recipient, int amount = -1) {
+		G? item = null;
+		int drained = 0;
+		while((amount == -1 || --amount >= 0) && (item = poll ()) != null) {
+			recipient.add (item);
+			drained++;
+		}
+		return drained;
+	}
 }

@@ -110,7 +110,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override bool offer (G element) {
+	public bool offer (G element) {
 		if (_r == null) {
 			_r = new Type1Node<G> (element);
 			_p = _r;
@@ -259,7 +259,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override int drain (Collection<G> recipient, int amount = -1) {
+	public int drain (Collection<G> recipient, int amount = -1) {
 		if (amount == -1) {
 			amount = this._size;
 		}
