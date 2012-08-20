@@ -579,6 +579,7 @@ public abstract class MapTests : Gee.TestCase {
 		public override K key { get {return _key; } }
 		private K _key;
 		public override V value { get; set; }
+		public override bool read_only { get { return false; } }
 	}
 }
 
