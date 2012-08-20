@@ -23,6 +23,7 @@
 /**
  * A map with multiple values per key.
  */
+[GenericAccessors]
 public interface Gee.MultiMap<K,V> : Object {
 	/**
 	 * The number of key/value pairs in this map.
@@ -117,10 +118,10 @@ public interface Gee.MultiMap<K,V> : Object {
 	/**
 	 * The type of the keys in this multimap.
 	 */
-	public abstract Type key_type { get; }
+	public virtual Type key_type { get { return typeof (K); } }
 
 	/**
 	 * The type of the values in this multimap.
 	 */
-	public abstract Type value_type { get; }
+	public virtual Type value_type { get { return typeof (V); } }
 }

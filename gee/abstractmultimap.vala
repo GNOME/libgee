@@ -135,10 +135,6 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 
 	protected abstract EqualDataFunc<V> get_value_equal_func ();
 
-	public Type key_type { get { return typeof(K); } }
-
-	public Type value_type { get { return typeof(V); } }
-
 	private class MappingIterator<K, V> : Object {
 		protected Gee.MapIterator<K, Collection<V>> outer;
 		protected Iterator<V>? inner = null;
