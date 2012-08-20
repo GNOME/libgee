@@ -118,10 +118,10 @@ public interface Gee.MultiMap<K,V> : Object {
 	/**
 	 * The type of the keys in this multimap.
 	 */
-	public virtual Type key_type { get { return typeof (K); } }
+	public Type key_type { get { return typeof (K); } }
 
 	/**
 	 * The type of the values in this multimap.
 	 */
-	public virtual Type value_type { get { return typeof (V); } }
+	public Type value_type { get { return typeof (V); } }
 }

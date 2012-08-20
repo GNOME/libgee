@@ -605,10 +605,6 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 			}
 		}
 
-		public Type element_type {
-			get { return typeof (G); }
-		}
-
 		public void foreach (ForallFunc<G> f) {
 			assert (_stamp == _list._stamp);
 			if (!started) {

@@ -173,9 +173,5 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 			_pending = 0;
 			_removed = false;
 		}
-
-		public Type element_type {
-			get { return typeof (G); }
-		}
 	}
 }

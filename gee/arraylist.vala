@@ -388,10 +388,6 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 			}
 		}
 
-		public Type element_type {
-			get { return typeof (G); }
-		}
-
 		public void foreach (ForallFunc<G> f) {
 			assert (_stamp == _list._stamp);
 			if (_index < 0 || _removed)

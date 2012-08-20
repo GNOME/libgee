@@ -64,13 +64,6 @@ public abstract class Gee.AbstractCollection<G> : Object, Traversable<G>, Iterab
 	/**
 	 * {@inheritDoc}
 	 */
-	public Type element_type {
-		get { return typeof (G); }
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public abstract Iterator<G> iterator ();
 
 	public virtual void foreach (ForallFunc<G> f) {

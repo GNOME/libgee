@@ -546,10 +546,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			assert_not_reached ();
 		}
 
-		public Type element_type {
-			get { return typeof (K); }
-		}
-
 		public void foreach(ForallFunc<K> f) {
 			if (_node != null) {
 				f(_node.key);
@@ -631,10 +627,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			assert_not_reached ();
 		}
 
-		public Type element_type {
-			get { return typeof (V); }
-		}
-
 		public void foreach(ForallFunc<V> f) {
 			if (_node != null) {
 				f(_node.value);
@@ -668,10 +660,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public void remove () {
 			assert_not_reached ();
-		}
-
-		public Type element_type {
-			get { return typeof (Entry<K, V>); }
 		}
 
 		public void foreach(ForallFunc<Map.Entry<K,V>> f) {

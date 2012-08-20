@@ -111,13 +111,6 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 	/**
 	 * {@inheritDoc}
 	 */
-	public Type element_type {
-		get { return typeof (Map.Entry<K,V>); }
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public Iterator<Map.Entry<K,V>> iterator () {
 		return entries.iterator ();
 	}

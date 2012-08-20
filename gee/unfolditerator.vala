@@ -60,10 +60,6 @@ internal class Gee.UnfoldIterator<G> : Object, Traversable<G>, Iterator<G> {
 	public bool valid { get { return _current != null; } }
 	public bool read_only { get { return true; } }
 
-	public Type element_type {
-		get { return typeof (G); }
-	}
-
 	public void foreach (ForallFunc<G> f) {
 		if (_current != null) {
 			f (_current);

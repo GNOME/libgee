@@ -1629,10 +1629,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return current.key;
 		}
 
-		public Type element_type {
-			get { return typeof (K); }
-		}
-
 		public void foreach (ForallFunc<K> f) {
 			if (current != null) {
 				f (current.key);
@@ -1666,10 +1662,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return iterator.current.key;
 		}
 
-		public Type element_type {
-			get { return typeof (K); }
-		}
-
 		public void foreach (ForallFunc<K> f) {
 			if (valid)
 				f (iterator.current.key);
@@ -1691,10 +1683,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			assert (stamp == _map.stamp);
 			assert (valid);
 			return current.value;
-		}
-
-		public Type element_type {
-			get { return typeof (V); }
 		}
 
 		public void foreach (ForallFunc<V> f) {
@@ -1730,10 +1718,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return iterator.current.value;
 		}
 
-		public Type element_type {
-			get { return typeof (V); }
-		}
-
 		public void foreach (ForallFunc<V> f) {
 			if (valid)
 				f (iterator.current.key);
@@ -1759,10 +1743,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public new void remove () {
 			unset ();
-		}
-
-		public Type element_type {
-			get { return typeof (Entry<K, V>); }
 		}
 
 		public void foreach (ForallFunc<Map.Entry<K, V>> f) {
@@ -1800,10 +1780,6 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public new void remove () {
 			unset ();
-		}
-
-		public Type element_type {
-			get { return typeof (Entry<K, V>); }
 		}
 
 		public void foreach (ForallFunc<Map.Entry<K, V>> f) {
