@@ -45,12 +45,6 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 		this._empty_value_set = Set.empty<V> ();
 	}
 
-	protected abstract Collection<V> create_value_storage ();
-
-	protected abstract MultiSet<K> create_multi_key_set ();
-
-	protected abstract EqualDataFunc<V> get_value_equal_func ();
-
 	public Set<K> get_keys () {
 		return _storage_map.keys;
 	}
@@ -131,9 +125,89 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 		_nitems = 0;
 	}
 
+	public Gee.MapIterator<K, V> map_iterator () {
+		return new MapIterator<K, V> (_storage_map.map_iterator ());
+	}
+
+	protected abstract Collection<V> create_value_storage ();
+
+	protected abstract MultiSet<K> create_multi_key_set ();
+
+	protected abstract EqualDataFunc<V> get_value_equal_func ();
+
 	public Type key_type { get { return typeof(K); } }
 
 	public Type value_type { get { return typeof(V); } }
+
+	private class MappingIterator<K, V> : Object {
+		protected Gee.MapIterator<K, Collection<V>> outer;
+		protected Iterator<V>? inner = null;
+
+		public MappingIterator (Gee.MapIterator<K, Collection<V>>? outer) {
+			this.outer = outer;
+		}
+
+		public bool next () {
+			if (inner.next ()) {
+				return true;
+			} else if (outer.next ()) {
+				inner = outer.get_value ().iterator ();
+				assert (inner.next ());
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public bool has_next () {
+			return inner.has_next () || outer.has_next ();
+		}
+
+		public void remove () {
+			assert_not_reached ();
+		}
+
+		public virtual bool read_only {
+			get {
+				return true;
+			}
+		}
+
+		public void unset () {
+			inner.remove ();
+			if (outer.get_value ().is_empty) {
+				outer.unset ();
+			}
+		}
+
+		public bool valid {
+			get {
+				return inner != null && inner.valid;
+			}
+		}
+	}
+
+	private class MapIterator<K, V> : MappingIterator<K, V>, Gee.MapIterator<K, V> {
+		public MapIterator (Gee.MapIterator<K, Collection<V>>? outer) {
+			base (outer);
+		}
+
+		public K get_key () {
+			assert (valid);
+			return outer.get_key ();
+		}
+
+		public V get_value () {
+			assert (valid);
+			return inner.get ();
+		}
+
+		public void set_value (V value) {
+			assert_not_reached ();
+		}
+
+		public bool mutable { get { return false; } }
+	}
 
 	// Future-proofing
 	internal virtual void reserved0() {}

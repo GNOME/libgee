@@ -108,6 +108,13 @@ public interface Gee.MultiMap<K,V> : Object {
 	public abstract void clear ();
 
 	/**
+	 * Returns an iterator for this map.
+	 *
+	 * @return a map iterator
+	 */
+	public abstract MapIterator<K, V> map_iterator ();
+
+	/**
 	 * The type of the keys in this multimap.
 	 */
 	public abstract Type key_type { get; }
