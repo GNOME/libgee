@@ -66,5 +66,17 @@ public abstract class Gee.AbstractSortedMap<K, V> : AbstractMap<K,V>, SortedMap<
 			return instance;
 		}
 	}
+
+	// Future-proofing
+	internal virtual void reserved0() {}
+	internal virtual void reserved1() {}
+	internal virtual void reserved2() {}
+	internal virtual void reserved3() {}
+	internal virtual void reserved4() {}
+	internal virtual void reserved5() {}
+	internal virtual void reserved6() {}
+	internal virtual void reserved7() {}
+	internal virtual void reserved8() {}
+	internal virtual void reserved9() {}
 }
 

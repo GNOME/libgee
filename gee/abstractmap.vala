@@ -135,4 +135,16 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 	public virtual Iterator<A> stream<A> (owned StreamFunc<Map.Entry<K,V>, A> f) {
 		return iterator ().stream<A> ((owned) f);
 	}
+
+	// Future-proofing
+	internal virtual void reserved0() {}
+	internal virtual void reserved1() {}
+	internal virtual void reserved2() {}
+	internal virtual void reserved3() {}
+	internal virtual void reserved4() {}
+	internal virtual void reserved5() {}
+	internal virtual void reserved6() {}
+	internal virtual void reserved7() {}
+	internal virtual void reserved8() {}
+	internal virtual void reserved9() {}
 }
