@@ -570,6 +570,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			get { return _node.value; }
 			set { _node.value = value; }
 		}
+
+		public override bool read_only { get { return false; } }
 	}
 
 	private inline unowned Node<K,V>? find_lower (K key) {

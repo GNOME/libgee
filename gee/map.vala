@@ -69,6 +69,11 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 		 * The value of this entry.
 		 */
 		public abstract V value { get; set; }
+
+		/**
+		 * ``true'' if the setting value is permitted.
+		 */
+		public abstract bool read_only { get; }
 	}
 
 	/**

@@ -326,6 +326,8 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			get { return _node.value; }
 			set { _node.value = value; }
 		}
+
+		public override bool read_only { get { return false; } }
 	}
 
 	private class KeySet<K,V> : AbstractSet<K> {
