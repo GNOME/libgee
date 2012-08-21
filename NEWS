@@ -1,3 +1,10 @@
+libgee 0.7.4
+============
+ * Remove *_impl methods
+ * Move virtual methods to interfaces
+ * Future-proof the ABI by adding reserved v-table members
+ * Add read_only to Map.Entry
+
 libgee 0.7.3
 ============
  * Update documentation
