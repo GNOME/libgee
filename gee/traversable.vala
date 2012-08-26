@@ -1,8 +1,6 @@
-
-
 /* traversable.vala
  *
- * Copyright (C) 2011  Maciej Piechotka
+ * Copyright (C) 2011-2012  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,8 +19,6 @@
  * Author:
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
-
-
 
 namespace Gee {
 	public delegate A FoldFunc<A, G> (owned G g, owned A a);
