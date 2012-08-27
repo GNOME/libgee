@@ -56,11 +56,13 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	/**
 	 * The elements' hash function.
 	 */
+	[CCode (notify = false)]
 	public HashDataFunc<G> hash_func { private set; get; }
 
 	/**
 	 * The elements' equality testing function.
 	 */
+	[CCode (notify = false)]
 	public EqualDataFunc<G> equal_func { private set; get; }
 
 	private int _array_size;

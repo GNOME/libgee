@@ -29,6 +29,7 @@ public class Gee.TreeMultiMap<K,V> : AbstractMultiMap<K,V> {
 		get { return ((TreeMap<K, Set<V>>) _storage_map).key_compare_func; }
 	}
 
+	[CCode (notify = false)]
 	public CompareDataFunc<V> value_compare_func { private set; get; }
 
 	/**

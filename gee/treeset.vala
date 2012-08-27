@@ -50,6 +50,7 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 	/**
 	 * The elements' comparator function.
 	 */
+	[CCode (notify = false)]
 	public CompareDataFunc<G> compare_func { private set; get; }
 
 	private int _size = 0;

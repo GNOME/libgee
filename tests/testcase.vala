@@ -52,7 +52,7 @@ public abstract class Gee.TestCase : Object {
 	}
 
 	private class Adaptor {
-
+		[CCode (notify = false)]
 		public string name { get; private set; }
 		private TestMethod test;
 		private TestCase test_case;

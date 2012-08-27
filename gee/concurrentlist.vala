@@ -32,6 +32,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	/**
 	 * The elements' equality testing function.
 	 */
+	[CCode (notify = false)]
 	public Gee.EqualDataFunc<G> equal_func { private set; get; }
 
 	/**

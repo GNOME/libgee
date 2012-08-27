@@ -55,6 +55,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	/**
 	 * The elements' equality testing function.
 	 */
+	[CCode (notify = false)]
 	public EqualDataFunc<G> equal_func { private set; get; }
 
 	internal G[] _items = new G[4];

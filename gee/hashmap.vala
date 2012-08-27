@@ -96,16 +96,19 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	/**
 	 * The keys' hash function.
 	 */
+	[CCode (notify = false)]
 	public HashDataFunc<K> key_hash_func { private set; get; }
 
 	/**
 	 * The keys' equality testing function.
 	 */
+	[CCode (notify = false)]
 	public EqualDataFunc<K> key_equal_func { private set; get; }
 
 	/**
 	 * The values' equality testing function.
 	 */
+	[CCode (notify = false)]
 	public EqualDataFunc<V> value_equal_func { private set; get; }
 
 	private int _array_size;

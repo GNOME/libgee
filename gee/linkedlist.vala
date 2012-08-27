@@ -41,6 +41,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	/**
 	 * The elements' equality testing function.
 	 */
+	[CCode (notify = false)]
 	public EqualDataFunc<G> equal_func { private set; get; }
 
 	/**

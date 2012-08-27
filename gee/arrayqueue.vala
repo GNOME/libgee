@@ -48,6 +48,7 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 		this._items = new G[10];
 	}
 
+	[CCode (notify = false)]
 	public EqualDataFunc<G> equal_func { private set; get; }
 
 	/**

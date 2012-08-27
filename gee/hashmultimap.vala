@@ -32,8 +32,10 @@ public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
 		get { return ((HashMap<K, Set<V>>) _storage_map).key_equal_func; }
 	}
 
+	[CCode (notify = false)]
 	public HashDataFunc<V> value_hash_func { private set; get; }
 
+	[CCode (notify = false)]
 	public EqualDataFunc<V> value_equal_func { private set; get; }
 
 	/**

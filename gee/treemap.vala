@@ -91,11 +91,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	/**
 	 * The keys' comparator function.
 	 */
+	[CCode (notify = false)]
 	public CompareDataFunc<K> key_compare_func { private set; get; }
 
 	/**
 	 * The values' equality testing function.
 	 */
+	[CCode (notify = false)]
 	public EqualDataFunc<V> value_equal_func { private set; get; }
 
 	private int _size = 0;
@@ -962,7 +964,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	}
 
 	private class SubKeySet<K,V> : AbstractBidirSortedSet<K> {
+		[CCode (notify = false)]
 		public TreeMap<K,V> map { private set; get; }
+		[CCode (notify = false)]
 		public Range<K,V> range { private set; get; }
 
 		public SubKeySet (TreeMap<K,V> map, Range<K,V> range) {
@@ -1121,7 +1125,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	}
 
 	private class SubValueCollection<K,V> : AbstractCollection<V> {
+		[CCode (notify = false)]
 		public TreeMap<K,V> map { private set; get; }
+		[CCode (notify = false)]
 		public Range<K,V> range { private set; get; }
 
 		public SubValueCollection (TreeMap<K,V> map, Range<K,V> range) {
@@ -1264,7 +1270,9 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	}
 
 	private class SubEntrySet<K,V> : AbstractBidirSortedSet<Map.Entry<K,V>> {
+		[CCode (notify = false)]
 		public TreeMap<K,V> map { private set; get; }
+		[CCode (notify = false)]
 		public Range<K,V> range { private set; get; }
 
 		public SubEntrySet (TreeMap<K,V> map, Range<K,V> range) {
