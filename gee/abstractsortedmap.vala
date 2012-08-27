@@ -46,11 +46,6 @@ public abstract class Gee.AbstractSortedMap<K, V> : AbstractMap<K,V>, SortedMap<
 	 */
 	public abstract SortedSet<Map.Entry<K,V>> ascending_entries { owned get; }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public abstract BidirMapIterator<K,V> bidir_map_iterator ();
-
 	private weak SortedMap<K,V> _read_only_view;
 	/**
 	 * The read-only view this map.
