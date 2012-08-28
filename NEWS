@@ -1,3 +1,9 @@
+libgee 0.7.90
+=============
+ * Don't notify when constructor property is set
+ * Use views instead of copies in MultiMap as in rest of libgee
+ * Allow early termination in Traversable.foreach
+
 libgee 0.7.4.1
 ==============
  * Fix missing property read_only in testmap Entry
