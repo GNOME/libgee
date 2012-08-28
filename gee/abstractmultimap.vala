@@ -38,11 +38,9 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 
 	protected Map<K, Collection<V>> _storage_map;
 	private int _nitems = 0;
-	private Set<V> _empty_value_set;
 
 	public AbstractMultiMap (Map<K, Collection<V>> storage_map) {
 		this._storage_map = storage_map;
-		this._empty_value_set = Set.empty<V> ();
 	}
 
 	public Set<K> get_keys () {
@@ -50,23 +48,11 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	}
 
 	public MultiSet<K> get_all_keys () {
-		MultiSet<K> result = create_multi_key_set ();
-		foreach (var entry in _storage_map.entries) {
-			for (int i = 0; i < entry.value.size; i++) {
-				result.add (entry.key);
-			}
-		}
-		return result;
+		return new AllKeys<K, V> (this);
 	}
 
 	public Collection<V> get_values () {
-		var result = new ArrayList<V> (get_value_equal_func ());
-		foreach (var entry in _storage_map.entries) {
-			foreach (var value in entry.value) {
-				result.add (value);
-			}
-		}
-		return result;
+		return new Values<K, V> (this);
 	}
 
 	public bool contains (K key) {
@@ -74,11 +60,8 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	}
 
 	public new Collection<V> get (K key) {
-		if (_storage_map.has_key (key)) {
-			return _storage_map.get (key).read_only_view;
-		} else {
-			return _empty_value_set;
-		}
+		Collection<V>? col = _storage_map.get (key);
+		return col != null ? col.read_only_view : Set.empty<V> ();
 	}
 
 	public new void set (K key, V value) {
@@ -135,6 +118,81 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 
 	protected abstract EqualDataFunc<V> get_value_equal_func ();
 
+	private class AllKeys<K, V> : AbstractCollection<K>, MultiSet<K> {
+		protected AbstractMultiMap<K, V> _multi_map;
+
+		public AllKeys (AbstractMultiMap<K, V> multi_map) {
+			_multi_map = multi_map;
+		}
+
+		public override Gee.Iterator<K> iterator () {
+			return new KeyIterator<K, V> (_multi_map._storage_map.map_iterator ());
+		}
+
+		public override int size { get { return _multi_map.size; } }
+
+		public override bool read_only { get { return true; } }
+
+		public override bool contains (K key) {
+			return _multi_map._storage_map.has_key (key);
+		}
+
+		public override bool add (K key) {
+			assert_not_reached ();
+		}
+
+		public override  bool remove (K item) {
+			assert_not_reached ();
+		}
+
+		public override void clear () {
+			assert_not_reached ();
+		}
+
+		public int count (K item) {
+			Collection<V>? collection = _multi_map._storage_map.get (item);
+			return collection != null ? collection.size : 0;
+		}
+	}
+
+	private class Values<K, V> : AbstractCollection<V> {
+		protected AbstractMultiMap<K, V> _multi_map;
+
+		public Values (AbstractMultiMap<K, V> multi_map) {
+			_multi_map = multi_map;
+		}
+
+		public override Gee.Iterator<K> iterator () {
+			return new ValueIterator<K, V> (_multi_map._storage_map.map_iterator ());
+		}
+
+		public override int size { get { return _multi_map.size; } }
+
+		public override bool read_only { get { return true; } }
+
+		public override bool contains (V value) {
+			EqualDataFunc<V> func = _multi_map.get_value_equal_func ();
+			foreach (var col in _multi_map._storage_map.values) {
+				if (col.contains (value)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public override bool add (K key) {
+			assert_not_reached ();
+		}
+
+		public override  bool remove (K item) {
+			assert_not_reached ();
+		}
+
+		public override void clear () {
+			assert_not_reached ();
+		}
+	}
+
 	private class MappingIterator<K, V> : Object {
 		protected Gee.MapIterator<K, Collection<V>> outer;
 		protected Iterator<V>? inner = null;
@@ -144,7 +202,7 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 		}
 
 		public bool next () {
-			if (inner.next ()) {
+			if (inner != null && inner.next ()) {
 				return true;
 			} else if (outer.next ()) {
 				inner = outer.get_value ().iterator ();
@@ -180,6 +238,49 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 			get {
 				return inner != null && inner.valid;
 			}
+		}
+	}
+
+	private class KeyIterator<K, V> : MappingIterator<K, V>, Traversable<K>, Iterator<K> {
+		public KeyIterator (Gee.MapIterator<K, Collection<V>>? outer) {
+			base (outer);
+		}
+
+		public new K get () {
+			assert (valid);
+			return outer.get_key ();
+		}
+
+		public void foreach (ForallFunc<K> f) {
+			if (inner != null && outer.valid) {
+				K key = outer.get_key ();
+				inner.foreach ((v) => {f (key);});
+				outer.next ();
+			}
+			outer.foreach ((key, col) => {
+				col.foreach ((v) => {f (key);});
+			});
+		}
+	}
+
+	private class ValueIterator<K, V> : MappingIterator<K, V>, Traversable<V>, Iterator<V> {
+		public ValueIterator (Gee.MapIterator<K, Collection<V>>? outer) {
+			base (outer);
+		}
+
+		public new V get () {
+			assert (valid);
+			return inner.get ();
+		}
+
+		public void foreach (ForallFunc<V> f) {
+			if (inner != null && outer.valid) {
+				inner.foreach (f);
+				outer.next ();
+			}
+			outer.foreach ((key, col) => {
+				col.foreach (f);
+			});
 		}
 	}
 
