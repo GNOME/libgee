@@ -251,14 +251,16 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 			return outer.get_key ();
 		}
 
-		public void foreach (ForallFunc<K> f) {
+		public bool foreach (ForallFunc<K> f) {
 			if (inner != null && outer.valid) {
-				K key = outer.get_key ();
-				inner.foreach ((v) => {f (key);});
+				K key = outer.get_key ();	
+				if (!inner.foreach ((v) => {return f (key);})) {
+					return false;
+				}
 				outer.next ();
 			}
-			outer.foreach ((key, col) => {
-				col.foreach ((v) => {f (key);});
+			return outer.foreach ((key, col) => {
+				return col.foreach ((v) => {return f (key);});
 			});
 		}
 	}
@@ -273,13 +275,15 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 			return inner.get ();
 		}
 
-		public void foreach (ForallFunc<V> f) {
+		public bool foreach (ForallFunc<V> f) {
 			if (inner != null && outer.valid) {
-				inner.foreach (f);
+				if (!inner.foreach (f)) {
+					return false;
+				}
 				outer.next ();
 			}
-			outer.foreach ((key, col) => {
-				col.foreach (f);
+			return outer.foreach ((key, col) => {
+				return col.foreach (f);
 			});
 		}
 	}

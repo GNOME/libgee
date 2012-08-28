@@ -495,7 +495,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 				Collection<ArrayList<FreeNode *>> temp = new ArrayList<ArrayList<FreeNode *>> ();
 				_queue.drain (temp);
 				_queue_mutex.unlock ();
-				temp.foreach ((x) => {_global_to_free.add_all (x);});
+				temp.foreach ((x) => {_global_to_free.add_all (x); return true;});
 			}
 			try_free (_global_to_free);
 		}

@@ -22,7 +22,7 @@
 
 namespace Gee {
 	public delegate A FoldFunc<A, G> (owned G g, owned A a);
-	public delegate void ForallFunc<G> (owned G g);
+	public delegate bool ForallFunc<G> (owned G g);
 	public delegate Lazy<A>? UnfoldFunc<A> ();
 	public delegate Traversable.Stream StreamFunc<G, A> (Traversable.Stream state, owned Lazy<G>? g, out Lazy<A>? lazy);
 	public delegate A MapFunc<A, G> (owned G g);
@@ -52,13 +52,17 @@ namespace Gee {
 [GenericAccessors]
 public interface Gee.Traversable<G> : Object {
 	/**
-	 * Apply function to each element returned by iterator. 
+	 * Apply function to each element returned by iterator untill last element
+	 * or function return ''false''.
 	 *
 	 * ''{@link Iterator} implementation:'' Operation moves the iterator
-	 * to last element in iteration. If iterator points at some element it
-	 * will be included in iteration.
+	 * to last element in iteration or the first element that returned ''false''.
+	 * If iterator points at some element it will be included in iteration.
+	 *
+	 * @return ''false'' if the argument returned ''false'' at last invocation and
+	 *         ''true'' otherwise.
 	 */
-	public new abstract void foreach (ForallFunc<G> f);
+	public new abstract bool foreach (ForallFunc<G> f);
 
 	/**
 	 * Stream function is an abstract function allowing writing many
@@ -179,7 +183,7 @@ public interface Gee.Traversable<G> : Object {
 	 */
 	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
 	{
-		this.foreach ((item) => {seed = f ((owned) item, (owned) seed);});
+		this.foreach ((item) => {seed = f ((owned) item, (owned) seed); return true; });
 		return (owned) seed;
 	}
 

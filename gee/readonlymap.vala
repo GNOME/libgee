@@ -225,8 +225,8 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Traversable<Map.Entry<K,V>>, Itera
 	/**
 	 * {@inheritDoc}
 	 */
-	public void foreach (ForallFunc<Map.Entry<K, V>> f) {
-		_map.foreach (f);
+	public bool foreach (ForallFunc<Map.Entry<K, V>> f) {
+		return _map.foreach (f);
 	}
 
 	/**

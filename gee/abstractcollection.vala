@@ -66,8 +66,8 @@ public abstract class Gee.AbstractCollection<G> : Object, Traversable<G>, Iterab
 	 */
 	public abstract Iterator<G> iterator ();
 
-	public virtual void foreach (ForallFunc<G> f) {
-		iterator ().foreach (f);
+	public virtual bool foreach (ForallFunc<G> f) {
+		return iterator ().foreach (f);
 	}
 
 	public virtual Iterator<A> stream<A> (owned StreamFunc<G, A> f) {

@@ -551,22 +551,28 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			assert_not_reached ();
 		}
 
-		public void foreach(ForallFunc<K> f) {
+		public bool foreach(ForallFunc<K> f) {
 			if (_node != null) {
-				f(_node.key);
-				if(_next == null)
+				if (!f(_node.key)) {
+					return false;
+				}
+				if(_next == null) {
 					_next = _node.next;
+				}
 			}
 			do {
 				while(_next != null) {
 					_node = _next;
-					f(_node.key);
+					if (!f(_node.key)) {
+						return false;
+					}
 					_next = _next.next;
 				}
-                                if (_index + 1 < _map._array_size)
+                                if (_index + 1 < _map._array_size) {
 					_next = _map._nodes[++_index];
-				else
-					break;
+				} else {
+					return true;
+				}
 			} while(true);
 		}
 	}
@@ -632,22 +638,28 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			assert_not_reached ();
 		}
 
-		public void foreach(ForallFunc<V> f) {
+		public bool foreach(ForallFunc<V> f) {
 			if (_node != null) {
-				f(_node.value);
-				if(_next == null)
+				if (!f(_node.value)) {
+					return false;
+				}
+				if(_next == null) {
 					_next = _node.next;
+				}
 			}
 			do {
 				while(_next != null) {
 					_node = _next;
-					f(_node.value);
+					if (!f(_node.value)) {
+						return false;
+					}
 					_next = _next.next;
 				}
-                                if (_index + 1 < _map._array_size)
+                                if (_index + 1 < _map._array_size) {
 					_next = _map._nodes[++_index];
-				else
-					break;
+				} else {
+					return true;
+				}
 			} while(true);
 		}
 	}
@@ -667,22 +679,28 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			assert_not_reached ();
 		}
 
-		public void foreach(ForallFunc<Map.Entry<K,V>> f) {
+		public bool foreach(ForallFunc<Map.Entry<K,V>> f) {
 			if (_node != null) {
-				f(Entry<K,V>.entry_for<K,V> (_node));
-				if(_next == null)
+				if (!f(Entry<K,V>.entry_for<K,V> (_node))) {
+					return false;
+				}
+				if(_next == null) {
 					_next = _node.next;
+				}
 			}
 			do {
 				while(_next != null) {
 					_node = _next;
-					f(Entry<K,V>.entry_for<K,V> (_node));
+					if (!f(Entry<K,V>.entry_for<K,V> (_node))) {
+						return false;
+					}
 					_next = _next.next;
 				}
-                                if (_index + 1 < _map._array_size)
+                                if (_index + 1 < _map._array_size) {
 					_next = _map._nodes[++_index];
-				else
-					break;
+				} else {
+					return true;
+				}
 			} while(true);
 		}
 	}

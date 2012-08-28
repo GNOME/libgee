@@ -312,15 +312,19 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 
 		public bool read_only { get {return false;} }
 
-		public void foreach (ForallFunc<G> f) {
+		public bool foreach (ForallFunc<G> f) {
 			assert (_queue._stamp == _stamp);
-			if(!valid) {
+			if (!valid) {
 				_offset++;
 				_removed = false;
 			}
-			for(int i = _offset; i < _queue._length; i++) {
-				f (_queue._items[(_queue._start + i) % _queue._items.length]);
+			for (int i = _offset; i < _queue._length; i++) {
+				if (!f (_queue._items[(_queue._start + i) % _queue._items.length])) {
+					_offset = i;
+					return false;
+				}
 			}
+			return true;
 		}
 
 		private ArrayQueue _queue;

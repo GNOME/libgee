@@ -1036,11 +1036,18 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			}
 		}
 
-		public void foreach (ForallFunc<G> f) {
-			if (valid)
-				f (position.data);
-			while (next ())
-				f (position.data);
+		public bool foreach (ForallFunc<G> f) {
+			if (valid) {
+				if (!f (position.data)) {
+					return false;
+				}
+			}
+			while (next ()) {
+				if (!f (position.data)) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }

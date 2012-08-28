@@ -339,10 +339,13 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			_index++;
 		}
 
-		public new void foreach (ForallFunc<G> f) {
+		public new bool foreach (ForallFunc<G> f) {
 			HazardPointer.Context ctx = new HazardPointer.Context ();
-			if (_started && !_removed)
-				f (HazardPointer.get_pointer<G> (&_curr._data));
+			if (_started && !_removed) {
+				if (!f (HazardPointer.get_pointer<G> (&_curr._data))) {
+					return false;
+				}
+			}
 			Node<G>? _old_prev = _removed ? _prev : null;
 			while (Node.proceed<G> (ref _prev, ref _curr)) {
 				if (_removed)
@@ -350,8 +353,11 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 				_removed = false;
 				_started = true;
 				_index++;
-				f (HazardPointer.get_pointer<G> (&_curr._data));
+				if (!f (HazardPointer.get_pointer<G> (&_curr._data))) {
+					return false;
+				}
 			}
+			return true;
 		}
 
 		private bool _started;

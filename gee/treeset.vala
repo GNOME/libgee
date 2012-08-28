@@ -716,19 +716,24 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			}
 		}
 
-		public void foreach (ForallFunc<G> f) {
+		public bool foreach (ForallFunc<G> f) {
 			assert (stamp == _set.stamp);
 			if (current != null) {
-				f (current.key);
+				if (!f (current.key)) {
+					return false;
+				}
 				_next = current.next;
 			} else if (!started) {
 				_next = _set._first;
 			}
 			while (_next != null) {
 				current = _next;
-				f (current.key);
+				if (!f (current.key)) {
+					return false;
+				}
 				_next = current.next;
 			}
+			return true;
 		}
 
 		private weak Node<G>? current = null;
@@ -1115,11 +1120,18 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			}
 		}
 
-		public void foreach(ForallFunc<G> f) {
-			if(valid)
-				f(get());
-			while(next())
-				f(get());
+		public bool foreach(ForallFunc<G> f) {
+			if(valid) {
+				if (!f(get())) {
+					return false;
+				}
+			}
+			while(next()) {
+				if (!f(get())) {
+					return false;
+				}
+			}
+			return true;
 		}
 
 		private new TreeSet<G> set;

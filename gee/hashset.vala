@@ -288,20 +288,26 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			}
 		}
 
-		public void foreach (ForallFunc<G> f) {
+		public bool foreach (ForallFunc<G> f) {
 			assert (_stamp == _set._stamp);
-			if (_node != null)
-				f (_node.key);
+			if (_node != null) {
+				if (!f (_node.key)) {
+					return false;
+				}
+			}
 			while (_index + 1 < _set._array_size || _next != null) {
 				if (_next != null) {
 					_node = _next;
-					f (_node.key);
+					if (!f (_node.key)) {
+						return false;
+					}
 					_next = _node.next;
 				} else {
 					_index++;
 					_next = _set._nodes[_index];
 				}
 			}
+			return false;
 		}
 	}
 }

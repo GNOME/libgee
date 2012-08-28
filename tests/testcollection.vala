@@ -768,12 +768,12 @@ public abstract class CollectionTests : Gee.TestCase {
 		
 		int count = 0;
 		
-		test_collection.iterator ().foreach ((x) => {count++;});
+		test_collection.iterator ().foreach ((x) => {count++; return true;});
 		assert (count == 3);
 		
 		Iterator<string> iter = test_collection.iterator ();
 		assert (iter.next ());
-		iter.foreach ((x) => {count++;});
+		iter.foreach ((x) => {count++; return true;});
 		assert (count == 6);
 	}
 

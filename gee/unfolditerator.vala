@@ -60,30 +60,39 @@ internal class Gee.UnfoldIterator<G> : Object, Traversable<G>, Iterator<G> {
 	public bool valid { get { return _current != null; } }
 	public bool read_only { get { return true; } }
 
-	public void foreach (ForallFunc<G> f) {
+	public bool foreach (ForallFunc<G> f) {
 		if (_current != null) {
-			f (_current);
+			if (!f (_current)) {
+				return false;
+			}
 		}
 		if (_next != null) {
 			_current = (owned)_next;
-			f (_current);
+			if (!f (_current)) {
+				return false;
+			}
 		} else if (_end) {
-			return;
+			return true;
 		}
 		if (_current == null) {
 			_current = _func ();
 			if (_current == null) {
 				_end = true;
-				return;
+				return true;
 			} else {
-				f (_current);
+				if (!f (_current)) {
+					return false;
+				}
 			}
 		}
 		while ((_next = _func ()) != null) {
 			_current = (owned)_next;
-			f (_current);
+			if (!f (_current)) {
+				return false;
+			}
 		}
 		_end = true;
+		return true;
 	}
 
 	private UnfoldFunc<G> _func;

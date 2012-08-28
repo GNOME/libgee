@@ -23,7 +23,7 @@
 
 namespace Gee {
 	public delegate A FoldMapFunc<A, K, V> (K k, V v, owned A a);
-	public delegate void ForallMapFunc<K, V> (K k, V v);
+	public delegate bool ForallMapFunc<K, V> (K k, V v);
 }
 
 /**
@@ -128,11 +128,18 @@ public interface Gee.MapIterator<K,V> : Object {
 	 * Operation moves the iterator to last element in iteration. If iterator
 	 * points at some element it will be included in iteration.
 	 */
-	public new virtual void foreach (ForallMapFunc<K, V> f) {
-		if (valid)
-			f (get_key (), get_value ());
-		while (next ())
-			f (get_key (), get_value ());
+	public new virtual bool foreach (ForallMapFunc<K, V> f) {
+		if (valid) {
+			if (!f (get_key (), get_value ())) {
+				return false;
+			}
+		}
+		while (next ()) {
+			if (!f (get_key (), get_value ())) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
 

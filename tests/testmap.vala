@@ -548,12 +548,12 @@ public abstract class MapTests : Gee.TestCase {
 		
 		int count = 0;
 		
-		test_map.map_iterator ().foreach ((x, y) => {count++;});
+		test_map.map_iterator ().foreach ((x, y) => {count++; return true;});
 		assert (count == 3);
 		
 		var iter = test_map.map_iterator ();
 		assert (iter.next ());
-		iter.foreach ((x, y) => {count++;});
+		iter.foreach ((x, y) => {count++; return true;});
 		assert (count == 6);
 	}
 

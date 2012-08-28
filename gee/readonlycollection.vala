@@ -69,8 +69,8 @@ internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void foreach (ForallFunc<G> f) {
-		_collection.foreach (f);
+	public bool foreach (ForallFunc<G> f) {
+		return _collection.foreach (f);
 	}
 
 	/**
@@ -210,8 +210,8 @@ internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, 
 			get { return typeof (G); }
 		}
 
-		public void foreach (ForallFunc<G> f) {
-			_iter.foreach (f);
+		public bool foreach (ForallFunc<G> f) {
+			return _iter.foreach (f);
 		}
 
 		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {

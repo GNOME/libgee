@@ -161,17 +161,32 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 			}
 		}
 
-		public void foreach (ForallFunc<G> f) {
-			if(!_removed && _iter.valid)
-				f(_iter.get_key());
-			if(_iter.valid)
-				for(int i = _pending - 1; i > 0; --i)
-					f(_iter.get_key());
-			while(_iter.next())
-				for(int i = _iter.get_value(); i > 0; --i)
-					f(_iter.get_key());
-			_pending = 0;
+		public bool foreach (ForallFunc<G> f) {
+			if (_iter.valid) {
+				if (!_removed) {
+					if (!f(_iter.get_key())) {
+						return false;
+					}
+				}
+				for(int i = _pending - 1; i >= 0; --i) {
+					if (!f(_iter.get_key())) {
+						_pending = i;
+						return false;
+					}
+				}
+			}
+			while(_iter.next()) {
+				for(int i = _iter.get_value() - 1; i >= 0; --i) {
+					if (!f(_iter.get_key())) {
+						_removed = false;
+						_pending = i;
+						return false;
+					}
+				}
+			}
 			_removed = false;
+			_pending = 0;
+			return true;
 		}
 	}
 }

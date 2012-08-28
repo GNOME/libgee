@@ -606,7 +606,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 			}
 		}
 
-		public void foreach (ForallFunc<G> f) {
+		public bool foreach (ForallFunc<G> f) {
 			assert (_stamp == _list._stamp);
 			if (!started) {
 				position = _list._head;
@@ -615,10 +615,13 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 			}
 			removed = false;
 			while (position != null) {
-				f (position.data);
+				if (!f (position.data)) {
+					return false;
+				}
 				position = position.next;
 			}
 			position = _list._tail;
+			return true;
 		}
 	}
 

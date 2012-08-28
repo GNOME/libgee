@@ -389,15 +389,19 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 			}
 		}
 
-		public void foreach (ForallFunc<G> f) {
+		public bool foreach (ForallFunc<G> f) {
 			assert (_stamp == _list._stamp);
-			if (_index < 0 || _removed)
-				_index++;
-			while (_index < _list._size) {
-				f (_list._items[_index]);
+			if (_index < 0 || _removed) {
 				_index++;
 			}
-			_index = _list._size;
+			while (_index < _list._size) {
+				if (!f (_list._items[_index])) {
+					return false;
+				}
+				_index++;
+			}
+			_index = _list._size - 1;
+			return true;
 		}
 	}
 }

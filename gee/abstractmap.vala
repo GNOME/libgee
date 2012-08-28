@@ -118,8 +118,8 @@ public abstract class Gee.AbstractMap<K,V> : Object, Traversable<Map.Entry<K,V>>
 	/**
 	 * {@inheritDoc}
 	 */
-	public virtual void foreach (ForallFunc<Map.Entry<K,V>> f) {
-		iterator ().foreach (f);
+	public virtual bool foreach (ForallFunc<Map.Entry<K,V>> f) {
+		return iterator ().foreach (f);
 	}
 
 	/**

@@ -1639,9 +1639,11 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return current.key;
 		}
 
-		public void foreach (ForallFunc<K> f) {
+		public bool foreach (ForallFunc<K> f) {
 			if (current != null) {
-				f (current.key);
+				if (!f (current.key)) {
+					return false;
+				}
 				current = current.next;
 			} else if (_next == null) {
 				current = _map.first;
@@ -1653,8 +1655,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 					_prev = null;
 				}
 			}
-			for (; current != null; current = current.next)
-				f (current.key);
+			for (; current != null; current = current.next) {
+				if (!f (current.key)) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 
@@ -1672,11 +1678,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return iterator.current.key;
 		}
 
-		public void foreach (ForallFunc<K> f) {
-			if (valid)
-				f (iterator.current.key);
-			while (iterator.next ())
-				f (iterator.current.key);
+		public bool foreach (ForallFunc<K> f) {
+			if (valid) {
+				if (!f (iterator.current.key)) {
+					return false;
+				}
+			}
+			while (iterator.next ()) {
+				if (!f (iterator.current.key)) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 
@@ -1695,9 +1708,11 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return current.value;
 		}
 
-		public void foreach (ForallFunc<V> f) {
+		public bool foreach (ForallFunc<V> f) {
 			if (current != null) {
-				f (current.key);
+				if (!f (current.key)) {
+					return false;
+				}
 				current = current.next;
 			} else if (_next == null) {
 				current = _map.first;
@@ -1709,8 +1724,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 					_prev = null;
 				}
 			}
-			for (; current != null; current = current.next)
-				f (current.key);
+			for (; current != null; current = current.next) {
+				if (!f (current.key)) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 
@@ -1728,11 +1747,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return iterator.current.value;
 		}
 
-		public void foreach (ForallFunc<V> f) {
-			if (valid)
-				f (iterator.current.key);
-			while (iterator.next ())
-				f (iterator.current.key);
+		public bool foreach (ForallFunc<V> f) {
+			if (valid) {
+				if (!f (iterator.current.key)) {
+					return false;
+				}
+			}
+			while (iterator.next ()) {
+				if (!f (iterator.current.key)) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 
@@ -1755,9 +1781,11 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			unset ();
 		}
 
-		public void foreach (ForallFunc<Map.Entry<K, V>> f) {
+		public bool foreach (ForallFunc<Map.Entry<K, V>> f) {
 			if (current != null) {
-				f (Entry.entry_for<K,V> (current));
+				if (!f (Entry.entry_for<K,V> (current))) {
+					return false;
+				}
 				current = current.next;
 			} else if (_next == null) {
 				current = _map.first;
@@ -1769,8 +1797,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 					_prev = null;
 				}
 			}
-			for (; current != null; current = current.next)
-				f (Entry.entry_for<K,V> (current));
+			for (; current != null; current = current.next) {
+				if (!f (Entry.entry_for<K,V> (current))) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 
@@ -1792,11 +1824,18 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			unset ();
 		}
 
-		public void foreach (ForallFunc<Map.Entry<K, V>> f) {
-			if (valid)
-				f (Entry.entry_for<K,V> (iterator.current));
-			while (iterator.next ())
-				f (Entry.entry_for<K,V> (iterator.current));
+		public bool foreach (ForallFunc<Map.Entry<K, V>> f) {
+			if (valid) {
+				if (!f (Entry.entry_for<K,V> (iterator.current))) {
+					return false;
+				}
+			}
+			while (iterator.next ()) {
+				if (!f (Entry.entry_for<K,V> (iterator.current))) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 
