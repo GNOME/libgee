@@ -70,10 +70,6 @@ public abstract class Gee.AbstractCollection<G> : Object, Traversable<G>, Iterab
 		return iterator ().foreach (f);
 	}
 
-	public virtual Iterator<A> stream<A> (owned StreamFunc<G, A> f) {
-		return iterator ().stream<A> ((owned) f);
-	}
-
 	private weak Collection<G> _read_only_view;
 
 	/**
