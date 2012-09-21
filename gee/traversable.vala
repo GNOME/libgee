@@ -338,7 +338,6 @@ public interface Gee.Traversable<G> : Object {
 				if (offset > 0) {
 					return Stream.CONTINUE;
 				} else if (length > 0) {
-					length--;
 					return length != 0 ? Stream.CONTINUE : Stream.END;
 				} else if (length == 0) {
 					return Stream.END;
@@ -348,6 +347,7 @@ public interface Gee.Traversable<G> : Object {
 			case Stream.CONTINUE:
 				if (offset == 0) {
 					val = item;
+					length--;
 					return Stream.YIELD;
 				} else {
 					val = null;
