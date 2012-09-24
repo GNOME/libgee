@@ -1,4 +1,4 @@
-AC_INIT([libgee], [0.7.90], [ptitjes@free.fr], [libgee])
+AC_INIT([libgee], [0.8.0], [https://bugzilla.gnome.org/enter_bug.cgi?product=libgee], [libgee])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])

@@ -1,3 +1,10 @@
+libgee 0.8.0
+============
+ * Fix Traversable.chop (bug #684348)
+ * Remove unnecessary method
+ * Update README
+ * Move everything to GenericAccessor
+
 libgee 0.7.90
 =============
  * Don't notify when constructor property is set
