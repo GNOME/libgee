@@ -46,6 +46,7 @@
  * || peek an element   || {@link peek_head}     ||
  * || pop an element    || {@link poll_head}     ||
  */
+[GenericAccessors]
 public interface Gee.Deque<G> : Queue<G> {
 	/**
 	 * Offers the specified element to the head of this deque.

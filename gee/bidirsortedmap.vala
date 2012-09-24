@@ -19,7 +19,7 @@
  * Author:
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
-
+[GenericAccessors]
 public interface Gee.BidirSortedMap<K,V> : SortedMap<K,V> {
 	/**
 	 * Returns a bi-directional iterator for this map.

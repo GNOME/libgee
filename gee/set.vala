@@ -23,6 +23,7 @@
 /**
  * A collection without duplicate elements.
  */
+[GenericAccessors]
 public interface Gee.Set<G> : Collection<G> {
 
 	/**

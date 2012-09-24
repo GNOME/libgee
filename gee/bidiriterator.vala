@@ -23,6 +23,7 @@
 /**
  * A bi-directional iterator.
  */
+[GenericAccessors]
 public interface Gee.BidirIterator<G> : Gee.Iterator<G> {
 	/**
 	 * Rewinds to the previous element in the iteration.

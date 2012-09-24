@@ -23,6 +23,7 @@
 /**
  * A collection with duplicate elements.
  */
+[GenericAccessors]
 public interface Gee.MultiSet<G> : Collection<G> {
 	/**
 	 * Returns the number of occurences of an item in this multiset.

@@ -24,6 +24,7 @@
 /**
  * A bi-directional Map iterator.
  */
+[GenericAccessors]
 public interface Gee.BidirMapIterator<K,V> : Gee.MapIterator<K,V> {
 	/**
 	 * Rewinds to the previous element in the iteration.

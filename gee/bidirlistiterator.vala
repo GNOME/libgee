@@ -19,6 +19,7 @@
  * Author:
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
+[GenericAccessors]
 public interface Gee.BidirListIterator<G> : Gee.BidirIterator<G>, Gee.ListIterator<G> {
 	/**
 	 * Inserts the specified item before the current item in the iteration. The

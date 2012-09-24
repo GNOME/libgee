@@ -19,7 +19,7 @@
  * Author:
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
-
+[GenericAccessors]
 public interface Gee.BidirList<G> : Gee.List<G> {
 	/**
 	 * Returns a BidirListIterator that can be used for iteration over this list.

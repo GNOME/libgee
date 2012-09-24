@@ -24,6 +24,7 @@
 /**
  * A sorted set, which you can navigate over and get sub-sets of.
  */
+[GenericAccessors]
 public interface Gee.SortedSet<G> : Gee.Set<G> {
 	/**
 	 * Returns the first element of the sorted set. Set must not be empty.

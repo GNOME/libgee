@@ -19,7 +19,7 @@
  * Author:
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
-
+[GenericAccessors]
 public interface Gee.BidirSortedSet<G> : SortedSet<G> {
 	/**
 	 * Returns a {@link BidirIterator} that can be used for bi-directional
