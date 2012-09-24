@@ -752,6 +752,9 @@ public abstract class CollectionTests : Gee.TestCase {
 		
 		int count;
 		
+		count = test_collection.fold<int> ((x, y) => {return y + 1;}, 0);
+		assert (count == 3);
+		
 		count = test_collection.iterator ().fold<int> ((x, y) => {return y + 1;}, 0);
 		assert (count == 3);
 		
@@ -768,13 +771,16 @@ public abstract class CollectionTests : Gee.TestCase {
 		
 		int count = 0;
 		
-		test_collection.iterator ().foreach ((x) => {count++; return true;});
+		test_collection.foreach ((x) => {count++; return true;});
 		assert (count == 3);
+		
+		test_collection.iterator ().foreach ((x) => {count++; return true;});
+		assert (count == 6);
 		
 		Iterator<string> iter = test_collection.iterator ();
 		assert (iter.next ());
 		iter.foreach ((x) => {count++; return true;});
-		assert (count == 6);
+		assert (count == 9);
 	}
 
 	public void test_map () {
@@ -803,6 +809,38 @@ public abstract class CollectionTests : Gee.TestCase {
 			return i++;
 		});
 		int j = 0;
+		while (iter.next ()) {
+			assert (i == j);
+			assert (j == iter.get ());
+			assert (j == iter.get ());
+			j++;
+			assert (i == j);
+		}
+
+		assert (i == j);
+		assert (i == test_collection.size);
+		assert (one);
+		assert (two);
+		assert (three);
+		
+		one = two = three = false;
+		i = j = 0;
+
+		iter = test_collection.map<int> ((str) => {
+			if (str == "one") {
+				assert (!one);
+				one = true;
+			} else if (str == "two") {
+				assert (!two);
+				two = true;
+			} else if (str == "three") {
+				assert (!three);
+				three = true;
+			} else {
+				assert_not_reached ();
+			}
+			return i++;
+		});
 		while (iter.next ()) {
 			assert (i == j);
 			assert (j == iter.get ());
@@ -854,6 +892,36 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (one);
 		assert (two);
 		assert (three);
+		
+		one = two = three = false;
+		j = 0;
+		
+		iter = test_collection.scan<int> ((str, cur) => {
+			if (str == "one") {
+				assert (!one);
+				one = true;
+			} else if (str == "two") {
+				assert (!two);
+				two = true;
+			} else if (str == "three") {
+				assert (!three);
+				three = true;
+			} else {
+				assert_not_reached ();
+			}
+			return cur + 1;
+		}, 0);
+		
+		do {
+			assert (j == iter.get ());
+			assert (j == iter.get ());
+			j++;
+		} while (iter.next ());
+
+		assert (j == test_collection.size + 1);
+		assert (one);
+		assert (two);
+		assert (three);
 	}
 
 	public void test_filter () {
@@ -884,8 +952,40 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (!iter.valid);
 
 		int j = 0;
-		while (iter.next ())
+		while (iter.next ()) {
+			assert(iter.get () != "two");
 			j++;
+		}
+		assert (j == 2);
+		assert (one);
+		assert (two);
+		assert (three);
+		
+		one = two = three = false;
+		j = 0;
+		
+		iter = test_collection.filter ((str) => {
+			if (str == "one") {
+				assert (!one);
+				one = true;
+			} else if (str == "two") {
+				assert (!two);
+				two = true;
+			} else if (str == "three") {
+				assert (!three);
+				three = true;
+			} else {
+				assert_not_reached ();
+			}
+			return str != "two";
+		});
+
+		assert (!iter.valid);
+		
+		while (iter.next ()) {
+			assert(iter.get () != "two");
+			j++;
+		}
 		assert (j == 2);
 		assert (one);
 		assert (two);
@@ -900,6 +1000,17 @@ public abstract class CollectionTests : Gee.TestCase {
 		var iter = test_collection.iterator().chop (1, 1);
 		assert (!iter.valid);
 		var iter2 = test_collection.iterator();
+
+		assert (iter2.next ());
+		assert (iter2.next ());
+		assert (iter.next ());
+		assert (iter2.get () == iter.get ());
+		assert (!iter.next ());
+		assert (iter2.next ());
+
+		iter = test_collection.chop (1, 1);
+		assert (!iter.valid);
+		iter2 = test_collection.iterator();
 
 		assert (iter2.next ());
 		assert (iter2.next ());
