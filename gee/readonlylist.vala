@@ -86,10 +86,10 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	}
 
 	/**
-	 * Unimplemented method (read only list).
+	 * {@inheritDoc}
 	 */
 	public List<G>? slice (int start, int stop) {
-		assert_not_reached ();
+		return ((Gee.List<G>) _collection).slice (start, stop);
 	}
 
 	/**
