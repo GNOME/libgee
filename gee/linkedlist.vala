@@ -193,17 +193,13 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	 * {@inheritDoc}
 	 */
 	public override int index_of (G item) {
-		int result = -1;
 		int idx = 0;
-		foreach (G node_item in (Collection)this) {
-			if (this.equal_func (item, node_item)) {
-				result = idx;
-				break;
-			} else {
-				idx++;
+		for (weak Node<G>? node = _head; node != null; node = node.next, idx++) {
+			if (this.equal_func (item, node.data)) {
+				return idx;
 			}
 		}
-		return result;
+		return -1;
 	}
 
 	/**

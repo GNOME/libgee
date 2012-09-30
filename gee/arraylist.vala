@@ -243,9 +243,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 		}
 
 		grow_if_needed (collection.size);
-		foreach (G item in collection) {
-			_items[_size++] = item;
-		}
+		collection.foreach ((item) => {_items[_size++] = item; return true;});
 		_stamp++;
 		return true;
 	}
