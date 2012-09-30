@@ -82,6 +82,18 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	/**
 	 * {@inheritDoc}
 	 */
+	public override bool foreach(ForallFunc<G> f) {
+		for (int i = 0; i < _size; i++) {
+			if (!f (_items[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}

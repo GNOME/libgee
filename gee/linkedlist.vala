@@ -66,6 +66,18 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	/**
 	 * {@inheritDoc}
 	 */
+	public override bool foreach(ForallFunc<G> f) {
+		for (weak Node<G>? node = _head; node != null; node = node.next) {
+			if (!f (node.data)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
