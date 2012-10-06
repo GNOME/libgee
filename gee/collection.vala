@@ -85,15 +85,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public virtual bool add_all (Collection<G> collection) {
-		if (collection.is_empty) {
-			return false;
-		}
-
-		bool changed = false;
-		foreach (G item in collection) {
-			changed = changed | add (item);
-		}
-		return changed;
+		return collection.fold<bool> ((item, changed) => changed | add (item), false);
 	}
 
 	/**
@@ -106,16 +98,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public virtual bool contains_all (Collection<G> collection) {
-		if (collection.size > size) {
-			return false;
-		}
-
-		foreach (G item in collection) {
-			if (!contains (item)) {
-				return false;
-			}
-		}
-		return true;
+		return collection.foreach ((item) => contains (item));
 	}
 
 	/**
@@ -130,11 +113,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
 	public virtual bool remove_all (Collection<G> collection) {
-		bool changed = false;
-		foreach (G item in collection) {
-			changed = changed | remove (item);
-		}
-		return changed;
+		return collection.fold<bool> ((item, changed) => changed | remove (item), false);
 	}
 
 	/**
@@ -149,11 +128,11 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 */
 	public virtual bool retain_all (Collection<G> collection) {
 		bool changed = false;
-		G[] items = to_array ();
-		int size_of_items = size;
-		for (int index = 0; index < size_of_items; index++) {
-			if (!collection.contains (items[index])) {
-				changed = changed | remove (items[index]);
+		for (Iterator<G> iter = iterator(); iter.next ();) {
+			G item = iter.get ();
+			if (!collection.contains (item)) {
+				iter.remove ();
+				changed = true;
 			}
 		}
 		return changed;
