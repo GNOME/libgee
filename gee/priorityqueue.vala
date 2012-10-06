@@ -64,6 +64,8 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	private bool[] _b = new bool[0];
 	private Type1Node<G>? _ll_head = null;
 	private Type1Node<G>? _ll_tail = null;
+	private unowned Node<G> _iter_head = null;
+	private unowned Node<G> _iter_tail = null;
 
 	/**
 	 * Constructs a new, empty priority queue.
@@ -112,18 +114,21 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	 * {@inheritDoc}
 	 */
 	public bool offer (G element) {
+		#if DEBUG
+			_dump ("Start offer: %s".printf ((string)element));
+		#endif
 		if (_r == null) {
-			_r = new Type1Node<G> (element);
+			_r = new Type1Node<G> (element, ref _iter_head, ref _iter_tail);
 			_p = _r;
 		} else if (_r_prime == null) {
-			_r_prime = new Type2Node<G> (element);
+			_r_prime = new Type2Node<G> (element, ref _iter_head, ref _iter_tail);
 			_r_prime.parent = _r;
 			_r.type2_child = _r_prime;
 			if (_compare (_r_prime, _r) < 0)
 				_swap_data (_r_prime, _r);
 		} else {
 			// Form a tree with a single node N of type I consisting of element e
-			Type1Node<G> node = new Type1Node<G> (element);
+			Type1Node<G> node = new Type1Node<G> (element, ref _iter_head, ref _iter_tail);
 
 			//Add(Q, N)
 			_add (node);
@@ -131,6 +136,9 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		_stamp++;
 		_size++;
+		#if DEBUG
+			_dump ("End offer: %s".printf ((string)element));
+		#endif
 		return true;
 	}
 
@@ -163,15 +171,28 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		// 1b. R.element = R'.element
 		if (_r_prime == null) {
+			if (_r.iter_next != null) {
+				_r.iter_next.iter_prev = _r.iter_prev;
+			}
+			if (_r.iter_prev != null) {
+				_r.iter_prev.iter_next = _r.iter_next;
+			}
+			if (_iter_head == _r) {
+				_iter_head = _r.iter_next;
+			}
+			if (_iter_tail == _r) {
+				_iter_tail = _r.iter_prev;
+			}
 			_r = null;
 			_p = null;
 			return min;
 		}
-		_r.data = _r_prime.data;
+		_move_data (_r, _r_prime);
+
 
 		// 1c. R'' <- The child of R' containing the minimum element among the children of R'
 		if (_r_prime.type1_children_head == null) {
-			_remove_type2_node (_r_prime);
+			_remove_type2_node (_r_prime, true);
 			_r_prime = null;
 			return min;
 		}
@@ -185,16 +206,16 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		}
 
 		// 1d. R'.element <- R''.element
-		_r_prime.data = r_second.data;
+		_move_data (_r_prime, r_second);
 
 		// 2a. Delete the subtree rooted at R'' from Q
-		_remove_type1_node (r_second);
+		_remove_type1_node (r_second, true);
 
 		// 2b. For all children N of type I of R'' do make N a child of R' of Q
 		node = r_second.type1_children_head;
 		while (node != null) {
 			Type1Node<G> next = node.brothers_next;
-			_remove_type1_node (node);
+			_remove_type1_node (node, false);
 			_add_in_r_prime (node);
 			node = next;
 		}
@@ -311,7 +332,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		while (iterator.next ()) {
 			G an_item = iterator.get ();
 			if (compare_func (item, an_item) == 0) {
-				_delete (iterator.get_node ());
+				iterator.remove ();
 				return true;
 			}
 		}
@@ -338,6 +359,8 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		_b = new bool[0];
 		_ll_head = null;
 		_ll_tail = null;
+		_iter_head = null;
+		_iter_tail = null;
 	}
 
 	/**
@@ -359,20 +382,115 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	private inline void _swap_data (Node<G> node1, Node<G> node2) {
+		#if DEBUG
+			_dump ("Before swap: %p(%s) %p(%s)".printf(node1, (string)node1.data, node2, (string)node2.data));
+		#endif
 		G temp_data = (owned) node1.data;
 		bool temp_pending_drop = node1.pending_drop;
 		node1.data = (owned) node2.data;
 		node1.pending_drop = node2.pending_drop;
 		node2.data = (owned) temp_data;
 		node2.pending_drop = temp_pending_drop;
+
+		if (node1.iter_next == node2) { // Before swap: N1 N2
+			unowned Node<G> temp_iter_prev = node1.iter_prev;
+			unowned Node<G> temp_iter_next = node2.iter_next;
+
+			node1.iter_prev = node2;
+			node1.iter_next = temp_iter_next;
+			node2.iter_prev = temp_iter_prev;
+			node2.iter_next = node1;
+		} else if (node1.iter_prev == node2) { // Before swap: N2 N1
+			unowned Node<G> temp_iter_prev = node2.iter_prev;
+			unowned Node<G> temp_iter_next = node1.iter_next;
+
+			node1.iter_prev = temp_iter_prev;
+			node1.iter_next = node2;
+			node2.iter_prev = node1;
+			node2.iter_next = temp_iter_next;
+		} else {
+			unowned Node<G> temp_iter_prev = node1.iter_prev;
+			unowned Node<G> temp_iter_next = node1.iter_next;
+
+			node1.iter_prev = node2.iter_prev;
+			node1.iter_next = node2.iter_next;
+			node2.iter_prev = temp_iter_prev;
+			node2.iter_next = temp_iter_next;
+		}
+
+		if (node2 == _iter_head) {
+			_iter_head = node1;
+		} else if (node1 == _iter_head) {
+			_iter_head = node2;
+		}
+		if (node2 == _iter_tail) {
+			_iter_tail = node1;
+		} else if (node1 == _iter_tail) {
+			_iter_tail = node2;
+		}
+
+		if (node1.iter_prev != null) {
+			node1.iter_prev.iter_next = node1;
+		}
+		if (node1.iter_next != null) {
+			node1.iter_next.iter_prev = node1;
+		}
+		if (node2.iter_prev != null) {
+			node2.iter_prev.iter_next = node2;
+		}
+		if (node2.iter_next != null) {
+			node2.iter_next.iter_prev = node2;
+		}
+
+		#if DEBUG
+			_dump ("After swap: %p(%s) %p(%s)".printf(node1, (string)node1.data, node2, (string)node2.data));
+		#endif	
 	}
 
-	private void _link (Type1Node<G> ri, Type1Node<G> rj) {
+	private inline void _move_data (Node<G> target, Node<G> source) {
+		#if DEBUG
+			_dump ("Before move: %p(%s) <- %p(%s)".printf(target, (string)target.data, source, (string)source.data));
+		#endif
+
+		if (target.iter_next != null) {
+			target.iter_next.iter_prev = target.iter_prev;
+		} else if (_iter_tail == target) {
+			_iter_tail = target.iter_prev;
+		}
+		if (target.iter_prev != null) {
+			target.iter_prev.iter_next = target.iter_next;
+		} else if (_iter_head == target) {
+			_iter_head = target.iter_next;
+		}
+
+		target.data = source.data;
+		target.pending_drop = source.pending_drop;
+		target.iter_next = source.iter_next;
+		target.iter_prev = source.iter_prev;
+		source.iter_next = null;
+		source.iter_prev = null;
+
+		if (target.iter_next != null) {
+			target.iter_next.iter_prev = target;
+		} else if (_iter_tail == source) {
+			_iter_tail = target;
+		}
+		if (target.iter_prev != null) {
+			target.iter_prev.iter_next = target;
+		} else if (_iter_head == source) {
+			_iter_head = target;
+		}
+		#if DEBUG
+			_dump ("After move:");
+		#endif
+	}
+
+	private void _link (owned Type1Node<G> ri, owned Type1Node<G> rj) {
 		assert (ri.degree () == rj.degree ());
 
 		// Delete the subtrees rooted at Ri and Rj from Q
-		_remove_type1_node (ri);
-		_remove_type1_node (rj);
+		_remove_type1_node (ri, false);
+		_remove_type1_node (rj, false);
 
 		// If Ri.element > Rj.element then Swap(Ri,Rj)
 		if (_compare (ri, rj) > 0) {
@@ -407,7 +525,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		_check_linkable ();
 
 		#if DEBUG
-			_dump ("End _add: %s".printf ((string) n.data));
+			_dump ("End _add: %p(%s)".printf (n, (string) n.data));
 		#endif
 	}
 
@@ -424,18 +542,18 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		return false;
 	}
 
-	private Node<G> _re_insert (Type1Node<G> n) {
+	private Node<G> _re_insert (owned Type1Node<G> n) {
 		assert (n != _r);
 
 		#if DEBUG
-			_dump ("Start _re_insert: %s".printf ((string) n.data));
+			_dump ("Start _re_insert: %p(%s)".printf (n, (string) n.data));
 		#endif
 
 		//Parent <- N.parent
 		Node<G> parent = n.parent;
 
 		// Delete the subtree rooted at N from Q
-		_remove_type1_node (n);
+		_remove_type1_node (n, false);
 
 		// Add(Q, N)
 		_add (n);
@@ -451,7 +569,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		}
 
 		#if DEBUG
-			_dump ("Start _adjust: %s, %s".printf ((string) p1.data, (string) p2.data));
+			_dump ("Start _adjust: %p(%s), %p(%s)".printf (p1, (string) p1.data, p2, (string) p2.data));
 		#endif
 
 		// If P1.lost > P2.lost then M <- P1 else M <- P2
@@ -475,11 +593,11 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		_p = (Type1Node<G>) _re_insert (m);
 
 		#if DEBUG
-			_dump ("End _adjust: %s, %s".printf ((string) p1.data, (string) p2.data));
+			_dump ("End _adjust: %p(%s), %p(%s)".printf (p1, (string) p1.data, p2, (string) p2.data));
 		#endif
 	}
 
-	private void _delete (Node<G> n) {
+	private void _delete (Node<G> n, out unowned Node<G> prev = null) {
 		// DecreaseKey(Q, N, infinite)
 		_decrease_key (n);
 
@@ -489,7 +607,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 	private void _decrease_key (Node<G> n) {
 		#if DEBUG
-			_dump ("Start _decrease_key: %s".printf ((string) n.data));
+			_dump ("Start _decrease_key: %p(%s)".printf (n, (string) n.data));
 		#endif
 
 		if (n == _r || _r_prime == null) {
@@ -542,7 +660,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 	private void _add_in_r_prime (Type1Node<G> node) {
 		#if DEBUG
-			_dump ("Start _add_in_r_prime: %s".printf ((string) node.data));
+			_dump ("Start _add_in_r_prime: %p(%s)".printf (node, (string) node.data));
 		#endif
 
 		int degree = node.degree ();
@@ -605,13 +723,13 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		_a[degree] = node;
 
 		#if DEBUG
-			_dump ("End _add_in_r_prime: %s".printf ((string) node.data));
+			_dump ("End _add_in_r_prime: %p(%s)".printf (node, (string) node.data));
 		#endif
 	}
 
-	private void _remove_type1_node (Type1Node<G> node) {
+	private void _remove_type1_node (Type1Node<G> node, bool with_iteration) {
 		#if DEBUG
-			_dump ("Start _remove_type1_node: %s".printf ((string) node.data));
+			_dump ("Start _remove_type1_node: %p(%s)".printf (node, (string) node.data));
 		#endif
 
 		if (node.parent == _r_prime) {
@@ -644,7 +762,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 							parent.ll_prev = _ll_tail;
 							_ll_tail.ll_next = parent;
 						} else {
-						_ll_head = parent;
+							_ll_head = parent;
 						}
 						_ll_tail = parent;
 					}
@@ -659,6 +777,23 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		// Maintain brothers list
 		node.remove ();
+
+		// Maintain iteration
+		if (with_iteration) {
+			if (node.iter_prev != null) {
+				node.iter_prev.iter_next = node.iter_next;
+			} else if (_iter_head == node) {
+				_iter_head = node.iter_next;
+			}
+			if (node.iter_next != null) {
+				node.iter_next.iter_prev = node.iter_prev;
+			} else if (_iter_tail == node) {
+				_iter_tail = node.iter_prev;
+			}
+		}
+		#if DEBUG
+			_dump ("End _remove_type1_node: %p(%s)".printf (node, (string) node.data));
+		#endif
 	}
 
 	private void _updated_degree (Type1Node<G> node, bool child_removed) {
@@ -706,7 +841,10 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		}
 	}
 
-	private void _remove_type2_node (Type2Node<G> node) {
+	private void _remove_type2_node (Type2Node<G> node, bool with_iteration) {
+		#if DEBUG
+			_dump ("Start _remove_type2_node: %p(%s)".printf (node, (string) node.data));
+		#endif
 		((Type1Node<G>) node.parent).type2_child = null;
 		node.parent = null;
 
@@ -728,6 +866,23 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 				node.lm_prev = null;
 			}
 		#endif
+
+		// Maintain iteration
+		if (with_iteration) {
+			if (node.iter_prev != null) {
+				node.iter_prev.iter_next = node.iter_next;
+			} else if (_iter_head == node) {
+				_iter_head = node.iter_next;
+			}
+			if (node.iter_next != null) {
+				node.iter_next.iter_prev = node.iter_prev;
+			} else if (_iter_tail == node) {
+				_iter_tail = node.iter_prev;
+			}
+		}
+		#if DEBUG
+			_dump ("End _remove_type2_node: %p(%s)".printf (node, (string) node.data));
+		#endif
 	}
 
 	#if DEBUG
@@ -736,7 +891,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		stdout.printf ("A.length = %d:", _a.length);
 		foreach (Node<G>? node in _a) {
-			stdout.printf (" %s;", node != null ? (string) node.data : null);
+			stdout.printf (" %p(%s);", node, node != null ? (string) node.data : null);
 		}
 		stdout.printf ("\n");
 
@@ -749,7 +904,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		stdout.printf ("LP:");
 		unowned NodePair<G>? pair = _lp_head;
 		while (pair != null) {
-			stdout.printf (" (%s,%s);", (string) pair.node1.data, (string) pair.node2.data);
+			stdout.printf (" (%p(%s),%p(%s));", pair.node1, (string) pair.node1.data, pair.node2, (string) pair.node2.data);
 			pair = pair.lp_next;
 		}
 		stdout.printf ("\n");
@@ -757,8 +912,19 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		stdout.printf ("LL:");
 		unowned Type1Node<G>? node = _ll_head;
 		while (node != null) {
-			stdout.printf (" %s;", (string) node.data);
+			stdout.printf (" %p(%s);", node, (string) node.data);
 			node = node.ll_next;
+		}
+		stdout.printf ("\n");
+
+		stdout.printf ("ITER:");
+		unowned Node<G>? inode_prev = null;
+		unowned Node<G>? inode = _iter_head;
+		while (inode != null) {
+			stdout.printf (" %p(%s);", inode, (string) inode.data);
+			assert (inode.iter_prev == inode_prev);
+			inode_prev = inode;
+			inode = inode.iter_next;
 		}
 		stdout.printf ("\n");
 
@@ -776,10 +942,21 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		public Type1Node<G>? type1_children_head = null;
 		public Type1Node<G>? type1_children_tail = null;
 
+		public unowned Node<G>? iter_prev;
+		public unowned Node<G>? iter_next = null;
+
 		public bool pending_drop;
 
-		protected Node (G data) {
+		protected Node (G data, ref unowned Node<G>? head, ref unowned Node<G>? tail) {
 			this.data = data;
+			iter_prev = tail;
+			tail = this;
+			if (iter_prev != null) {
+				iter_prev.iter_next = this;
+			}
+			if (head == null) {
+				head = this;
+			}
 		}
 
 		public inline int degree () {
@@ -815,8 +992,8 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		public Type1Node<G>? ll_next = null;
 		public weak NodePair<G>? pair = null;
 
-		public Type1Node (G data) {
-			base (data);
+		public Type1Node (G data, ref unowned Node<G>? head, ref unowned Node<G>? tail) {
+			base (data, ref head, ref tail);
 		}
 
 		public inline void add (Type1Node<G> node) {
@@ -855,9 +1032,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			StringBuilder builder = new StringBuilder ();
 			builder.append (string.nfill (level, '\t'));
 			builder.append ("(");
-			builder.append ((string) data);
-			builder.append ("/");
-			builder.append (lost.to_string ());
+			builder.append_printf("%p(%s)/%u", this, (string)data, lost);
 			if (type1_children_head != null || type2_child != null) {
 				builder.append (":\n");
 			}
@@ -887,16 +1062,15 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			public Type2Node<G>? lm_next = null;
 		#endif
 
-		public Type2Node (G data) {
-			base (data);
+		public Type2Node (G data, ref unowned Node<G>? head, ref unowned Node<G>? tail) {
+			base (data, ref head, ref tail);
 		}
 
 		#if DEBUG
 		public override string to_string (int level = 0) {
 			StringBuilder builder = new StringBuilder ();
 			builder.append (string.nfill (level, '\t'));
-			builder.append ("[");
-			builder.append ((string) data);
+			builder.append_printf ("[%p(%s)", this, (string)data);
 			if (type1_children_head != null) {
 				builder.append (":\n");
 				builder.append (children_to_string (level + 1));
@@ -904,6 +1078,28 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 				builder.append (string.nfill (level, '\t'));
 			}
 			builder.append ("]");
+			return builder.str;
+		}
+		#endif
+	}
+
+	private class DummyNode<G> : Node<G> {
+		public DummyNode (ref unowned Node<G>? prev_next, ref unowned Node<G>? next_prev, Node<G>? iter_prev, Node<G>? iter_next) {
+			#if DEBUG
+			base ("<<dummy>>", ref prev_next, ref next_prev);
+			#else
+			base (null, ref prev_next, ref next_prev);
+			#endif
+			this.iter_prev = iter_prev;
+			this.iter_next = iter_next;
+			prev_next = next_prev = this;
+		}
+
+		#if DEBUG
+		public override string to_string (int level = 0) {
+			StringBuilder builder = new StringBuilder ();
+			builder.append (string.nfill (level, '\t'));
+			builder.append ("%p<<dummy>>".printf(this));
 			return builder.str;
 		}
 		#endif
@@ -923,126 +1119,85 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G> {
 		private PriorityQueue<G> queue;
-		private bool started = false;
-		private bool from_type1_children = false;
-		private bool from_type2_child = false;
 		private unowned Node<G>? position;
-		private unowned Node<G>? _next;
+		private unowned Node<G>? previous;
 		private int stamp;
-		private bool removed = false;
 
 		public Iterator (PriorityQueue<G> queue) {
 			this.queue = queue;
-			this.position = queue._r;
+			this.position = null;
+			this.previous = null;
 			this.stamp = queue._stamp;
 		}
 
 		public bool next () {
-			assert (stamp == queue._stamp);
-			if (!has_next ()) {
-				return false;
+			unowned Node<G>? next = _get_next_node ();
+			if (next != null) {
+				previous = position;
+				position = next;
 			}
-			removed = false;
-			started = true;
-			position = _next;
-			_next = null;
-			return (position != null);
+			return next != null;
 		}
 
 		public bool has_next () {
-			assert (stamp == queue._stamp);
-			if (_next == null) {
-				_next = position;
-				if (!_has_next ()) {
-					_next = null;
-				}
-			}
-			return (_next != null);
+			return _get_next_node () != null;
 		}
 
-		private bool _has_next() {
-			if (!started) {
-				return _next != null;
-			} else if (_next is Type1Node) {
-				var node = _next as Type1Node<G>;
-				if (!from_type1_children && node.type1_children_head != null) {
-					_next = node.type1_children_head;
-					from_type1_children = false;
-					from_type2_child = false;
-					return true;
-				} else if (!from_type2_child && node.type2_child != null) {
-					_next = node.type2_child;
-					from_type1_children = false;
-					from_type2_child = false;
-					return true;
-				} else if (node.brothers_next != null) {
-					_next = node.brothers_next;
-					from_type1_children = false;
-					from_type2_child = false;
-					return true;
-				}
-				from_type1_children = true;
-			} else if (_next is Type2Node) {
-				var node = _next as Type2Node<G>;
-				if (!from_type1_children && node.type1_children_head != null) {
-					_next = node.type1_children_head;
-					from_type1_children = false;
-					from_type2_child = false;
-					return true;
-				}
-				from_type2_child = true;
+		private inline unowned Node<G>? _get_next_node () {
+			if (position != null) {
+				return position.iter_next;
+			} else {
+				return (previous != null) ? previous.iter_next : queue._iter_head;
 			}
-			if (_next != null && _next != queue._r) {
-				_next = _next.parent;
-				return _has_next ();
-			}
-			return false;
 		}
 
 		public new G get () {
 			assert (stamp == queue._stamp);
 			assert (position != null);
-			assert (! removed);
 			return position.data;
 		}
 
 		public void remove () {
 			assert (stamp == queue._stamp);
 			assert (position != null);
-			assert (! removed);
-			has_next ();
-			Node<G> node = position;
+			DummyNode<G> dn;
+			if (previous != null) {
+				dn = new DummyNode<G> (ref previous.iter_next, ref position.iter_prev, previous, position);
+			} else {
+				dn = new DummyNode<G> (ref queue._iter_head, ref position.iter_prev, null, position);
+			}
+			queue._delete (position);
 			position = null;
-			queue._delete (node);
-			stamp = queue._stamp;
-			removed = true;
-		}
-
-		internal Node<G> get_node () {
+			if (previous != null) {
+				previous.iter_next = dn.iter_next;
+			}
+			if (dn == queue._iter_head) {
+				queue._iter_head = dn.iter_next;
+			}
+			if (dn.iter_next != null) {
+				dn.iter_next.iter_prev = previous;
+			}
+			if (dn == queue._iter_tail) {
+				queue._iter_tail = previous;
+			}
+			stamp++;
 			assert (stamp == queue._stamp);
-			assert (position != null);
-			return position;
 		}
 		
-		public bool read_only {
-			get {
-				return false;
-			}
-		}
+		public bool read_only { get { return false; } }
 		
-		public bool valid {
-			get {
-				return started &&  ! removed && position != null;
-			}
-		}
+		public bool valid { get { return position != null; } }
 
 		public bool foreach (ForallFunc<G> f) {
-			if (valid) {
-				if (!f (position.data)) {
-					return false;
-				}
+			if (position == null) {
+				position = (previous != null) ? previous.iter_next : queue._iter_head;
 			}
-			while (next ()) {
+			if (!f (position.data)) {
+				return false;
+			}
+			while (position.iter_next != null) {
+				previous = position;
+				position = position.iter_next;
 				if (!f (position.data)) {
 					return false;
 				}
