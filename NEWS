@@ -1,3 +1,8 @@
+libgee 0.6.6
+============
+
+ * Fix Iterator.remove in PriorityQueue
+
 libgee 0.6.5
 ============
 
