@@ -1,3 +1,10 @@
+libgee 0.8.1
+============
+ * Allow slice in ReadOnlyList
+ * Fix Iterator.remove in PriorityQueue
+ * Add foreach specializations
+ * Use foreach function instead of iterators
+
 libgee 0.8.0
 ============
  * Fix Traversable.chop (bug #684348)
