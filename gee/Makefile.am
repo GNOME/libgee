@@ -31,6 +31,7 @@ libgee_0_8_la_SOURCES = \
 	concurrentlist.vala \
 	deque.vala \
 	functions.vala \
+	glist.vala \
 	hashable.vala \
 	hashmap.vala \
 	hashmultimap.vala \
@@ -118,8 +119,14 @@ typelib_DATA = \
 	Gee-0.8.typelib \
 	$(NULL)
 
+# Extract dlname from libfolks.la; see bug #658002.
+# This is what g-ir-scanner does.
+libgee_dlname = \
+	`$(SED) -n "s/^dlname='\([A-Za-z0-9.+-]\+\)'/\1/p" libgee-0.8.la`
+INTROSPECTION_COMPILER_ARGS= \
+	-l $(libgee_dlname)
 Gee-0.8.typelib: Gee-0.8.gir
-	@INTROSPECTION_COMPILER@ -o $@ $^
+	@INTROSPECTION_COMPILER@ $(INTROSPECTION_COMPILER_ARGS) -o $@ $^
 endif
 
 Gee-0.8.gir gee-internals-0.8.vapi gee-0.8.vapi: libgee-0.8.la
