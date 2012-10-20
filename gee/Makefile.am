@@ -31,7 +31,6 @@ libgee_0_8_la_SOURCES = \
 	concurrentlist.vala \
 	deque.vala \
 	functions.vala \
-	glist.vala \
 	hashable.vala \
 	hashmap.vala \
 	hashmultimap.vala \
