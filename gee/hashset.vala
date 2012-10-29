@@ -84,7 +84,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	 * @param hash_func an optional hash function
 	 * @param equal_func an optional equality testing function
 	 */
-	public HashSet (owned HashDataFunc? hash_func = null, owned EqualDataFunc? equal_func = null) {
+	public HashSet (owned HashDataFunc<G>? hash_func = null, owned EqualDataFunc<G>? equal_func = null) {
 		if (hash_func == null) {
 			hash_func = Functions.get_hash_func_for (typeof (G));
 		}
