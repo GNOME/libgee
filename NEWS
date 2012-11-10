@@ -1,3 +1,9 @@
+libgee 0.8.2
+============
+ * Add generic type arguments to HashSet
+ * GObject Introspection support improved
+ * Rebuild with fixed Vala compiler (fixes bug #687728)
+
 libgee 0.8.1
 ============
  * Allow slice in ReadOnlyList
