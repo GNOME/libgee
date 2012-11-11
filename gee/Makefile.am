@@ -121,7 +121,7 @@ typelib_DATA = \
 # Extract dlname from libfolks.la; see bug #658002.
 # This is what g-ir-scanner does.
 libgee_dlname = \
-	`$(SED) -n "s/^dlname='\([A-Za-z0-9.+-]\+\)'/\1/p" libgee-0.8.la`
+	`$(SED) -nE "s/^dlname='([A-Za-z0-9.+-]+)'/\1/p" libgee-0.8.la`
 INTROSPECTION_COMPILER_ARGS= \
 	-l $(libgee_dlname)
 Gee-0.8.typelib: Gee-0.8.gir
