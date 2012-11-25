@@ -447,18 +447,30 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 		public bool next () {
 			assert (this._stamp == this._list._stamp);
 
-			if (this.removed && this.position != null) {
-				this.removed = false;
-				return true;
-			} else if (!this.started && this._list._head != null) {
-				this.started = true;
-				this.position = this._list._head;
-				this._index++;
-				return true;
-			} else if (this.position != null && this.position.next != null) {
-				this.position = this.position.next;
-				this._index++;
-				return true;
+			if (this.removed) {
+				if (this.position != null) {
+					this.removed = false;
+					return true;
+				} else {
+					return false;
+				}
+			} else if (!this.started) {
+				if (this._list._head != null) {
+					this.started = true;
+					this.position = this._list._head;
+					this._index++;
+					return true;
+				} else {
+					return false;
+				}
+			} else if (this.position != null) {
+				if (this.position.next != null) {
+					this.position = this.position.next;
+					this._index++;
+					return true;
+				} else {
+					return false;
+				}
 			}
 			return false;
 		}
