@@ -1,6 +1,7 @@
 /* priorityqueue.vala
  *
  * Copyright (C) 2009  Didier Villevalois
+ * Copyright (C) 2012  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -233,9 +234,6 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		#endif
 
 		// 4. Adjust(Q, P, P)
-		if (_p == null) {
-			_p = _r;
-		}
 		_adjust (_p, _p);
 
 		// For now we can't have type2 node other than R' (left for reference)
@@ -764,7 +762,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		// Check whether removed node is P
 		if (node == _p) {
-			_p = null;
+			_p = _r;
 		}
 
 		// Maintain brothers list
@@ -790,6 +788,13 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 	private void _updated_degree (Type1Node<G> node, bool child_removed) {
 		int degree = node.degree ();
+
+		// Ensure proper sizes of A and B
+		if (degree >= _a.length) {
+			int old_length = _a.length;
+			_a.resize (degree + 1);
+			_b.resize (degree + 1);
+		}
 
 		// Maintain A and B
 		if (child_removed && _a[degree - 1] == null) {
