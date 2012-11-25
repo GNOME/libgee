@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2008  Jürg Billeter
  * Copyright (C) 2009  Didier Villevalois, Julien Peeters
- * Copyright (C) 2011  Maciej Piechotka
+ * Copyright (C) 2011-2012  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -73,105 +73,49 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (! iterator.has_next ());
 		assert (! iterator.next ());
 
+		unowned string[] data = TestData.get_data ();
+
 		// Check for some elements in the collection
-		assert (test_collection.add ("one"));
-		assert (test_collection.add ("two"));
-		assert (test_collection.add ("three"));
+		foreach (unowned string el in data) {
+			assert (test_collection.add (el));
+		}
 
-		bool one_found = false;
-		bool two_found = false;
-		bool three_found = false;
-		bool one_found_once = true;
-		bool two_found_once = true;
-		bool three_found_once = true;
-		iterator = test_collection.iterator ();
-		bool valid = iterator.valid;
-		assert (! valid);
-		while (true) {
-			has_next = iterator.has_next ();
-			assert (valid == iterator.valid);
-			assert (has_next == iterator.next ());
-			assert (valid = iterator.valid);
-			if (! has_next) {
-				break;
+		uint[] found_times = new uint[data.length];
+		for (uint i = 0; i < 2; i++) {
+			for (uint j = 0; j < found_times.length; j++) {
+				found_times[j] = 0;
 			}
+			iterator = test_collection.iterator ();
+			bool valid = iterator.valid;
+			assert (! valid);
+			while (true) {
+				has_next = iterator.has_next ();
+				assert (valid == iterator.valid);
+				assert (has_next == iterator.next ());
+				assert (valid = iterator.valid);
+				if (! has_next) {
+					break;
+				}
 
-			string element = iterator.get ();
+				string element = iterator.get ();
+				assert (iterator.valid);
+				for (uint element_idx = 0;; element_idx++) {
+					assert (element_idx < data.length);
+					if (data[element_idx] == element) {
+						found_times[element_idx]++;
+						break;
+					}
+				}
+			}
+			has_next = iterator.has_next ();
+			assert (! has_next);
 			assert (iterator.valid);
-			if (element == "one") {
-				if (one_found) {
-					one_found_once = false;
-				}
-				one_found = true;
-			} else if (element == "two") {
-				if (two_found) {
-					two_found_once = false;
-				}
-				two_found = true;
-			} else if (element == "three") {
-				if (three_found) {
-					three_found_once = false;
-				}
-				three_found = true;
-			}
-		}
-		has_next = iterator.has_next ();
-		assert (! has_next);
-		assert (iterator.valid);
-		assert (has_next == iterator.next ());
-		assert (iterator.valid);
-		assert (one_found);
-		assert (one_found_once);
-		assert (two_found);
-		assert (two_found_once);
-		assert (three_found);
-		assert (three_found_once);
-
-		iterator = test_collection.iterator ();
-		assert (iterator.has_next ());
-		assert (! iterator.valid);
-		assert (iterator.next ());
-
-		one_found = false;
-		two_found = false;
-		three_found = false;
-		one_found_once = true;
-		two_found_once = true;
-		three_found_once = true;
-		while (true) {
-			string element = iterator.get ();
-			if (element == "one") {
-				if (one_found) {
-					one_found_once = false;
-				}
-				one_found = true;
-			} else if (element == "two") {
-				if (two_found) {
-					two_found_once = false;
-				}
-				two_found = true;
-			} else if (element == "three") {
-				if (three_found) {
-					three_found_once = false;
-				}
-				three_found = true;
-			}
-
-			has_next = iterator.has_next ();
 			assert (has_next == iterator.next ());
-			if (! has_next) {
-				break;
+			assert (iterator.valid);
+			foreach (var ft in found_times) {
+				assert (ft == 1);
 			}
 		}
-		has_next = iterator.has_next ();
-		assert (! has_next);
-		assert (has_next == iterator.next ());
-		assert (one_found);
-		assert (one_found_once);
-		assert (two_found);
-		assert (two_found_once);
-		assert (three_found);
-		assert (three_found_once);
 	}
 
 	public void test_mutable_iterator () {
@@ -183,172 +127,143 @@ public abstract class CollectionTests : Gee.TestCase {
 		Iterator<string> iterator = test_collection.iterator ();
 		// ...
 
-		// Check for some elements in the collection and remove one
-		assert (test_collection.add ("one"));
-		assert (test_collection.add ("two"));
-		assert (test_collection.add ("three"));
+		unowned string[] data = TestData.get_data ();
+		unowned uint[] idx = TestData.get_drawn_numbers ();
 
-		bool one_found = false;
-		bool two_found = false;
-		bool three_found = false;
-		bool one_found_once = true;
-		bool two_found_once = true;
-		bool three_found_once = true;
+		// Check for some elements in the collection and remove few
+		foreach (unowned string el in data) {
+			assert (test_collection.add (el));
+		}
+
 		iterator = test_collection.iterator ();
-		while (true) {
-			has_next = iterator.has_next ();
-			assert (has_next == iterator.next ());
-			if (! has_next) {
-				break;
+		uint[] found_times = new uint[data.length];
+		for (uint i = 0; i <= idx.length; i++) {
+			for (uint j = 0; j < found_times.length; j++) {
+				found_times[j] = 0;
 			}
-			assert (iterator.valid);
+			iterator = test_collection.iterator ();
+			assert (! iterator.valid);
+			bool last_removed = false;
+			while (true) {
+				has_next = iterator.has_next ();
+				assert (has_next == iterator.next ());
+				if (! has_next) {
+					break;
+				}
 
-			string element = iterator.get ();
-			if (element == "one") {
-				if (one_found) {
-					one_found_once = false;
+				string element = iterator.get ();
+				assert (iterator.valid);
+				for (uint element_idx = 0;; element_idx++) {
+					assert (element_idx < data.length);
+					if (data[element_idx] == element) {
+						if (i != idx.length && data[element_idx] == data[idx[i]]) {
+							iterator.remove ();
+							assert (! iterator.valid);
+							last_removed = true;
+						} else {
+							last_removed = false;
+						}
+						found_times[element_idx]++;
+						break;
+					}
 				}
-				one_found = true;
-			} else if (element == "two") {
-				if (two_found) {
-					two_found_once = false;
+			}
+			has_next = iterator.has_next ();
+			assert (! has_next);
+			assert (iterator.valid == !last_removed);
+			assert (has_next == iterator.next ());
+			assert (iterator.valid == !last_removed);
+			for (uint j = 0; j < found_times.length; j++) {
+				bool removed = false;
+				for (int k = 0; k < i; k++) {
+					if (idx[k] == j) {
+						removed = true;
+						break;
+					}
 				}
-				two_found = true;
-
-				// Remove this element
-				assert (! iterator.read_only);
-				iterator.remove ();
-				assert (! iterator.valid);
-			} else if (element == "three") {
-				if (three_found) {
-					three_found_once = false;
-				}
-				three_found = true;
+				assert (found_times[j] == (removed ? 0 : 1));
 			}
 		}
-		has_next = iterator.has_next ();
-		assert (! has_next);
-		assert (has_next == iterator.next ());
-		assert (one_found);
-		assert (one_found_once);
-		assert (two_found);
-		assert (two_found_once);
-		assert (three_found);
-		assert (three_found_once);
-
-		// Check after removal
-		iterator = test_collection.iterator ();
-		assert (iterator.has_next ());
-		assert (iterator.next ());
-
-		one_found = false;
-		two_found = false;
-		three_found = false;
-		one_found_once = true;
-		two_found_once = true;
-		three_found_once = true;
-		while (true) {
-			string element = iterator.get ();
-			if (element == "one") {
-				if (one_found) {
-					one_found_once = false;
-				}
-				one_found = true;
-			} else if (element == "two") {
-				two_found = true;
-			} else if (element == "three") {
-				if (three_found) {
-					three_found_once = false;
-				}
-				three_found = true;
-			}
-
-			has_next = iterator.has_next ();
-			assert (has_next == iterator.next ());
-			if (! has_next) {
-				break;
-			}
-		}
-		has_next = iterator.has_next ();
-		assert (! has_next);
-		assert (has_next == iterator.next ());
-		assert (one_found);
-		assert (one_found_once);
-		assert (!two_found);
-		assert (three_found);
-		assert (three_found_once);
 	}
 
 	public void test_contains_size_and_is_empty () {
 		// Check the collection exists
 		assert (test_collection != null);
 
+		unowned string[] data = TestData.get_data ();
+		unowned uint[] idx = TestData.get_drawn_numbers ();
+
 		// Check the collection is initially empty
-		assert (! test_collection.contains ("one"));
-		assert (! test_collection.contains ("two"));
-		assert (! test_collection.contains ("three"));
+		foreach (unowned string s in data) {
+			assert (! test_collection.contains (s));
+		}
 		assert (test_collection.size == 0);
 		assert (test_collection.is_empty);
 
 		// Add an element
-		assert (test_collection.add ("one"));
-		assert (test_collection.contains ("one"));
-		assert (! test_collection.contains ("two"));
-		assert (! test_collection.contains ("three"));
+		assert (test_collection.add (data[0]));
+		assert (test_collection.contains (data[0]));
+		for (uint i = 1; i < data.length; i++) {
+			assert (! test_collection.contains (data[i]));
+		}
 		assert (test_collection.size == 1);
 		assert (! test_collection.is_empty);
 
 		// Remove the added element
 		assert (test_collection.remove ("one"));
-		assert (! test_collection.contains ("one"));
-		assert (! test_collection.contains ("two"));
-		assert (! test_collection.contains ("three"));
+		foreach (unowned string s in data) {
+			assert (! test_collection.contains (s));
+		}
 		assert (test_collection.size == 0);
 		assert (test_collection.is_empty);
 
 		// Add more elements
-		assert (test_collection.add ("one"));
-		assert (test_collection.contains ("one"));
-		assert (! test_collection.contains ("two"));
-		assert (! test_collection.contains ("three"));
-		assert (test_collection.size == 1);
-		assert (! test_collection.is_empty);
+		for (uint i = 0; i < data.length; i++) {
+			assert (test_collection.add (data[i]));
+			for (uint j = 0; j <= i; j++) {
+				assert (test_collection.contains (data[j]));
+			}
+			for (uint j = i + 1; j < data.length; j++) {
+				assert (! test_collection.contains (data[j]));
+			}
+			assert (test_collection.size == i + 1);
+			assert (! test_collection.is_empty);
+		}
+		for (uint i = 0; i < idx.length; i++) {
+			// Remove one element
+			assert (test_collection.remove (data[idx[i]]));
+			for (uint j = 0; j < data.length; j++) {
+				bool removed = false;
+				for (uint k = 0; k <= i; k++) {
+					if (idx[k] == j) {
+						removed = true;
+						break;
+					}
+				}
+				assert (test_collection.contains (data[j]) == !removed);
+			}
+			assert (test_collection.size == data.length - (i + 1));
 
-		assert (test_collection.add ("two"));
-		assert (test_collection.contains ("one"));
-		assert (test_collection.contains ("two"));
-		assert (! test_collection.contains ("three"));
-		assert (test_collection.size == 2);
-		assert (! test_collection.is_empty);
-
-		assert (test_collection.add ("three"));
-		assert (test_collection.contains ("one"));
-		assert (test_collection.contains ("two"));
-		assert (test_collection.contains ("three"));
-		assert (test_collection.size == 3);
-		assert (! test_collection.is_empty);
-
-		// Remove one element
-		assert (test_collection.remove ("two"));
-		assert (test_collection.contains ("one"));
-		assert (! test_collection.contains ("two"));
-		assert (test_collection.contains ("three"));
-		assert (test_collection.size == 2);
-		assert (! test_collection.is_empty);
-
-		// Remove the same element again
-		assert (! test_collection.remove ("two"));
-		assert (test_collection.contains ("one"));
-		assert (! test_collection.contains ("two"));
-		assert (test_collection.contains ("three"));
-		assert (test_collection.size == 2);
-		assert (! test_collection.is_empty);
+			// Remove the same element again
+			assert (! test_collection.remove (data[idx[i]]));
+			for (uint j = 0; j < data.length; j++) {
+				bool removed = false;
+				for (uint k = 0; k <= i; k++) {
+					if (idx[k] == j) {
+						removed = true;
+						break;
+					}
+				}
+				assert (test_collection.contains (data[j]) == !removed);
+			}
+			assert (test_collection.size == data.length - (i + 1));
+		}
 
 		// Remove all elements
 		test_collection.clear ();
-		assert (! test_collection.contains ("one"));
-		assert (! test_collection.contains ("two"));
-		assert (! test_collection.contains ("three"));
+		foreach (unowned string el in data) {
+			assert (! test_collection.contains (el));
+		}
 		assert (test_collection.size == 0);
 		assert (test_collection.is_empty);
 	}
@@ -357,16 +272,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		// Check the collection exists
 		assert (test_collection != null);
 
-		string[] to_add = {
-			"one", "two", "three", "four", "five", "six", "seven", "eight",
-			"nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
-			"fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty",
-			"twenty one", "twenty two", "twenty three", "twenty four",
-			"twenty five", "twenty six", "twenty seven", "twenty eight",
-			"twenty nine", "thirty", "thirty one", "thirty two", "thirty four",
-			"thirty five", "thirty six", "thirty seven", "thirty eight",
-			"thirty nine", "fourty"
-		};
+		unowned string[] to_add = TestData.get_data ();
 		var expected_size = 0;
 
 		foreach (var a in to_add) {
@@ -394,16 +300,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		// Check the collection exists
 		assert (test_collection != null);
 
-		string[] to_add = {
-			"one", "two", "three", "four", "five", "six", "seven", "eight",
-			"nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
-			"fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty",
-			"twenty one", "twenty two", "twenty three", "twenty four",
-			"twenty five", "twenty six", "twenty seven", "twenty eight",
-			"twenty nine", "thirty", "thirty one", "thirty two", "thirty four",
-			"thirty five", "thirty six", "thirty seven", "thirty eight",
-			"thirty nine", "fourty"
-		};
+		unowned string[] to_add = TestData.get_data ();
 		var expected_size = 0;
 
 		foreach (var a in to_add) {
