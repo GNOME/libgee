@@ -22,7 +22,7 @@
 
 /**
  * A single-linked list. This implementation is based on
- * [[www.cse.yorku.ca/~ruppert/papers/lfll.pdf|Mikhail Fomitchev and  Eric Ruppert paper ]].
+ * [[http://www.cse.yorku.ca/~ruppert/papers/lfll.pdf|Mikhail Fomitchev and  Eric Ruppert paper ]].
  *
  * Many threads are allowed to operate on the same structure as well as modification
  * of structure during iteration is allowed. However the change may not be immidiatly
