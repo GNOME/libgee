@@ -24,8 +24,9 @@ using GLib;
 using Gee;
 
 public abstract class SortedSetTests : SetTests {
-	public SortedSetTests (string name) {
+	public SortedSetTests (string name, bool strict = true) {
 		base (name);
+		this.strict = strict;
 		add_test ("[SortedSet] first", test_first);
 		add_test ("[SortedSet] last", test_last);
 		add_test ("[SortedSet] ordering", test_ordering);
@@ -34,10 +35,10 @@ public abstract class SortedSetTests : SetTests {
 		add_test ("[SortedSet] higher", test_higher);
 		add_test ("[SortedSet] floor", test_floor);
 		add_test ("[SortedSet] ceil", test_ceil);
-		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.HEAD).get_suite ());
-		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.TAIL).get_suite ());
-		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.SUB).get_suite ());
-		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.EMPTY).get_suite ());
+		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.HEAD, strict).get_suite ());
+		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.TAIL, strict).get_suite ());
+		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.SUB, strict).get_suite ());
+		get_suite ().add_suite (new SubSetTests (this, SubSetTests.Type.EMPTY, strict).get_suite ());
 	}
 
 	public void test_ordering () {
@@ -90,12 +91,14 @@ public abstract class SortedSetTests : SetTests {
 	public void test_first () {
 		var test_set = test_collection as SortedSet<string>;
 
-		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-		                       TestTrapFlags.SILENCE_STDERR)) {
-			test_set.first ();
-			Posix.exit (0);
+		if (strict) {
+			if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+			                       TestTrapFlags.SILENCE_STDERR)) {
+				test_set.first ();
+				Posix.exit (0);
+			}
+			Test.trap_assert_failed ();
 		}
-		Test.trap_assert_failed ();
 
 		assert (test_set.add ("one"));
 		assert (test_set.add ("two"));
@@ -110,12 +113,14 @@ public abstract class SortedSetTests : SetTests {
 	public void test_last () {
 		var test_set = test_collection as SortedSet<string>;
 
-		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-		                       TestTrapFlags.SILENCE_STDERR)) {
-			test_set.last ();
-			Posix.exit (0);
+		if (strict) {
+			if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+			                       TestTrapFlags.SILENCE_STDERR)) {
+				test_set.last ();
+				Posix.exit (0);
+			}
+			Test.trap_assert_failed ();
 		}
-		Test.trap_assert_failed ();
 
 		assert (test_set.add ("one"));
 		assert (test_set.add ("two"));
@@ -267,10 +272,11 @@ public abstract class SortedSetTests : SetTests {
 		}
 		private Type type;
 
-		public SubSetTests (SortedSetTests test, Type type) {
+		public SubSetTests (SortedSetTests test, Type type, bool strict) {
 			base ("%s Subset".printf (type.to_string ()));
 			this.test = test;
 			this.type = type;
+			this.strict = strict;
 			add_test ("[Collection] size", test_size);
 			add_test ("[Collection] contains", test_contains);
 			add_test ("[Collection] add", test_add);
@@ -580,18 +586,20 @@ public abstract class SortedSetTests : SetTests {
 				assert (subset.last () == "six");
 				break;
 			case Type.EMPTY:
-				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-				                       TestTrapFlags.SILENCE_STDERR)) {
-					subset.first ();
-					Posix.exit (0);
+				if (strict) {
+					if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+					                       TestTrapFlags.SILENCE_STDERR)) {
+						subset.first ();
+						Posix.exit (0);
+					}
+					Test.trap_assert_failed ();
+					if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
+					                       TestTrapFlags.SILENCE_STDERR)) {
+						subset.last ();
+						Posix.exit (0);
+					}
+					Test.trap_assert_failed ();
 				}
-				Test.trap_assert_failed ();
-				if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
-				                       TestTrapFlags.SILENCE_STDERR)) {
-					subset.last ();
-					Posix.exit (0);
-				}
-				Test.trap_assert_failed ();
 				break;
 			default:
 				assert_not_reached ();
@@ -842,6 +850,10 @@ public abstract class SortedSetTests : SetTests {
 				assert_not_reached ();
 			}
 		}
+
+		private bool strict;
 	}
+
+	private bool strict;
 }
 

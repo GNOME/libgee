@@ -22,9 +22,9 @@
 
 using Gee;
 
-public class ConcurrentSetTests : SetTests {
+public class ConcurrentSetTests : SortedSetTests {
 	public ConcurrentSetTests () {
-		base ("ConcurrentSet");
+		base ("ConcurrentSet", false);
 	}
 
 	public override void set_up () {
