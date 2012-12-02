@@ -171,7 +171,6 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 		public override bool read_only { get { return true; } }
 
 		public override bool contains (V value) {
-			EqualDataFunc<V> func = _multi_map.get_value_equal_func ();
 			foreach (var col in _multi_map._storage_map.values) {
 				if (col.contains (value)) {
 					return true;
