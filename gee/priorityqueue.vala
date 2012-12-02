@@ -61,7 +61,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	private Type1Node<G>?[] _a = new Type1Node<G>[0];
 #endif
 	private NodePair<G>? _lp_head = null;
-	private NodePair<G>? _lp_tail = null;
+	private unowned NodePair<G>? _lp_tail = null;
 	private bool[] _b = new bool[0];
 	private Type1Node<G>? _ll_head = null;
 	private Type1Node<G>? _ll_tail = null;
@@ -533,7 +533,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		#endif
 
 		if (_lp_head != null) {
-			NodePair<G> pair = _lp_head;
+			unowned NodePair<G> pair = _lp_head;
 			_link (pair.node1, pair.node2);
 			return true;
 		}
@@ -705,12 +705,12 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 				node.brothers_next.pair = pair;
 				node.pair = pair;
 				if (_lp_head == null) {
-					_lp_head = pair;
 					_lp_tail = pair;
+					_lp_head = (owned)pair;
 				} else {
 					pair.lp_prev = _lp_tail;
-					_lp_tail.lp_next = pair;
-					_lp_tail = pair;
+					_lp_tail.lp_next = (owned)pair;
+					_lp_tail = _lp_tail.lp_next;
 				}
 				// There is now an even number of child of such degree
 				_b[degree] = false;
@@ -829,19 +829,19 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		// Maintain LP
 		if (node.pair != null) {
-			NodePair<G> pair = node.pair;
+			unowned NodePair<G> pair = node.pair;
 			Type1Node<G> other = (pair.node1 == node ? pair.node2 : pair.node1);
 			node.pair = null;
 			other.pair = null;
-			if (pair.lp_prev != null) {
-				pair.lp_prev.lp_next = pair.lp_next;
-			} else {
-				_lp_head = pair.lp_next;
-			}
 			if (pair.lp_next != null) {
 				pair.lp_next.lp_prev = pair.lp_prev;
 			} else {
 				_lp_tail = pair.lp_prev;
+			}
+			if (pair.lp_prev != null) {
+				pair.lp_prev.lp_next = (owned)pair.lp_next;
+			} else {
+				_lp_head = (owned)pair.lp_next;
 			}
 		}
 	}
@@ -1110,11 +1110,12 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		#endif
 	}
 
+	[Compact]
 	private class NodePair<G> {
-		public weak NodePair<G>? lp_prev = null;
+		public unowned NodePair<G>? lp_prev = null;
 		public NodePair<G>? lp_next = null;
-		public Type1Node<G> node1 = null;
-		public Type1Node<G> node2 = null;
+		public unowned Type1Node<G> node1 = null;
+		public unowned Type1Node<G> node2 = null;
 
 		public NodePair (Type1Node<G> node1, Type1Node<G> node2) {
 			this.node1 = node1;
