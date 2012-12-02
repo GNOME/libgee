@@ -203,9 +203,11 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		bool success = AtomicPointer.compare_and_exchange((void **)aptr, old_rptr, new_rptr);
 		if (success) {
 			DestroyNotify<G> notify = get_destroy_notify<G> ();
-			Context.get_current_context ()->release_ptr (old_ptr, (owned)notify);
+			if (old_ptr != null) {
+				Context.get_current_context ()->release_ptr (old_ptr, (owned)notify);
+			}
 		} else if (new_ptr != null) {
-			delete new_ptr;
+			_new_ptr = (owned)new_ptr;
 		}
 		return success;
 	}
@@ -232,7 +234,9 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	public void release (owned DestroyNotify notify) {
 		unowned G item = _node[false];
 		_node.set (null);
-		Context.get_current_context ()->release_ptr (item, (owned)notify);
+		if (item != null) {
+			Context.get_current_context ()->release_ptr (item, (owned)notify);
+		}
 	}
 
 	/**
