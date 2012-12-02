@@ -403,7 +403,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		}
 
 		public static inline bool proceed<G> (ref Node<G>? prev, ref Node<G> curr, bool force = false) {
-			Node<G> next = curr.get_next ();
+			Node<G>? next = curr.get_next ();
 			while (next != null) {
 				State next_state = next.get_state ();
 				State curr_state;
@@ -471,7 +471,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			stderr.printf ("    Help flagging %p (previous %p)\n", this, prev);
 #endif
 			set_backlink (prev);
-			if (get_state () == State.MARKED)
+			if (get_state () != State.MARKED)
 				try_mark ();
 			help_marked (prev);
 		}
@@ -483,8 +483,12 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			do {
 				Node<G>? next_node = get_next ();
 				bool result = compare_and_exchange (next_node, State.NONE, next_node, State.MARKED);
-				if (!result && get_state () == State.FLAGGED)
-					help_flagged (next_node);
+				if (!result) {
+					State state;
+					next_node = get_succ (out state);
+					if (state == State.FLAGGED)
+						help_flagged (next_node);
+				}
 			} while (get_state () != State.MARKED);
 		}
 
@@ -528,7 +532,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			stderr.printf ("      Setting %p.succ to (%p, %s) if %p.succ is (%p, %s): %s\n", this, new_node, new_state.to_string (), this, old_node, old_state.to_string (), b ? "success" : "failure");
 			return b;
 #else
-			return HazardPointer.compare_and_exchange_pointer (&_succ, old_node, new_node, 3, (size_t)old_state, (size_t)new_state);
+			return HazardPointer.compare_and_exchange_pointer<Node<G>> (&_succ, old_node, new_node, 3, (size_t)old_state, (size_t)new_state);
 #endif
 		}
 
