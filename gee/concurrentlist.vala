@@ -261,7 +261,6 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 
 	private class Iterator<G> : Object, Gee.Traversable<G>, Gee.Iterator<G>, ListIterator<G> {
 		public Iterator (Node<G> head) {
-			_started = false;
 			_removed = false;
 			_index = -1;
 			_prev = null;
@@ -274,9 +273,8 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			bool success = Node.proceed<G> (ref _prev, ref _curr);
 			if (success) {
 				if (_removed)
-					_prev = _old_prev;
+					_prev = (owned)_old_prev;
 				_removed = false;
-				_started = true;
 				_index++;
 			}
 			return success;
@@ -285,7 +283,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		public bool has_next () {
 			HazardPointer.Context ctx = new HazardPointer.Context ();
 			Node<G>? prev = _prev;
-			Node<G>? curr = _curr;
+			Node<G> curr = _curr;
 			return Node.proceed<G> (ref prev, ref curr);
 		}
 
@@ -316,7 +314,10 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		}
 
 		public bool valid {
-			get { return _started && !_removed && _curr != null; }
+			get {
+				assert (_curr != null);
+				return _prev != null && !_removed;
+			}
 		}
 
 		public bool read_only { get { return false; } }
@@ -341,7 +342,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 
 		public new bool foreach (ForallFunc<G> f) {
 			HazardPointer.Context ctx = new HazardPointer.Context ();
-			if (_started && !_removed) {
+			if (_prev != null && !_removed) {
 				if (!f (HazardPointer.get_pointer<G> (&_curr._data))) {
 					return false;
 				}
@@ -349,9 +350,8 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			Node<G>? _old_prev = _removed ? _prev : null;
 			while (Node.proceed<G> (ref _prev, ref _curr)) {
 				if (_removed)
-					_prev = _old_prev;
+					_prev = (owned)_old_prev;
 				_removed = false;
-				_started = true;
 				_index++;
 				if (!f (HazardPointer.get_pointer<G> (&_curr._data))) {
 					return false;
@@ -360,11 +360,10 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			return true;
 		}
 
-		private bool _started;
 		private bool _removed;
 		private int _index;
-		private Node<G> _prev;
-		private Node<G>? _curr;
+		private Node<G>? _prev;
+		private Node<G> _curr;
 	}
 
 	private class Node<G> {
