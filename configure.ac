@@ -14,8 +14,12 @@ AC_PROG_LIBTOOL
 LIBGEE_LT_VERSION="2:0:0"
 AC_SUBST(LIBGEE_LT_VERSION)
 
+GLIB_REQUIRED=2.32
+
 AM_PROG_VALAC([0.17.5])
 AC_SUBST(VALAC)
+
+VALAFLAGS=--target-glib=$GLIB_REQUIRED
 
 AC_SUBST(VALAFLAGS)
 
@@ -49,8 +53,6 @@ AS_IF([test "x$enable_coverage" != xno],
 
 AC_ARG_ENABLE(benchmark, AS_HELP_STRING([--enable-benchmark], [Enable benchmark]), enable_benchmark=$enableval, enable_benchmark=no)
 AM_CONDITIONAL(ENABLE_BENCHMARK, test x$enable_benchmark = xyes)
-
-GLIB_REQUIRED=2.12.0
 
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED)
 AC_SUBST(GLIB_CFLAGS)

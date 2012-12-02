@@ -42,7 +42,7 @@ public class Gee.TreeMultiMap<K,V> : AbstractMultiMap<K,V> {
 	 * @param value_compare_func an optional value comparator function
 	 */
 	public TreeMultiMap (owned CompareDataFunc<K>? key_compare_func = null, owned CompareDataFunc<V>? value_compare_func = null) {
-		base (new TreeMap<K, Set<V>> (key_compare_func, Functions.get_equal_func_for (typeof (Set<V>))));
+		base (new TreeMap<K, Set<V>> (key_compare_func, Functions.get_equal_func_for (typeof (Set))));
 		if (value_compare_func == null) {
 			value_compare_func = Functions.get_compare_func_for (typeof (V));
 		}

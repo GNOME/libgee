@@ -451,17 +451,13 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		private static void start (ReleasePolicy self) { // FIXME: Make it non-static [bug 659778]
 			switch (self) {
 			case HELPER_THREAD:
-				try {
-					Thread.create<bool> (() => {
-						Thread.self<bool> ().set_priority (ThreadPriority.LOW);
-						while (true) {
-							Thread.yield ();
-							attempt_free ();
-						}
-					}, false);
-				} catch (ThreadError error) {
-					assert_not_reached ();
-				}
+				new Thread<bool> ("<<Gee.HazardPointer.Executor>>", () => {
+					Thread.self<bool> ().set_priority (ThreadPriority.LOW);
+					while (true) {
+						Thread.yield ();
+						attempt_free ();
+					}
+				});
 				break;
 			case MAIN_LOOP:
 				Idle.add (() => {
@@ -620,10 +616,6 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		 */
 		internal inline static Context *get_current_context () {
 			return _current_context.get ();
-		}
-
-		private inline bool _should_free () {
-			return (_parent == null && _to_free.size > 0) || _to_free.size >= THRESHOLD;
 		}
 
 		internal Context *_parent;

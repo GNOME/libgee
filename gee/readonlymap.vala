@@ -212,7 +212,7 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Traversable<Map.Entry<K,V>>, Itera
 	 * {@inheritDoc}
 	 */
 	public Type element_type {
-		get { return typeof (Map.Entry<K,V>); }
+		get { return typeof (Map.Entry); }
 	}
 
 	/**
