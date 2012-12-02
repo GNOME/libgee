@@ -595,7 +595,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		#endif
 	}
 
-	private void _delete (Node<G> n, out unowned Node<G> prev = null) {
+	private void _delete (Node<G> n) {
 		// DecreaseKey(Q, N, infinite)
 		_decrease_key (n);
 
@@ -799,7 +799,6 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 
 		// Ensure proper sizes of A and B
 		if (degree >= _a.length) {
-			int old_length = _a.length;
 			_a.resize (degree + 1);
 			_b.resize (degree + 1);
 		}
