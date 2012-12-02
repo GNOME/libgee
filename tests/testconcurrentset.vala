@@ -1,6 +1,6 @@
-/* testconcurrentlist.vala
+/* testconcurrentset.vala
  *
- * Copyright (C) 2011  Maciej Piechotka
+ * Copyright (C) 2012  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,13 +22,13 @@
 
 using Gee;
 
-public class ConcurrentListTests : ListTests {
-	public ConcurrentListTests () {
-		base ("ConcurrentList");
+public class ConcurrentSetTests : SetTests {
+	public ConcurrentSetTests () {
+		base ("ConcurrentSet");
 	}
 
 	public override void set_up () {
-		test_collection = new Gee.ConcurrentList<string> ();
+		test_collection = new Gee.ConcurrentSet<string> ();
 	}
 
 	public override void tear_down () {

@@ -13,6 +13,7 @@ tests_SOURCES = \
        testcase.vala \
        testcollection.vala \
        testconcurrentlist.vala \
+       testconcurrentset.vala \
        testdata.vala \
        testdeque.vala \
        testfunctions.vala \

@@ -29,6 +29,7 @@ libgee_0_8_la_SOURCES = \
 	collection.vala \
 	comparable.vala \
 	concurrentlist.vala \
+	concurrentset.vala \
 	deque.vala \
 	functions.vala \
 	hashable.vala \
