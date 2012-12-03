@@ -1,3 +1,11 @@
+libgee 0.8.3
+============
+ * Various fixes to PriorityQueue
+ * Small fix for Gee.LinkedList.Iterator.next
+ * Fix memory leak in HazardPointer implementation
+ * Fix handling NULLs in HazardPointer
+ * Use portable sed command for GObject Introspection 
+
 libgee 0.8.2
 ============
  * Add generic type arguments to HashSet
