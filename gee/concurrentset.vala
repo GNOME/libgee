@@ -28,7 +28,7 @@
  * of structure during iteration is allowed. However the change may not be immidiatly
  * visible to other threads.
  */
-public class Gee.ConcurrentSet<G> : AbstractCollection<G> {
+public class Gee.ConcurrentSet<G> : AbstractSet<G> {
 	public ConcurrentSet (owned CompareDataFunc<G>? compare_func = null) {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
@@ -57,7 +57,6 @@ public class Gee.ConcurrentSet<G> : AbstractCollection<G> {
 
 	public override bool add (G key) {
 		HazardPointer.Context ctx = new HazardPointer.Context ();
-		//FIXME: Synchronization
 		Rand *rnd = rand.get ();
 		if (rnd == null) {
 			rand.set (rnd = new Rand ());
@@ -137,7 +136,7 @@ public class Gee.ConcurrentSet<G> : AbstractCollection<G> {
 		public new bool foreach (ForallFunc<G> f) {
 			assert (_curr != null);
 			HazardPointer.Context ctx = new HazardPointer.Context ();
-			if (_prev != null && !_removed) {
+			if (_prev[0] != null && !_removed) {
 				if (!f (_curr._data)) {
 					assert (_curr != null);
 					return false;
@@ -147,20 +146,20 @@ public class Gee.ConcurrentSet<G> : AbstractCollection<G> {
 			Tower<G>? new_curr = _curr;
 			while (Tower.proceed<G> (_set._cmp, ref new_prev, ref new_curr, 0)) {
 				assert (_curr != null);
-				if (!f (_curr._data)) {
-					assert (_curr != null);
-					return false;
-				}
 				if (!_removed) {
 					//FIXME: Help mark/delete on the way
-					_prev[0] = (owned)new_prev;
+					_prev[0] = new_prev;
 					int prev_height = GLib.AtomicInt.get(ref _prev[0]._height);
 					for (int i = 1; i < prev_height; i++) {
 						_prev[i] = _prev[0];
 					}
 				}
-				_curr = (owned)new_curr;
+				_curr = new_curr;
 				_removed = false;
+				if (!f (_curr._data)) {
+					assert (_curr != null);
+					return false;
+				}
 			}
 			assert (_curr != null);
 			return true;
@@ -208,7 +207,7 @@ public class Gee.ConcurrentSet<G> : AbstractCollection<G> {
 			_removed = true;
 		}
 
-		public bool valid { get { return _prev != null && !_removed; } }
+		public bool valid { get { return _prev[0] != null && !_removed; } }
 
 		public bool read_only { get { return true; } }
 
