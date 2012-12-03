@@ -1,3 +1,9 @@
+libgee 0.6.7
+============
+
+ * Various bugs fixed in PriorityQueue
+ * Fixed Iterator.next in LinkedList
+
 libgee 0.6.6.1
 ==============
 
