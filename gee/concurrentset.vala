@@ -1078,7 +1078,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 		}
 
 		inline ~Tower () {
-			uint8 height = get_height();
+			int height = get_height();
 			for (uint8 i = 0; i < height; i++) {
 				set_succ (null, State.NONE, i);
 				set_backlink (null, i);
