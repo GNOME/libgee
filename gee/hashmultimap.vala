@@ -49,8 +49,8 @@ public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
 	 * @param value_hash_func an optional value hash function
 	 * @param value_equal_func an optional value equality testing function
 	 */
-	public HashMultiMap (owned HashDataFunc? key_hash_func = null, owned EqualDataFunc? key_equal_func = null,
-	                     owned HashDataFunc? value_hash_func = null, owned EqualDataFunc? value_equal_func = null) {
+	public HashMultiMap (owned HashDataFunc<K>? key_hash_func = null, owned EqualDataFunc<K>? key_equal_func = null,
+	                     owned HashDataFunc<V>? value_hash_func = null, owned EqualDataFunc<V>? value_equal_func = null) {
 		base (new HashMap<K, Set<V>> (key_hash_func, key_equal_func, Functions.get_equal_func_for (typeof (Set<V>))));
 		if (value_hash_func == null) {
 			value_hash_func = Functions.get_hash_func_for (typeof (V));
