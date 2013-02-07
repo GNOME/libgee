@@ -37,7 +37,7 @@ public class Gee.TreeMultiSet<G> : AbstractMultiSet<G> {
 	 *
 	 * @param compare_func an optional element comparator function
 	 */
-	public TreeMultiSet (owned CompareDataFunc? compare_func = null) {
+	public TreeMultiSet (owned CompareDataFunc<G>? compare_func = null) {
 		base (new TreeMap<G, int> (compare_func));
 	}
 }
