@@ -56,6 +56,7 @@ libgee_0_8_la_SOURCES = \
 	readonlycollection.vala \
 	readonlylist.vala \
 	readonlymap.vala \
+	readonlymultiset.vala \
 	readonlyset.vala \
 	readonlysortedmap.vala \
 	readonlysortedset.vala \

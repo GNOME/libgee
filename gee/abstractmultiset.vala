@@ -92,6 +92,19 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 		_nitems = 0;
 	}
 
+	private weak MultiSet<G> _read_only_view;
+	public virtual new MultiSet<G> read_only_view {
+		owned get {
+			MultiSet<G> instance = _read_only_view;
+			if (_read_only_view == null) {
+				instance = new ReadOnlyMultiSet<G> (this);
+				_read_only_view = instance;
+				instance.add_weak_pointer ((void**) (&_read_only_view));
+			}
+			return instance;
+		}
+	}
+
 	// Future-proofing
 	internal new virtual void reserved0() {}
 	internal new virtual void reserved1() {}
@@ -102,7 +115,6 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 	internal new virtual void reserved6() {}
 	internal new virtual void reserved7() {}
 	internal new virtual void reserved8() {}
-	internal new virtual void reserved9() {}
 
 	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G> {
 		private AbstractMultiSet<G> _set;
