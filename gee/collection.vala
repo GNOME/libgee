@@ -177,6 +177,62 @@ public interface Gee.Collection<G> : Iterable<G> {
 		}
 	}
 
+	/**
+	 * Adds all items in the input array to this collection.
+	 *
+	 * @param array the array which items will be added to this
+	 *              collection.
+	 *
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
+	 */
+	public bool add_all_array (G[] array) {
+		// FIXME: Change to virtual after bug #693455 is fixed
+		bool changed = false;
+		foreach (unowned G item in array) {
+			changed |= add (item);
+		}
+		return changed;
+	}
+
+	/**
+	 * Returns ``true`` it this collection contains all items as the input
+	 * array.
+	 *
+	 * @param array the array which items will be compared with
+	 *              this collection.
+	 *
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
+	 */
+	public bool contains_all_array (G[] array) {
+		// FIXME: Change to virtual after bug #693455 is fixed
+		foreach (unowned G item in array) {
+			if (!contains (item)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Removes the subset of items in this collection corresponding to the
+	 * elments in the input array. If there is several occurrences of
+	 * the same value in this collection they are decremented of the number
+	 * of occurrences in the input array.
+	 *
+	 * @param array the array which items will be compared with
+	 *              this collection.
+	 *
+	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
+	 */
+	public bool remove_all_array (G[] array) {
+		// FIXME: Change to virtual after bug #693455 is fixed
+		bool changed = false;
+		foreach (unowned G item in array) {
+			changed |= remove (item);
+		}
+		return changed;
+	}
+
 	private static bool[] to_bool_array (Collection<bool> coll) {
 		bool[] array = new bool[coll.size];
 		int index = 0;
