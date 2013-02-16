@@ -124,4 +124,10 @@ public interface Gee.MultiMap<K,V> : Object {
 	 * The type of the values in this multimap.
 	 */
 	public Type value_type { get { return typeof (V); } }
+
+	public virtual MultiMap<K, V> read_only_view {
+		owned get {
+			return new ReadOnlyMultiMap<K, V> (this);
+		}
+	}
 }

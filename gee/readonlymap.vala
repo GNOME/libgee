@@ -244,7 +244,7 @@ internal class Gee.ReadOnlyMap<K,V> : Object, Traversable<Map.Entry<K,V>>, Itera
 		return _map.chop (offset, length);
 	}
 
-	protected class MapIterator<K,V> : Object, Gee.MapIterator<K,V> {
+	internal class MapIterator<K,V> : Object, Gee.MapIterator<K,V> {
 		protected Gee.MapIterator<K,V> _iter;
 
 		public MapIterator (Gee.MapIterator<K,V> iterator) {
