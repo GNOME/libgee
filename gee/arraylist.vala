@@ -58,7 +58,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	[CCode (notify = false)]
 	public EqualDataFunc<G> equal_func { private set; get; }
 
-	internal G[] _items = new G[4];
+	internal G[] _items;
 	internal int _size;
 
 	// concurrent modification protection
@@ -77,6 +77,26 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
 		this.equal_func = equal_func;
+		_items = new G[4];
+		_size = 0;
+	}
+
+	/**
+	 * Constructs a new array list based on provided array.
+	 *
+	 * If not provided, the function parameter is requested to the
+	 * {@link Functions} function factory methods.
+	 *
+	 * @param itmes initial items to be put into array
+	 * @param equal_func an optional element equality testing function
+	 */
+	public ArrayList.wrap (owned G[] items, owned EqualDataFunc<G>? equal_func = null) {
+		if (equal_func == null) {
+			equal_func = Functions.get_equal_func_for (typeof (G));
+		}
+		this.equal_func = equal_func;
+		_items = items;
+		_size = items.length;
 	}
 
 	/**
