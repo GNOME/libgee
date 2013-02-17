@@ -87,7 +87,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	 * If not provided, the function parameter is requested to the
 	 * {@link Functions} function factory methods.
 	 *
-	 * @param itmes initial items to be put into array
+	 * @param items initial items to be put into array
 	 * @param equal_func an optional element equality testing function
 	 */
 	public ArrayList.wrap (owned G[] items, owned EqualDataFunc<G>? equal_func = null) {

@@ -71,7 +71,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 		public abstract V value { get; set; }
 
 		/**
-		 * ``true'' if the setting value is permitted.
+		 * ``true`` if the setting value is permitted.
 		 */
 		public abstract bool read_only { get; }
 	}
@@ -91,10 +91,8 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @param key the key to locate in the map
 	 *
 	 * @return    ``true`` if key is found, ``false`` otherwise
-	 *
-	 * @deprecated Use {@link has_key} method instead.
 	 */
-	[Deprecated]
+	[Deprecated (replacement = "Map.has_key")]
 	public bool contains (K key) {
 		return has_key(key);
 	}
@@ -144,10 +142,8 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * @param value the receiver variable for the removed value
 	 *
 	 * @return    ``true`` if the map has been changed, ``false`` otherwise
-	 *
-	 * @deprecated Use {@link unset} method instead.
 	 */
-	[Deprecated]
+	[Deprecated (replacement = "Map.unset")]
 	public bool remove (K key, out V? value = null) {
 		return unset (key, out value);
 	}
@@ -195,10 +191,8 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * and this map.
 	 *
 	 * @param map the map which common items are deleted from this map
-	 *
-	 * @deprecated Use {@link unset_all} method instead.
 	 */
-	[Deprecated]
+	[Deprecated (replacement = "Map.unset_all")]
 	public bool remove_all (Map<K,V> map) {
 		return unset_all (map);
 	}
@@ -221,10 +215,8 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 * Returns ``true`` it this map contains all items as the input map.
 	 *
 	 * @param map the map which items will be compared with this map
-	 *
-	 * @deprecated Use {@link has_all} method instead.
 	 */
-	[Deprecated]
+	[Deprecated (replacement = "Map.has_all")]
 	public bool contains_all (Map<K,V> map) {
 		return has_all (map);
 	}

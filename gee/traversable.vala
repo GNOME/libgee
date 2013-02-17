@@ -59,6 +59,8 @@ public interface Gee.Traversable<G> : Object {
 	 * to last element in iteration or the first element that returned ''false''.
 	 * If iterator points at some element it will be included in iteration.
 	 *
+	 * @param f function applied to every element of the collection
+	 *
 	 * @return ''false'' if the argument returned ''false'' at last invocation and
 	 *         ''true'' otherwise.
 	 */
@@ -286,7 +288,7 @@ public interface Gee.Traversable<G> : Object {
 	 *    iterator is {@link Iterator.valid} and value it is pointing on
 	 *    fullfills the predicate.
 	 *
-	 * @param f Folding function
+	 * @param pred predicate to check should the value be retained
 	 * @return Iterator containing values of subsequent values of seed
 	 */
 	public virtual Iterator<G> filter (owned Predicate<G> pred) {
