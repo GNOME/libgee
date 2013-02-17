@@ -24,9 +24,9 @@ Libgee provides the following interfaces:
                        # BidirListIterator
      * MultiMap
 
-The ArrayList, ArrauQueue, ConcurrentLinkedList HashSet, HashMap, HashMultiSet,
-HashMultiMap, LinkedList, PriorityQueue, TreeSet, TreeMap,
-TreeMultiSet, and TreeMultiMap classes provide a reasonable sample
+The ArrayList, ArrauQueue, ConcurrentLinkedList, ConcurrentSet, HashSet,
+HashMap, HashMultiSet, HashMultiMap, LinkedList, PriorityQueue, TreeSet,
+TreeMap, TreeMultiSet, and TreeMultiMap classes provide a reasonable sample
 implementation of those interfaces. In addition, a set of abstract
 classes are provided to ease the implementation of new collections.
 

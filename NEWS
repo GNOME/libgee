@@ -1,3 +1,11 @@
+libgee 0.9.91
+=============
+ * ConcurrentSet implements SortedSet
+ * Fix HashMultiMap, TreeMultiSet constructor
+ * Add add/contains/remove_all working on array
+ * Allow creation of ArrayList from array
+ * Add read_only_view to Gee.MultiSet and Gee.MultiMap
+
 libgee 0.9.0
 ============
  * ConcurrentSet preliminary implementation
