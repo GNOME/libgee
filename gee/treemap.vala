@@ -121,6 +121,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractMap<K,V> {
 		this.value_equal_func = value_equal_func;
 	}
 
+	~TreeMap () {
+		clear ();
+	}
+
 	private void rotate_right (ref Node<K, V> root) {
 		Node<K,V> pivot = (owned) root.left;
 		pivot.color = root.color;

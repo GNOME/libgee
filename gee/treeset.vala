@@ -63,6 +63,10 @@ public class Gee.TreeSet<G> : AbstractSet<G>, SortedSet<G> {
 		this.compare_func = compare_func;
 	}
 
+	~TreeSet () {
+		clear ();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
