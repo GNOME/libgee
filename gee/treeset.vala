@@ -71,6 +71,10 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 		this.compare_func = compare_func;
 	}
 
+	~TreeSet () {
+		clear ();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
