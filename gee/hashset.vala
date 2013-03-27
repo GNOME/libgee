@@ -307,7 +307,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 					_next = _set._nodes[_index];
 				}
 			}
-			return false;
+			return true;
 		}
 	}
 }
