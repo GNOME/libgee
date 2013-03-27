@@ -770,17 +770,25 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (test_collection.add ("three"));
 		
 		int count = 0;
+		bool res;
 		
-		test_collection.foreach ((x) => {count++; return true;});
+		res = test_collection.foreach ((x) => {count++; return true;});
 		assert (count == 3);
+		assert (res == true);
 		
-		test_collection.iterator ().foreach ((x) => {count++; return true;});
+		res = test_collection.iterator ().foreach ((x) => {count++; return true;});
 		assert (count == 6);
+		assert (res == true);
 		
 		Iterator<string> iter = test_collection.iterator ();
 		assert (iter.next ());
-		iter.foreach ((x) => {count++; return true;});
+		res = iter.foreach ((x) => {count++; return true;});
 		assert (count == 9);
+		assert (res == true);
+
+		res = test_collection.foreach ((x) => {count++; return false;});
+		assert (count == 10);
+		assert (res == false);
 	}
 
 	public void test_map () {
