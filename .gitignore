@@ -18,7 +18,6 @@ configure
 depcomp
 libtool
 install-sh
-m4
 missing
 ltmain.sh
 ylwrap
@@ -26,6 +25,11 @@ compile
 stamp-h1
 *.pc
 lcov.info
+m4/libtool.m4
+m4/ltoptions.m4
+m4/ltsugar.m4
+m4/ltversion.m4
+m4/lt~obsolete.m4
 doc/gee-0.8
 gee/gee-0.8.vapi
 gee/gee-internals-0.8.vapi

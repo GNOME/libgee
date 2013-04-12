@@ -133,7 +133,9 @@ endif
 
 Gee-0.8.gir gee-internals-0.8.vapi gee-0.8.vapi: libgee-0.8.la
 
-CLEANFILES = \
+MOSTLYCLEANFILES = \
+	$(libgee_0_8_la_SOURCES:.vala=.c) \
+	src/gnome_news_vala.stamp \
 	gee-0.8.vapi \
 	gee-internals-0.8.vapi \
 	Gee-0.8.typelib \
