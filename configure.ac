@@ -51,7 +51,7 @@ AM_CONDITIONAL(ENABLE_BENCHMARK, test x$enable_benchmark = xyes)
 AS_IF([test x$enable_benchmark = xyes],
       [VALA_ADD_CHECKFILE([benchmark/benchmarks_vala.stamp])])
 
-PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED)
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED gio-2.0 >= $GLIB_REQUIRED)
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 

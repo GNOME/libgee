@@ -32,6 +32,8 @@ libgee_0_8_la_SOURCES = \
 	concurrentset.vala \
 	deque.vala \
 	functions.vala \
+	future.vala \
+	flatmapfuture.vala \
 	hashable.vala \
 	hashmap.vala \
 	hashmultimap.vala \
@@ -45,10 +47,12 @@ libgee_0_8_la_SOURCES = \
 	list.vala \
 	listiterator.vala \
 	map.vala \
+	mapfuture.vala \
 	mapiterator.vala \
 	multimap.vala \
 	multiset.vala \
 	priorityqueue.vala \
+	promise.vala \
 	queue.vala \
 	readonlybidirlist.vala \
 	readonlybidirsortedset.vala \
@@ -64,6 +68,7 @@ libgee_0_8_la_SOURCES = \
 	set.vala \
 	sortedmap.vala \
 	sortedset.vala \
+	task.vala \
 	timsort.vala \
 	traversable.vala \
 	treemap.vala \
@@ -78,6 +83,7 @@ libgee_0_8_la_VALAFLAGS = \
 	-h gee-internals.h \
 	--internal-vapi gee-internals-0.8.vapi \
 	--library gee-0.8 --gir Gee-0.8.gir \
+	--pkg gio-2.0 \
 	$(COVERAGE_VALAFLAGS) \
 	$(VALAFLAGS) \
 	$(NULL)
