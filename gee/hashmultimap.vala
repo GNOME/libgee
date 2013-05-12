@@ -70,7 +70,7 @@ public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
 		return new HashMultiSet<K> (key_hash_func, key_equal_func);
 	}
 
-	protected override EqualDataFunc get_value_equal_func () {
+	protected override EqualDataFunc<V> get_value_equal_func () {
 		return _value_equal_func;
 	}
 }
