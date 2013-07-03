@@ -1,3 +1,9 @@
+libgee 0.11.0
+=============
+ * Add futures and promises to libgee
+ * Update the build system
+ * Return true from HashSet.Iterator.foreach() if we fall off the end
+
 libgee 0.10.0
 =============
  * No changes since release candidate
