@@ -158,7 +158,7 @@ public interface Gee.Future<G> : Object {
 	 *   larger computation inside the returned future for example by
 	 *   {@link task}
 	 */
-	public virtual Gee.Future<A> flatMap<A>(FlatMapFunc<A, G> func) {
+	public virtual Gee.Future<A> flat_map<A>(FlatMapFunc<A, G> func) {
 		return new FlatMapFuture<A, G> (this, func);
 	}
 
