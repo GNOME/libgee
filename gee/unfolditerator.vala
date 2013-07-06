@@ -62,13 +62,13 @@ internal class Gee.UnfoldIterator<G> : Object, Traversable<G>, Iterator<G> {
 
 	public bool foreach (ForallFunc<G> f) {
 		if (_current != null) {
-			if (!f (_current)) {
+			if (!f (_current.value)) {
 				return false;
 			}
 		}
 		if (_next != null) {
 			_current = (owned)_next;
-			if (!f (_current)) {
+			if (!f (_current.value)) {
 				return false;
 			}
 		} else if (_end) {
@@ -80,14 +80,14 @@ internal class Gee.UnfoldIterator<G> : Object, Traversable<G>, Iterator<G> {
 				_end = true;
 				return true;
 			} else {
-				if (!f (_current)) {
+				if (!f (_current.value)) {
 					return false;
 				}
 			}
 		}
 		while ((_next = _func ()) != null) {
 			_current = (owned)_next;
-			if (!f (_current)) {
+			if (!f (_current.value)) {
 				return false;
 			}
 		}
