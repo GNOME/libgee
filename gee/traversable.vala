@@ -380,12 +380,69 @@ public interface Gee.Traversable<G> : Object {
 	 */
 	public virtual Type element_type { get { return typeof (G); } }
 
+	/**
+	 * A fused concatinate and map. The function is applied to each element
+	 * of iteration and the resulting values are concatinated.
+	 *
+	 * The iterator is lazy evaluated but value is force-evaluated when
+	 * iterator is moved to next value.
+	 *
+	 * Note: Default implementation uses {@link stream}.
+	 *
+	 * Note: In {@link Iterator} implementation if the parent iterator is
+	 *    {@link Iterator.valid} and function returns a valid iterator the
+	 *    resulting iterator is also valid. Using the parent iterator is not
+	 *    allowed before the inner iterator {@link Iterator.next}
+	 *    return false and then it points on its last element.
+	 *
+	 * @since 0.11.1
+	 * @param f mapping function
+	 * @return Iterator over returned values
+	 */
+	public Iterator<A> flat_map<A>(owned FlatMapFunc<A, G> f) {
+		Iterator<A>? current = null;
+		return stream<A> ((state, item, out val) => {
+			switch (state) {
+			case Stream.YIELD:
+				if (current == null || !current.next ()) {
+					return Stream.CONTINUE;
+				} else {
+					val = new Lazy<A> (() => {return current.get ();});
+					return Stream.YIELD;
+				}
+			case Stream.CONTINUE:
+				current = f (item.get ());
+				if (current.valid) {
+					val = new Lazy<A> (() => {return current.get ();});
+					return Stream.YIELD;
+				} else {
+					return Stream.WAIT;
+				}
+			case Stream.WAIT:
+				if (current.next()) {
+					val = new Lazy<A> (() => {return current.get ();});
+					return Stream.YIELD;
+				} else {
+					return Stream.CONTINUE;
+				}
+			case Stream.END:
+				return Stream.END;
+			default:
+				assert_not_reached ();
+			}
+		});
+	}
+
 	public enum Stream {
 		YIELD,
 		CONTINUE,
 		END,
 		WAIT
 	}
+}
 
+namespace Gee {
+	// Placed here to workaround bug #703710
+	public delegate Iterator<A> FlatMapFunc<A, G>(owned G g);
 }
 
