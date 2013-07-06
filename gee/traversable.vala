@@ -86,13 +86,17 @@ public interface Gee.Traversable<G> : Object {
 	 *   1. {@link Stream.CONTINUE}. It means that the function needs to be
 	 *      called with next element or with {@link Stream.END} if it is
 	 *      end of stream). If the state element was Stream.END during the
-	 *      current iteration function ''must not'' return {@link Stream.CONTINUE}
-	 *   1. Stream.END. It means that the last argument was yielded.
+	 *      current iteration function ''must not'' return {@link Stream.CONTINUE}.
+	 *   1. {@link Stream.WAIT}. Simply denotes that iterator should skip an element.
+	 *      Usually the function is called once again with {@link Stream.WAIT} as
+	 *      state however it do affect the initial validity of iterator.
+	 *   1. {@link Stream.END}. It means that the last argument was yielded.
 	 *
 	 * If the function yields the value immediately then the returning iterator
 	 * is {@link Iterator.valid} and points to this value as well as in case when the
 	 * parent iterator is {@link Iterator.valid} and function yields
-	 * after consuming 1 input. In other case returned iterator is invalid.
+	 * after consuming 1 input. In other case returned iterator is invalid including
+	 * when the first value returned is {@link Stream.WAIT}.
 	 *
 	 * Note: In {@link Iterator} implementation: if iterator is
 	 *    {@link Iterator.valid} the current value should be fed
@@ -114,12 +118,18 @@ public interface Gee.Traversable<G> : Object {
 			bool need_next = true;
 			str = f (Stream.YIELD, null, out initial);
 			switch (str) {
+			case Stream.WAIT:
+			case Stream.YIELD:
+				if (self.valid)
+					need_next = false;
+				break;
 			case Stream.CONTINUE:
 				if (self.valid) {
 					str = f (Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out initial);
 					switch (str) {
 					case Stream.YIELD:
 					case Stream.CONTINUE:
+					case Stream.WAIT:
 						break;
 					case Stream.END:
 						return Iterator.unfold<A> (() => {return null;});
@@ -127,10 +137,6 @@ public interface Gee.Traversable<G> : Object {
 						assert_not_reached ();
 					}
 				}
-				break;
-			case Stream.YIELD:
-				if (self.valid)
-					need_next = false;
 				break;
 			case Stream.END:
 				return Iterator.unfold<A> (() => {return null;});
@@ -140,26 +146,30 @@ public interface Gee.Traversable<G> : Object {
 			return Iterator.unfold<A> (() => {
 				Lazy<A>? val = null;
 				if (str != Stream.CONTINUE)
-					str = f (Traversable.Stream.YIELD, null, out val);
-				while (str == Stream.CONTINUE) {
-					if (need_next) {
-						if (!self.next ()) {
-							str = f (Traversable.Stream.END, null, out val);
-							assert (str != Traversable.Stream.CONTINUE);
-							break;
+					str = f (str, null, out val);
+				while (true) {
+					switch (str) {
+					case Stream.YIELD:
+						return val;
+					case Stream.CONTINUE:
+						if (need_next) {
+							if (!self.next ()) {
+								str = f (Traversable.Stream.END, null, out val);
+								continue;
+							}
+						} else {
+							need_next = true;
 						}
-					} else {
-						need_next = true;
+						str = f (Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out val);
+						break;
+					case Stream.WAIT:
+						str = f (Stream.WAIT, null, out val);
+						break;
+					case Stream.END:
+						return null;
+					default:
+						assert_not_reached ();
 					}
-					str = f (Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out val);
-				}
-				switch (str) {
-				case Stream.YIELD:
-					return val;
-				case Stream.END:
-					return null;
-				default:
-					assert_not_reached ();
 				}
 			}, initial);
 		} else if ((iself = this as Iterable<G>) != null) {
@@ -365,7 +375,6 @@ public interface Gee.Traversable<G> : Object {
 		});
 	}
 
-	
 	/**
 	 * The type of the elements in this collection.
 	 */
@@ -374,7 +383,8 @@ public interface Gee.Traversable<G> : Object {
 	public enum Stream {
 		YIELD,
 		CONTINUE,
-		END
+		END,
+		WAIT
 	}
 
 }
