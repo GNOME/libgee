@@ -109,69 +109,11 @@ public interface Gee.Traversable<G> : Object {
 	 * @return iterator containing values yielded by stream
 	 */
 	public virtual Iterator<A> stream<A> (owned StreamFunc<G, A> f) {
-		Iterator<G>? self;
-		Iterable<G>? iself;
+		unowned Iterator<G>? self;
+		unowned Iterable<G>? iself;
 		// Yes - I've heard of polimorphism ;) but I don't want users to need to implement the method.
 		if ((self = this as Iterator<G>) != null) { 
-			Traversable.Stream str;
-			Lazy<A>? initial = null;
-			bool need_next = true;
-			str = f (Stream.YIELD, null, out initial);
-			switch (str) {
-			case Stream.WAIT:
-			case Stream.YIELD:
-				if (self.valid)
-					need_next = false;
-				break;
-			case Stream.CONTINUE:
-				if (self.valid) {
-					str = f (Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out initial);
-					switch (str) {
-					case Stream.YIELD:
-					case Stream.CONTINUE:
-					case Stream.WAIT:
-						break;
-					case Stream.END:
-						return Iterator.unfold<A> (() => {return null;});
-					default:
-						assert_not_reached ();
-					}
-				}
-				break;
-			case Stream.END:
-				return Iterator.unfold<A> (() => {return null;});
-			default:
-				assert_not_reached ();
-			}
-			return Iterator.unfold<A> (() => {
-				Lazy<A>? val = null;
-				if (str != Stream.CONTINUE)
-					str = f (str, null, out val);
-				while (true) {
-					switch (str) {
-					case Stream.YIELD:
-						return val;
-					case Stream.CONTINUE:
-						if (need_next) {
-							if (!self.next ()) {
-								str = f (Traversable.Stream.END, null, out val);
-								continue;
-							}
-						} else {
-							need_next = true;
-						}
-						str = f (Stream.CONTINUE, new Lazy<G> (() => {return self.get ();}), out val);
-						break;
-					case Stream.WAIT:
-						str = f (Stream.WAIT, null, out val);
-						break;
-					case Stream.END:
-						return null;
-					default:
-						assert_not_reached ();
-					}
-				}
-			}, initial);
+			return new StreamIterator<A, G> (self, (owned)f);
 		} else if ((iself = this as Iterable<G>) != null) {
 			return iself.iterator().stream<A> ((owned) f);
 		} else {
