@@ -28,6 +28,10 @@ using GLib;
  *
  * Typically the producer will create promise and return {@link future} while
  * keeping the promise to itself. Then when value is ready it can call {@link set_value}.
+ *
+ * @see Future
+ * @see task
+ * @since 0.11.0
  */
 public class Gee.Promise<G> {
 	/**

@@ -32,6 +32,7 @@ using GLib;
  * @see Lazy
  * @see task
  * @see async_task
+ * @since 0.11.0
  *
  * Note: Statement that call does not block does not mean that it is lock-free.
  *   Internally the implementation is allowed to take mutex but it should guarantee

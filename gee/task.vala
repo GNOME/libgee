@@ -30,6 +30,7 @@ namespace Gee {
 	 * @params task Task to be executed
 	 * @returns Future value returned by task
 	 * @see async_task
+	 * @since 0.11.0
 	 *
 	 * Note: There is limited number of threads unless environment variable
 	 *   ``GEE_NUM_THREADS`` is set to -1. It is not adviced to call I/O or
@@ -50,6 +51,7 @@ namespace Gee {
 	 * one of threads from pool will execute the task.
 	 *
 	 * @see task
+	 * @since 0.11.0
 	 *
 	 * Note: There is limited number of threads unless environment variable
 	 *   ``GEE_NUM_THREADS`` is set to -1. It is not adviced to call I/O or
