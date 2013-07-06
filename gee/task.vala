@@ -84,7 +84,7 @@ namespace Gee {
 				try {
 					return new ThreadPool<TaskData>.with_owned_data((tdata) => {
 						tdata.run();
-					}, num_threads /* FIXME: Use environment variable*/, false);
+					}, num_threads, false);
 				} catch (ThreadError err) {
 					Process.abort ();
 				}
