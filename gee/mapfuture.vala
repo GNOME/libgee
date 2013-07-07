@@ -70,6 +70,10 @@ internal class Gee.MapFuture<A, G> : Object, Future<A> {
 		_mutex.lock ();
 		switch (_progress) {
 		case Progress.INIT:
+			if (!_base.wait_until (end_time)) {
+				_mutex.unlock ();
+				return false;
+			}
 			value = go_map ();
 			ret_value = true;
 			break;
@@ -92,6 +96,30 @@ internal class Gee.MapFuture<A, G> : Object, Future<A> {
 		return ret_value;
 	}
 
+	public async unowned A wait_async () {
+		unowned G g = yield _base.wait_async ();
+		_mutex.lock ();
+		switch (_progress) {
+		case Progress.INIT:
+			go_map ();
+			return _value;
+		case Progress.PROGRESS:
+			unowned A result = null;
+			_when_done += Future.WhenDoneArrayElement<G>((res) => {
+				result = res;
+				wait_async.callback ();
+			});
+			_mutex.unlock ();
+			yield;
+			return _value;
+		case Progress.READY:
+			_mutex.unlock ();
+			return _value;
+		default:
+			assert_not_reached ();
+		}
+	}
+
 	public void when_done (Future.WhenDoneFunc<A> func) {
 		_mutex.lock ();
 		if (_progress == Progress.READY) {
@@ -103,7 +131,7 @@ internal class Gee.MapFuture<A, G> : Object, Future<A> {
 		}
 	}
 
-	private unowned A go_map () {
+	private inline unowned A go_map () {
 		_progress = Progress.PROGRESS;
 		_mutex.unlock ();
 
