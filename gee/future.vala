@@ -131,7 +131,8 @@ public interface Gee.Future<G> : Object {
 	 * @param func Function applied to {@link value}
 	 * @returns Value returned by function
 	 *
-	 * @see flatMap
+	 * @see flat_map
+	 * @see light_map
 	 *
 	 * Note: As time taken by function does not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
@@ -140,6 +141,33 @@ public interface Gee.Future<G> : Object {
 	 */
 	public virtual Future<A> map<A> (MapFunc<A, G> func) {
 		return new MapFuture<A, G> (this, func);
+	}
+
+	public delegate unowned A LightMapFunc<A, G> (G value);
+
+	/**
+	 * Maps a future value to another value by a function and returns the
+	 * another value in future.
+	 *
+	 * @param func Function applied to {@link value}
+	 * @returns Value returned by function
+	 *
+	 * @see flat_map
+	 * @see map
+	 * @since 0.11.4
+	 *
+	 * Note: The function may be reevaluated at any time and it might
+	 *   be called lazily. Therefore it is recommended for it to be
+	 *   idempotent. If the function needs to be called eagerly or have
+	 *   side-effects it is recommended to use {@link map}.
+	 *
+	 * Note: As time taken by function does not contribute to
+	 *   {@link wait_until} and the implementation is allowed to compute
+	 *   value eagerly by {@link when_done} it is recommended to use
+	 *   {@link task} and {@link flat_map} for longer computation.
+	 */
+	public virtual Future<A> light_map<A> (LightMapFunc<A, G> func) {
+		return new LightMapFuture<A, G> (this, func);
 	}
 
 	[CCode (scope = "async")]

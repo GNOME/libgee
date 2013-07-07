@@ -44,6 +44,7 @@ libgee_0_8_la_SOURCES = \
 	iterator.vala \
 	lazy.vala \
 	linkedlist.vala \
+	lightmapfuture.vala \
 	list.vala \
 	listiterator.vala \
 	map.vala \
