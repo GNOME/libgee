@@ -24,10 +24,10 @@ internal class Gee.FlatMapFuture<A, G> : Object, Future<A> {
 	public FlatMapFuture (Future<G> base_future, Future.FlatMapFunc<A, G> func) {
 		_base = base_future;
 		_func = func;
-		_base.when_done (() => {
+		_base.when_done ((val) => {
 			_mutex.lock ();
 			if (_progress == Progress.INIT) {
-				go_map ();
+				go_map (val);
 			} else {
 				_mutex.unlock ();
 			}
@@ -43,52 +43,75 @@ internal class Gee.FlatMapFuture<A, G> : Object, Future<A> {
 		}
 	}
 
-	public unowned G wait () {
-		unowned Future<A> ret_future;
+	public unowned A wait () {
 		_mutex.lock ();
-		switch (_progress) {
-		case Progress.INIT:
-			ret_future = go_map ();
-			break;
-		case Progress.PROGRESS:
-			_cond.wait (_mutex);
+		Progress progress = _progress;
+		if (progress == Progress.INIT) {
+			Future<G> base_future = _base;
 			_mutex.unlock ();
-			ret_future = _mapped;
-			break;
-		case Progress.READY:
-			_mutex.unlock ();
-			ret_future = _mapped;
-			break;
-		default:
-			assert_not_reached ();
+			base_future.wait ();
+			_mutex.lock ();
+			progress = Progress.PROGRESS;
 		}
-		return ret_future.wait ();
+		if (progress == Progress.PROGRESS) {
+			_cond.wait (_mutex);
+			progress = Progress.READY;
+		}
+		if (progress == Progress.READY) {
+			_mutex.unlock ();
+			return _mapped.wait ();
+		}
+		assert_not_reached ();
 	}
 
 	public unowned bool wait_until (int64 end_time, out unowned G? value = null) {
-		bool ret_value;
 		_mutex.lock ();
-		switch (_progress) {
-		case Progress.INIT:
-			ret_value = go_map ().wait_until (end_time, out value);
-			break;
-		case Progress.PROGRESS:
-			if (ret_value = _cond.wait_until (_mutex, end_time)) {
-				_mutex.unlock ();
-				ret_value = _mapped.wait_until (end_time, out value);
-			} else {
-				_mutex.unlock ();
-				value = null;
-			}
-			break;
-		case Progress.READY:
+		Progress progress = _progress;
+		if (progress == Progress.INIT) {
+			Future<G> base_future = _base;
 			_mutex.unlock ();
-			ret_value = _mapped.wait_until (end_time, out value);
-			break;
-		default:
-			assert_not_reached ();
+			if (!base_future.wait_until (end_time)) {
+				return false;
+			}
+			_mutex.lock ();
+			progress = Progress.PROGRESS;
 		}
-		return ret_value;
+		if (progress == Progress.PROGRESS) {
+			if (!_cond.wait_until (_mutex, end_time)) {
+				_mutex.unlock ();
+				return false;
+			}
+			progress = Progress.READY;
+		}
+		if (progress == Progress.READY) {
+			_mutex.unlock ();
+			return _mapped.wait_until (end_time, out value);
+		}
+		assert_not_reached ();
+	}
+
+	public async unowned A wait_async () {
+		_mutex.lock ();
+		Progress progress = _progress;
+		if (progress == Progress.INIT) {
+			Future<G> base_future = _base;
+			_mutex.unlock ();
+			yield base_future.wait_async ();
+			_mutex.lock ();
+			progress = Progress.PROGRESS;
+		}
+		if (progress == Progress.PROGRESS) {
+			unowned A result = null;
+			_when_done += Future.WhenDoneArrayElement<G>((res) => {
+				wait_async.callback ();
+			});
+			progress = Progress.READY;
+		}
+		if (progress == Progress.READY) {
+			_mutex.unlock ();
+			return yield _mapped.wait_async ();
+		}
+		assert_not_reached ();
 	}
 
 	public void when_done (Future.WhenDoneFunc<A> func) {
@@ -102,7 +125,7 @@ internal class Gee.FlatMapFuture<A, G> : Object, Future<A> {
 		}
 	}
 
-	private unowned Future<A> go_map () {
+	private unowned Future<A> go_map (G val) {
 		_progress = Progress.PROGRESS;
 		_mutex.unlock ();
 

@@ -21,13 +21,13 @@
  */
 
 internal class Gee.MapFuture<A, G> : Object, Future<A> {
-	public MapFuture (Future<G> future_base, MapFunc<A, G> func) {
+	public MapFuture (Future<G> future_base, Future.MapFunc<A, G> func) {
 		_base = future_base;
 		_func = func;
-		_base.when_done (() => {
+		_base.when_done ((val) => {
 			_mutex.lock ();
 			if (_progress == Progress.INIT) {
-				go_map ();
+				go_map (val);
 			} else {
 				_mutex.unlock ();
 			}
@@ -37,87 +37,84 @@ internal class Gee.MapFuture<A, G> : Object, Future<A> {
 	public bool ready {
 		get {
 			_mutex.lock ();
-			bool locked = _progress == Progress.READY;
+			bool result = _progress == Progress.READY;
 			_mutex.unlock ();
-			return locked;
+			return result;
 		}
 	}
 
 	public unowned A wait () {
-		unowned A ret_value;
 		_mutex.lock ();
-		switch (_progress) {
-		case Progress.INIT:
-			ret_value = go_map ();
-			break;
-		case Progress.PROGRESS:
-			_cond.wait (_mutex);
+		Progress progress = _progress;
+		if (progress == Progress.INIT) {
+			Future<G> base_future = _base;
 			_mutex.unlock ();
-			ret_value = _value;
-			break;
-		case Progress.READY:
-			_mutex.unlock ();
-			ret_value = _value;
-			break;
-		default:
-			assert_not_reached ();
+			base_future.wait ();
+			_mutex.lock ();
+			progress = Progress.PROGRESS;
 		}
-		return ret_value;
+		if (progress == Progress.PROGRESS) {
+			_cond.wait (_mutex);
+			progress = Progress.READY;
+		}
+		if (progress == Progress.READY) {
+			_mutex.unlock ();
+			return _value;
+		}
+		assert_not_reached ();
 	}
 
-	public unowned bool wait_until (int64 end_time, out unowned G? value = null) {
-		bool ret_value;
+	public unowned bool wait_until (int64 end_time, out unowned A? value = null) {
 		_mutex.lock ();
-		switch (_progress) {
-		case Progress.INIT:
-			if (!_base.wait_until (end_time)) {
+		Progress progress = _progress;
+		if (progress == Progress.INIT) {
+			Future<G> base_future = _base;
+			_mutex.unlock ();
+			if (!base_future.wait_until (end_time)) {
+				return false;
+			}
+			_mutex.lock ();
+			progress = Progress.PROGRESS;
+		}
+		if (progress == Progress.PROGRESS) {
+			if (!_cond.wait_until (_mutex, end_time)) {
 				_mutex.unlock ();
 				return false;
 			}
-			value = go_map ();
-			ret_value = true;
-			break;
-		case Progress.PROGRESS:
-			if (ret_value = _cond.wait_until (_mutex, end_time)) {
-				_mutex.unlock ();
-				value = _value;
-			} else {
-				_mutex.unlock ();
-			}
-			break;
-		case Progress.READY:
+			progress = Progress.READY;
+		}
+		if (progress == Progress.READY) {
 			_mutex.unlock ();
 			value = _value;
-			ret_value = true;
-			break;
-		default:
-			assert_not_reached ();
+			return true;
 		}
-		return ret_value;
+		assert_not_reached ();
 	}
 
 	public async unowned A wait_async () {
-		unowned G g = yield _base.wait_async ();
 		_mutex.lock ();
-		switch (_progress) {
-		case Progress.INIT:
-			go_map ();
-			return _value;
-		case Progress.PROGRESS:
+		Progress progress = _progress;
+		if (progress == Progress.INIT) {
+			Future<G> base_future = _base;
+			_mutex.unlock ();
+			yield base_future.wait_async ();
+			_mutex.lock ();
+			progress = Progress.PROGRESS;
+		}
+		if (progress == Progress.PROGRESS) {
 			unowned A result = null;
 			_when_done += Future.WhenDoneArrayElement<G>((res) => {
-				result = res;
 				wait_async.callback ();
 			});
 			_mutex.unlock ();
 			yield;
 			return _value;
-		case Progress.READY:
+		}
+		if (progress == Progress.READY) {
 			_mutex.unlock ();
 			return _value;
-		default:
-			assert_not_reached ();
 		}
+		assert_not_reached ();
 	}
 
 	public void when_done (Future.WhenDoneFunc<A> func) {
@@ -131,11 +128,11 @@ internal class Gee.MapFuture<A, G> : Object, Future<A> {
 		}
 	}
 
-	private inline unowned A go_map () {
+	private inline unowned A go_map (G val) {
 		_progress = Progress.PROGRESS;
 		_mutex.unlock ();
 
-		A tmp_value = _func (_base.value);
+		A tmp_value = _func (val);
 		unowned A value = tmp_value;
 
 		_mutex.lock ();
@@ -162,7 +159,7 @@ internal class Gee.MapFuture<A, G> : Object, Future<A> {
 	private Mutex _mutex = Mutex ();
 	private Cond _cond = Cond ();
 	private Future<G> _base;
-	private MapFunc<A, G> _func;
+	private Future.MapFunc<A, G> _func;
 	private A _value;
 	private Progress _progress = Progress.INIT;
 	private Future.WhenDoneArrayElement<G>[]? _when_done = new Future.WhenDoneArrayElement<G>[0];

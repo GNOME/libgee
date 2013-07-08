@@ -124,6 +124,8 @@ public interface Gee.Future<G> : Object {
 	 */
 	public abstract void when_done (WhenDoneFunc<G> func);
 
+	public delegate A MapFunc<A, G> (G value);
+
 	/**
 	 * Maps a future value to another value by a function and returns the
 	 * another value in future.
