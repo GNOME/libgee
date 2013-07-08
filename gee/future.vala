@@ -173,6 +173,27 @@ public interface Gee.Future<G> : Object {
 	}
 
 	[CCode (scope = "async")]
+	public delegate C JoinFunc<A, B, C>(A a, B b);
+
+	/**
+	 * Combines values of two futures using a function returning the combined
+	 * value in future (call does not block).
+	 *
+	 * @param join_func Function applied to values
+	 * @param second Second parameter
+	 * @returns A combine value
+	 * @since 0.11.4
+	 *
+	 * Note: As time taken by function does not contribute to
+	 *   {@link wait_until} and the implementation is allowed to compute
+	 *   value eagerly by {@link when_done} it is recommended to return a
+	 *   future from {@link task} and use {@link flat_map} for longer computation.
+	 */
+	public virtual Future<B> join<A, B> (JoinFunc<G, A, B> join_func, Future<A> second) {
+		return new JoinFuture<G, A, B> (join_func, this, second);
+	}
+
+	[CCode (scope = "async")]
 	public delegate Gee.Future<A> FlatMapFunc<A, G>(G value);
 
 	/**

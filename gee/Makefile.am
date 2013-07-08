@@ -42,6 +42,7 @@ libgee_0_8_la_SOURCES = \
 	hazardpointer.vala \
 	iterable.vala \
 	iterator.vala \
+	joinfuture.vala \
 	lazy.vala \
 	linkedlist.vala \
 	lightmapfuture.vala \
