@@ -136,7 +136,7 @@ public interface Gee.Future<G> : Object {
 	 * @see flat_map
 	 * @see light_map
 	 *
-	 * Note: As time taken by function does not contribute to
+	 * Note: As time taken by function might not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
 	 *   value eagerly by {@link when_done} it is recommended to use
 	 *   {@link task} and {@link flat_map} for longer computation.
@@ -200,7 +200,7 @@ public interface Gee.Future<G> : Object {
 	 * Maps a future value to another future value which is returned (call does not block).
 	 *
 	 * @param func Function applied to {@link value}
-	 * @param Value of a future returned by function
+	 * @returns Value of a future returned by function
 	 *
 	 * @see map
 	 *
