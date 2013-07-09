@@ -42,7 +42,6 @@ libgee_0_8_la_SOURCES = \
 	hazardpointer.vala \
 	iterable.vala \
 	iterator.vala \
-	joinfuture.vala \
 	lazy.vala \
 	linkedlist.vala \
 	lightmapfuture.vala \
@@ -79,6 +78,7 @@ libgee_0_8_la_SOURCES = \
 	treemultiset.vala \
 	treeset.vala \
 	unfolditerator.vala \
+	zipfuture.vala \
 	$(NULL)
 
 libgee_0_8_la_VALAFLAGS = \

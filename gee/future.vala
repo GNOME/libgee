@@ -173,7 +173,7 @@ public interface Gee.Future<G> : Object {
 	}
 
 	[CCode (scope = "async")]
-	public delegate C JoinFunc<A, B, C>(A a, B b);
+	public delegate C ZipFunc<A, B, C>(A a, B b);
 
 	/**
 	 * Combines values of two futures using a function returning the combined
@@ -189,8 +189,8 @@ public interface Gee.Future<G> : Object {
 	 *   value eagerly by {@link when_done} it is recommended to return a
 	 *   future from {@link task} and use {@link flat_map} for longer computation.
 	 */
-	public virtual Future<B> join<A, B> (JoinFunc<G, A, B> join_func, Future<A> second) {
-		return new JoinFuture<G, A, B> (join_func, this, second);
+	public virtual Future<B> zip<A, B> (ZipFunc<G, A, B> zip_func, Future<A> second) {
+		return new ZipFuture<G, A, B> (zip_func, this, second);
 	}
 
 	[CCode (scope = "async")]

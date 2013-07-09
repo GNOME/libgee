@@ -1,4 +1,4 @@
-/* joinfuture.vala
+/* zipfuture.vala
  *
  * Copyright (C) 2013  Maciej Piechotka
  *
@@ -20,8 +20,8 @@
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 
-internal class Gee.JoinFuture<A, B, C> : GLib.Object, Gee.Future<C> {
-	public JoinFuture (Future.JoinFunc<A, B, C> func, Future<A> left, Future<B> right) {
+internal class Gee.ZipFuture<A, B, C> : GLib.Object, Gee.Future<C> {
+	public ZipFuture (Future.ZipFunc<A, B, C> func, Future<A> left, Future<B> right) {
 		_left = left;
 		_right = right;
 		_func = func;
@@ -172,7 +172,7 @@ internal class Gee.JoinFuture<A, B, C> : GLib.Object, Gee.Future<C> {
 	private Cond _cond = Cond ();
 	private Future<A> _left;
 	private Future<B> _right;
-	private Future.JoinFunc<A, B, C> _func;
+	private Future.ZipFunc<A, B, C> _func;
 	private C _value;
 	private Future.WhenDoneArrayElement<C>[]? _when_done = new Future.WhenDoneArrayElement<C>[0];
 	private Progress _progress = Progress.INIT;
