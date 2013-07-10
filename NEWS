@@ -1,3 +1,11 @@
+libgee 0.11.4
+=============
+ * Add flat_map method to Traversable
+ * Add zip method to Future
+ * Specialize stream iterator (4-22% speed improvement in tests)
+ * Extend the Traversable.Stream with Stream.WAIT
+ * Fix lazy value usage in unfold
+
 libgee 0.11.0
 =============
  * Add futures and promises to libgee
