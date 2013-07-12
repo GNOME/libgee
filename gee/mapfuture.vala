@@ -21,9 +21,9 @@
  */
 
 internal class Gee.MapFuture<A, G> : Object, Future<A> {
-	public MapFuture (Future<G> future_base, Future.MapFunc<A, G> func) {
+	public MapFuture (Future<G> future_base, owned Future.MapFunc<A, G> func) {
 		_base = future_base;
-		_func = func;
+		_func = (owned)func;
 		_base.when_done ((val) => {
 			_mutex.lock ();
 			if (_progress == Progress.INIT) {
@@ -117,13 +117,13 @@ internal class Gee.MapFuture<A, G> : Object, Future<A> {
 		assert_not_reached ();
 	}
 
-	public void when_done (Future.WhenDoneFunc<A> func) {
+	public void when_done (owned Future.WhenDoneFunc<A> func) {
 		_mutex.lock ();
 		if (_progress == Progress.READY) {
 			_mutex.unlock ();
 			func (_value);
 		} else {
-			_when_done += Future.WhenDoneArrayElement<G>(func);
+			_when_done += Future.WhenDoneArrayElement<G>((owned)func);
 			_mutex.unlock ();
 		}
 	}

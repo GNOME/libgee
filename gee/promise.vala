@@ -88,7 +88,7 @@ public class Gee.Promise<G> {
 			return result;
 		}
 
-		public void when_done (Gee.Future.WhenDoneFunc<G> func) {
+		public void when_done (owned Gee.Future.WhenDoneFunc<G> func) {
 			_mutex.lock ();
 			if (_ready) {
 				_mutex.unlock ();

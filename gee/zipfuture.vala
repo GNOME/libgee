@@ -21,10 +21,10 @@
  */
 
 internal class Gee.ZipFuture<A, B, C> : GLib.Object, Gee.Future<C> {
-	public ZipFuture (Future.ZipFunc<A, B, C> func, Future<A> left, Future<B> right) {
+	public ZipFuture (owned Future.ZipFunc<A, B, C> func, Future<A> left, Future<B> right) {
 		_left = left;
 		_right = right;
-		_func = func;
+		_func = (owned)func;
 		_left.when_done ((l) => {
 			_right.when_done ((r) => {
 				_mutex.lock ();
@@ -128,7 +128,7 @@ internal class Gee.ZipFuture<A, B, C> : GLib.Object, Gee.Future<C> {
 		assert_not_reached ();
 	}
 
-	public void when_done (Future.WhenDoneFunc<C> func) {
+	public void when_done (owned Future.WhenDoneFunc<C> func) {
 		_mutex.lock ();
 		if (_progress == Progress.READY) {
 			_mutex.unlock ();

@@ -21,9 +21,9 @@
  */
 
 internal class Gee.FlatMapFuture<A, G> : Object, Future<A> {
-	public FlatMapFuture (Future<G> base_future, Future.FlatMapFunc<A, G> func) {
+	public FlatMapFuture (Future<G> base_future, owned Future.FlatMapFunc<A, G> func) {
 		_base = base_future;
-		_func = func;
+		_func = (owned)func;
 		_base.when_done ((val) => {
 			_mutex.lock ();
 			if (_progress == Progress.INIT) {
@@ -114,7 +114,7 @@ internal class Gee.FlatMapFuture<A, G> : Object, Future<A> {
 		assert_not_reached ();
 	}
 
-	public void when_done (Future.WhenDoneFunc<A> func) {
+	public void when_done (owned Future.WhenDoneFunc<A> func) {
 		_mutex.lock ();
 		if (_progress == Progress.READY) {
 			_mutex.unlock ();

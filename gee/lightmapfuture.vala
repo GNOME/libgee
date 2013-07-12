@@ -50,7 +50,7 @@ internal class Gee.LightMapFuture<A, G> : Object, Future<A> {
 		return _func (arg);
 	}
 
-	public void when_done (Future.WhenDoneFunc<G> func) {
+	public void when_done (owned Future.WhenDoneFunc<G> func) {
 		_base.when_done ((a) => {_func (a);});
 	}
 

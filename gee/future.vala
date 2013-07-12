@@ -122,7 +122,7 @@ public interface Gee.Future<G> : Object {
 	 *   future it is recommended to not include lengthly computation.
 	 *   If one is needed please use {@link task}.
 	 */
-	public abstract void when_done (WhenDoneFunc<G> func);
+	public abstract void when_done (owned WhenDoneFunc<G> func);
 
 	public delegate A MapFunc<A, G> (G value);
 
@@ -141,8 +141,8 @@ public interface Gee.Future<G> : Object {
 	 *   value eagerly by {@link when_done} it is recommended to use
 	 *   {@link task} and {@link flat_map} for longer computation.
 	 */
-	public virtual Future<A> map<A> (MapFunc<A, G> func) {
-		return new MapFuture<A, G> (this, func);
+	public virtual Future<A> map<A> (owned MapFunc<A, G> func) {
+		return new MapFuture<A, G> (this, (owned)func);
 	}
 
 	public delegate unowned A LightMapFunc<A, G> (G value);
@@ -189,8 +189,8 @@ public interface Gee.Future<G> : Object {
 	 *   value eagerly by {@link when_done} it is recommended to return a
 	 *   future from {@link task} and use {@link flat_map} for longer computation.
 	 */
-	public virtual Future<B> zip<A, B> (ZipFunc<G, A, B> zip_func, Future<A> second) {
-		return new ZipFuture<G, A, B> (zip_func, this, second);
+	public virtual Future<B> zip<A, B> (owned ZipFunc<G, A, B> zip_func, Future<A> second) {
+		return new ZipFuture<G, A, B> ((owned)zip_func, this, second);
 	}
 
 	[CCode (scope = "async")]
@@ -210,13 +210,13 @@ public interface Gee.Future<G> : Object {
 	 *   larger computation inside the returned future for example by
 	 *   {@link task}
 	 */
-	public virtual Gee.Future<A> flat_map<A>(FlatMapFunc<A, G> func) {
-		return new FlatMapFuture<A, G> (this, func);
+	public virtual Gee.Future<A> flat_map<A>(owned FlatMapFunc<A, G> func) {
+		return new FlatMapFuture<A, G> (this, (owned)func);
 	}
 
 	internal struct WhenDoneArrayElement<G> {
-		public WhenDoneArrayElement (WhenDoneFunc<G> func) {
-			this.func = func;
+		public WhenDoneArrayElement (owned WhenDoneFunc<G> func) {
+			this.func = (owned)func;
 		}
 		public WhenDoneFunc<G> func;
 	}
