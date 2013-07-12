@@ -140,7 +140,7 @@ internal class Gee.FlatMapFuture<A, G> : Object, Future<A> {
 
 		Future.WhenDoneArrayElement<A>[] when_done = (owned)_when_done;
 		for (int i = 0; i < _when_done.length; i++) {
-			_mapped.when_done ((owned)when_done[i].func);
+			_mapped.when_done (when_done[i].func);
 		}
 		_base = null;
 		_func = null;
