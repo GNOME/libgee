@@ -324,6 +324,7 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 					return false;
 				}
 			}
+			_offset = _queue._length - 1;
 			return true;
 		}
 
