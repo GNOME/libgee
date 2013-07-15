@@ -127,6 +127,18 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 	/**
 	 * {@inheritDoc}
 	 */
+	public override bool foreach (ForallFunc<G> f) {
+		for (int i = 0; i < _length; i++) {
+			if (!f (_items[(_start + i) % _items.length])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public override G? peek () {
 		return peek_head ();
 	}
