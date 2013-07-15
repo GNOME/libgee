@@ -590,62 +590,62 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 
 		public Iterator.pointing (TreeSet<G> set, Node<G> current) {
 			this._set = set;
-			this.current = current;
+			this._current = current;
 			this.stamp = set.stamp;
 			this.started = true;
 		}
 
 		public bool next () {
 			assert (stamp == _set.stamp);
-			if (current != null) {
-				if (current.next != null) {
-					current = current.next;
+			if (_current != null) {
+				if (_current.next != null) {
+					_current = _current.next;
 					return true;
 				} else {
 					return false;
 				}
 			} else if (!started) {
-				current = _set._first;
+				_current = _set._first;
 				started = true;
-				return current != null;
+				return _current != null;
 			} else {
-				current = _next;
-				if (current != null) {
+				_current = _next;
+				if (_current != null) {
 					_next = null;
 					_prev = null;
 				}
-				return current != null;
+				return _current != null;
 			}
 		}
 
 		public bool has_next () {
 			assert (stamp == _set.stamp);
 			return (!started && _set._first != null) ||
-			       (current == null && _next != null) ||
-			       (current != null && current.next != null);
+			       (_current == null && _next != null) ||
+			       (_current != null && _current.next != null);
 		}
 
 		public bool first () {
 			assert (stamp == _set.stamp);
-			current = _set._first;
+			_current = _set._first;
 			_next = null;
 			_prev = null;
 			started = true;
-			return current != null; // on false it is null anyway
+			return _current != null; // on false it is null anyway
 		}
 
 		public bool previous () {
 			assert (stamp == _set.stamp);
-			if (current != null) {
-				if (current.prev != null) {
-					current = current.prev;
+			if (_current != null) {
+				if (_current.prev != null) {
+					_current = _current.prev;
 					return true;
 				} else {
 					return false;
 				}
 			} else {
 				if (_prev != null) {
-					current = _prev;
+					_current = _prev;
 					_next = null;
 					_prev = null;
 					return true;
@@ -657,40 +657,40 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 
 		public bool has_previous () {
 			assert (stamp == _set.stamp);
-			return (current == null && _prev != null) ||
-			       (current != null && current.prev != null);
+			return (_current == null && _prev != null) ||
+			       (_current != null && _current.prev != null);
 		}
 
 		public bool last () {
 			assert (stamp == _set.stamp);
-			current = _set._last;
+			_current = _set._last;
 			_next = null;
 			_prev = null;
 			started = true;
-			return current != null; // on false it is null anyway
+			return _current != null; // on false it is null anyway
 		}
 
 		public new G get () {
 			assert (stamp == _set.stamp);
-			assert (current != null);
-			return current.key;
+			assert (_current != null);
+			return _current.key;
 		}
 
 		public void remove () {
 			assert (stamp == _set.stamp);
-			assert (current != null);
-			bool success = _set.remove_from_node (ref _set.root, current.key, out _prev, out _next);
+			assert (_current != null);
+			bool success = _set.remove_from_node (ref _set.root, _current.key, out _prev, out _next);
 			assert (success);
 			if (_set.root != null)
 				_set.root.color = Node.Color.BLACK;
-			current = null;
+			_current = null;
 			assert (stamp++ == _set.stamp++);
 		}
 
 		internal bool safe_next_get (out G val) {
-			if (current != null) {
-				val = _set.lift_null_get (current.next);
-				return current.next != null;
+			if (_current != null) {
+				val = _set.lift_null_get (_current.next);
+				return _current.next != null;
 			} else {
 				val = _set.lift_null_get (_next);
 				return _next != null;
@@ -698,22 +698,22 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 		}
 
 		internal bool safe_previous_get (out G val) {
-			if (current != null) {
-				val = _set.lift_null_get (current.prev);
-				return current.prev != null;
+			if (_current != null) {
+				val = _set.lift_null_get (_current.prev);
+				return _current.prev != null;
 			} else {
 				val = _set.lift_null_get (_prev);
 				return _next != null;
 			}
 		}
-		
+
 		public bool valid {
 			get {
 				assert (stamp == _set.stamp);
-				return current != null;
+				return _current != null;
 			}
 		}
-		
+
 		public bool read_only {
 			get {
 				return false;
@@ -722,25 +722,37 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 
 		public bool foreach (ForallFunc<G> f) {
 			assert (stamp == _set.stamp);
+			unowned Node<G>? current = _current, next;
 			if (current != null) {
 				if (!f (current.key)) {
 					return false;
 				}
-				_next = current.next;
+				next = current.next;
 			} else if (!started) {
-				_next = _set._first;
+				next = _set._first;
+				if (next != null) {
+					started = true;
+				}
+			} else {
+				next = _next;
+				if (next != null) {
+					_next = null;
+					_prev = null;
+				}
 			}
-			while (_next != null) {
-				current = _next;
-				if (!f (current.key)) {
+			while (next != null) {
+				if (!f (next.key)) {
+					_current = next;
 					return false;
 				}
-				_next = current.next;
+				current = next;
+				next = current.next;
 			}
+			_current = current;
 			return true;
 		}
 
-		private weak Node<G>? current = null;
+		private weak Node<G>? _current = null;
 		private weak Node<G>? _next = null;
 		private weak Node<G>? _prev = null;
 		private bool started = false;
@@ -1111,13 +1123,13 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			assert (iterator != null);
 			iterator.remove ();
 		}
-		
+
 		public bool read_only {
 			get {
 				return false;
 			}
 		}
-		
+
 		public bool valid {
 			get {
 				return iterator.valid;
