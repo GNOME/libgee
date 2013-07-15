@@ -45,7 +45,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	public override int size {
 		get { return _nnodes; }
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -275,13 +275,13 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			_node = null;
 			_stamp = _set._stamp;
 		}
-		
+
 		public bool read_only {
 			get {
 				return false;
 			}
 		}
-		
+
 		public bool valid {
 			get {
 				return _node != null;
@@ -290,23 +290,40 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 
 		public bool foreach (ForallFunc<G> f) {
 			assert (_stamp == _set._stamp);
-			if (_node != null) {
-				if (!f (_node.key)) {
+			unowned Node<G>? node = _node, next = _next, current = null, prev = null;
+			if (node != null) {
+				if (!f (node.key)) {
 					return false;
 				}
+				prev = node;
+				current = node.next;
 			}
-			while (_index + 1 < _set._array_size || _next != null) {
-				if (_next != null) {
-					_node = _next;
-					if (!f (_node.key)) {
+			if (next != null) {
+				if (!f (next.key)) {
+					_node = next;
+					_next = null;
+					return false;
+				}
+				prev = next;
+				current = next.next;
+			}
+			do {
+				while (current != null) {
+					if (!f (current.key)) {
+						_node = current;
+						_next = null;
 						return false;
 					}
-					_next = _node.next;
-				} else {
-					_index++;
-					_next = _set._nodes[_index];
+					prev = current;
+					current = current.next;
 				}
-			}
+				while (current == null && _index + 1 < _set._array_size) {
+					_index++;
+					current = _set._nodes[_index];
+				}
+			} while (current != null);
+			_node = prev;
+			_next = null;
 			return true;
 		}
 	}
