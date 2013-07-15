@@ -675,7 +675,8 @@ public abstract class CollectionTests : Gee.TestCase {
 
 		count = 0;
 		test_iterator = test_collection.iterator ();
-		res = test_collection.iterator ().foreach ((x) => {
+		var iter = test_collection.iterator ();
+		res = iter.foreach ((x) => {
 			assert (test_iterator.next ());
 			assert (x == test_iterator.get ());
 			count++;
@@ -683,10 +684,13 @@ public abstract class CollectionTests : Gee.TestCase {
 		});
 		assert (count == data.length);
 		assert (res == true);
+		assert (iter.valid);
+		assert (iter.get () == test_iterator.get ());
+		assert (!iter.has_next ());
 
 		count = 1;
 		test_iterator = test_collection.iterator ();
-		Iterator<string> iter = test_collection.iterator ();
+		iter = test_collection.iterator ();
 		assert (iter.next ());
 		assert (iter.next ());
 		assert (test_iterator.next ());
@@ -698,6 +702,9 @@ public abstract class CollectionTests : Gee.TestCase {
 		});
 		assert (count == data.length);
 		assert (res == true);
+		assert (iter.valid);
+		assert (iter.get () == test_iterator.get ());
+		assert (!iter.has_next ());
 
 		count = 1;
 		test_iterator = test_collection.iterator ();
@@ -714,6 +721,9 @@ public abstract class CollectionTests : Gee.TestCase {
 		});
 		assert (count == data.length);
 		assert (res == true);
+		assert (iter.valid);
+		assert (iter.get () == test_iterator.get ());
+		assert (!iter.has_next ());
 
 		// Check for break after 1-3 elements
 		for (int i = 0; i < 3; i++) {
@@ -729,13 +739,22 @@ public abstract class CollectionTests : Gee.TestCase {
 
 			count = 0;
 			test_iterator = test_collection.iterator ();
-			res = test_collection.iterator ().foreach ((x) => {
+			iter = test_collection.iterator ();
+			res = iter.foreach ((x) => {
 				assert (test_iterator.next ());
 				assert (x == test_iterator.get ());
 				return count++ != i;
 			});
 			assert (count == i + 1);
 			assert (res == false);
+			assert (iter.valid);
+			assert (iter.get () == test_iterator.get ());
+			assert (iter.has_next ());
+			while (test_iterator.next ()) {
+				assert (iter.next ());
+				assert (iter.get () == test_iterator.get ());
+			}
+			assert (!iter.has_next ());
 
 			count = 1;
 			test_iterator = test_collection.iterator ();
@@ -750,6 +769,14 @@ public abstract class CollectionTests : Gee.TestCase {
 			});
 			assert (count == i + 2);
 			assert (res == false);
+			assert (iter.valid);
+			assert (iter.get () == test_iterator.get ());
+			assert (iter.has_next ());
+			while (test_iterator.next ()) {
+				assert (iter.next ());
+				assert (iter.get () == test_iterator.get ());
+			}
+			assert (!iter.has_next ());
 
 			count = 1;
 			test_iterator = test_collection.iterator ();
@@ -765,6 +792,14 @@ public abstract class CollectionTests : Gee.TestCase {
 			});
 			assert (count == i + 2);
 			assert (res == false);
+			assert (iter.valid);
+			assert (iter.get () == test_iterator.get ());
+			assert (iter.has_next ());
+			while (test_iterator.next ()) {
+				assert (iter.next ());
+				assert (iter.get () == test_iterator.get ());
+			}
+			assert (!iter.has_next ());
 		}
 	}
 
