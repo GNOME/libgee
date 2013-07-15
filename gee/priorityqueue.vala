@@ -1187,14 +1187,17 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			stamp++;
 			assert (stamp == queue._stamp);
 		}
-		
+
 		public bool read_only { get { return false; } }
-		
+
 		public bool valid { get { return position != null; } }
 
 		public bool foreach (ForallFunc<G> f) {
 			if (position == null) {
 				position = (previous != null) ? previous.iter_next : queue._iter_head;
+			}
+			if (position == null) {
+				return true;
 			}
 			if (!f (position.data)) {
 				return false;
