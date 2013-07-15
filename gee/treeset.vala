@@ -345,6 +345,18 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
+	public override bool foreach (ForallFunc<G> f) {
+		for (unowned Node<G> node = _first; node != null; node = node.next) {
+			if (!f (node.key)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
 	}
