@@ -103,7 +103,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	public override bool is_full {
 		get { return false; }
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -366,6 +366,18 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	 */
 	public override Gee.Iterator<G> iterator () {
 		return new Iterator<G> (this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public override bool foreach (ForallFunc f) {
+		for (unowned Node<G>? current = _iter_head; current != null; current = current.iter_next) {
+			if (!f (current.data)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private inline int _compare (Node<G> node1, Node<G> node2) {
