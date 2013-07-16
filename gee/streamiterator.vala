@@ -1,6 +1,6 @@
 /* streamiterator.vala
  *
- * Copyright (C) 2011-2012  Maciej Piechotka
+ * Copyright (C) 2013  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,9 @@ internal class Gee.StreamIterator<A, G> : GLib.Object, Traversable<A>, Iterator<
 			break;
 		case Traversable.Stream.CONTINUE:
 			if (_outer.valid) {
-				_state = _func (_state, new Lazy<G> (() => {return _outer.get ();}), out _current);
+				_state = _func (_state, new Lazy<G> (() => {
+					return _outer.get ();
+				}), out _current);
 				switch (_state) {
 				case Traversable.Stream.YIELD:
 				case Traversable.Stream.CONTINUE:
@@ -76,8 +78,9 @@ internal class Gee.StreamIterator<A, G> : GLib.Object, Traversable<A>, Iterator<
 		Traversable.Stream state = _state;
 		bool need_next = _need_next;
 		bool result = true;
-		Lazy<G>? next_current;
-		while ((next_current = yield_next<A, G>(outer, func, ref state, ref need_next)) != null) {
+		Lazy<A>? next_current;
+		Lazy<G>? outer_value = _outer_value;
+		while ((next_current = yield_next<A, G>(outer, func, ref state, ref need_next, ref outer_value)) != null) {
 			current = (owned)next_current;
 			if (!f (current.value)) {
 				result = false;
@@ -88,11 +91,15 @@ internal class Gee.StreamIterator<A, G> : GLib.Object, Traversable<A>, Iterator<
 		_need_next = need_next;
 		_finished = result;
 		_current = (owned)current;
+		_outer_value = (owned)outer_value;
 		return result;
 	}
 
 	public bool next () {
 		if (has_next ()) {
+			if (_current != null) {
+				_current.eval ();
+			}
 			_current = (owned)_next;
 			return true;
 		} else {
@@ -107,7 +114,7 @@ internal class Gee.StreamIterator<A, G> : GLib.Object, Traversable<A>, Iterator<
 		if (_next != null) {
 			return true;
 		}
-		_next = yield_next<A, G> (_outer, _func, ref _state, ref _need_next);
+		_next = yield_next<A, G> (_outer, _func, ref _state, ref _need_next, ref _outer_value);
 		_finished = _next == null;
 		return !_finished;
 	}
@@ -124,7 +131,7 @@ internal class Gee.StreamIterator<A, G> : GLib.Object, Traversable<A>, Iterator<
 	public bool valid { get { return _current != null; } }
 	public bool read_only { get { return true; } }
 
-	private static inline Lazy<A>? yield_next<A, G> (Iterator<G> outer, StreamFunc<A, G> func, ref Traversable.Stream state, ref bool need_next) {
+	private static inline Lazy<A>? yield_next<A, G> (Iterator<G> outer, StreamFunc<A, G> func, ref Traversable.Stream state, ref bool need_next, ref Lazy<G>? outer_value) {
 		Lazy<A>? value = null;
 		if (state != Traversable.Stream.CONTINUE)
 			state = func (state, null, out value);
@@ -133,15 +140,25 @@ internal class Gee.StreamIterator<A, G> : GLib.Object, Traversable<A>, Iterator<
 			case Traversable.Stream.YIELD:
 				return value;
 			case Traversable.Stream.CONTINUE:
+				if (outer_value != null) {
+					outer_value.eval ();
+				}
 				if (need_next) {
-					if (!outer.next ()) {
+					if (!outer.has_next ()) {
 						state = func (Traversable.Stream.END, null, out value);
 						continue;
 					}
+					outer_value = new Lazy<G> (() => {
+						assert (outer.next ());
+						return outer.get ();
+					});
 				} else {
 					need_next = true;
+					outer_value = new Lazy<G> (() => {
+						return outer.get ();
+					});
 				}
-				state = func (state, new Lazy<G> (() => {return outer.get ();}), out value);
+				state = func (state, outer_value, out value);
 				break;
 			case Traversable.Stream.WAIT:
 				state = func (state, null, out value);
@@ -156,6 +173,7 @@ internal class Gee.StreamIterator<A, G> : GLib.Object, Traversable<A>, Iterator<
 
 	private Iterator<G> _outer;
 	private StreamFunc<A, G> _func;
+	private Lazy<G>? _outer_value;
 	private Lazy<A>? _current;
 	private Lazy<A>? _next;
 	private Traversable.Stream _state;
