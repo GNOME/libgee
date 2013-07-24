@@ -1714,7 +1714,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public bool foreach (ForallFunc<V> f) {
 			if (current != null) {
-				if (!f (current.key)) {
+				if (!f (current.value)) {
 					return false;
 				}
 				current = current.next;
@@ -1729,7 +1729,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 				}
 			}
 			for (; current != null; current = current.next) {
-				if (!f (current.key)) {
+				if (!f (current.value)) {
 					return false;
 				}
 			}
