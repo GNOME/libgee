@@ -71,6 +71,7 @@ libgee_0_8_la_SOURCES = \
 	sortedset.vala \
 	streamiterator.vala \
 	task.vala \
+	teeiterator.vala \
 	timsort.vala \
 	traversable.vala \
 	treemap.vala \

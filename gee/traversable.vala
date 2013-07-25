@@ -112,7 +112,7 @@ public interface Gee.Traversable<G> : Object {
 		unowned Iterator<G>? self;
 		unowned Iterable<G>? iself;
 		// Yes - I've heard of polimorphism ;) but I don't want users to need to implement the method.
-		if ((self = this as Iterator<G>) != null) { 
+		if ((self = this as Iterator<G>) != null) {
 			return new StreamIterator<A, G> (self, (owned)f);
 		} else if ((iself = this as Iterable<G>) != null) {
 			return iself.iterator().stream<A> ((owned) f);
@@ -373,6 +373,59 @@ public interface Gee.Traversable<G> : Object {
 				assert_not_reached ();
 			}
 		});
+	}
+
+	/**
+	 * Splits the traversable into multiple ones, caching the result if needed.
+	 *
+	 * Note: In {@link Iterator} implementation using the parent iterator is
+	 *   not allowed. However if any of the forked iterators {@link next}
+	 *   return false then it is treated as if the parent iterator
+	 *   {@link next} returned false.
+	 *
+	 * Note: The returned arrey might contain parent iterator if it is allowed
+	 *   by implementation. For example the iteration over collection does
+	 *   not need to generate and cache the results.
+	 *
+	 * Note: the resulting iterators does not need to be thread safe.
+	 *
+	 * @param forks Number of iterators in array
+	 * @returns An array with created iterators
+	 * @since 0.11.5
+	 */
+	public Iterator<G>[] tee (uint forks) {
+		unowned Iterator<G>? self;
+		unowned Iterable<G>? iself;
+		// Yes - I've heard of polimorphism ;) but I don't want users to need to implement the method.
+		if ((self = this as Iterator<G>) != null) {
+			if (forks == 0) {
+				return new Iterator<G>[0];
+			} else if (forks == 1) {
+				return new Iterator<G>[1]{self};
+			} else {
+				Iterator<G>[] result = new Iterator<G>[forks];
+				Lazy<G>? data;
+				bool is_valid = self.valid;
+				if (is_valid) {
+					data = new Lazy<G>(() => {return self.get ();});
+				} else {
+					data = new Lazy<G>.from_value (null);
+				}
+				var head = new TeeIterator.Node<G> (data, TeeIterator.create_nodes<G> (self, data));
+				for (uint i = 0; i < forks; i++) {
+					result[i] = new TeeIterator<G> (head, is_valid);
+				}
+				return result;
+			}
+		} else if ((iself = this as Iterable<G>) != null) {
+			var result = new Iterator<G>[forks];
+			for (uint i = 0; i < forks; i++) {
+				result[i] = iself.iterator ();
+			}
+			return result;
+		} else {
+			assert_not_reached ();
+		}
 	}
 
 	public enum Stream {
