@@ -33,7 +33,6 @@ libgee_0_8_la_SOURCES = \
 	deque.vala \
 	functions.vala \
 	future.vala \
-	flatmapfuture.vala \
 	hashable.vala \
 	hashmap.vala \
 	hashmultimap.vala \
@@ -48,7 +47,6 @@ libgee_0_8_la_SOURCES = \
 	list.vala \
 	listiterator.vala \
 	map.vala \
-	mapfuture.vala \
 	mapiterator.vala \
 	multimap.vala \
 	multiset.vala \
@@ -79,7 +77,6 @@ libgee_0_8_la_SOURCES = \
 	treemultiset.vala \
 	treeset.vala \
 	unfolditerator.vala \
-	zipfuture.vala \
 	$(NULL)
 
 libgee_0_8_la_VALAFLAGS = \
@@ -88,6 +85,7 @@ libgee_0_8_la_VALAFLAGS = \
 	--internal-vapi gee-internals-0.8.vapi \
 	--library gee-0.8 --gir Gee-0.8.gir \
 	--pkg gio-2.0 \
+	--vapidir $(top_srcdir)/utils --pkg geeutils \
 	$(COVERAGE_VALAFLAGS) \
 	$(VALAFLAGS) \
 	$(NULL)
@@ -95,6 +93,7 @@ libgee_0_8_la_VALAFLAGS = \
 libgee_0_8_la_CPPFLAGS = \
 	$(GLIB_CFLAGS) \
 	$(COVERAGE_CFLAGS) \
+	-I$(top_srcdir)/utils \
 	$(NULL)
 
 libgee_0_8_la_LIBADD = \

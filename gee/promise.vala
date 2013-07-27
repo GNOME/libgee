@@ -34,6 +34,10 @@ using GLib;
  * @since 0.11.0
  */
 public class Gee.Promise<G> {
+	~Promise () {
+		_future.abandon ();
+	}
+
 	/**
 	 * {@link Future} value of this promise
 	 */
@@ -49,79 +53,157 @@ public class Gee.Promise<G> {
 	 * @params value Value of future
 	 */
 	public void set_value (owned G value) {
-		_future.set_value (value);
+		_future.set_value ((owned)value);
+	}
+
+	/**
+	 * Sets the exception.
+	 *
+	 * @params exception Exception thrown
+	 */
+	public void set_exception (owned GLib.Error exception) {
+		_future.set_exception ((owned)exception);
 	}
 
 	private class Future<G> : Object, Gee.Future<G> {
 		public bool ready {
 			get {
-				_mutex.lock();
-				bool result = _ready;
-				_mutex.unlock();
+				_mutex.lock ();
+				bool result = _state != State.INIT;
+				_mutex.unlock ();
 				return result;
 			}
 		}
 
-		public unowned G wait () {
-			_mutex.lock();
-			if (!_ready) {
-				_set.wait (_mutex);
+		public GLib.Error? exception {
+			get {
+				return _exception;
 			}
-			_mutex.unlock();
-			return _value;
 		}
 
-		public bool wait_until (int64 end_time, out unowned G? value = null) {
-			bool result = true;
-			_mutex.lock();
-			if (!_ready) {
-				if (!_set.wait_until (_mutex, end_time)) {
-					result = false;
-				}
-			}
-			_mutex.unlock();
-			if (result) {
-				value = _value;
-			} else {
-				value = null;
-			}
-			return result;
-		}
-
-		public void when_done (owned Gee.Future.WhenDoneFunc<G> func) {
+		public unowned G wait () throws FutureError {
 			_mutex.lock ();
-			if (_ready) {
-				_mutex.unlock ();
-				func (_value);
+			State state = _state;
+			if (_state == State.INIT) {
+				_set.wait (_mutex);
+				state = _state;
+			}
+			assert (state != State.INIT);
+			_mutex.unlock ();
+			switch (state) {
+			case State.ABANDON:
+				throw new FutureError.ABANDON_PROMISE ("Promise has been abandon");
+			case State.EXCEPTION:
+				throw new FutureError.EXCEPTION ("Exception has been thrown");
+			case State.READY:
+				return _value;
+			default:
+				assert_not_reached ();
+			}
+		}
+
+		public bool wait_until (int64 end_time, out unowned G? value = null) throws FutureError {
+			_mutex.lock ();
+			State state = _state;
+			if (state == State.INIT) {
+				_set.wait_until (_mutex, end_time);
+				state = _state;
+			}
+			_mutex.unlock ();
+			switch (state) {
+			case State.INIT:
+				return false;
+			case State.ABANDON:
+				throw new FutureError.ABANDON_PROMISE ("Promise has been abandon");
+			case State.EXCEPTION:
+				throw new FutureError.EXCEPTION ("Exception has been thrown");
+			case State.READY:
+				value = _value;
+				return true;
+			default:
+				assert_not_reached ();
+			}
+		}
+
+		public async unowned G wait_async () throws Gee.FutureError {
+			_mutex.lock ();
+			State state = _state;
+			if (state == State.INIT) {
+				_when_done += SourceFuncArrayElement(wait_async.callback);
+				yield Gee.Utils.Async.yield_and_unlock (_mutex);
+				state = _state;
 			} else {
-				_when_done += Gee.Future.WhenDoneArrayElement<G>(func);
 				_mutex.unlock ();
+			}
+			assert (state != State.INIT);
+			switch (state) {
+			case State.ABANDON:
+				throw new FutureError.ABANDON_PROMISE ("Promise has been abandon");
+			case State.EXCEPTION:
+				throw new FutureError.EXCEPTION ("Exception has been thrown");
+			case State.READY:
+				return _value;
+			default:
+				assert_not_reached ();
 			}
 		}
 
 		internal void set_value (owned G value) {
-			unowned G value_copy = value;
-
 			_mutex.lock ();
-			assert (!_ready);
+			assert (_state == State.INIT);
+			_state = State.READY;
 			_value = (owned)value;
-			_ready = true;
 			_set.broadcast ();
 			_mutex.unlock ();
-
-			Gee.Future.WhenDoneArrayElement<G>[] when_done = (owned)_when_done;
+			Gee.Future.SourceFuncArrayElement<G>[] when_done = (owned)_when_done;
 			for (int i = 0; i < when_done.length; i++) {
-				when_done[i].func (value_copy);
+				when_done[i].func ();
+			}
+		}
+
+		internal void set_exception (owned GLib.Error? exception) {
+			_mutex.lock ();
+			assert (_state == State.INIT);
+			_state = State.EXCEPTION;
+			_exception = (owned)exception;
+			_set.broadcast ();
+			_mutex.unlock ();
+			Gee.Future.SourceFuncArrayElement<G>[] when_done = (owned)_when_done;
+			for (int i = 0; i < when_done.length; i++) {
+				when_done[i].func ();
+			}
+		}
+
+		internal void abandon () {
+			_mutex.lock ();
+			if (_state != State.INIT) {
+				_mutex.unlock ();
+				return;
+			}
+			assert (_state == State.INIT);
+			_state = State.ABANDON;
+			_set.broadcast ();
+			_mutex.unlock ();
+			Gee.Future.SourceFuncArrayElement<G>[] when_done = (owned)_when_done;
+			for (int i = 0; i < when_done.length; i++) {
+				when_done[i].func ();
 			}
 		}
 
 		private Mutex _mutex = Mutex ();
 		private Cond _set = Cond ();
-		private G _value;
-		private bool _ready;
-		private Gee.Future.WhenDoneArrayElement<G>[]? _when_done = new Gee.Future.WhenDoneArrayElement<G>[0];
-	}
+		private State _state;
+		private G? _value;
+		private GLib.Error? _exception;
+		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
 
+		private enum State {
+			INIT,
+			ABANDON,
+			EXCEPTION,
+			READY
+		}
+	}
 	private Future<G> _future = new Future<G>();
 }
 

@@ -19,7 +19,6 @@
  * Author:
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
-
 internal class Gee.LightMapFuture<A, G> : Object, Future<A> {
 	public LightMapFuture (Future<G> base_future, Future.LightMapFunc<A, G> func) {
 		_base = base_future;
@@ -32,11 +31,17 @@ internal class Gee.LightMapFuture<A, G> : Object, Future<A> {
 		}
 	}
 
-	public unowned A wait () {
+	public GLib.Error exception {
+		get {
+			return _base.exception;
+		}
+	}
+
+	public unowned A wait () throws Gee.FutureError {
 		return _func (_base.wait ());
 	}
 
-	public bool wait_until (int64 end_time, out unowned G? value = null) {
+	public bool wait_until (int64 end_time, out unowned G? value = null) throws Gee.FutureError {
 		unowned A arg;
 		bool result;
 		if ((result = _base.wait_until (end_time, out arg))) {
@@ -45,13 +50,9 @@ internal class Gee.LightMapFuture<A, G> : Object, Future<A> {
 		return result;
 	}
 
-	public async unowned G wait_async () {
+	public async unowned G wait_async () throws Gee.FutureError {
 		unowned A arg = yield _base.wait_async ();
 		return _func (arg);
-	}
-
-	public void when_done (owned Future.WhenDoneFunc<G> func) {
-		_base.when_done ((a) => {_func (a);});
 	}
 
 	private Future<G> _base;

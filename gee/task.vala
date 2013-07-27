@@ -19,7 +19,6 @@
  * Author:
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
-
 namespace Gee {
 	public delegate G Task<G>();
 

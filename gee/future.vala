@@ -48,9 +48,13 @@ public interface Gee.Future<G> : Object {
 	 * Returned value is always the same and it is alive at least as long
 	 * as the future.
 	 */
-	public virtual new G value {
+	public virtual new G? value {
 		get {
-			return wait ();
+			try {
+				return wait ();
+			} catch (FutureError ex) {
+				return null;
+			}
 		}
 	}
 
@@ -61,6 +65,16 @@ public interface Gee.Future<G> : Object {
 	public abstract bool ready {get;}
 
 	/**
+	 * Checks the exception that have been set. I.e. if the computation
+	 * has thrown the exception it should be set here and the {@link wait},
+	 * {@link wait_until} and {@link wait_async} should throw
+	 * {@link FutureError.EXCEPTION}.
+	 *
+	 * @since 0.11.5
+	 */
+	public abstract GLib.Error? exception {get;}
+
+	/**
 	 * Waits until the value is ready.
 	 *
 	 * @returns The {@link value} associated with future
@@ -68,7 +82,7 @@ public interface Gee.Future<G> : Object {
 	 * @see wait_until
 	 * @see wait_async
 	 */
-	public abstract unowned G wait ();
+	public abstract unowned G wait () throws Gee.FutureError;
 
 	/**
 	 * Waits until the value is ready or deadline have passed.
@@ -80,7 +94,7 @@ public interface Gee.Future<G> : Object {
 	 * @see wait
 	 * @see wait_async
 	 */
-	public abstract bool wait_until (int64 end_time, out unowned G? value = null);
+	public abstract bool wait_until (int64 end_time, out unowned G? value = null) throws Gee.FutureError;
 
 	/**
 	 * Reschedules the callback until the {@link value} is available.
@@ -90,40 +104,7 @@ public interface Gee.Future<G> : Object {
 	 * @see wait
 	 * @see wait_until
 	 */
-	public virtual async unowned G wait_async () {
-		unowned G? result = null;
-		bool looped = true;
-		RecMutex mutex = RecMutex();
-		mutex.lock ();
-		when_done ((value) => {
-			mutex.lock ();
-			bool looped_copy = looped;
-			mutex.unlock ();
-			result = value;
-			if (looped_copy) {
-				Idle.add (wait_async.callback);
-			} else {
-				wait_async.callback ();
-			}
-		});
-		looped = false;
-		mutex.unlock ();
-		yield;
-		return result;
-	}
-
-	[CCode (scope = "async")]
-	public delegate void WhenDoneFunc<G>(G value);
-
-	/**
-	 * Registers a callback which is called once the future is {@link ready}.
-	 *
-	 * Note: As usually the callbacks are called from thread finishing the
-	 *   future it is recommended to not include lengthly computation.
-	 *   If one is needed please use {@link task}.
-	 */
-	public abstract void when_done (owned WhenDoneFunc<G> func);
-
+	public abstract async unowned G wait_async () throws Gee.FutureError;
 	public delegate A MapFunc<A, G> (G value);
 
 	/**
@@ -142,7 +123,15 @@ public interface Gee.Future<G> : Object {
 	 *   {@link task} and {@link flat_map} for longer computation.
 	 */
 	public virtual Future<A> map<A> (owned MapFunc<A, G> func) {
-		return new MapFuture<A, G> (this, (owned)func);
+		Promise<A> promise = new Promise<A> ();
+		wait_async.begin ((obj, res) => {
+			try {
+				promise.set_value (func (wait_async.end (res)));
+			} catch (Error ex) {
+				promise.set_exception ((owned)ex);
+			}
+		});
+		return promise.future;
 	}
 
 	public delegate unowned A LightMapFunc<A, G> (G value);
@@ -190,10 +179,21 @@ public interface Gee.Future<G> : Object {
 	 *   future from {@link task} and use {@link flat_map} for longer computation.
 	 */
 	public virtual Future<B> zip<A, B> (owned ZipFunc<G, A, B> zip_func, Future<A> second) {
-		return new ZipFuture<G, A, B> ((owned)zip_func, this, second);
+		Promise<B> promise = new Promise<B> ();
+		do_zip.begin<G, A, B> ((owned) zip_func, this, second, promise, (obj, res) => {do_zip.end<G, A, B> (res);});
+		return promise.future;
 	}
 
-	[CCode (scope = "async")]
+	private static async void do_zip<A, B, C> (owned ZipFunc<A, B, C> zip_func, Future<A> first, Future<B> second, Promise<C> result) {
+		try {
+			A left = yield first.wait_async ();
+			B right = yield second.wait_async ();
+			result.set_value (zip_func (left, right));
+		} catch (Error ex) {
+			result.set_exception ((owned)ex);
+		}
+	}
+
 	public delegate Gee.Future<A> FlatMapFunc<A, G>(G value);
 
 	/**
@@ -211,14 +211,36 @@ public interface Gee.Future<G> : Object {
 	 *   {@link task}
 	 */
 	public virtual Gee.Future<A> flat_map<A>(owned FlatMapFunc<A, G> func) {
-		return new FlatMapFuture<A, G> (this, (owned)func);
+		Promise<A> promise = new Promise<A> ();
+		do_flat_map.begin<G, A> ((owned)func, this, promise, (obj, res) => {do_flat_map.end<G, A> (res);});
+		return promise.future;
 	}
 
-	internal struct WhenDoneArrayElement<G> {
-		public WhenDoneArrayElement (owned WhenDoneFunc<G> func) {
+	private static async void do_flat_map<A, B> (owned FlatMapFunc<B, A> func, Future<A> future, Promise<B> promise) {
+		try {
+			A input = yield future.wait_async ();
+			B output = yield func (input).wait_async ();
+			promise.set_value ((owned)output);
+		} catch (Error ex) {
+			promise.set_exception ((owned)ex);
+		}
+	}
+
+	internal struct SourceFuncArrayElement {
+		public SourceFuncArrayElement (owned SourceFunc func) {
 			this.func = (owned)func;
 		}
-		public WhenDoneFunc<G> func;
+		public SourceFunc func;
 	}
 }
 
+public errordomain Gee.FutureError {
+	/**
+	 * The promise have been abandon - this indicates an error in program.
+	 */
+	ABANDON_PROMISE,
+	/**
+	 * Exception field has been set.
+	 */
+	EXCEPTION
+}
