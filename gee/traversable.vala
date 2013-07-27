@@ -64,6 +64,7 @@ public interface Gee.Traversable<G> : Object {
 	 * @return ''false'' if the argument returned ''false'' at last invocation and
 	 *         ''true'' otherwise.
 	 */
+	[CCode (ordering = 0)]
 	public new abstract bool foreach (ForallFunc<G> f);
 
 	/**
@@ -108,6 +109,7 @@ public interface Gee.Traversable<G> : Object {
 	 * @param f function generating stream
 	 * @return iterator containing values yielded by stream
 	 */
+	[CCode (ordering = 1)]
 	public virtual Iterator<A> stream<A> (owned StreamFunc<G, A> f) {
 		unowned Iterator<G>? self;
 		unowned Iterable<G>? iself;
@@ -135,6 +137,7 @@ public interface Gee.Traversable<G> : Object {
 	 *    as well.
 	 *
 	 */
+	[CCode (ordering = 2)]
 	public virtual A fold<A> (FoldFunc<A, G> f, owned A seed)
 	{
 		this.foreach ((item) => {seed = f ((owned) item, (owned) seed); return true; });
@@ -159,6 +162,7 @@ public interface Gee.Traversable<G> : Object {
 	 * @param f Mapping function
 	 * @return Iterator listing mapped value
 	 */
+	[CCode (ordering = 3)]
 	public virtual Iterator<A> map<A> (MapFunc<A, G> f) {
 		return stream<A>((state, item, out val) => {
 			switch (state) {
@@ -199,6 +203,7 @@ public interface Gee.Traversable<G> : Object {
 	 * @param seed original seed value
 	 * @return Iterator containing values of subsequent values of seed
 	 */
+	[CCode (ordering = 4)]
 	public virtual Iterator<A> scan<A> (FoldFunc<A, G> f, owned A seed) {
 		bool seed_emitted = false;
 		return stream<A>((state, item, out val) => {
@@ -243,6 +248,7 @@ public interface Gee.Traversable<G> : Object {
 	 * @param pred predicate to check should the value be retained
 	 * @return Iterator containing values of subsequent values of seed
 	 */
+	[CCode (ordering = 5)]
 	public virtual Iterator<G> filter (owned Predicate<G> pred) {
 		return stream<G> ((state, item, out val) => {
 			switch (state) {
@@ -283,6 +289,7 @@ public interface Gee.Traversable<G> : Object {
 	 * @param length maximum number of elements iterator may return. Negative
 	 *        value means that the number is unbounded
 	 */
+	[CCode (ordering = 6)]
 	public virtual Iterator<G> chop (int offset, int length = -1) {
 		assert (offset >= 0);
 		return stream<G> ((state, item, out val) => {
@@ -320,6 +327,7 @@ public interface Gee.Traversable<G> : Object {
 	/**
 	 * The type of the elements in this collection.
 	 */
+	[CCode (ordering = 7)]
 	public virtual Type element_type { get { return typeof (G); } }
 
 	/**
@@ -341,7 +349,8 @@ public interface Gee.Traversable<G> : Object {
 	 * @param f mapping function
 	 * @return Iterator over returned values
 	 */
-	public Iterator<A> flat_map<A>(owned FlatMapFunc<A, G> f) {
+	[CCode (ordering = 8)]
+	public virtual Iterator<A> flat_map<A>(owned FlatMapFunc<A, G> f) {
 		Iterator<A>? current = null;
 		return stream<A> ((state, item, out val) => {
 			switch (state) {
@@ -393,7 +402,8 @@ public interface Gee.Traversable<G> : Object {
 	 * @returns An array with created iterators
 	 * @since 0.11.5
 	 */
-	public Iterator<G>[] tee (uint forks) {
+	[CCode (ordering = 9)]
+	public virtual Iterator<G>[] tee (uint forks) {
 		unowned Iterator<G>? self;
 		unowned Iterable<G>? iself;
 		// Yes - I've heard of polimorphism ;) but I don't want users to need to implement the method.
