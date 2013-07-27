@@ -26,6 +26,8 @@ namespace Gee {
 
 /**
  * Represents a lazy value. I.e. value that is computed on demand.
+ *
+ * This class is not thread-safe.
  */
 public class Gee.Lazy<G> {
 	public Lazy (owned LazyFunc<G> func) {
@@ -55,6 +57,112 @@ public class Gee.Lazy<G> {
 		}
 	}
 
+	/**
+	 * Provides a future for a lazy value.
+	 *
+	 * Note: The future can be requested only once and all access must be
+	 *   done through it.
+	 */
+	public Gee.Future<G>? future {
+		owned get {
+			return new Future<G> (this);
+		}
+	}
+
 	private LazyFunc<G>? _func;
 	private G? _value;
+
+	private class Future<G> : Object, Gee.Future<G> {
+		public Future (Lazy<G> lazy) {
+			_lazy = lazy;
+		}
+
+		public bool ready {
+			get {
+				_mutex.lock ();
+				bool result = _lazy._func == null;
+				_mutex.unlock ();
+				return result;
+			}
+		}
+
+		public GLib.Error? exception {get {return null;}}
+
+		public unowned G wait () throws Gee.FutureError {
+			_mutex.lock ();
+			if (_lazy._func != null) {
+				if (_state == State.EVAL) {
+					_eval.wait (_mutex);
+					_mutex.unlock ();
+				} else {
+					do_eval ();
+				}
+			} else {
+				_mutex.unlock ();
+			}
+			return _lazy._value;
+		}
+
+		public unowned bool wait_until (int64 end_time, out unowned G? value = null) throws Gee.FutureError {
+			_mutex.lock ();
+			if (_lazy._func != null) {
+				if (_state == State.EVAL) {
+					bool res = _eval.wait_until (_mutex, end_time);
+					_mutex.unlock ();
+					if (!res) {
+						return false;
+					}
+				} else {
+					do_eval ();
+				}
+			} else {
+				_mutex.unlock ();
+			}
+			value = _lazy._value;
+			return true;
+		}
+
+		public async unowned G wait_async () throws Gee.FutureError {
+			_mutex.lock ();
+			if (_lazy._func != null) {
+				if (_state == State.EVAL) {
+					_when_done += SourceFuncArrayElement(wait_async.callback);
+					yield Gee.Utils.Async.yield_and_unlock (_mutex);
+				} else {
+					do_eval ();
+				}
+			} else {
+				_mutex.unlock ();
+			}
+			return _lazy.value;
+		}
+
+		private void do_eval () {
+			_state = State.EVAL;
+			_mutex.unlock ();
+
+			_lazy._value = _lazy._func ();
+
+			_mutex.lock ();
+			_lazy._func = null;
+			_state = State.UNLOCK;
+			_eval.broadcast ();
+			_mutex.unlock ();
+
+			Gee.Future.SourceFuncArrayElement<G>[] when_done = (owned)_when_done;
+			for (int i = 0; i < when_done.length; i++) {
+				when_done[i].func ();
+			}
+		}
+
+		private Mutex _mutex = Mutex ();
+		private Cond _eval = Cond ();
+		private Lazy<G> _lazy;
+		private State _state = State.UNLOCK;
+		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
+		private enum State {
+			UNLOCK,
+			EVAL
+		}
+	}
 }
