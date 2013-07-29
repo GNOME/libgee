@@ -77,6 +77,7 @@ libgee_0_8_la_SOURCES = \
 	treemultiset.vala \
 	treeset.vala \
 	unfolditerator.vala \
+	../utils/async.h \
 	$(NULL)
 
 libgee_0_8_la_VALAFLAGS = \
