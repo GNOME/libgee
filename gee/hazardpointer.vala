@@ -165,7 +165,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	public static void set_pointer<G> (G **aptr, owned G? new_ptr, size_t mask = 0, size_t new_mask = 0) {
 		HazardPointer<G>? ptr = exchange_hazard_pointer<G> (aptr, new_ptr, mask, new_mask, null);
 		if (ptr != null) {
-			DestroyNotify<G> notify = get_destroy_notify<G> ();
+			DestroyNotify notify = Utils.Free.get_destroy_notify<G> ();
 			ptr.release ((owned)notify);
 		}
 	}
@@ -202,7 +202,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		void *old_rptr = (void *)((size_t)(old_ptr) | (mask & old_mask));
 		bool success = AtomicPointer.compare_and_exchange((void **)aptr, old_rptr, new_rptr);
 		if (success) {
-			DestroyNotify<G> notify = get_destroy_notify<G> ();
+			DestroyNotify notify = Utils.Free.get_destroy_notify<G> ();
 			if (old_ptr != null) {
 				Context.get_current_context ()->release_ptr (old_ptr, (owned)notify);
 			}
@@ -429,8 +429,6 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 			}
 		}
 	}
-
-	public delegate void DestroyNotify (void *ptr);
 
 	/**
 	 * Release policy determines what happens with object freed by Policy.TRY_RELEASE
@@ -697,14 +695,6 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	internal static StaticMutex _queue_mutex;
 
 	internal static ArrayList<FreeNode *> _global_to_free;
-
-	internal static DestroyNotify get_destroy_notify<G> () {
-		return (ptr) => {
-			G *gptr = ptr;
-			G obj = (owned)gptr;
-			obj = null;
-		};
-	}
 
 	[Compact]
 	internal class FreeNode {
