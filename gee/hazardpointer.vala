@@ -451,13 +451,12 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		private static void start (ReleasePolicy self) { // FIXME: Make it non-static [bug 659778]
 			switch (self) {
 			case HELPER_THREAD:
-				Thread.create<bool> (() => {
-					Thread.self<bool> ().set_priority (ThreadPriority.LOW);
+				new Thread<bool> ("<<libgee hazard pointer>>", () => {
 					while (true) {
 						Thread.yield ();
 						attempt_free ();
 					}
-				}, false);
+				});
 				break;
 			case MAIN_LOOP:
 				Idle.add (() => {
