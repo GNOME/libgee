@@ -95,8 +95,8 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
 		this.equal_func = equal_func;
-		_items = items;
 		_size = items.length;
+		_items = do_wrap<G> ((owned)items);
 	}
 
 	/**
@@ -433,6 +433,123 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 			_index = _list._size - 1;
 			return true;
 		}
+	}
+
+	private static G[] do_wrap<G> (owned G[] data) {
+		var t = typeof (G);
+		if (t == typeof (bool)) {
+			return wrap_bool<G> ((bool[])data);
+		} else if (t == typeof (char)) {
+			return wrap_char<G> ((char[])data);
+		} else if (t == typeof (uchar)) {
+			return wrap_uchar<G> ((uchar[])data);
+		} else if (t == typeof (int)) {
+			return wrap_int<G> ((int[])data);
+		} else if (t == typeof (uint)) {
+			return wrap_uint<G> ((uint[])data);
+		} else if (t == typeof (int64)) {
+			return wrap_int64<G> ((int64[])data);
+		} else if (t == typeof (uint64)) {
+			return wrap_uint64<G> ((uint64[])data);
+		} else if (t == typeof (long)) {
+			return wrap_long<G> ((long[])data);
+		} else if (t == typeof (ulong)) {
+			return wrap_ulong<G> ((ulong[])data);
+		} else if (t == typeof (float)) {
+			return wrap_float<G> ((float?[])data);
+		} else if (t == typeof (double)) {
+			return wrap_double<G> ((double?[])data);
+		} else {
+			return (owned)data;
+		}
+	}
+
+	private static G[] wrap_bool<G> (bool[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_char<G> (char[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_uchar<G> (uchar[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_int<G> (int[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_uint<G> (uint[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_int64<G> (int64[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_uint64<G> (uint64[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_long<G> (long[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_ulong<G> (ulong[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_float<G> (float?[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
+	}
+
+	private static G[] wrap_double<G> (double?[] data) {
+		G[] arr = new G[data.length];
+		for (uint i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		return arr;
 	}
 }
 
