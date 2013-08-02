@@ -187,11 +187,36 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 */
 	public bool add_all_array (G[] array) {
 		// FIXME: Change to virtual after bug #693455 is fixed
-		bool changed = false;
-		foreach (unowned G item in array) {
-			changed |= add (item);
+		var t = typeof (G);
+		if (t == typeof (bool)) {
+			return add_all_bool_array ((Collection<bool>) this, (bool [])array);
+		} else if (t == typeof (char)) {
+			return add_all_char_array ((Collection<char>) this, (char [])array);
+		} else if (t == typeof (uchar)) {
+			return add_all_uchar_array ((Collection<uchar>) this, (uchar [])array);
+		} else if (t == typeof (int)) {
+			return add_all_int_array ((Collection<int>) this, (int [])array);
+		} else if (t == typeof (uint)) {
+			return add_all_uint_array ((Collection<uint>) this, (uint [])array);
+		} else if (t == typeof (int64)) {
+			return add_all_int64_array ((Collection<int64?>) this, (int64? [])array);
+		} else if (t == typeof (uint64)) {
+			return add_all_uint64_array ((Collection<uint64?>) this, (uint64? [])array);
+		} else if (t == typeof (long)) {
+			return add_all_long_array ((Collection<long>) this, (long [])array);
+		} else if (t == typeof (ulong)) {
+			return add_all_ulong_array ((Collection<ulong>) this, (ulong [])array);
+		} else if (t == typeof (float)) {
+			return add_all_float_array ((Collection<float>) this, (float? [])array);
+		} else if (t == typeof (double)) {
+			return add_all_double_array ((Collection<double>) this, (double? [])array);
+		} else {
+			bool changed = false;
+			foreach (unowned G item in array) {
+				changed |= add (item);
+			}
+			return changed;
 		}
-		return changed;
 	}
 
 	/**
@@ -231,6 +256,20 @@ public interface Gee.Collection<G> : Iterable<G> {
 			changed |= remove (item);
 		}
 		return changed;
+	}
+
+	/**
+	 * The read-only view of this collection.
+	 */
+	public abstract Collection<G> read_only_view { owned get; }
+
+	/**
+	 * Returns an immutable empty collection.
+	 *
+	 * @return an immutable empty collection
+	 */
+	public static Collection<G> empty<G> () {
+		return new HashSet<G> ().read_only_view;
 	}
 
 	private static bool[] to_bool_array (Collection<bool> coll) {
@@ -332,18 +371,92 @@ public interface Gee.Collection<G> : Iterable<G> {
 		return array;
 	}
 
-	/**
-	 * The read-only view of this collection.
-	 */
-	public abstract Collection<G> read_only_view { owned get; }
+	private static bool add_all_bool_array (Collection<bool> coll, bool[] arr) {
+		bool changed = false;
+		foreach (bool el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
 
-	/**
-	 * Returns an immutable empty collection.
-	 *
-	 * @return an immutable empty collection
-	 */
-	public static Collection<G> empty<G> () {
-		return new HashSet<G> ().read_only_view;
+	private static bool add_all_char_array (Collection<char> coll, char[] arr) {
+		bool changed = false;
+		foreach (char el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_uchar_array (Collection<uchar> coll, uchar[] arr) {
+		bool changed = false;
+		foreach (uchar el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_int_array (Collection<int> coll, int[] arr) {
+		bool changed = false;
+		foreach (int el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_uint_array (Collection<uint> coll, uint[] arr) {
+		bool changed = false;
+		foreach (uint el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_int64_array (Collection<int64?> coll, int64?[] arr) {
+		bool changed = false;
+		foreach (unowned int64? el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_uint64_array (Collection<uint64?> coll, uint64?[] arr) {
+		bool changed = false;
+		foreach (unowned uint64? el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_long_array (Collection<long> coll, long[] arr) {
+		bool changed = false;
+		foreach (long el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_ulong_array (Collection<ulong> coll, ulong[] arr) {
+		bool changed = false;
+		foreach (ulong el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_float_array (Collection<float?> coll, float?[] arr) {
+		bool changed = false;
+		foreach (unowned float? el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
+	}
+
+	private static bool add_all_double_array (Collection<double?> coll, double?[] arr) {
+		bool changed = false;
+		foreach (unowned double? el in arr) {
+			changed |= coll.add (el);
+		}
+		return changed;
 	}
 }
 
