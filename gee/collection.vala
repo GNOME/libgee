@@ -183,7 +183,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 			G[] array = new G[size];
 			int index = 0;
 			foreach (G element in this) {
-				array[index++] = element;
+				array[index++] = (owned)element;
 			}
 			return array;
 		}
@@ -315,20 +315,20 @@ public interface Gee.Collection<G> : Iterable<G> {
 		return array;
 	}
 
-	private static int64[] to_int64_array (Collection<int64?> coll) {
-		int64[] array = new int64[coll.size];
+	private static int64?[] to_int64_array (Collection<int64?> coll) {
+		int64?[] array = new int64?[coll.size];
 		int index = 0;
-		foreach (int64 element in coll) {
-			array[index++] = element;
+		foreach (int64? element in coll) {
+			array[index++] = (owned)element;
 		}
 		return array;
 	}
 
-	private static uint64[] to_uint64_array (Collection<uint64?> coll) {
-		uint64[] array = new uint64[coll.size];
+	private static uint64?[] to_uint64_array (Collection<uint64?> coll) {
+		uint64?[] array = new uint64?[coll.size];
 		int index = 0;
-		foreach (uint64 element in coll) {
-			array[index++] = element;
+		foreach (uint64? element in coll) {
+			array[index++] = (owned)element;
 		}
 		return array;
 	}
@@ -354,8 +354,8 @@ public interface Gee.Collection<G> : Iterable<G> {
 	private static float?[] to_float_array (Collection<float?> coll) {
 		float?[] array = new float?[coll.size];
 		int index = 0;
-		foreach (float element in coll) {
-			array[index++] = element;
+		foreach (float? element in coll) {
+			array[index++] = (owned)element;
 		}
 		return array;
 	}
@@ -363,8 +363,8 @@ public interface Gee.Collection<G> : Iterable<G> {
 	private static double?[] to_double_array (Collection<double?> coll) {
 		double?[] array = new double?[coll.size];
 		int index = 0;
-		foreach (double element in coll) {
-			array[index++] = element;
+		foreach (double? element in coll) {
+			array[index++] = (owned)element;
 		}
 		return array;
 	}
