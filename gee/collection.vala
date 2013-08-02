@@ -28,17 +28,20 @@ public interface Gee.Collection<G> : Iterable<G> {
 	/**
 	 * The number of items in this collection.
 	 */
+	[CCode (ordering = 9)]
 	public abstract int size { get; }
 
 	/**
 	 * Specifies whether this collection is empty.
 	 */
+	[CCode (ordering = 10)]
 	public virtual bool is_empty { get { return size == 0; } }
-	
+
 	/**
 	 * Specifies whether this collection can change - i.e. wheather {@link add},
 	 * {@link remove} etc. are legal operations.
 	 */
+	[CCode (ordering = 11)]
 	public abstract bool read_only { get; }
 
 	/**
@@ -48,6 +51,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if item is found, ``false`` otherwise
 	 */
+	[CCode (ordering = 0)]
 	public abstract bool contains (G item);
 
 	/**
@@ -58,6 +62,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
+	[CCode (ordering = 1)]
 	public abstract bool add (G item);
 
 	/**
@@ -68,12 +73,14 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
+	[CCode (ordering = 2)]
 	public abstract bool remove (G item);
 
 	/**
 	 * Removes all items from this collection. Must not be called on
 	 * read-only collections.
 	 */
+	[CCode (ordering = 3)]
 	public abstract void clear ();
 
 	/**
@@ -84,6 +91,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
+	[CCode (ordering = 4)]
 	public virtual bool add_all (Collection<G> collection) {
 		return collection.fold<bool> ((item, changed) => changed | add (item), false);
 	}
@@ -97,6 +105,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
+	[CCode (ordering = 5)]
 	public virtual bool contains_all (Collection<G> collection) {
 		return collection.foreach ((item) => contains (item));
 	}
@@ -112,6 +121,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
+	[CCode (ordering = 6)]
 	public virtual bool remove_all (Collection<G> collection) {
 		return collection.fold<bool> ((item, changed) => changed | remove (item), false);
 	}
@@ -126,6 +136,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
+	[CCode (ordering = 7)]
 	public virtual bool retain_all (Collection<G> collection) {
 		bool changed = false;
 		for (Iterator<G> iter = iterator(); iter.next ();) {
@@ -143,6 +154,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return an array containing all of items from this collection
 	 */
+	[CCode (ordering = 8)]
 	public virtual G[] to_array () {
 		var t = typeof (G);
 		if (t == typeof (bool)) {
@@ -185,8 +197,8 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
-	public bool add_all_array (G[] array) {
-		// FIXME: Change to virtual after bug #693455 is fixed
+	[CCode (ordering = 13)]
+	public virtual bool add_all_array (G[] array) {
 		bool changed = false;
 		foreach (unowned G item in array) {
 			changed |= add (item);
@@ -203,8 +215,8 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
-	public bool contains_all_array (G[] array) {
-		// FIXME: Change to virtual after bug #693455 is fixed
+	[CCode (ordering = 14)]
+	public virtual bool contains_all_array (G[] array) {
 		foreach (unowned G item in array) {
 			if (!contains (item)) {
 				return false;
@@ -224,8 +236,8 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 *
 	 * @return     ``true`` if the collection has been changed, ``false`` otherwise
 	 */
-	public bool remove_all_array (G[] array) {
-		// FIXME: Change to virtual after bug #693455 is fixed
+	[CCode (ordering = 15)]
+	public virtual bool remove_all_array (G[] array) {
 		bool changed = false;
 		foreach (unowned G item in array) {
 			changed |= remove (item);
@@ -335,6 +347,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	/**
 	 * The read-only view of this collection.
 	 */
+	[CCode (ordering = 12)]
 	public abstract Collection<G> read_only_view { owned get; }
 
 	/**
