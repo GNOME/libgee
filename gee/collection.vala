@@ -245,6 +245,31 @@ public interface Gee.Collection<G> : Iterable<G> {
 		return changed;
 	}
 
+	[CCode (ordering = 16)]
+	public virtual bool add_all_iterator (Iterator<G> iter) {
+		bool changed = false;
+		iter.foreach ((val) => {
+			changed |= add (val);
+			return true;
+		});
+		return changed;
+	}
+
+	[CCode (ordering = 17)]
+	public virtual bool contains_all_iterator (Iterator<G> iter) {
+		return iter.foreach ((val) => {return contains (val);});
+	}
+
+	[CCode (ordering = 18)]
+	public virtual bool remove_all_iterator (Iterator<G> iter) {
+		bool changed = false;
+		return iter.foreach ((val) => {
+			changed |= remove (val);
+			return true;
+		});
+		return changed;
+	}
+
 	private static bool[] to_bool_array (Collection<bool> coll) {
 		bool[] array = new bool[coll.size];
 		int index = 0;
