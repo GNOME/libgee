@@ -230,12 +230,37 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 */
 	public bool contains_all_array (G[] array) {
 		// FIXME: Change to virtual after bug #693455 is fixed
-		foreach (unowned G item in array) {
-			if (!contains (item)) {
-				return false;
+		var t = typeof (G);
+		if (t == typeof (bool)) {
+			return contains_all_bool_array ((Collection<bool>) this, (bool [])array);
+		} else if (t == typeof (char)) {
+			return contains_all_char_array ((Collection<char>) this, (char [])array);
+		} else if (t == typeof (uchar)) {
+			return contains_all_uchar_array ((Collection<uchar>) this, (uchar [])array);
+		} else if (t == typeof (int)) {
+			return contains_all_int_array ((Collection<int>) this, (int [])array);
+		} else if (t == typeof (uint)) {
+			return contains_all_uint_array ((Collection<uint>) this, (uint [])array);
+		} else if (t == typeof (int64)) {
+			return contains_all_int64_array ((Collection<int64?>) this, (int64? [])array);
+		} else if (t == typeof (uint64)) {
+			return contains_all_uint64_array ((Collection<uint64?>) this, (uint64? [])array);
+		} else if (t == typeof (long)) {
+			return contains_all_long_array ((Collection<long>) this, (long [])array);
+		} else if (t == typeof (ulong)) {
+			return contains_all_ulong_array ((Collection<ulong>) this, (ulong [])array);
+		} else if (t == typeof (float)) {
+			return contains_all_float_array ((Collection<float>) this, (float? [])array);
+		} else if (t == typeof (double)) {
+			return contains_all_double_array ((Collection<double>) this, (double? [])array);
+		} else {
+			foreach (unowned G item in array) {
+				if (!contains (item)) {
+					return false;
+				}
 			}
+			return true;
 		}
-		return true;
 	}
 
 	/**
@@ -457,6 +482,105 @@ public interface Gee.Collection<G> : Iterable<G> {
 			changed |= coll.add (el);
 		}
 		return changed;
+	}
+
+	private static bool contains_all_bool_array (Collection<bool> coll, bool[] arr) {
+		foreach (bool el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_char_array (Collection<char> coll, char[] arr) {
+		foreach (char el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_uchar_array (Collection<uchar> coll, uchar[] arr) {
+		foreach (uchar el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_int_array (Collection<int> coll, int[] arr) {
+		foreach (int el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_uint_array (Collection<uint> coll, uint[] arr) {
+		foreach (uint el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_int64_array (Collection<int64?> coll, int64?[] arr) {
+		foreach (unowned int64? el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_uint64_array (Collection<uint64?> coll, uint64?[] arr) {
+		foreach (unowned uint64? el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_long_array (Collection<long> coll, long[] arr) {
+		foreach (long el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_ulong_array (Collection<ulong> coll, ulong[] arr) {
+		foreach (ulong el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_float_array (Collection<float?> coll, float?[] arr) {
+		foreach (unowned float? el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static bool contains_all_double_array (Collection<double?> coll, double?[] arr) {
+		foreach (unowned double? el in arr) {
+			if (!coll.contains (el)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
 
