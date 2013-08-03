@@ -276,11 +276,36 @@ public interface Gee.Collection<G> : Iterable<G> {
 	 */
 	public bool remove_all_array (G[] array) {
 		// FIXME: Change to virtual after bug #693455 is fixed
-		bool changed = false;
-		foreach (unowned G item in array) {
-			changed |= remove (item);
+		var t = typeof (G);
+		if (t == typeof (bool)) {
+			return remove_all_bool_array ((Collection<bool>) this, (bool [])array);
+		} else if (t == typeof (char)) {
+			return remove_all_char_array ((Collection<char>) this, (char [])array);
+		} else if (t == typeof (uchar)) {
+			return remove_all_uchar_array ((Collection<uchar>) this, (uchar [])array);
+		} else if (t == typeof (int)) {
+			return remove_all_int_array ((Collection<int>) this, (int [])array);
+		} else if (t == typeof (uint)) {
+			return remove_all_uint_array ((Collection<uint>) this, (uint [])array);
+		} else if (t == typeof (int64)) {
+			return remove_all_int64_array ((Collection<int64?>) this, (int64? [])array);
+		} else if (t == typeof (uint64)) {
+			return remove_all_uint64_array ((Collection<uint64?>) this, (uint64? [])array);
+		} else if (t == typeof (long)) {
+			return remove_all_long_array ((Collection<long>) this, (long [])array);
+		} else if (t == typeof (ulong)) {
+			return remove_all_ulong_array ((Collection<ulong>) this, (ulong [])array);
+		} else if (t == typeof (float)) {
+			return remove_all_float_array ((Collection<float>) this, (float? [])array);
+		} else if (t == typeof (double)) {
+			return remove_all_double_array ((Collection<double>) this, (double? [])array);
+		} else {
+			bool changed = false;
+			foreach (unowned G item in array) {
+				changed |= remove (item);
+			}
+			return changed;
 		}
-		return changed;
 	}
 
 	/**
@@ -581,6 +606,94 @@ public interface Gee.Collection<G> : Iterable<G> {
 			}
 		}
 		return true;
+	}
+
+	private static bool remove_all_bool_array (Collection<bool> coll, bool[] arr) {
+		bool changed = false;
+		foreach (bool el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_char_array (Collection<char> coll, char[] arr) {
+		bool changed = false;
+		foreach (char el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_uchar_array (Collection<uchar> coll, uchar[] arr) {
+		bool changed = false;
+		foreach (uchar el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_int_array (Collection<int> coll, int[] arr) {
+		bool changed = false;
+		foreach (int el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_uint_array (Collection<uint> coll, uint[] arr) {
+		bool changed = false;
+		foreach (uint el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_int64_array (Collection<int64?> coll, int64?[] arr) {
+		bool changed = false;
+		foreach (unowned int64? el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_uint64_array (Collection<uint64?> coll, uint64?[] arr) {
+		bool changed = false;
+		foreach (unowned uint64? el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_long_array (Collection<long> coll, long[] arr) {
+		bool changed = false;
+		foreach (long el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_ulong_array (Collection<ulong> coll, ulong[] arr) {
+		bool changed = false;
+		foreach (ulong el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_float_array (Collection<float?> coll, float?[] arr) {
+		bool changed = false;
+		foreach (unowned float? el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
+	}
+
+	private static bool remove_all_double_array (Collection<double?> coll, double?[] arr) {
+		bool changed = false;
+		foreach (unowned double? el in arr) {
+			changed |= coll.remove (el);
+		}
+		return changed;
 	}
 }
 
