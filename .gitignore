@@ -33,6 +33,8 @@ m4/lt~obsolete.m4
 doc/gee-0.8
 gee/gee-0.8.vapi
 gee/gee-internals-0.8.vapi
+!utils/*.c
+!utils/*.h
 benchmark/benchmarks
 tests/tests
 tests/coverage
