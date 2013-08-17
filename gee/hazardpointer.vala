@@ -479,7 +479,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 				if ((policy & (1 << (sizeof(int) * 8 - 1))) == 0) {
 					_queue = new LinkedList<ArrayList<FreeNode *>> ();
 					// Hack to not lie about successfull setting policy
-					policy = AtomicInt.exchange_and_add (ref release_policy, (int)(1 << (sizeof(int) * 8 - 1)));
+					policy = AtomicInt.add (ref release_policy, (int)(1 << (sizeof(int) * 8 - 1)));
 					start ((ReleasePolicy) policy);
 				}
 				_queue_mutex.unlock ();
