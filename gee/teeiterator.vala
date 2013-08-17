@@ -64,7 +64,7 @@ internal class Gee.TeeIterator<G> : Object, Traversable<G>, Iterator<G> {
 		return _head._next.get () != null;
 	}
 
-	public G get () {
+	public new G get () {
 		return _head._data.get ();
 	}
 
