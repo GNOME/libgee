@@ -57,7 +57,7 @@ AC_SUBST(GLIB_LIBS)
 
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
 
-VALA_CHECK([])
+VALA_CHECK([0.21.0])
 
 AC_OUTPUT([Makefile
            gee-0.8.pc
