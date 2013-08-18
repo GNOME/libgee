@@ -23,6 +23,7 @@ Libgee provides the following interfaces:
                  + ListIterator
                        # BidirListIterator
      * MultiMap
+     * Future
 
 The ArrayList, ArrauQueue, ConcurrentLinkedList, ConcurrentSet, HashSet,
 HashMap, HashMultiSet, HashMultiMap, LinkedList, PriorityQueue, TreeSet,
