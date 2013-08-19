@@ -1,3 +1,10 @@
+libgee 0.11.90
+==============
+ * Add adding to collection based on iterators
+ * Make Collection.add_all_array, contains_all_array and remove_all_array virtual
+ * Avoid destroy coroutine creation in hazard pointer implementation
+ * Various bugfixes
+
 libgee 0.11.5
 =============
  * Add Traversable.tee
