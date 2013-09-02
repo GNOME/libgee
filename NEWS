@@ -1,3 +1,7 @@
+libgee 0.11.91
+==============
+ * Bump the GLib requirements to 2.36 in configure.ac
+
 libgee 0.11.90
 ==============
  * Add adding to collection based on iterators
