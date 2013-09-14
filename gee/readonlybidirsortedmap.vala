@@ -46,6 +46,15 @@ internal class Gee.ReadOnlyBidirSortedMap<K,V> : ReadOnlySortedMap<K,V>, BidirSo
 		return new BidirMapIterator<K,V> ((_map as BidirSortedMap<K,V>).bidir_map_iterator ());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public BidirSortedMap<K,V> read_only_view {
+		owned get {
+			return this;
+		}
+	}
+
 	protected class BidirMapIterator<K,V> : Gee.ReadOnlyMap.MapIterator<K,V>, Gee.BidirMapIterator<K,V> {
 		public BidirMapIterator (Gee.BidirMapIterator<K,V> iterator) {
 			base (iterator);

@@ -77,5 +77,14 @@ internal class Gee.ReadOnlySortedMap<K,V> : ReadOnlyMap<K,V>, SortedMap<K,V> {
 			return (_map as SortedMap<K,V>).ascending_entries.read_only_view;
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public SortedMap<K, V> read_only_view {
+		owned get {
+			return this;
+		}
+	}
 }
 
