@@ -1,3 +1,7 @@
+libgee 0.10.5
+=============
+ * Override read_only_view property in ReadOnlySortedMap and its subclasses
+
 libgee 0.10.4
 =============
  * Fix various problems with generic arrays

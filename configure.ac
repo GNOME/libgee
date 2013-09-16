@@ -1,4 +1,4 @@
-AC_INIT([libgee], [0.10.4], [https://bugzilla.gnome.org/enter_bug.cgi?product=libgee], [libgee])
+AC_INIT([libgee], [0.10.5], [https://bugzilla.gnome.org/enter_bug.cgi?product=libgee], [libgee])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -11,7 +11,7 @@ AM_PROG_CC_C_O
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
-LIBGEE_LT_VERSION="4:2:2"
+LIBGEE_LT_VERSION="4:3:2"
 AC_SUBST(LIBGEE_LT_VERSION)
 
 GLIB_REQUIRED=2.32
