@@ -4,7 +4,7 @@ lib_LTLIBRARIES = \
 	libgee-0.8.la
 	$(NULL)
 
-libgee_0_8_la_SOURCES = \
+libgee_0_8_la_VALASOURCES = \
 	assemblyinfo.vala \
 	abstractbidirlist.vala \
 	abstractbidirsortedset.vala \
@@ -77,6 +77,10 @@ libgee_0_8_la_SOURCES = \
 	treemultiset.vala \
 	treeset.vala \
 	unfolditerator.vala \
+	$(NULL)
+
+libgee_0_8_la_SOURCES = \
+	$(libgee_0_8_la_VALASOURCES)
 	../utils/async.h \
 	../utils/free.h \
 	$(NULL)
