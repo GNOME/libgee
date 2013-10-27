@@ -80,7 +80,7 @@ libgee_0_8_la_VALASOURCES = \
 	$(NULL)
 
 libgee_0_8_la_SOURCES = \
-	$(libgee_0_8_la_VALASOURCES)
+	$(libgee_0_8_la_VALASOURCES) \
 	../utils/async.h \
 	../utils/free.h \
 	$(NULL)
