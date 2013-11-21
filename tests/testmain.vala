@@ -47,6 +47,8 @@ void main (string[] args) {
 	TestSuite.get_root ().add_suite (new TreeMultiMapTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new TreeMultiSetTests ().get_suite ());
 	TestSuite.get_root ().add_suite (new TreeSetTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new UnrolledLinkedListTests ().get_suite ());
+	TestSuite.get_root ().add_suite (new UnrolledLinkedListAsDequeTests ().get_suite ());
 
 	Test.run ();
 }

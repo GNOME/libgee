@@ -77,6 +77,7 @@ libgee_0_8_la_VALASOURCES = \
 	treemultiset.vala \
 	treeset.vala \
 	unfolditerator.vala \
+	unrolledlinkedlist.vala \
 	$(NULL)
 
 libgee_0_8_la_SOURCES = \

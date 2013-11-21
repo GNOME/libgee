@@ -42,6 +42,8 @@ tests_VALASOURCES = \
        testtreemultimap.vala \
        testtreemultiset.vala \
        testtreeset.vala \
+       testunrolledlinkedlist.vala \
+       testunrolledlinkedlistasdeque.vala \
        $(NULL)
 
 tests_SOURCES = \
