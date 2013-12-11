@@ -52,7 +52,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	}
 
 	~ConcurrentList () {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		_head = null;
 		HazardPointer.set_pointer<Node<G>?> (&_tail, null);
 	}
@@ -71,7 +71,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 */
 	public override int size {
 		get {
-			HazardPointer.Context ctx = new HazardPointer.Context ();
+//			HazardPointer.Context ctx = new HazardPointer.Context ();
 			int result = 0;
 			for (var iter = iterator (); iter.next ();)
 				result++;
@@ -92,7 +92,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override bool contains (G item) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		for (var iter = iterator (); iter.next ();)
 			if (equal_func (item, iter.get ()))
 				return true;
@@ -103,7 +103,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override bool add (G item) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		Node<G> node = new Node<G> (item);
 		node.insert (get_tail (), null);
 		return true;
@@ -113,7 +113,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override bool remove (G item) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		Gee.Iterator<G> iter = iterator ();
 		while (iter.next ()) {
 			if (equal_func (item, iter.get ())) {
@@ -128,7 +128,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override void clear () {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		var iter = iterator ();
 		while (iter.next ())
 			iter.remove ();
@@ -153,7 +153,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override G? get (int index) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		assert (index >= 0);
 		for (var iterator = iterator (); iterator.next ();)
 			if (index-- == 0)
@@ -165,7 +165,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override void set (int index, G item) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		assert (index >= 0);
 		for (var iterator = list_iterator (); iterator.next ();) {
 			if (index-- == 0) {
@@ -180,7 +180,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override int index_of (G item) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		int index = 0;
 		for (var iterator = list_iterator (); iterator.next (); index++)
 			if (equal_func (item, iterator.get ()))
@@ -192,7 +192,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override void insert (int index, G item) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		assert (index >= 0);
 		if (index == 0) {
 			var prev = _head;
@@ -214,7 +214,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override G remove_at (int index) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		for (var iterator = list_iterator (); iterator.next ();) {
 			if (index-- == 0) {
 				G data = iterator.get ();
@@ -229,7 +229,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * {@inheritDoc}
 	 */
 	public override List<G>? slice (int start, int end) {
-		HazardPointer.Context ctx = new HazardPointer.Context ();
+//		HazardPointer.Context ctx = new HazardPointer.Context ();
 		assert (0 <= start);
 		assert (start <= end);
 		var list = new ConcurrentList<G> (equal_func);
@@ -269,7 +269,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		}
 
 		public bool next () {
-			HazardPointer.Context ctx = new HazardPointer.Context ();
+//			HazardPointer.Context ctx = new HazardPointer.Context ();
 			Node<G>? _old_prev = _removed ? _prev : null;
 			bool success = Node.proceed<G> (ref _prev, ref _curr);
 			if (success) {
@@ -283,20 +283,20 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		}
 
 		public bool has_next () {
-			HazardPointer.Context ctx = new HazardPointer.Context ();
+//			HazardPointer.Context ctx = new HazardPointer.Context ();
 			Node<G>? prev = _prev;
 			Node<G>? curr = _curr;
 			return Node.proceed<G> (ref prev, ref curr);
 		}
 
 		public new G get () {
-			HazardPointer.Context ctx = new HazardPointer.Context ();
+//			HazardPointer.Context ctx = new HazardPointer.Context ();
 			assert (valid);
 			return HazardPointer.get_pointer<G> (&_curr._data);
 		}
 
 		public new void set (G item) {
-			HazardPointer.Context ctx = new HazardPointer.Context ();
+//			HazardPointer.Context ctx = new HazardPointer.Context ();
 			assert (valid);
 #if DEBUG
 			G item_copy = item;
@@ -308,7 +308,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		}
 
 		public void remove () {
-			HazardPointer.Context ctx = new HazardPointer.Context ();
+//			HazardPointer.Context ctx = new HazardPointer.Context ();
 			assert (valid);
 			_curr.remove (_prev);
 			_removed = true;
@@ -327,7 +327,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		}
 
 		public void add (G item) {
-			HazardPointer.Context ctx = new HazardPointer.Context ();
+//			HazardPointer.Context ctx = new HazardPointer.Context ();
 			assert (valid);
 			if (!Node.proceed<G> (ref _prev, ref _curr)) {
 				_prev = (owned)_curr;
@@ -340,7 +340,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		}
 
 		public new bool foreach (ForallFunc<G> f) {
-			HazardPointer.Context ctx = new HazardPointer.Context ();
+//			HazardPointer.Context ctx = new HazardPointer.Context ();
 			if (_started && !_removed) {
 				if (!f (HazardPointer.get_pointer<G> (&_curr._data))) {
 					return false;
