@@ -51,7 +51,7 @@ public class Gee.HashMultiMap<K,V> : AbstractMultiMap<K,V> {
 	 */
 	public HashMultiMap (owned HashDataFunc<K>? key_hash_func = null, owned EqualDataFunc<K>? key_equal_func = null,
 	                     owned HashDataFunc<V>? value_hash_func = null, owned EqualDataFunc<V>? value_equal_func = null) {
-		base (new HashMap<K, Set<V>> (key_hash_func, key_equal_func, Functions.get_equal_func_for (typeof (Set<V>))));
+		base (new HashMap<K, Set<V>> (key_hash_func, key_equal_func, Functions.get_equal_func_for (typeof (Set))));
 		if (value_hash_func == null) {
 			value_hash_func = Functions.get_hash_func_for (typeof (V));
 		}
