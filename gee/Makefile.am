@@ -135,5 +135,6 @@ CLEANFILES = \
 	gee-internals-0.8.vapi \
 	Gee-0.8.typelib \
 	Gee-0.8.gir \
+	$(libgee_0_8_la_SOURCES:.vala=.c) \
 	$(NULL)
 
