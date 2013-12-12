@@ -80,20 +80,21 @@ libgee_0_8_la_VALASOURCES = \
 	$(NULL)
 
 libgee_0_8_la_SOURCES = \
-	$(libgee_0_8_la_VALASOURCES) \
+	$(libgee_0_8_la_VALASOURCES:.vala=.c) \
 	../utils/async.h \
 	../utils/free.h \
 	$(NULL)
 
-libgee_0_8_la_VALAFLAGS = \
-	-H gee.h --vapi gee-0.8.vapi \
-	-h gee-internals.h \
-	--internal-vapi gee-internals-0.8.vapi \
-	--library gee-0.8 --gir Gee-0.8.gir \
-	--pkg gio-2.0 \
-	--vapidir $(top_srcdir)/utils --pkg geeutils \
-	$(COVERAGE_VALAFLAGS) \
-	$(VALAFLAGS) \
+libgee_0_8_la_DEPENDENCIES = \
+	gee-0.8.vapi \
+	gee-internals-0.8.vapi \
+	gee.h \
+	gee-internals.h \
+	libgee_0_8_la_vala.stamp \
+	$(NULL)
+
+libgee_0_8_la_CFLAGS = \
+	-w \
 	$(NULL)
 
 libgee_0_8_la_CPPFLAGS = \
@@ -111,6 +112,24 @@ libgee_0_8_la_LDFLAGS = \
 	-version-info $(LIBGEE_LT_VERSION) \
 	-no-undefined \
 	$(NULL)
+
+libgee_0_8_la_VALAFLAGS = \
+	-H gee.h --vapi gee-0.8.vapi \
+	-h gee-internals.h \
+	--internal-vapi gee-internals-0.8.vapi \
+	--library gee-0.8 --gir Gee-0.8.gir \
+	--pkg gio-2.0 \
+	--vapidir $(top_srcdir)/utils --pkg geeutils \
+	$(COVERAGE_VALAFLAGS) \
+	$(VALAFLAGS) \
+	$(NULL)
+
+libgee_0_8_la_vala.stamp: $(libgee_0_8_la_VALASOURCES)
+	$(AM_V_VALAC)$(VALAC) $(VALAFLAGS) $(VALA_DEBUG_FLAGS) $(libgee_0_8_la_VALAFLAGS) -C $(libgee_0_8_la_VALASOURCES)
+	@touch gee-0.8.vapi gee-internals-0.8.vapi gee.h gee-internals.h libgee_0_8_la_vala.stamp
+
+$(libgee_0_8_la_VALASOURCES:.vala=.c): libgee_0_8_la_vala.stamp
+gee-0.8.vapi gee-internals-0.8.vapi gee.h gee-internals.h: libgee_0_8_la_vala.stamp
 
 geeincludedir = $(includedir)/gee-0.8
 
@@ -146,14 +165,16 @@ Gee-0.8.typelib: Gee-0.8.gir
 	@INTROSPECTION_COMPILER@ $(INTROSPECTION_COMPILER_ARGS) -o $@ $^
 endif
 
-Gee-0.8.gir gee-internals-0.8.vapi gee-0.8.vapi: libgee-0.8.la
-
 MOSTLYCLEANFILES = \
 	$(libgee_0_8_la_SOURCES:.vala=.c) \
-	src/gnome_news_vala.stamp \
+	libgee_0_8_la_vala.stamp \
 	gee-0.8.vapi \
 	gee-internals-0.8.vapi \
 	Gee-0.8.typelib \
 	Gee-0.8.gir \
 	$(NULL)
 
+EXTRA_DIST += \
+	$(libgee_0_8_la_VALASOURCES) \
+	libgee_0_8_la_vala.stamp \
+	$(NULL)

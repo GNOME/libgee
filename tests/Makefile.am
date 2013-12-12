@@ -4,7 +4,7 @@ noinst_PROGRAMS = $(TEST_PROGS)
 
 TEST_PROGS += tests
 
-tests_SOURCES = \
+tests_VALASOURCES = \
        testarraylist.vala \
        testarrayqueue.vala \
        testbidirlist.vala \
@@ -44,15 +44,17 @@ tests_SOURCES = \
        testtreeset.vala \
        $(NULL)
 
-tests_DEPENDENCIES = \
-	$(top_srcdir)/gee/gee-0.8.vapi \
+tests_SOURCES = \
+	$(tests_VALASOURCES:.vala=.c) \
 	$(NULL)
 
-tests_VALAFLAGS = \
-	--basedir $(top_srcdir) \
-	--vapidir $(top_srcdir)/gee \
-	--pkg gee-0.8 --pkg posix \
-	$(VALAFLAGS) \
+tests_DEPENDENCIES = \
+	$(top_srcdir)/gee/gee-0.8.vapi \
+	tests_vala.stamp \
+	$(NULL)
+
+tests_CFLAGS = \
+	-w \
 	$(NULL)
 
 tests_CPPFLAGS = \
@@ -62,6 +64,29 @@ tests_CPPFLAGS = \
 
 tests_LDADD = \
 	$(GLIB_LIBS) ../gee/libgee-0.8.la \
+	$(NULL)
+
+tests_VALAFLAGS = \
+	--basedir $(top_srcdir) \
+	--vapidir $(top_srcdir)/gee \
+	--pkg gee-0.8 --pkg posix \
+	$(VALAFLAGS) \
+	$(NULL)
+
+tests_vala.stamp: $(tests_VALASOURCES)
+	$(AM_V_VALAC)$(VALAC) $(VALAFLAGS) $(tests_VALAFLAGS) -C $(tests_VALASOURCES)
+	@touch tests_vala.stamp
+
+$(tests_VALASOURCES:.vala=.c): tests_vala.stamp
+
+MOSTLYCLEANFILES = \
+	$(tests_VALASOURCES:.vala=.c) \
+	tests_vala.stamp \
+	$(NULL)
+
+EXTRA_DIST += \
+	$(tests_VALASOURCES) \
+	tests_vala.stamp \
 	$(NULL)
 
 coverage-reset:
