@@ -146,7 +146,7 @@ dist_vapi_DATA = \
 if HAVE_INTROSPECTION
 girdir = @INTROSPECTION_GIRDIR@
 
-gir_DATA = \
+dist_gir_DATA = \
 	Gee-0.8.gir \
 	$(NULL)
 
@@ -161,7 +161,8 @@ libgee_dlname = \
 	`$(SED) -nE "s/^dlname='([A-Za-z0-9.+-]+)'/\1/p" libgee-0.8.la`
 INTROSPECTION_COMPILER_ARGS= \
 	-l $(libgee_dlname)
-Gee-0.8.typelib: Gee-0.8.gir
+Gee-0.8.gir: libgee_0_8_la_vala.stamp
+Gee-0.8.typelib: Gee-0.8.gir libgee-0.8.la
 	@INTROSPECTION_COMPILER@ $(INTROSPECTION_COMPILER_ARGS) -o $@ $^
 endif
 
