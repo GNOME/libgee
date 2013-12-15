@@ -403,19 +403,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		public override bool contains (K key) {
 			return _map.has_key (key);
 		}
-
-		public bool add_all (Collection<K> collection) {
-			assert_not_reached ();
-		}
-
-		public bool remove_all (Collection<K> collection) {
-			assert_not_reached ();
-		}
-
-		public bool retain_all (Collection<K> collection) {
-			assert_not_reached ();
-		}
-
 	}
 
 	private class ValueCollection<K,V> : AbstractCollection<V> {
@@ -458,18 +445,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			}
 			return false;
 		}
-
-		public bool add_all (Collection<V> collection) {
-			assert_not_reached ();
-		}
-
-		public bool remove_all (Collection<V> collection) {
-			assert_not_reached ();
-		}
-
-		public bool retain_all (Collection<V> collection) {
-			assert_not_reached ();
-		}
 	}
 
 	private class EntrySet<K,V> : AbstractSet<Map.Entry<K, V>> {
@@ -505,18 +480,6 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 
 		public override bool contains (Map.Entry<K, V> entry) {
 			return _map.has (entry.key, entry.value);
-		}
-
-		public bool add_all (Collection<Map.Entry<K, V>> entries) {
-			assert_not_reached ();
-		}
-
-		public bool remove_all (Collection<Map.Entry<K, V>> entries) {
-			assert_not_reached ();
-		}
-
-		public bool retain_all (Collection<Map.Entry<K, V>> entries) {
-			assert_not_reached ();
 		}
 	}
 

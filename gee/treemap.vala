@@ -280,7 +280,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 		}
 	}
 
-	private void fix_removal (ref Node<K,V> node, out K? key = null, out V? value) {
+	private void fix_removal (ref Node<K,V> node, out K? key = null, out V? value = null) {
 		Node<K,V> n = (owned) node;
 		key = (owned) n.key;
 		value = (owned) n.value;

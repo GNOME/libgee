@@ -342,7 +342,6 @@ public interface Gee.Collection<G> : Iterable<G> {
 			changed |= remove (val);
 			return true;
 		});
-		return changed;
 	}
 
 	/**

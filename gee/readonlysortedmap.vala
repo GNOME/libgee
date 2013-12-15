@@ -81,7 +81,7 @@ internal class Gee.ReadOnlySortedMap<K,V> : ReadOnlyMap<K,V>, SortedMap<K,V> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public SortedMap<K, V> read_only_view {
+	public new SortedMap<K, V> read_only_view {
 		owned get {
 			return this;
 		}

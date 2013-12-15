@@ -49,7 +49,7 @@ internal class Gee.ReadOnlyBidirSortedMap<K,V> : ReadOnlySortedMap<K,V>, BidirSo
 	/**
 	 * {@inheritDoc}
 	 */
-	public BidirSortedMap<K,V> read_only_view {
+	public new BidirSortedMap<K,V> read_only_view {
 		owned get {
 			return this;
 		}

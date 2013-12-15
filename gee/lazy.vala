@@ -110,6 +110,7 @@ public class Gee.Lazy<G> {
 					bool res = _eval.wait_until (_mutex, end_time);
 					_mutex.unlock ();
 					if (!res) {
+						value = null;
 						return false;
 					}
 				} else {

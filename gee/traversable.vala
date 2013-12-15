@@ -356,6 +356,7 @@ public interface Gee.Traversable<G> : Object {
 			switch (state) {
 			case Stream.YIELD:
 				if (current == null || !current.next ()) {
+					val = null;
 					return Stream.CONTINUE;
 				} else {
 					val = new Lazy<A> (() => {return current.get ();});
@@ -367,6 +368,7 @@ public interface Gee.Traversable<G> : Object {
 					val = new Lazy<A> (() => {return current.get ();});
 					return Stream.YIELD;
 				} else {
+					val = null;
 					return Stream.WAIT;
 				}
 			case Stream.WAIT:
@@ -374,9 +376,11 @@ public interface Gee.Traversable<G> : Object {
 					val = new Lazy<A> (() => {return current.get ();});
 					return Stream.YIELD;
 				} else {
+					val = null;
 					return Stream.CONTINUE;
 				}
 			case Stream.END:
+				val = null;
 				return Stream.END;
 			default:
 				assert_not_reached ();

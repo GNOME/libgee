@@ -44,6 +44,7 @@ internal class Gee.LightMapFuture<A, G> : Object, Future<A> {
 	public bool wait_until (int64 end_time, out unowned G? value = null) throws Gee.FutureError {
 		unowned A arg;
 		bool result;
+		value = null;
 		if ((result = _base.wait_until (end_time, out arg))) {
 			value = _func (arg);
 		}

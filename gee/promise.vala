@@ -112,6 +112,7 @@ public class Gee.Promise<G> {
 			_mutex.unlock ();
 			switch (state) {
 			case State.INIT:
+				value = null;
 				return false;
 			case State.ABANDON:
 				throw new FutureError.ABANDON_PROMISE ("Promise has been abandon");

@@ -897,6 +897,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 
 		public static void improve_bookmark<G> (Range<G> range, out Tower<G>? out_curr = null, out TowerIter<G> prev = null) {
 			prev = TowerIter<G>();
+			out_curr = null;
 			switch (range._type) {
 			case RangeType.HEAD:
 				if (&out_curr != null) {
@@ -1098,6 +1099,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 
 		public static inline bool search_from_bookmark<G> (CompareDataFunc<G>? cmp, G key, ref TowerIter<G> prev, out TowerIter<G> next = null, uint8 to_level = 0, uint8 from_level = (uint8)_MAX_HEIGHT - 1) {
 			assert (from_level >= to_level);
+			next = TowerIter<G>();
 			bool res = false;
 			for (int i = from_level; i >= to_level; i--) {
 				unowned Tower<G> tmp_prev = prev._iter[i]; // Should be treated as NULL-like value
