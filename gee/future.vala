@@ -48,6 +48,7 @@ public interface Gee.Future<G> : Object {
 	 * Returned value is always the same and it is alive at least as long
 	 * as the future.
 	 */
+	[CCode (ordering = 7)]
 	public virtual new G? value {
 		get {
 			try {
@@ -62,6 +63,7 @@ public interface Gee.Future<G> : Object {
 	 * Checks if value is ready. If it is calls to {@link wait} and
 	 * {@link wait_until} will not block and value is returned immidiatly.
 	 */
+	[CCode (ordering = 8)]
 	public abstract bool ready {get;}
 
 	/**
@@ -72,6 +74,7 @@ public interface Gee.Future<G> : Object {
 	 *
 	 * @since 0.11.5
 	 */
+	[CCode (ordering = 9)]
 	public abstract GLib.Error? exception {get;}
 
 	/**
@@ -82,6 +85,7 @@ public interface Gee.Future<G> : Object {
 	 * @see wait_until
 	 * @see wait_async
 	 */
+	[CCode (ordering = 0)]
 	public abstract unowned G wait () throws Gee.FutureError;
 
 	/**
@@ -94,6 +98,7 @@ public interface Gee.Future<G> : Object {
 	 * @see wait
 	 * @see wait_async
 	 */
+	[CCode (ordering = 1)]
 	public abstract bool wait_until (int64 end_time, out unowned G? value = null) throws Gee.FutureError;
 
 	/**
@@ -104,6 +109,7 @@ public interface Gee.Future<G> : Object {
 	 * @see wait
 	 * @see wait_until
 	 */
+	[CCode (ordering = 2)]
 	public abstract async unowned G wait_async () throws Gee.FutureError;
 	public delegate A MapFunc<A, G> (G value);
 
@@ -122,6 +128,7 @@ public interface Gee.Future<G> : Object {
 	 *   value eagerly by {@link when_done} it is recommended to use
 	 *   {@link task} and {@link flat_map} for longer computation.
 	 */
+	[CCode (ordering = 3)]
 	public virtual Future<A> map<A> (owned MapFunc<A, G> func) {
 		Promise<A> promise = new Promise<A> ();
 		wait_async.begin ((obj, res) => {
@@ -157,8 +164,14 @@ public interface Gee.Future<G> : Object {
 	 *   value eagerly by {@link when_done} it is recommended to use
 	 *   {@link task} and {@link flat_map} for longer computation.
 	 */
-	public virtual Future<A> light_map<A> (LightMapFunc<A, G> func) {
+	[CCode (ordering = 10, cname = "gee_future_light_map_fixed", vfunc_name = "light_map_fixed")]
+	public virtual Future<A> light_map<A> (owned LightMapFunc<A, G> func) {
 		return new LightMapFuture<A, G> (this, func);
+	}
+
+	[CCode (ordering = 4, cname = "gee_future_light_map", vfunc_name = "light_map")]
+	public virtual Future<A> light_map_broken<A> (LightMapFunc<A, G> func) {
+		return light_map<A> (func);
 	}
 
 	[CCode (scope = "async")]
@@ -178,6 +191,7 @@ public interface Gee.Future<G> : Object {
 	 *   value eagerly by {@link when_done} it is recommended to return a
 	 *   future from {@link task} and use {@link flat_map} for longer computation.
 	 */
+	[CCode (ordering = 5)]
 	public virtual Future<B> zip<A, B> (owned ZipFunc<G, A, B> zip_func, Future<A> second) {
 		Promise<B> promise = new Promise<B> ();
 		do_zip.begin<G, A, B> ((owned) zip_func, this, second, promise, (obj, res) => {do_zip.end<G, A, B> (res);});
@@ -210,6 +224,7 @@ public interface Gee.Future<G> : Object {
 	 *   larger computation inside the returned future for example by
 	 *   {@link task}
 	 */
+	[CCode (ordering = 6)]
 	public virtual Gee.Future<A> flat_map<A>(owned FlatMapFunc<A, G> func) {
 		Promise<A> promise = new Promise<A> ();
 		do_flat_map.begin<G, A> ((owned)func, this, promise, (obj, res) => {do_flat_map.end<G, A> (res);});
