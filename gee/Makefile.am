@@ -167,7 +167,7 @@ Gee-0.8.typelib: Gee-0.8.gir libgee-0.8.la
 endif
 
 MOSTLYCLEANFILES = \
-	$(libgee_0_8_la_SOURCES:.vala=.c) \
+	$(libgee_0_8_la_VALASOURCES:.vala=.c) \
 	libgee_0_8_la_vala.stamp \
 	gee-0.8.vapi \
 	gee-internals-0.8.vapi \
