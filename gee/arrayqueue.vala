@@ -44,12 +44,17 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
-		this.equal_func = equal_func;
+		_equal_func = (owned)equal_func;
 		this._items = new G[10];
 	}
 
 	[CCode (notify = false)]
-	public EqualDataFunc<G> equal_func { private set; get; }
+	public EqualDataFunc<G> equal_func {
+		private set {}
+		get { return _equal_func; }
+	}
+
+	private EqualDataFunc<G> _equal_func;
 
 	/**
 	 * {@inheritDoc}

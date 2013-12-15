@@ -20,9 +20,9 @@
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 internal class Gee.LightMapFuture<A, G> : Object, Future<A> {
-	public LightMapFuture (Future<G> base_future, Future.LightMapFunc<A, G> func) {
+	public LightMapFuture (Future<G> base_future, owned Future.LightMapFunc<A, G> func) {
 		_base = base_future;
-		_func = func;
+		_func = (owned)func;
 	}
 
 	public bool ready {

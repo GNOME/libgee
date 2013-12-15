@@ -92,19 +92,31 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	 * The keys' comparator function.
 	 */
 	[CCode (notify = false)]
-	public CompareDataFunc<K> key_compare_func { private set; get; }
+	public CompareDataFunc<K> key_compare_func {
+		private set {}
+		get {
+			return _key_compare_func.func;
+		}
+	}
 
 	/**
 	 * The values' equality testing function.
 	 */
 	[CCode (notify = false)]
-	public EqualDataFunc<V> value_equal_func { private set; get; }
+	public EqualDataFunc<V> value_equal_func {
+		private set {}
+		get {
+			return _value_equal_func.func;
+		}
+	}
 
 	private int _size = 0;
 
 	private weak SortedSet<K> _keys;
 	private weak Collection<V> _values;
 	private weak SortedSet<Map.Entry<K,V>> _entries;
+	private Functions.CompareDataFuncClosure<K> _key_compare_func;
+	private Functions.EqualDataFuncClosure<V> _value_equal_func;
 
 	/**
 	 * Constructs a new, empty tree map sorted according to the specified
@@ -123,8 +135,13 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 		if (value_equal_func == null) {
 			value_equal_func = Functions.get_equal_func_for (typeof (V));
 		}
-		this.key_compare_func = key_compare_func;
-		this.value_equal_func = value_equal_func;
+		_key_compare_func = new Functions.CompareDataFuncClosure<K> ((owned)key_compare_func);
+		_value_equal_func = new Functions.EqualDataFuncClosure<V> ((owned)value_equal_func);
+	}
+
+	internal TreeMap.with_closures (owned Functions.CompareDataFuncClosure<K> key_compare_func, owned Functions.EqualDataFuncClosure<V> value_equal_func) {
+		_key_compare_func = key_compare_func;
+		_value_equal_func = value_equal_func;
 	}
 
 	~TreeMap () {
@@ -455,6 +472,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 	 */
 	public override Gee.BidirMapIterator<K,V> bidir_map_iterator () {
 		return new MapIterator<K,V> (this);
+	}
+
+	internal Functions.CompareDataFuncClosure<K> get_key_compare_func_closure () {
+		return _key_compare_func;
 	}
 
 	[Compact]

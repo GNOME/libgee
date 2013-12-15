@@ -51,7 +51,12 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 	 * The elements' comparator function.
 	 */
 	[CCode (notify = false)]
-	public CompareDataFunc<G> compare_func { private set; get; }
+	public CompareDataFunc<G> compare_func {
+		private set {}
+		get {
+			return _compare_func.func;
+		}
+	}
 
 	private int _size = 0;
 
@@ -68,7 +73,11 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}
-		this.compare_func = compare_func;
+		_compare_func = new Functions.CompareDataFuncClosure<G> ((owned)compare_func);
+	}
+
+	internal TreeSet.with_closures (owned Functions.CompareDataFuncClosure<G> compare_func) {
+		_compare_func = (owned)compare_func;
 	}
 
 	~TreeSet () {
@@ -1171,4 +1180,5 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 	private weak Node<G>? _first = null;
 	private weak Node<G>? _last = null;
 	private int stamp = 0;
+	private Functions.CompareDataFuncClosure<G> _compare_func;
 }

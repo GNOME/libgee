@@ -33,7 +33,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}
-		_cmp = compare_func;
+		_cmp = (owned)compare_func;
 	}
 
 	~ConcurrentSet () {

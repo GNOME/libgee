@@ -33,7 +33,12 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * The elements' equality testing function.
 	 */
 	[CCode (notify = false)]
-	public Gee.EqualDataFunc<G> equal_func { private set; get; }
+	public Gee.EqualDataFunc<G> equal_func {
+		private set {}
+		get {
+			return _equal_func.func;
+		}
+	}
 
 	/**
 	 * Construct new, empty single linked list
@@ -44,9 +49,16 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	 * @param equal_func an optional element equality testing function
 	 */
 	public ConcurrentList (owned Gee.EqualDataFunc<G>? equal_func = null) {
-		if (equal_func == null)
+		if (equal_func == null) {
 			equal_func = Gee.Functions.get_equal_func_for (typeof (G));
-		this.equal_func = (owned)equal_func;
+		}
+		_equal_func = new Functions.EqualDataFuncClosure<G>((owned)equal_func);
+		_head = new Node<G>.head ();
+		HazardPointer.set_pointer<Node<G>> (&_tail, _head);
+	}
+
+	internal ConcurrentList.with_closure (owned Functions.EqualDataFuncClosure<G> equal_func) {
+		_equal_func = (owned)equal_func;
 		_head = new Node<G>.head ();
 		HazardPointer.set_pointer<Node<G>> (&_tail, _head);
 	}
@@ -232,7 +244,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 		HazardPointer.Context ctx = new HazardPointer.Context ();
 		assert (0 <= start);
 		assert (start <= end);
-		var list = new ConcurrentList<G> (equal_func);
+		var list = new ConcurrentList<G>.with_closure (_equal_func);
 		var iterator = iterator ();
 		int idx = 0;
 		for (; iterator.next (); idx++)
@@ -258,6 +270,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 
 	private Node<G> _head;
 	private Node<G> *_tail;
+	private Functions.EqualDataFuncClosure<G> _equal_func;
 
 	private class Iterator<G> : Object, Gee.Traversable<G>, Gee.Iterator<G>, ListIterator<G> {
 		public Iterator (Node<G> head) {

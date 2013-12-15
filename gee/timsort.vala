@@ -94,7 +94,7 @@ internal class Gee.TimSort<G> : Object {
 	private int size;
 	private Slice<G>[] pending;
 	private int minimum_gallop;
-	private CompareDataFunc<G> compare;
+	private unowned CompareDataFunc<G> compare;
 
 	private void do_sort () {
 		if (size < 2) {

@@ -57,17 +57,29 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	 * The elements' hash function.
 	 */
 	[CCode (notify = false)]
-	public HashDataFunc<G> hash_func { private set; get; }
+	public HashDataFunc<G> hash_func {
+		private set {}
+		get {
+			return _hash_func.func;
+		}
+	}
 
 	/**
 	 * The elements' equality testing function.
 	 */
 	[CCode (notify = false)]
-	public EqualDataFunc<G> equal_func { private set; get; }
+	public EqualDataFunc<G> equal_func {
+		private set {}
+		get {
+			return _equal_func.func;
+		}
+	}
 
 	private int _array_size;
 	private int _nnodes;
 	private Node<G>[] _nodes;
+	private Functions.HashDataFuncClosure<G> _hash_func;
+	private Functions.EqualDataFuncClosure<G> _equal_func;
 
 	// concurrent modification protection
 	private int _stamp = 0;
@@ -91,8 +103,15 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
-		this.hash_func = hash_func;
-		this.equal_func = equal_func;
+		_hash_func = new Functions.HashDataFuncClosure<G> ((owned)hash_func);
+		_equal_func = new Functions.EqualDataFuncClosure<G> ((owned)equal_func);
+		_array_size = MIN_SIZE;
+		_nodes = new Node<G>[_array_size];
+	}
+
+	internal HashSet.with_closures (owned Functions.HashDataFuncClosure<G> hash_func, owned Functions.EqualDataFuncClosure<G> equal_func) {
+		_hash_func = hash_func;
+		_equal_func = equal_func;
 		_array_size = MIN_SIZE;
 		_nodes = new Node<G>[_array_size];
 	}

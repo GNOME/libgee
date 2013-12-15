@@ -37,12 +37,18 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	private int _stamp = 0;
 	private Node<G>? _head = null;
 	private weak Node<G>? _tail = null;
+	private Functions.EqualDataFuncClosure<G> _equal_func;
 
 	/**
 	 * The elements' equality testing function.
 	 */
 	[CCode (notify = false)]
-	public EqualDataFunc<G> equal_func { private set; get; }
+	public EqualDataFunc<G> equal_func {
+		private set {}
+		get {
+			return _equal_func.func;
+		}
+	}
 
 	/**
 	 * Constructs a new, empty linked list.
@@ -56,7 +62,11 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
-		this.equal_func = equal_func;
+		_equal_func = new Functions.EqualDataFuncClosure<G> ((owned)equal_func);
+	}
+
+	private LinkedList.with_closures (owned Functions.EqualDataFuncClosure<G> equal_func) {
+		_equal_func = equal_func;
 	}
 	
 	~LinkedList () {
@@ -257,7 +267,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 		return_val_if_fail (start >= 0, null);
 		return_val_if_fail (stop <= this._size, null);
 
-		List<G> slice = new LinkedList<G> (this.equal_func);
+		List<G> slice = new LinkedList<G>.with_closures (_equal_func);
 		weak Node<G> n = this._get_node_at (start);
 		for (int i = start; i < stop; i++) {
 			slice.add (n.data);

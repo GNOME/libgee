@@ -46,7 +46,12 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	 * The elements' comparator function.
 	 */
 	[CCode (notify = false)]
-	public CompareDataFunc<G> compare_func { private set; get; }
+	public CompareDataFunc<G> compare_func {
+		private set {}
+		get {
+			return _compare_func;
+		}
+	}
 
 	private int _size = 0;
 	private int _stamp = 0;
@@ -67,6 +72,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	private Type1Node<G>? _ll_tail = null;
 	private unowned Node<G> _iter_head = null;
 	private unowned Node<G> _iter_tail = null;
+	private CompareDataFunc<G> _compare_func;
 
 	/**
 	 * Constructs a new, empty priority queue.
@@ -80,7 +86,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}
-		this.compare_func = compare_func;
+		_compare_func = (owned)compare_func;
 	}
 
 	/**

@@ -20,6 +20,7 @@
  * 	Maciej Piechotka <uzytkownik2@gmail.com>
  */
 namespace Gee {
+	[CCode (scope = "async")]
 	public delegate G Task<G>();
 
 	/**
@@ -36,9 +37,9 @@ namespace Gee {
 	 *   block inside the taks. If necessary it is possible to create a new one
 	 *   by anyther call.
 	 */
-	public Future<G> task<G>(Task<G> task) throws GLib.ThreadError {
+	public Future<G> task<G>(owned Task<G> task) throws GLib.ThreadError {
 		TaskData<G> tdata = new TaskData<G>();
-		tdata.function = task;
+		tdata.function = (owned)task;
 		tdata.promise = new Promise<G>();
 		Future<G> result = tdata.promise.future;
 		TaskData.get_async_pool ().add ((owned)tdata);
@@ -63,7 +64,6 @@ namespace Gee {
 
 	[Compact]
 	internal class TaskData<G> {
-		[CCode (scope = "async")]
 		public Task<G> function;
 		public Promise<G> promise;
 		public void run() {

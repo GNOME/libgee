@@ -97,23 +97,42 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	 * The keys' hash function.
 	 */
 	[CCode (notify = false)]
-	public HashDataFunc<K> key_hash_func { private set; get; }
+	public HashDataFunc<K> key_hash_func {
+		private set {}
+		get {
+			return _key_hash_func.func;
+		}
+	}
 
 	/**
 	 * The keys' equality testing function.
 	 */
 	[CCode (notify = false)]
-	public EqualDataFunc<K> key_equal_func { private set; get; }
+	public EqualDataFunc<K> key_equal_func {
+		private set {}
+		get {
+			return _key_equal_func.func;
+		}
+	}
 
 	/**
 	 * The values' equality testing function.
 	 */
 	[CCode (notify = false)]
-	public EqualDataFunc<V> value_equal_func { private set; get; }
+	public EqualDataFunc<V> value_equal_func {
+		private set {}
+		get {
+			return _value_equal_func.func;
+		}
+	}
 
 	private int _array_size;
 	private int _nnodes;
 	private Node<K,V>[] _nodes;
+	private Functions.HashDataFuncClosure<K> _key_hash_func;
+	private Functions.EqualDataFuncClosure<K> _key_equal_func;
+	private Functions.EqualDataFuncClosure<V> _value_equal_func;
+
 
 	private weak Set<K> _keys;
 	private weak Collection<V> _values;
@@ -145,9 +164,18 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		if (value_equal_func == null) {
 			value_equal_func = Functions.get_equal_func_for (typeof (V));
 		}
-		this.key_hash_func = key_hash_func;
-		this.key_equal_func = key_equal_func;
-		this.value_equal_func = value_equal_func;
+		_key_hash_func = new Functions.HashDataFuncClosure<K> ((owned)key_hash_func);
+		_key_equal_func = new Functions.EqualDataFuncClosure<K> ((owned)key_equal_func);
+		_value_equal_func = new Functions.EqualDataFuncClosure<V> ((owned)value_equal_func);
+
+		_array_size = MIN_SIZE;
+		_nodes = new Node<K,V>[_array_size];
+	}
+
+	internal HashMap.with_closures (owned Functions.HashDataFuncClosure<K> key_hash_func, owned Functions.EqualDataFuncClosure<K> key_equal_func, owned Functions.EqualDataFuncClosure<V> value_equal_func) {
+		_key_hash_func = key_hash_func;
+		_key_equal_func = key_equal_func;
+		_value_equal_func = value_equal_func;
 
 		_array_size = MIN_SIZE;
 		_nodes = new Node<K,V>[_array_size];
@@ -239,6 +267,14 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	 */
 	public override Gee.MapIterator<K,V> map_iterator () {
 		return new MapIterator<K,V> (this);
+	}
+
+	internal Functions.HashDataFuncClosure<K> get_key_hash_func_closure () {
+		return _key_hash_func;
+	}
+
+	internal Functions.EqualDataFuncClosure<K> get_key_equal_func_closure () {
+		return _key_equal_func;
 	}
 
 	private inline bool unset_helper (K key, out V? value = null) {

@@ -56,10 +56,16 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	 * The elements' equality testing function.
 	 */
 	[CCode (notify = false)]
-	public EqualDataFunc<G> equal_func { private set; get; }
+	public EqualDataFunc<G> equal_func {
+		private set {}
+		get {
+			return _equal_func.func;
+		}
+	}
 
 	internal G[] _items;
 	internal int _size;
+	private Functions.EqualDataFuncClosure<G> _equal_func;
 
 	// concurrent modification protection
 	private int _stamp = 0;
@@ -76,7 +82,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
-		this.equal_func = equal_func;
+		_equal_func = new Functions.EqualDataFuncClosure<G>((owned)equal_func);
 		_items = new G[4];
 		_size = 0;
 	}
@@ -94,9 +100,15 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 		if (equal_func == null) {
 			equal_func = Functions.get_equal_func_for (typeof (G));
 		}
-		this.equal_func = equal_func;
+		_equal_func = new Functions.EqualDataFuncClosure<G>((owned)equal_func);
 		_size = items.length;
 		_items = do_wrap<G> ((owned)items);
+	}
+
+	internal ArrayList.with_closure (owned Functions.EqualDataFuncClosure<G> equal_func) {
+		_equal_func = equal_func;
+		_items = new G[4];
+		_size = 0;
 	}
 
 	/**
@@ -246,7 +258,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 		return_val_if_fail (start >= 0, null);
 		return_val_if_fail (stop <= _size, null);
 
-		var slice = new ArrayList<G> (this.equal_func);
+		var slice = new ArrayList<G>.with_closure (_equal_func);
 		for (int i = start; i < stop; i++) {
 			slice.add (this[i]);
 		}

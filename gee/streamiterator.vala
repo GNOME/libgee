@@ -74,7 +74,7 @@ internal class Gee.StreamIterator<A, G> : GLib.Object, Traversable<A>, Iterator<
 			return true;
 		}
 		unowned Iterator<G> outer = _outer;
-		StreamFunc<A, G> func = _func;
+		unowned StreamFunc<A, G> func = _func;
 		Traversable.Stream state = _state;
 		bool need_next = _need_next;
 		bool result = true;
