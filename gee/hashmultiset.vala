@@ -61,7 +61,7 @@ public class Gee.HashMultiSet<G> : AbstractMultiSet<G> {
 	 */
 	[Deprecated (since = "0.13.3", replacement = "gee_hash_multi_set_new_fixed")]
 	[CCode (cname = "gee_hash_multi_set_new")]
-	public HashMultiSet.broken (owned HashDataFunc<G>? hash_func = null, owned EqualDataFunc<G>? equal_func = null) {
+	public HashMultiSet.broken (HashDataFunc<G>? hash_func = null, EqualDataFunc<G>? equal_func = null) {
 		base (new HashMap<G, int> (hash_func, equal_func));
 	}
 
