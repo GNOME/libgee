@@ -1,3 +1,9 @@
+libgee 0.13.4
+=============
+ * The collection cloning no longer leaks memory
+ * Various warning fixes
+ * Various fixes to build system
+
 libgee 0.12.0
 =============
  * No changes since previous release
