@@ -83,6 +83,7 @@ libgee_0_8_la_SOURCES = \
 	$(libgee_0_8_la_VALASOURCES:.vala=.c) \
 	../utils/async.h \
 	../utils/free.h \
+	../utils/misc.h \
 	$(NULL)
 
 libgee_0_8_la_DEPENDENCIES = \
