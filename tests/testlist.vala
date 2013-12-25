@@ -55,21 +55,26 @@ public abstract class ListTests : CollectionTests {
 		var iterator = test_list.iterator ();
 		assert (! iterator.next ());
 
+		unowned string[] data = TestData.get_data ();
+		unowned uint[] idx = TestData.get_drawn_numbers ();
+
 		// Check iterate list
-		assert (test_list.add ("one"));
-		assert (test_list.add ("two"));
-		assert (test_list.add ("three"));
-		assert (test_list.add ("one"));
+		foreach (unowned string s in data) {
+			assert (test_list.add (s));
+		}
+		foreach (uint i in idx) {
+			assert (test_list.add (data[i]));
+		}
 
 		iterator = test_list.iterator ();
-		assert (iterator.next());
-		assert (iterator.get () == "one");
-		assert (iterator.next());
-		assert (iterator.get () == "two");
-		assert (iterator.next());
-		assert (iterator.get () == "three");
-		assert (iterator.next());
-		assert (iterator.get () == "one");
+		foreach (unowned string s in data) {
+			assert (iterator.next());
+			assert (iterator.get () == s);
+		}
+		foreach (uint i in idx) {
+			assert (iterator.next());
+			assert (iterator.get () == data[i]);
+		}
 		assert (! iterator.next ());
 	}
 
@@ -150,6 +155,9 @@ public abstract class ListTests : CollectionTests {
 	public void test_get () {
 		var test_list = test_collection as Gee.List<string>;
 
+		unowned string[] data = TestData.get_data ();
+		unowned uint[] idx = TestData.get_drawn_numbers ();
+
 		// Check the test list is not null
 		assert (test_list != null);
 
@@ -162,8 +170,8 @@ public abstract class ListTests : CollectionTests {
 		Test.trap_assert_failed ();
 
 		// Check get for valid index in list with one element
-		assert (test_list.add ("one"));
-		assert (test_list.get (0) == "one");
+		assert (test_list.add (data[0]));
+		assert (test_list.get (0) == data[0]);
 
 		// Check get for indexes out of range
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
@@ -182,11 +190,12 @@ public abstract class ListTests : CollectionTests {
 		Test.trap_assert_failed ();
 
 		// Check get for valid indexes in list with multiple element
-		assert (test_list.add ("two"));
-		assert (test_list.add ("three"));
-		assert (test_list.get (0) == "one");
-		assert (test_list.get (1) == "two");
-		assert (test_list.get (2) == "three");
+		for (int i = 1; i < data.length; i++) {
+			assert (test_list.add (data[i]));
+		}
+		foreach (uint j in idx) {
+			assert (test_list.get ((int)j) == data[j]);
+		}
 
 		// Check get if list is cleared and empty again
 		test_list.clear ();
@@ -312,39 +321,61 @@ public abstract class ListTests : CollectionTests {
 		}
 		Test.trap_assert_failed ();
 
+		unowned string[] data = TestData.get_data ();
+		unowned uint[] idx = TestData.get_drawn_numbers ();
+
 		// add 5 items
-		assert (test_list.add ("one"));
-		assert (test_list.add ("two"));
-		assert (test_list.add ("three"));
-		assert (test_list.add ("four"));
-		assert (test_list.add ("five"));
-		assert (test_list.size == 5);
+		foreach (unowned string s in data) {
+			assert (test_list.add (s));
+		}
+		assert (test_list.size == data.length);
 
 		// Check remove_at first
-		assert (test_list.remove_at (0) == "one");
-		assert (test_list.size == 4);
-		assert (test_list.get (0) == "two");
-		assert (test_list.get (1) == "three");
-		assert (test_list.get (2) == "four");
-		assert (test_list.get (3) == "five");
+		assert (test_list.remove_at (0) == data[0]);
+		assert (test_list.size == data.length - 1);
+		for (int i = 1; i < data.length - 1; i++) {
+			assert (test_list.get (i - 1) == data[i]);
+		}
 
 		// Check remove_at last
-		assert (test_list.remove_at (3) == "five");
-		assert (test_list.size == 3);
-		assert (test_list.get (0) == "two");
-		assert (test_list.get (1) == "three");
-		assert (test_list.get (2) == "four");
+		assert (test_list.remove_at (data.length - 2) == data[data.length - 1]);
+		assert (test_list.size == data.length - 2);
+		for (int i = 1; i < data.length - 2; i++) {
+			assert (test_list.get (i - 1) == data[i]);
+		}
 
 		// Check remove_at in between
-		assert (test_list.remove_at (1) == "three");
-		assert (test_list.size == 2);
-		assert (test_list.get (0) == "two");
-		assert (test_list.get (1) == "four");
+		uint expected_size = data.length - 2;
+		for (uint i = 0; i < idx.length; i++) {
+			int to_remove = (int)idx[i] - 1;
+			for (uint j = 0; j < i; j++) {
+				if (idx[j] < idx[i]) {
+					to_remove--;
+				}
+			}
+			assert (test_list.remove_at (to_remove) == data[idx[i]]);
+			assert (test_list.size == --expected_size);
+		}
+		int current_idx = 0;
+		for (uint i = 1; i < data.length - 1; i++) {
+			bool skip = false;
+			for (int j = 0; j < idx.length; j++) {
+				if (i == idx[j]) {
+					skip = true;
+					break;
+				}
+			}
+			if (skip) {
+				continue;
+			}
+			assert (test_list.get(current_idx++) == data[i]);
+		}
+		assert (test_list.size == current_idx);
 
 		// Check remove_at when index out of range
 		if (Test.trap_fork (0, TestTrapFlags.SILENCE_STDOUT |
 		                       TestTrapFlags.SILENCE_STDERR)) {
-			test_list.remove_at (2);
+			test_list.remove_at (current_idx);
 			Posix.exit (0);
 		}
 		Test.trap_assert_failed ();
@@ -361,26 +392,31 @@ public abstract class ListTests : CollectionTests {
 	public void test_index_of () {
 		var test_list = test_collection as Gee.List<string>;
 
+		unowned string[] data = TestData.get_data ();
+		unowned uint[] idx = TestData.get_drawn_numbers ();
+
 		// Check the test list is not null
 		assert (test_list != null);
 
 		// Check empty list
-		assert (test_list.index_of ("one") == -1);
+		assert (test_list.index_of (data[0]) == -1);
 
 		// Check one item
-		assert (test_list.add ("one"));
-		assert (test_list.index_of ("one") == 0);
-		assert (test_list.index_of ("two") == -1);
+		assert (test_list.add (data[0]));
+		assert (test_list.index_of (data[0]) == 0);
+		assert (test_list.index_of (data[1]) == -1);
 
 		// Check more items
-		assert (test_list.add ("two"));
-		assert (test_list.add ("three"));
-		assert (test_list.add ("four"));
-		assert (test_list.index_of ("one") == 0);
-		assert (test_list.index_of ("two") == 1);
-		assert (test_list.index_of ("three") == 2);
-		assert (test_list.index_of ("four") == 3);
-		assert (test_list.index_of ("five") == -1);
+		for (int i = 1; i < data.length; i++) {
+			assert (test_list.add (data[i]));
+			foreach (uint j in idx) {
+				if (j <= i) {
+					assert (test_list.index_of (data[j]) == j);
+				} else {
+					assert (test_list.index_of (data[j]) == -1);
+				}
+			}
+		}
 	}
 
 	public void test_first () {
