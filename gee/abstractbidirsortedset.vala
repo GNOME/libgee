@@ -33,18 +33,20 @@ public abstract class Gee.AbstractBidirSortedSet<G> : Gee.AbstractSortedSet<G>, 
 	 */
 	public abstract BidirIterator<G> bidir_iterator ();
 
-	private weak BidirSortedSet<G> _read_only_view;
+	private WeakRef _read_only_view;
+	construct {
+		_read_only_view = WeakRef(null);
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public virtual new BidirSortedSet<G> read_only_view {
 		owned get {
-			BidirSortedSet<G> instance = _read_only_view;
-			if (_read_only_view == null) {
+			BidirSortedSet<G>? instance = (BidirSortedSet<G>?)_read_only_view.get ();
+			if (instance == null) {
 				instance = new ReadOnlyBidirSortedSet<G> (this);
-				_read_only_view = instance;
-				instance.add_weak_pointer ((void**) (&_read_only_view));
+				_read_only_view.set (instance);
 			}
 			return instance;
 		}

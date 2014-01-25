@@ -309,14 +309,17 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 		public bool mutable { get { return false; } }
 	}
 
-	private weak MultiMap<K, V> _read_only_view;
+	private WeakRef _read_only_view;
+	construct {
+		_read_only_view = WeakRef(null);
+	}
+
 	public virtual new MultiMap<K, V> read_only_view {
 		owned get {
-			MultiMap<K, V> instance = _read_only_view;
-			if (_read_only_view == null) {
+			MultiMap<K, V>? instance = (MultiMap<K, V>?)_read_only_view.get ();
+			if (instance == null) {
 				instance = new ReadOnlyMultiMap<K, V> (this);
-				_read_only_view = instance;
-				instance.add_weak_pointer ((void**) (&_read_only_view));
+				_read_only_view.set (instance);
 			}
 			return instance;
 		}

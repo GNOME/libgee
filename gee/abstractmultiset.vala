@@ -92,14 +92,17 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 		_nitems = 0;
 	}
 
-	private weak MultiSet<G> _read_only_view;
+	private WeakRef _read_only_view;
+	construct {
+		_read_only_view = WeakRef(null);
+	}
+
 	public virtual new MultiSet<G> read_only_view {
 		owned get {
-			MultiSet<G> instance = _read_only_view;
-			if (_read_only_view == null) {
+			MultiSet<G>? instance = (MultiSet<G>?)_read_only_view.get ();
+			if (instance == null) {
 				instance = new ReadOnlyMultiSet<G> (this);
-				_read_only_view = instance;
-				instance.add_weak_pointer ((void**) (&_read_only_view));
+				_read_only_view.set (instance);
 			}
 			return instance;
 		}
