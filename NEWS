@@ -1,3 +1,7 @@
+libgee 0.13.5
+=============
+ * Use WeakRef for keeping of read-only proxy for collection
+
 libgee 0.13.4
 =============
  * The collection cloning no longer leaks memory
