@@ -104,7 +104,7 @@ public class TestData {
 	}
 
 	private static string[] sort_array (owned string[] array) {
-		qsort_with_data<string> (array, sizeof(string), (a, b) => {return strcmp(*(string **)a, *(string **)b);});
+		qsort_with_data<string> (array, sizeof(string), (a, b) => {return strcmp(a, b);});
 		return (owned)array;
 	}
 }
