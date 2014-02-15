@@ -348,8 +348,8 @@ public abstract class ListTests : CollectionTests {
 		uint expected_size = data.length - 2;
 		for (uint i = 0; i < idx.length; i++) {
 			int to_remove = (int)idx[i] - 1;
-			if (idx[i] == data.length - 1) {
-				// Removing last element, which was already removed
+			if (idx[i] == data.length - 1 || idx[i] == 0) {
+				// Removing last or first element, which was already removed
 				continue;
 			}
 			for (uint j = 0; j < i; j++) {
