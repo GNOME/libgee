@@ -1,3 +1,7 @@
+libgee 0.13.90
+==============
+ * Fix the broken test
+
 libgee 0.13.5.1
 ===============
  * Remove workaround for 'old' (<0.23.2) vala
