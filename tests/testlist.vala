@@ -349,11 +349,15 @@ public abstract class ListTests : CollectionTests {
 		for (uint i = 0; i < idx.length; i++) {
 			int to_remove = (int)idx[i] - 1;
 			if (idx[i] == data.length - 1 || idx[i] == 0) {
-				// Removing last or first element, which was already removed
+				// Skip last or first element, which was already removed
 				continue;
 			}
 			for (uint j = 0; j < i; j++) {
 				if (idx[j] < idx[i]) {
+					if (idx[j] == data.length - 1 || idx[j] == 0) {
+						// Last and first element were not removed
+						continue;
+					}
 					to_remove--;
 				}
 			}
