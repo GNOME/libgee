@@ -165,8 +165,10 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	public static void set_pointer<G> (G **aptr, owned G? new_ptr, size_t mask = 0, size_t new_mask = 0) {
 		HazardPointer<G>? ptr = exchange_hazard_pointer<G> (aptr, new_ptr, mask, new_mask, null);
 		if (ptr != null) {
-			DestroyNotify notify = Utils.Free.get_destroy_notify<G> ();
-			ptr.release ((owned)notify);
+			DestroyNotify? notify = Utils.Free.get_destroy_notify<G> ();
+			if (notify != null) {
+				ptr.release ((owned)notify);
+			}
 		}
 	}
 
@@ -202,8 +204,8 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		void *old_rptr = (void *)((size_t)(old_ptr) | (mask & old_mask));
 		bool success = AtomicPointer.compare_and_exchange((void **)aptr, old_rptr, new_rptr);
 		if (success) {
-			DestroyNotify notify = Utils.Free.get_destroy_notify<G> ();
-			if (old_ptr != null) {
+			DestroyNotify? notify = Utils.Free.get_destroy_notify<G> ();
+			if (old_ptr != null && notify != null) {
 				Context.get_current_context ()->release_ptr (old_ptr, (owned)notify);
 			}
 		} else if (new_ptr != null) {
@@ -480,6 +482,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 					_queue = new LinkedList<ArrayList<FreeNode *>> ();
 					// Hack to not lie about successfull setting policy
 					policy = AtomicInt.add (ref release_policy, (int)(1 << (sizeof(int) * 8 - 1)));
+					_global_to_free = new ArrayList<FreeNode *> ();
 					start ((ReleasePolicy) policy);
 				}
 				_queue_mutex.unlock ();
