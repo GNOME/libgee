@@ -400,33 +400,34 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		 * @param to_free List containing elements to free.
 		 * @return Non-empty list of not freed elements or ``null`` if all elements have been disposed.
 		 */
-		internal ArrayList<FreeNode *>? perform (owned ArrayList<FreeNode *> to_free) {
+		internal bool perform (ref ArrayList<FreeNode *> to_free) {
 			switch (this.to_concrete ()) {
 			case TRY_FREE:
-				return try_free (to_free) ? (owned) to_free : null;
+				return try_free (to_free);
 			case FREE:
 				while (try_free (to_free)) {
 					Thread.yield ();
 				}
-				return null;
+				break;
 			case TRY_RELEASE:
 				ReleasePolicy.ensure_start ();
 				if (_queue_mutex.trylock ()) {
 					_queue.offer ((owned) to_free);
 					_queue_mutex.unlock ();
-					return null;
+					return true;
 				} else {
-					return (owned) to_free;
+					return false;
 				}
 			case RELEASE:
 				ReleasePolicy.ensure_start ();
 				_queue_mutex.lock ();
 				_queue.offer ((owned) to_free);
 				_queue_mutex.unlock ();
-				return null;
+				return true;
 			default:
 				assert_not_reached ();
 			}
+			return false;
 		}
 	}
 
@@ -559,15 +560,12 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 			int size = _to_free.size;
 			bool clean_parent = false;
 			if (size > 0) {
-				ArrayList<FreeNode *>? remaining;
-				if (_parent == null || size >= THRESHOLD)
-					remaining = _policy.perform ((owned) _to_free);
-				else
-					remaining = (owned) _to_free;
-				if (remaining != null) {
-					assert (_parent != null);
-					_parent->_to_free.add_all (remaining);
-					clean_parent = true;
+				if (_parent == null || size >= THRESHOLD) {
+					if (!_policy.perform (ref _to_free)) {
+						assert (_parent != null && _to_free != null);
+						_parent->_to_free.add_all (_to_free);
+						clean_parent = true;
+					}
 				}
 			}
 #if DEBUG
