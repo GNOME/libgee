@@ -450,21 +450,34 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 			switch (self) {
 			case HELPER_THREAD:
 				new Thread<bool> ("<<libgee hazard pointer>>", () => {
+					Context ctx = new Context (Policy.TRY_FREE);
 					while (true) {
 						Thread.yield ();
-						attempt_free ();
+						pull_from_queue (ctx._to_free, ctx._to_free.is_empty);
+						ctx.try_free ();
 					}
 				});
 				break;
 			case MAIN_LOOP:
+				_global_to_free = new ArrayList<FreeNode *> ();
 				Idle.add (() => {
-					attempt_free ();
+					Context ctx = new Context (Policy.TRY_FREE);
+					swap (ref _global_to_free, ref ctx._to_free);
+					pull_from_queue (ctx._to_free, false);
+					ctx.try_free ();
+					swap (ref _global_to_free, ref ctx._to_free);
 					return true;
 				}, Priority.LOW);
 				break;
 			default:
 				assert_not_reached ();
 			}
+		}
+
+		private static void swap<T>(ref T a, ref T b) {
+			T tmp = (owned)a;
+			a = (owned)b;
+			b = (owned)tmp;
 		}
 
 		/**
@@ -486,14 +499,19 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 			}
 		}
 
-		private static inline void attempt_free () {
-			if (_queue_mutex.trylock ()) {
+		private static inline void pull_from_queue (Collection<FreeNode *> to_free, bool do_lock) {
+			bool locked = do_lock;
+			if (do_lock) {
+				_queue_mutex.lock ();
+			} else {
+				locked = _queue_mutex.trylock ();
+			}
+			if (locked) {
 				Collection<ArrayList<FreeNode *>> temp = new ArrayList<ArrayList<FreeNode *>> ();
 				_queue.drain (temp);
 				_queue_mutex.unlock ();
-				temp.foreach ((x) => {_global_to_free.add_all (x); return true;});
+				temp.foreach ((x) => {to_free.add_all (x); return true;});
 			}
-			try_free (_global_to_free);
 		}
 	}
 
