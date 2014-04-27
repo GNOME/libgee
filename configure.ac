@@ -19,6 +19,7 @@ GLIB_REQUIRED=2.36
 VALA_ADD_CHECKFILE([gee/libgee_0_8_la_vala.stamp])
 VALA_ADD_CHECKFILE([tests/tests_vala.stamp])
 VALA_ADD_VALAFLAGS(--target-glib=$GLIB_REQUIRED)
+VALA_ADD_VALAFLAGS(--hide-internal)
 
 AC_ARG_ENABLE(doc, AS_HELP_STRING([--enable-doc], [Enable documentation generation]), enable_doc=$enableval, enable_doc=no)
 AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
@@ -57,7 +58,7 @@ AC_SUBST(GLIB_LIBS)
 
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
 
-VALA_CHECK([0.23.2])
+VALA_CHECK([0.24.0])
 
 AC_OUTPUT([Makefile
            gee-0.8.pc
