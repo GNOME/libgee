@@ -58,7 +58,8 @@ AC_SUBST(GLIB_LIBS)
 
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
 
-VALA_CHECK([0.24.0])
+#Checks if valac is at least > 0.24.0
+AM_PROG_VALAC([0.24.0.1],,[AC_MSG_ERROR([valac version is outdated])])
 
 AC_OUTPUT([Makefile
            gee-0.8.pc
