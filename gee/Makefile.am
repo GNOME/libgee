@@ -81,6 +81,7 @@ libgee_0_8_la_VALASOURCES = \
 
 libgee_0_8_la_SOURCES = \
 	$(libgee_0_8_la_VALASOURCES:.vala=.c) \
+	../utils/assume.h \
 	../utils/async.h \
 	../utils/free.h \
 	../utils/misc.h \

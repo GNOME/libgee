@@ -1,5 +1,9 @@
 namespace Gee {
 	namespace Utils {
+		namespace Assume {
+			[CCode (cheader_filename = "assume.h", cname = "gee_utils_assume")]
+			public void assume(bool cond);
+		}
 		namespace Async {
 			[CCode (cheader_filename = "async.h")]
 			public async void yield_and_unlock (GLib.Mutex mutex);

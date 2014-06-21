@@ -24,7 +24,7 @@
  * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
  */
 
-using GLib;
+using Gee.Utils.Assume;
 
 /**
  * Resizable array implementation of the {@link List} interface.
@@ -281,9 +281,15 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	}
 
 	private void shift (int start, int delta) {
+#if !DISABLE_INTERNAL_ASSERTS
 		assert (start >= 0);
 		assert (start <= _size);
 		assert (start >= -delta);
+#else
+		assume (start >= 0);
+		assume (start <= _size);
+		assume (start >= -delta);
+#endif
 
 		_items.move (start, start + delta, _size - start);
 
@@ -291,7 +297,11 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	}
 
 	private void grow_if_needed (int new_count) {
+#if !DISABLE_INTERNAL_ASSERTS
 		assert (new_count >= 0);
+#else
+		assume (new_count >= 0);
+#endif
 
 		int minimum_size = _size + new_count;
 		if (minimum_size > _items.length) {
@@ -418,13 +428,13 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 			assert (_index < _list._size);
 			return _index;
 		}
-		
+
 		public bool read_only {
 			get {
 				return false;
 			}
 		}
-		
+
 		public bool valid {
 			get {
 				return _index >= 0 && _index < _list._size && ! _removed;

@@ -24,6 +24,8 @@
  * 	Didier 'Ptitjes Villevalois <ptitjes@free.fr>
  */
 
+using Gee.Utils.Assume;
+
 /**
  * Doubly-linked list implementation of the {@link List} interface.
  *
@@ -112,7 +114,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	public override int size {
 		get { return this._size; }
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -183,7 +185,9 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 		assert (index < this._size);
 
 		unowned Node<G>? n = this._get_node_at (index);
+#if !DISABLE_INTERNAL_ASSERTS
 		assert (n != null);
+#endif
 		return n.data;
 	}
 
@@ -253,7 +257,9 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 		assert (index < this._size);
 
 		unowned Node<G>? n = this._get_node_at (index);
+#if !DISABLE_INTERNAL_ASSERTS
 		assert (n != null);
+#endif
 		G element = n.data;
 		this._remove_node (n);
 		return element;
