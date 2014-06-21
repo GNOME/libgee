@@ -44,7 +44,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	public override int size {
 		get { return _size; }
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -311,7 +311,9 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	}
 
 	private void set_capacity (int value) {
+#if !DISABLE_INTERNAL_ASSERTS
 		assert (value >= _size);
+#endif
 
 		_items.resize (value);
 	}
@@ -356,17 +358,24 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 
 		public new G get () {
 			assert (_stamp == _list._stamp);
-			assert (_index >= 0);
-			assert (_index < _list._size);
 			assert (! _removed);
+			assert (_index >= 0);
+#if !DISABLE_INTERNAL_ASSERTS
+			assert (_index < _list._size);
+#else
+			assume (_index < _list._size);
+#endif
 			return _list._items[_index];
 		}
 
 		public void remove () {
 			assert (_stamp == _list._stamp);
-			assert (_index >= 0);
+			assert (! _removed && _index >= 0);
+#if !DISABLE_INTERNAL_ASSERTS
 			assert (_index < _list._size);
-			assert (! _removed);
+#else
+			assume (_index < _list._size);
+#endif
 			_list.remove_at (_index);
 			_index--;
 			_removed = true;
@@ -375,6 +384,10 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 
 		public bool previous () {
 			assert (_stamp == _list._stamp);
+			if (_removed && _index >= 0) {
+				_removed = false;
+				return true;
+			}
 			if (_index > 0) {
 				_index--;
 				return true;
@@ -384,7 +397,7 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 
 		public bool has_previous () {
 			assert (_stamp == _list._stamp);
-			return (_index - 1 >= 0);
+			return (_index > 0 || (_removed && _index >= 0));
 		}
 
 		public bool last () {
@@ -398,27 +411,39 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 
 		public new void set (G item) {
 			assert (_stamp == _list._stamp);
+			assert (! _removed);
 			assert (_index >= 0);
+#if !DISABLE_INTERNAL_ASSERTS
 			assert (_index < _list._size);
+#else
+			assume (_index < _list._size);
+#endif
 			_list._items[_index] = item;
 			_stamp = ++_list._stamp;
 		}
 
 		public void insert (G item) {
 			assert (_stamp == _list._stamp);
-			assert (_index >= 0);
 			assert (_index < _list._size);
-			_list.insert (_index, item);
+			if (_index == -1) {
+				_list.insert (0, item);
+				_removed = true;
+			}
+			if (_removed) {
+				_list.insert (_index + 1, item);
+			} else {
+				_list.insert (_index, item);
+			}
 			_index++;
 			_stamp = _list._stamp;
 		}
 
 		public void add (G item) {
 			assert (_stamp == _list._stamp);
-			assert (_index >= 0);
 			assert (_index < _list._size);
 			_list.insert (_index + 1, item);
 			_index++;
+			_removed = false;
 			_stamp = _list._stamp;
 		}
 

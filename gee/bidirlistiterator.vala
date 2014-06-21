@@ -23,7 +23,11 @@
 public interface Gee.BidirListIterator<G> : Gee.BidirIterator<G>, Gee.ListIterator<G> {
 	/**
 	 * Inserts the specified item before the current item in the iteration. The
-	 * cursor is let to point to the current item.
+	 * iterator points to the same element as before.
+	 *
+	 * Please note that if iterator points in-between elements the element
+	 * is added between neighbouring elements and the iterator point between
+	 * added element and the next one.
 	 */
 	public abstract void insert (G item);
 }

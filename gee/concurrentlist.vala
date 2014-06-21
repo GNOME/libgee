@@ -369,6 +369,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			new_node.insert (_prev, _curr);
 			_curr = (owned)new_node;
 			_index++;
+			_removed = false;
 		}
 
 		public new bool foreach (ForallFunc<G> f) {

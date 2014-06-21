@@ -70,7 +70,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	private LinkedList.with_closures (owned Functions.EqualDataFuncClosure<G> equal_func) {
 		_equal_func = equal_func;
 	}
-	
+
 	~LinkedList () {
 		this.clear ();
 	}
@@ -446,16 +446,15 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	}
 
 	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G>, BidirListIterator<G> {
-		private bool started = false;
-		private bool removed = false;
-		private unowned Node<G>? position;
+		private bool _removed = false;
+		private unowned Node<G>? _position;
 		private int _stamp;
 		private LinkedList<G> _list;
 		private int _index;
 
 		public Iterator (LinkedList<G> list) {
 			this._list = list;
-			this.position = null;
+			this._position = null;
 			this._index = -1;
 			this._stamp = list._stamp;
 		}
@@ -463,200 +462,241 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 		public bool next () {
 			assert (this._stamp == this._list._stamp);
 
-			if (this.removed) {
-				if (this.position != null) {
-					this.removed = false;
+			if (GLib.unlikely (_position == null)) {
+#if !DISABLE_INTERNAL_ASSERTS
+				assert (!_removed);
+#else
+				assume (!_removed);
+#endif
+				if (_list._head != null) {
+					_position = _list._head;
+					_index = 0;
 					return true;
 				} else {
 					return false;
 				}
-			} else if (!this.started) {
-				if (this._list._head != null) {
-					this.started = true;
-					this.position = this._list._head;
-					this._index++;
-					return true;
-				} else {
-					return false;
-				}
-			} else if (this.position != null) {
-				if (this.position.next != null) {
-					this.position = this.position.next;
-					this._index++;
+			} else {
+				if (_position.next != null) {
+					_position = _position.next;
+					_index++;
+					_removed = false;
 					return true;
 				} else {
 					return false;
 				}
 			}
-			return false;
 		}
 
 		public bool has_next () {
-			assert (this._stamp == this._list._stamp);
+			assert (_stamp == _list._stamp);
 
-			if (this.removed) {
-				return this.position != null;
-			} else if (!this.started) {
-				return this._list._head != null;
-			} else if (this.position != null) {
-				return this.position.next != null;
+			if (GLib.unlikely (_position == null)) {
+				return _list._head != null;
+			} else {
+				return _position.next != null;
 			}
-			return false;
 		}
 
 		public bool first () {
-			assert (this._stamp == this._list._stamp);
-			if (this._list.size == 0) {
+			assert (_stamp == _list._stamp);
+
+			if (_list.size == 0) {
 				return false;
 			}
-			this.position = this._list._head;
-			this.started = true;
-			this._index = 0;
-			this.removed = false;
-			return this.position != null;
+			_position = _list._head;
+			_index = 0;
+			_removed = false;
+#if !DISABLE_INTERNAL_ASSERTS
+			assert (_position != null);
+#endif
+			return true;
 		}
 
 		public new G get () {
-			assert (this._stamp == this._list._stamp);
-			assert (this.position != null);
+			assert (_stamp == _list._stamp);
+			assert (_position != null && !_removed);
 
-			return this.position.data;
+			return _position.data;
 		}
 
 		public void remove () {
-			assert (this._stamp == this._list._stamp);
-			assert (this.position != null);
+			assert (_stamp == _list._stamp);
+			assert (_position != null && !_removed);
 
-			unowned Node<G>? new_position = this.position.next;
-			if (new_position == null) {
-				started = false;
+			unowned Node<G>? new_position = _position.prev;
+			_list._remove_node (_position);
+			_position = new_position;
+			if (_position != null) {
+				_removed = true;
 			}
-			_list._remove_node (this.position);
-			this.position = new_position;
-			this.removed = true;
-			this._stamp = this._list._stamp;
+			_index--;
+			_stamp = _list._stamp;
 		}
 
 		public bool previous () {
-			assert (this._stamp == this._list._stamp);
+			assert (_stamp == _list._stamp);
 
-			if (!this.started) {
-				this.position = null;
+			if (GLib.likely (_position != null)) {
+				if (GLib.unlikely (_removed)) {
+					_removed = false;
+					return true;
+				} else if (GLib.likely(_position.prev != null)) {
+					_position = _position.prev;
+					_index--;
+					return true;
+				} else {
+					return false;
+				}
+			} else {
 				return false;
-			} else if (this.position != null && this.position.prev != null) {
-				this.position = this.position.prev;
-				this._index--;
-				return true;
 			}
-			return false;
 		}
 
 		public bool has_previous () {
-			assert (this._stamp == this._list._stamp);
+			assert (_stamp == _list._stamp);
 
-			if (!this.started) {
+			if (GLib.likely (_position != null)) {
+				if (GLib.unlikely (_removed)) {
+					return true;
+				} else {
+					return _position.prev != null;
+				}
+			} else {
 				return false;
-			} else if (this.position != null) {
-				return this.position.prev != null;
 			}
-			return false;
 		}
 
 		public bool last () {
-			assert (this._stamp == this._list._stamp);
+			assert (_stamp == _list._stamp);
 
-			if (this._list.size == 0) {
+			if (_list.size == 0) {
 				return false;
 			}
-			this.position = this._list._tail;
-			this.started = true;
-			this._index = this._list._size - 1;
-			return this.position != null;
+			_position = _list._tail;
+			_index = _list._size - 1;
+#if !DISABLE_INTERNAL_ASSERTS
+			assert (_position != null);
+#endif
+			return true;
 		}
 
 		public new void set (G item) {
-			assert (this._stamp == this._list._stamp);
-			assert (this.position != null);
+			assert (_stamp == _list._stamp);
+			assert (_position != null && !_removed);
 
-			this.position.data = item;
+			_position.data = item;
 		}
 
 		public void insert (G item) {
-			assert (this._stamp == this._list._stamp);
-			assert (this.position != null);
+			assert (_stamp == _list._stamp);
 
 			Node<G> n = new Node<G> (item);
-			if (this.position.prev != null) {
-				Node<G> position = (owned) this.position.prev.next;
-				n.prev = position.prev;
-				position.prev = n;
-				n.next = (owned) position;
-				weak Node<G> _n = n;
-				_n.prev.next = (owned) n;
+			unowned Node<G> n_ref = n;
+			if (_position == null) {
+				Node<G>? position = (owned)_list._head;
+				if (position != null) {
+					position.prev = n;
+					n.next = (owned)position;
+				} else {
+#if !DISABLE_INTERNAL_ASSERTS
+					assert (_list._tail == null);
+#endif
+					_list._tail = n;
+				}
+				if (_position == null) {
+					_position = n_ref;
+				}
+				_list._head = (owned)n;
 			} else {
-				Node<G> position = (owned) this._list._head;
-				position.prev = n;
-				n.next = (owned) position;
-				this._list._head = (owned) n;
+				if (_removed) {
+					if (_position.next != null) {
+						n.next = (owned)_position.next;
+						n.next.prev = n;
+					} else {
+						_list._tail = n;
+					}
+					n.prev = _position;
+					_position.next = (owned)n;
+					_position = n_ref;
+				} else {
+					n.prev = _position.prev;
+					_position.prev = n;
+					if (n.prev != null) {
+						n.next = (owned)n.prev.next;
+						n.prev.next = (owned)n;
+					} else {
+						n.next = (owned)_list._head;
+						_list._head = (owned)n;
+					}
+				}
 			}
-			this._list._size++;
-			this._index++;
+			_list._size++;
+			_index++;
 			_stamp = _list._stamp;
 		}
 
 		public void add (G item) {
-			assert (this._stamp == this._list._stamp);
-			assert (this.position != null);
+			assert (_stamp == _list._stamp);
 
 			Node<G> n = new Node<G> (item);
-			if (this.position.next != null) {
-				this.position.next.prev = n;
-				n.next = (owned) this.position.next;
+			unowned Node<G> n_ref = n;
+			if (_position == null) {
+				Node<G> position = (owned)_list._head;
+				position.prev = n;
+				n.next = (owned)position;
+				_list._head = (owned) n;
 			} else {
-				this._list._tail = n;
+				if (_position.next != null) {
+					_position.next.prev = n;
+					n.next = (owned)_position.next;
+				} else {
+					_list._tail = n;
+				}
+				_position.next = (owned)n;
+				_position.next.prev = _position;
 			}
-			this.position.next = (owned) n;
-			this.position.next.prev = this.position;
-			this.position = this.position.next;
-			this._list._size++;
-			this._index++;
+			_position = n_ref;
+			_removed = false;
+			_list._size++;
+			_index++;
 			_stamp = _list._stamp;
 		}
 
 		public int index () {
-			assert (this._stamp == this._list._stamp);
-			assert (this.position != null);
+			assert (_stamp == _list._stamp);
+			assert (_position != null && !_removed);
 
-			return this._index;
+			return _index;
 		}
-		
+
 		public bool read_only {
 			get {
 				return false;
 			}
 		}
-		
+
 		public bool valid {
 			get {
-				return !this.removed && this.position != null;
+				return !_removed && _position != null;
 			}
 		}
 
 		public bool foreach (ForallFunc<G> f) {
 			assert (_stamp == _list._stamp);
-			if (!started) {
-				position = _list._head;
-				if (position != null)
-					started = true;
+			if (_position == null) {
+				_position = _list._head;
 			}
-			removed = false;
-			while (position != null) {
-				if (!f (position.data)) {
+			if (_removed) {
+				_position = _position.next;
+				_removed = false;
+			}
+			while (_position != null) {
+				if (!f (_position.data)) {
 					return false;
 				}
-				position = position.next;
+				_position = _position.next;
 			}
-			position = _list._tail;
+			_position = _list._tail;
 			return true;
 		}
 	}
