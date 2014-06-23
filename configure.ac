@@ -56,6 +56,14 @@ PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
+AC_ARG_ENABLE(internal-asserts, [AS_HELP_STRING([--disable-internal-asserts], [Disables the internal asserts]))],
+              enable_internal_asserts=$enableval, enable_internal_asserts=yes)
+AS_IF([test "x$enable_internal_asserts" = xno], [VALA_ADD_VALAFLAGS(-D DISABLE_INTERNAL_ASSERTS)])
+
+AC_ARG_ENABLE(consistency-check, [AS_HELP_STRING([--enable-consistency-check], [Enables (very) expensive consistency checks. It might affect the asymptotic performance.])],
+              enable_consistency_check=$enableval, enable_internal_asserts=no)
+AS_IF([test "x$enable_consistency_check" != xno], [VALA_ADD_VALAFLAGS(-D CONSISTENCY_CHECKS)])
+
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
 
 VALA_CHECK([0.24.0])
