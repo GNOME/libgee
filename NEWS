@@ -1,3 +1,10 @@
+libgee 0.15.3
+=============
+ * Add UnrolledLinkedList class implementing List and Deque interface
+ * Clarify the add and insert operation on list iterators and make the behaviour consistent for ArrayList and LinkedList
+ * Allow (partially) disable internal asserts
+ * Internal symbols are hidden
+
 libgee 0.14.0
 =============
  * No changes since previous release
