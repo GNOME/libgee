@@ -1,6 +1,6 @@
 /* treeset.vala
  *
- * Copyright (C) 2009-2011  Maciej Piechotka
+ * Copyright (C) 2009-2014  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -599,11 +599,6 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 	}
 
 	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G> {
-		private TreeSet<G> _set;
-
-		// concurrent modification protection
-		private int stamp;
-
 		public Iterator (TreeSet<G> set) {
 			_set = set;
 			stamp = _set.stamp;
@@ -614,6 +609,15 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			this._current = current;
 			this.stamp = set.stamp;
 			this.started = true;
+		}
+
+		public Iterator.from_iterator (Iterator<G> iter) {
+			_set = iter._set;
+			stamp = iter.stamp;
+			_current = iter._current;
+			_next = iter._next;
+			_prev = iter._prev;
+			started = iter.started;
 		}
 
 		public bool next () {
@@ -773,10 +777,25 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			return true;
 		}
 
-		private weak Node<G>? _current = null;
-		private weak Node<G>? _next = null;
-		private weak Node<G>? _prev = null;
-		private bool started = false;
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new Iterator<G>.from_iterator (this);
+				}
+				return result;
+			}
+		}
+
+		protected TreeSet<G> _set;
+		protected int stamp;
+		protected weak Node<G>? _current = null;
+		protected weak Node<G>? _next = null;
+		protected weak Node<G>? _prev = null;
+		protected bool started = false;
 	}
 
 	private inline G min (G a, G b) {
@@ -1061,8 +1080,8 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			return h != null && range.in_range (h) ? h : null;
 		}
 
-		private new TreeSet<G> set;
-		private Range<G> range;
+		protected new TreeSet<G> set;
+		protected Range<G> range;
 	}
 
 	private class SubIterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G> {
@@ -1075,6 +1094,12 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			this.set = set;
 			this.range = range;
 			this.iterator = new Iterator<G>.pointing (set, node);
+		}
+
+		public SubIterator.from_iterator (SubIterator<G> iter) {
+			set = iter.set;
+			range = iter.range;
+			iterator = new Iterator<G>.from_iterator (iter.iterator);
 		}
 
 		public bool next () {
@@ -1171,9 +1196,22 @@ public class Gee.TreeSet<G> : AbstractBidirSortedSet<G> {
 			return true;
 		}
 
-		private new TreeSet<G> set;
-		private Range<G> range;
-		private Iterator<G>? iterator = null;
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new SubIterator<G>.from_iterator (this);
+				}
+				return result;
+			}
+		}
+
+		protected new TreeSet<G> set;
+		protected Range<G> range;
+		protected Iterator<G>? iterator = null;
 	}
 
 	private Node<G>? root = null;

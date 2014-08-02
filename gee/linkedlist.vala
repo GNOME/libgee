@@ -447,17 +447,19 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	}
 
 	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G>, BidirListIterator<G> {
-		private bool _removed = false;
-		private unowned Node<G>? _position;
-		private int _stamp;
-		private LinkedList<G> _list;
-		private int _index;
-
 		public Iterator (LinkedList<G> list) {
 			this._list = list;
 			this._position = null;
 			this._index = -1;
 			this._stamp = list._stamp;
+		}
+
+		public Iterator.from_iterator (Iterator<G> iter) {
+			_removed = iter._removed;
+			_position = iter._position;
+			_stamp = iter._stamp;
+			_list = iter._list;
+			_index = iter._index;
 		}
 
 		public bool next () {
@@ -700,6 +702,25 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 			_position = _list._tail;
 			return true;
 		}
+
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new Iterator<G>.from_iterator (this);
+				}
+				return result;
+			}
+		}
+
+		protected bool _removed = false;
+		protected unowned Node<G>? _position;
+		protected int _stamp;
+		protected LinkedList<G> _list;
+		protected int _index;
 	}
 
 	private unowned Node<G>? _get_node_at (int index) {

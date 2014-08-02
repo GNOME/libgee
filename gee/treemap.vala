@@ -1,6 +1,6 @@
 /* treemap.vala
  *
- * Copyright (C) 2009-2011  Maciej Piechotka
+ * Copyright (C) 2009-2014  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1436,6 +1436,15 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			this.current = current;
 		}
 
+		public NodeIterator.from_iterator (NodeIterator<K, V> iter) {
+			_map = iter._map;
+			stamp = iter.stamp;
+			started = iter.started;
+			current = iter.current;
+			_next = iter._next;
+			_prev = iter._prev;
+		}
+
 		public bool next () {
 			assert (stamp == _map.stamp);
 			if (current != null) {
@@ -1560,6 +1569,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			this.iterator = new NodeIterator<K,V>.pointing (_map, node);
 		}
 
+		public SubNodeIterator.from_iterator (SubNodeIterator<K,V> iter) {
+			_map = iter._map;
+			range = iter.range;
+			iterator = new NodeIterator<K,V>.from_iterator (iter.iterator);
+		}
+
 		public bool next () {
 			if (iterator != null) {
 				weak Node<K,V>? node= iterator.safe_next_get ();
@@ -1627,7 +1642,7 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			assert (valid);
 			iterator.unset ();
 		}
-		
+
 		public virtual bool read_only {
 			get {
 				return true;
@@ -1656,6 +1671,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public KeyIterator.pointing (TreeMap<K,V> map, Node<K,V> current) {
 			base.pointing (map, current);
+		}
+
+		public KeyIterator.from_iterator (KeyIterator<K, V> iterator) {
+			base.from_iterator (iterator);
 		}
 
 		public new K get () {
@@ -1687,6 +1706,19 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 			return true;
 		}
+
+		public Gee.Iterator<K>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Iterator<K>[0];
+			} else {
+				Gee.Iterator<K>[] result = new Gee.Iterator<K>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new KeyIterator<K,V>.from_iterator (this);
+				}
+				return result;
+			}
+		}
 	}
 
 	private class SubKeyIterator<K,V> : SubNodeIterator<K,V>, Traversable<K>, Gee.Iterator<K>, BidirIterator<K> {
@@ -1696,6 +1728,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public SubKeyIterator.pointing (TreeMap<K,V> map, Range<K,V> range, Node<K,V> node) {
 			base.pointing (map, range, node);
+		}
+
+		public SubKeyIterator.from_iterator (SubKeyIterator<K, V> iterator) {
+			base.from_iterator (iterator);
 		}
 
 		public new K get () {
@@ -1716,6 +1752,19 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 			return true;
 		}
+
+		public Gee.Iterator<K>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Iterator<K>[0];
+			} else {
+				Gee.Iterator<K>[] result = new Gee.Iterator<K>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new SubKeyIterator<K,V>.from_iterator(this);
+				}
+				return result;
+			}
+		}
 	}
 
 	private class ValueIterator<K,V> : NodeIterator<K,V>, Traversable<V>, Gee.Iterator<V>, Gee.BidirIterator<V> {
@@ -1725,6 +1774,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public ValueIterator.pointing (TreeMap<K,V> map, Node<K,V> current) {
 			base.pointing (map, current);
+		}
+
+		public ValueIterator.from_iterator (ValueIterator<K,V> iterator) {
+			base.from_iterator (iterator);
 		}
 
 		public new V get () {
@@ -1756,6 +1809,19 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 			return true;
 		}
+
+		public Gee.Iterator<V>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Iterator<V>[0];
+			} else {
+				Gee.Iterator<V>[] result = new Gee.Iterator<V>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new ValueIterator<K,V>.from_iterator (this);
+				}
+				return result;
+			}
+		}
 	}
 
 	private class SubValueIterator<K,V> : SubNodeIterator<K,V>, Traversable<V>, Gee.Iterator<V>, BidirIterator<V> {
@@ -1765,6 +1831,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public SubValueIterator.pointing (TreeMap<K,V> map, Range<K,V> range, Node<K,V> node) {
 			base.pointing (map, range, node);
+		}
+
+		public SubValueIterator.from_iterator (SubValueIterator<K,V> iterator) {
+			base.from_iterator (iterator);
 		}
 
 		public new V get () {
@@ -1785,6 +1855,19 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 			return true;
 		}
+
+		public Gee.Iterator<V>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Iterator<V>[0];
+			} else {
+				Gee.Iterator<V>[] result = new Gee.Iterator<V>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new SubValueIterator<K,V>.from_iterator (this);
+				}
+				return result;
+			}
+		}
 	}
 
 	private class EntryIterator<K,V> : NodeIterator<K,V>, Traversable<Map.Entry<K, V>>, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
@@ -1794,6 +1877,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public EntryIterator.pointing (TreeMap<K,V> map, Node<K,V> node) {
 			base.pointing (map, node);
+		}
+
+		public EntryIterator.from_iterator (EntryIterator<K,V> iterator) {
+			base.from_iterator (iterator);
 		}
 
 		public new Map.Entry<K,V> get () {
@@ -1829,6 +1916,19 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 			return true;
 		}
+
+		public Gee.Iterator<Entry<K,V>>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Iterator<Entry<K,V>>[0];
+			} else {
+				Gee.Iterator<Entry<K,V>>[] result = new Gee.Iterator<Entry<K,V>>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new EntryIterator<K,V>.from_iterator (this);
+				}
+				return result;
+			}
+		}
 	}
 
 	private class SubEntryIterator<K,V> : SubNodeIterator<K,V>, Traversable<Map.Entry<K, V>>, Gee.Iterator<Map.Entry<K,V>>, Gee.BidirIterator<Map.Entry<K,V>> {
@@ -1838,6 +1938,10 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 
 		public SubEntryIterator.pointing (TreeMap<K,V> map, Range<K,V> range, Node<K,V> node) {
 			base.pointing (map, range, node);
+		}
+
+		public SubEntryIterator.from_iterator (SubEntryIterator<K,V> iterator) {
+			base.from_iterator (iterator);
 		}
 
 		public new Map.Entry<K,V> get () {
@@ -1861,6 +1965,19 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 				}
 			}
 			return true;
+		}
+
+		public Gee.Iterator<Entry<K,V>>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Iterator<Entry<K,V>>[0];
+			} else {
+				Gee.Iterator<Entry<K,V>>[] result = new Gee.Iterator<Entry<K,V>>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new SubEntryIterator<K,V>.from_iterator (this);
+				}
+				return result;
+			}
 		}
 	}
 

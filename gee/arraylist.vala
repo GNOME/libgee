@@ -4,6 +4,7 @@
  * Copyright (C) 2005  David Waite
  * Copyright (C) 2007-2008  Jürg Billeter
  * Copyright (C) 2009  Didier Villevalois
+ * Copyright (C) 2010-2014  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -319,16 +320,16 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 	}
 
 	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G>, BidirIterator<G>, ListIterator<G>, BidirListIterator<G> {
-		private ArrayList<G> _list;
-		private int _index = -1;
-		private bool _removed = false;
-
-		// concurrent modification protection
-		private int _stamp = 0;
-
-		public Iterator (ArrayList list) {
+		public Iterator (ArrayList<G> list) {
 			_list = list;
 			_stamp = _list._stamp;
+		}
+
+		public Iterator.from_iterator (Iterator<G> iter) {
+			_list = iter._list;
+			_index = iter._index;
+			_removed = iter._removed;
+			_stamp = iter._stamp;
 		}
 
 		public bool next () {
@@ -480,6 +481,24 @@ public class Gee.ArrayList<G> : AbstractBidirList<G> {
 			_index = _list._size - 1;
 			return true;
 		}
+
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new Iterator<G>.from_iterator (this);
+				}
+				return result;
+			}
+		}
+
+		protected ArrayList<G> _list;
+		protected int _index = -1;
+		protected bool _removed = false;
+		protected int _stamp = 0;
 	}
 
 	private static G[] do_wrap<G> (owned G[] data) {

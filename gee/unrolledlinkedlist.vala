@@ -730,6 +730,15 @@ public class Gee.UnrolledLinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G
 			this._stamp = list._stamp;
 		}
 
+		public Iterator.from_iterator (Iterator<G> iter) {
+			_list = iter._list;
+			_stamp = iter._stamp;
+			_current = iter._current;
+			_pos = iter._pos;
+			_deleted = iter._deleted;
+			_index = iter._index;
+		}
+
 		public new bool foreach (ForallFunc<G> f) {
 #if DUMP
 			stdout.printf ("FOREACH BEGIN [%p -> %p %d]\n", this, _current, _pos);
@@ -801,6 +810,19 @@ public class Gee.UnrolledLinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G
 			stdout.printf ("FOREACH END [%p -> %p %d]\n", this, _current, _pos);
 			}
 #endif
+		}
+
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new Iterator<G>.from_iterator (this);
+				}
+				return result;
+			}
 		}
 
 		public bool next () {

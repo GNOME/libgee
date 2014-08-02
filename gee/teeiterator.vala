@@ -49,6 +49,19 @@ internal class Gee.TeeIterator<G> : Object, Traversable<G>, Iterator<G> {
 		return true;
 	}
 
+	public Iterator<G>[] tee (uint forks) {
+		if (forks == 0) {
+			return new Iterator<G>[0];
+		} else {
+			Iterator<G>[] result = new Iterator<G>[forks];
+			result[0] = this;
+			for (uint i = 1; i < forks; i++) {
+				result[i] = new TeeIterator<G> (_head, _valid);
+			}
+			return result;
+		}
+	}
+
 	public bool next () {
 		unowned Node<G>? next = _head._next.value;
 		if (next != null) {

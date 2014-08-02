@@ -3,6 +3,7 @@
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1997-2000  GLib Team and others
  * Copyright (C) 2007-2009  Jürg Billeter
+ * Copyright (C) 2009-2014  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -256,17 +257,16 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	}
 
 	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G> {
-		private HashSet<G> _set;
-		private int _index = -1;
-		private weak Node<G> _node;
-		private weak Node<G> _next;
-
-		// concurrent modification protection
-		private int _stamp = 0;
-
-		public Iterator (HashSet set) {
+		public Iterator (HashSet<G> set) {
 			_set = set;
 			_stamp = _set._stamp;
+		}
+
+		public Iterator.from_iterator (Iterator<G> iter) {
+			_set = iter._set;
+			_index = iter._index;
+			_node = iter._node;
+			_next = iter._next;
 		}
 
 		public bool next () {
@@ -359,6 +359,25 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 			_next = null;
 			return true;
 		}
+
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[0] = new Iterator<G>.from_iterator (this);
+				}
+				return result;
+			}
+		}
+
+		protected HashSet<G> _set;
+		protected int _index = -1;
+		protected weak Node<G> _node;
+		protected weak Node<G> _next;
+		protected int _stamp = 0;
 	}
 }
 

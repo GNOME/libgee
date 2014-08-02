@@ -1,6 +1,6 @@
 /* concurrentset.vala
  *
- * Copyright (C) 2012  Maciej Piechotka
+ * Copyright (C) 2012-2014  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -268,6 +268,13 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			assert (_curr != null);
 		}
 
+		public Iterator.from_iterator (Iterator<G> iter) {
+			_curr = iter._curr;
+			_set = iter._set;
+			_prev = iter._prev;
+			_removed = iter._removed;
+		}
+
 		public new bool foreach (ForallFunc<G> f) {
 			assert (_curr != null);
 			HazardPointer.Context ctx = new HazardPointer.Context ();
@@ -299,6 +306,19 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			}
 			assert (_curr != null);
 			return true;
+		}
+
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new Iterator<G>.from_iterator (this);
+				}
+				return result;
+			}
 		}
 
 		public bool next () {
@@ -350,10 +370,10 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 
 		public bool read_only { get { return true; } }
 
-		private bool _removed = false;
-		private ConcurrentSet<G> _set;
-		private TowerIter<G> _prev;
-		private Tower<G> _curr;
+		protected bool _removed = false;
+		protected ConcurrentSet<G> _set;
+		protected TowerIter<G> _prev;
+		protected Tower<G> _curr;
 	}
 
 	private class SubSet<G> : AbstractSortedSet<G> {
@@ -649,6 +669,14 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			_curr = curr;
 		}
 
+		public SubIterator.from_iterator (SubIterator<G> iter) {
+			Range.improve_bookmark<G> (iter._range);
+			_range = iter._range;
+			_prev = iter._prev;
+			_curr = iter._curr;
+			_removed = iter._removed;
+		}
+
 		public new bool foreach (ForallFunc<G> f) {
 			assert (_curr != null);
 			HazardPointer.Context ctx = new HazardPointer.Context ();
@@ -683,6 +711,19 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			}
 			assert (_curr != null);
 			return true;
+		}
+
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new SubIterator<G>.from_iterator (this);
+				}
+				return result;
+			}
 		}
 
 		public bool next () {
@@ -766,10 +807,10 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			return _curr != null;
 		}
 
-		private Range<G> _range;
-		private TowerIter<G> _prev;
-		private Tower<G>? _curr = null;
-		private bool _removed = false;
+		protected Range<G> _range;
+		protected TowerIter<G> _prev;
+		protected Tower<G>? _curr = null;
+		protected bool _removed = false;
 	}
 
 	private class Range<G> {

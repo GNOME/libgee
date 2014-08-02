@@ -1,6 +1,7 @@
 /* readonlycollection.vala
  *
  * Copyright (C) 2007-2008  Jürg Billeter
+ * Copyright (C) 2010-2014  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -224,6 +225,24 @@ internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, 
 
 		public Gee.Iterator<G> chop (int offset, int length = -1) {
 			return _iter.chop ( offset, length);
+		}
+
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] iters = _iter.tee (forks);
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				if (iters[0] == _iter) {
+					result[0] = this;
+				} else {
+					result[0] = new Iterator<G> (iters[0]);
+				}
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new Iterator<G> (iters[i]);
+				}
+				return result;
+			}
 		}
 	}
 

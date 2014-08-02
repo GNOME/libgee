@@ -1,7 +1,7 @@
 /* priorityqueue.vala
  *
  * Copyright (C) 2009  Didier Villevalois
- * Copyright (C) 2012  Maciej Piechotka
+ * Copyright (C) 2012-2014  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1141,16 +1141,18 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	}
 
 	private class Iterator<G> : Object, Traversable<G>, Gee.Iterator<G> {
-		private PriorityQueue<G> queue;
-		private unowned Node<G>? position;
-		private unowned Node<G>? previous;
-		private int stamp;
-
 		public Iterator (PriorityQueue<G> queue) {
 			this.queue = queue;
 			this.position = null;
 			this.previous = null;
 			this.stamp = queue._stamp;
+		}
+
+		public Iterator.from_iterator (Iterator<G> iter) {
+			queue = iter.queue;
+			position = iter.position;
+			previous = iter.previous;
+			stamp = iter.stamp;
 		}
 
 		public bool next () {
@@ -1230,5 +1232,24 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 			}
 			return true;
 		}
+
+
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new Iterator<G>.from_iterator (this);
+				}
+				return result;
+			}
+		}
+
+		protected PriorityQueue<G> queue;
+		protected unowned Node<G>? position;
+		protected unowned Node<G>? previous;
+		protected int stamp;
 	}
 }

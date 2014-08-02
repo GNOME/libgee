@@ -1,6 +1,6 @@
 /* concurrentlist.vala
  *
- * Copyright (C) 2011  Maciej Piechotka
+ * Copyright (C) 2011-2014  Maciej Piechotka
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -292,6 +292,13 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			_curr = head;
 		}
 
+		public Iterator.from_iterator (Iterator<G> iter) {
+			_removed = iter._removed;
+			_index = iter._index;
+			_prev = iter._prev;
+			_curr = iter._curr;
+		}
+
 		public bool next () {
 			HazardPointer.Context ctx = new HazardPointer.Context ();
 			Utils.Misc.unused (ctx);
@@ -393,10 +400,23 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			return true;
 		}
 
-		private bool _removed;
-		private int _index;
-		private Node<G>? _prev;
-		private Node<G> _curr;
+		public Gee.Iterator<G>[] tee (uint forks) {
+			if (forks == 0) {
+				return new Gee.Iterator<G>[0];
+			} else {
+				Gee.Iterator<G>[] result = new Gee.Iterator<G>[forks];
+				result[0] = this;
+				for (uint i = 1; i < forks; i++) {
+					result[i] = new Iterator<G>.from_iterator (this);
+				}
+				return result;
+			}
+		}
+
+		protected bool _removed;
+		protected int _index;
+		protected Node<G>? _prev;
+		protected Node<G> _curr;
 	}
 
 	private class Node<G> {
