@@ -143,6 +143,92 @@ internal void run_list_uint_tests(FileStream output, bool verbose, size_t size, 
 	}, size, tries);
 }
 
+internal void run_set_uint_tests(FileStream output, bool verbose, size_t size, size_t tries) {
+	CollectionTest<uint>[] cols = new CollectionTest<uint>[2];
+	cols[0] = CollectionTest<uint>("HashSet", () => {return new Gee.HashSet<uint>();});
+	cols[1] = CollectionTest<uint>("TreeSet", () => {return new Gee.TreeSet<uint>();});
+	test<uint>(output, verbose, "Sequential uint add", cols, (col) => {}, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)i);
+		}
+	}, size, tries);
+	test<uint>(output, verbose, "Reverse uint add", cols, (col) => {}, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)(size - i));
+		}
+	}, size, tries);
+	test<uint>(output, verbose, "Layered uint add", cols, (col) => {}, (col) => {
+		for (size_t i = 2; i < size; i *= 2) {
+			for (size_t j = size/i; j < size; j += 2*(size/i)) {
+				col.add((uint)j);
+			}
+		}
+	}, size, tries);
+	test<uint>(output, verbose, "Sequential uint remove", cols, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)i);
+		}
+	}, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.remove((uint)i);
+		}
+	}, size, tries);
+	test<uint>(output, verbose, "Reverse uint remove", cols, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)i);
+		}
+	}, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.remove((uint)(size - i));
+		}
+	}, size, tries);
+	test<uint>(output, verbose, "Layered uint remove", cols, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)i);
+		}
+	}, (col) => {
+		for (size_t i = size; i >= 2; i /= 2) {
+			for (size_t j = size/i; j < size; j += (2*size/i)) {
+				col.remove((uint)j);
+			}
+		}
+	}, size, tries);
+	test<uint>(output, verbose, "Lookup", cols, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)i);
+		}
+	}, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.contains((uint)i);
+		}
+	}, size, tries);
+	test<uint>(output, verbose, "Iterator", cols, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)i);
+		}
+	}, (col) => {
+		var iter = col.iterator();
+		while (iter.next ()) {}
+	}, size, tries);
+	test<uint>(output, verbose, "Foreach", cols, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)i);
+		}
+	}, (col) => {
+		col.foreach ((val) => {return true;});
+	}, size, tries);
+	test<uint>(output, verbose, "Iterator remove", cols, (col) => {
+		for (size_t i = 0; i < size; i++) {
+			col.add((uint)i);
+		}
+	}, (col) => {
+		var iter = col.iterator();
+		while (iter.next ()) {
+			iter.remove ();
+		}
+	}, size, tries);
+}
+
 internal uint tries = 100;
 internal uint[]? sizes;
 [CCode (array_length = false, array_null_terminated = true)]
@@ -163,6 +249,7 @@ internal const GLib.OptionEntry[] options = {
 int main(string[] args) {
 	var all_tests = new Gee.HashMap<unowned string, RunTestWrap>();
 	all_tests["lists"] = new RunTestWrap(run_list_uint_tests);
+	all_tests["sets"] = new RunTestWrap(run_set_uint_tests);
 	sizes = new uint[]{32, 64, 128, 256, 512, 1024, 2048};
 	{
 		var tmp = all_tests.keys.to_array ();
