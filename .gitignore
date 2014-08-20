@@ -17,6 +17,7 @@ ChangeLog
 configure
 depcomp
 libtool
+INSTALL
 install-sh
 missing
 ltmain.sh
