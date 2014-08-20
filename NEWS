@@ -1,3 +1,8 @@
+libgee 0.15.90
+==============
+ * Add explicit tee implementations
+ * Improve the benchmark
+
 libgee 0.15.3
 =============
  * Add UnrolledLinkedList class implementing List and Deque interface
