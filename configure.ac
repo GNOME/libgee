@@ -66,7 +66,7 @@ AS_IF([test "x$enable_consistency_check" != xno], [VALA_ADD_VALAFLAGS(-D CONSIST
 
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
 
-VALA_CHECK([0.24.0])
+VALA_CHECK([0.25.1])
 
 AC_OUTPUT([Makefile
            gee-0.8.pc
