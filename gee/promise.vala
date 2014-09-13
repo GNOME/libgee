@@ -50,7 +50,7 @@ public class Gee.Promise<G> {
 	/**
 	 * Sets the value of the future.
 	 *
-	 * @params value Value of future
+	 * @param value Value of future
 	 */
 	public void set_value (owned G value) {
 		_future.set_value ((owned)value);
@@ -59,7 +59,7 @@ public class Gee.Promise<G> {
 	/**
 	 * Sets the exception.
 	 *
-	 * @params exception Exception thrown
+	 * @param exception Exception thrown
 	 */
 	public void set_exception (owned GLib.Error exception) {
 		_future.set_exception ((owned)exception);

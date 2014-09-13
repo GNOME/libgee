@@ -27,15 +27,15 @@ namespace Gee {
 	 * Schedules a task to execute asynchroniously. Internally one
 	 * of threads from pool will execute the task.
 	 *
-	 * @params task Task to be executed
-	 * @returns Future value returned by task
-	 * @see async_task
-	 * @since 0.11.0
-	 *
 	 * Note: There is limited number of threads unless environment variable
 	 *   ``GEE_NUM_THREADS`` is set to -1. It is not adviced to call I/O or
 	 *   block inside the taks. If necessary it is possible to create a new one
 	 *   by anyther call.
+	 *
+	 * @param task Task to be executed
+	 * @return Future value returned by task
+	 * @see async_task
+	 * @since 0.11.0
 	 */
 	public Future<G> task<G>(owned Task<G> task) throws GLib.ThreadError {
 		TaskData<G> tdata = new TaskData<G>();
@@ -50,13 +50,13 @@ namespace Gee {
 	 * Continues the execution asynchroniously in helper thread. Internally
 	 * one of threads from pool will execute the task.
 	 *
-	 * @see task
-	 * @since 0.11.0
-	 *
 	 * Note: There is limited number of threads unless environment variable
 	 *   ``GEE_NUM_THREADS`` is set to -1. It is not adviced to call I/O or
 	 *   block inside the taks. If necessary it is possible to create a new one
 	 *   by anyther call.
+	 *
+	 * @see task
+	 * @since 0.11.0
 	 */
 	public async void async_task() throws GLib.ThreadError {
 		task<bool>(async_task.callback);

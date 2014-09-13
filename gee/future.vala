@@ -28,16 +28,16 @@ using GLib;
  *
  * All methods can be called from many threads as part of interface.
  *
+ * Note: Statement that call does not block does not mean that it is lock-free.
+ *   Internally the implementation is allowed to take mutex but it should guarantee
+ *   that it is not for a long time (including blocking on anything else, I/O calls
+ *   or callbacks).
+ *
  * @see Promise
  * @see Lazy
  * @see task
  * @see async_task
  * @since 0.11.0
- *
- * Note: Statement that call does not block does not mean that it is lock-free.
- *   Internally the implementation is allowed to take mutex but it should guarantee
- *   that it is not for a long time (including blocking on anything else, I/O calls
- *   or callbacks).
  */
 [GenericAccessors]
 public interface Gee.Future<G> : Object {
@@ -80,7 +80,7 @@ public interface Gee.Future<G> : Object {
 	/**
 	 * Waits until the value is ready.
 	 *
-	 * @returns The {@link value} associated with future
+	 * @return The {@link value} associated with future
 	 * @see ready
 	 * @see wait_until
 	 * @see wait_async
@@ -93,7 +93,7 @@ public interface Gee.Future<G> : Object {
 	 *
 	 * @param end_time The time when the wait should finish
 	 * @param value The {@link value} associated with future if the wait was successful
-	 * @returns ``true`` if the value was ready within deadline or ``false`` otherwise
+	 * @return ``true`` if the value was ready within deadline or ``false`` otherwise
 	 * @see ready
 	 * @see wait
 	 * @see wait_async
@@ -104,7 +104,7 @@ public interface Gee.Future<G> : Object {
 	/**
 	 * Reschedules the callback until the {@link value} is available.
 	 *
-	 * @returns The {@link value} associated with future
+	 * @return The {@link value} associated with future
 	 * @see ready
 	 * @see wait
 	 * @see wait_until
@@ -117,16 +117,16 @@ public interface Gee.Future<G> : Object {
 	 * Maps a future value to another value by a function and returns the
 	 * another value in future.
 	 *
-	 * @param func Function applied to {@link value}
-	 * @returns Value returned by function
-	 *
-	 * @see flat_map
-	 * @see light_map
-	 *
 	 * Note: As time taken by function might not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
 	 *   value eagerly by {@link when_done} it is recommended to use
 	 *   {@link task} and {@link flat_map} for longer computation.
+	 *
+	 * @param func Function applied to {@link value}
+	 * @return Value returned by function
+	 *
+	 * @see flat_map
+	 * @see light_map
 	 */
 	[CCode (ordering = 3)]
 	public virtual Future<A> map<A> (owned MapFunc<A, G> func) {
@@ -147,13 +147,6 @@ public interface Gee.Future<G> : Object {
 	 * Maps a future value to another value by a function and returns the
 	 * another value in future.
 	 *
-	 * @param func Function applied to {@link value}
-	 * @returns Value returned by function
-	 *
-	 * @see flat_map
-	 * @see map
-	 * @since 0.11.4
-	 *
 	 * Note: The function may be reevaluated at any time and it might
 	 *   be called lazily. Therefore it is recommended for it to be
 	 *   idempotent. If the function needs to be called eagerly or have
@@ -163,6 +156,13 @@ public interface Gee.Future<G> : Object {
 	 *   {@link wait_until} and the implementation is allowed to compute
 	 *   value eagerly by {@link when_done} it is recommended to use
 	 *   {@link task} and {@link flat_map} for longer computation.
+	 *
+	 * @param func Function applied to {@link value}
+	 * @return Value returned by function
+	 *
+	 * @see flat_map
+	 * @see map
+	 * @since 0.11.4
 	 */
 	[CCode (ordering = 10, cname = "gee_future_light_map_fixed", vfunc_name = "light_map_fixed")]
 	public virtual Future<A> light_map<A> (owned LightMapFunc<A, G> func) {
@@ -181,15 +181,15 @@ public interface Gee.Future<G> : Object {
 	 * Combines values of two futures using a function returning the combined
 	 * value in future (call does not block).
 	 *
-	 * @param join_func Function applied to values
-	 * @param second Second parameter
-	 * @returns A combine value
-	 * @since 0.11.4
-	 *
 	 * Note: As time taken by function does not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
 	 *   value eagerly by {@link when_done} it is recommended to return a
 	 *   future from {@link task} and use {@link flat_map} for longer computation.
+	 *
+	 * @param join_func Function applied to values
+	 * @param second Second parameter
+	 * @return A combine value
+	 * @since 0.11.4
 	 */
 	[CCode (ordering = 5)]
 	public virtual Future<B> zip<A, B> (owned ZipFunc<G, A, B> zip_func, Future<A> second) {
@@ -213,16 +213,16 @@ public interface Gee.Future<G> : Object {
 	/**
 	 * Maps a future value to another future value which is returned (call does not block).
 	 *
-	 * @param func Function applied to {@link value}
-	 * @returns Value of a future returned by function
-	 *
-	 * @see map
-	 *
 	 * Note: As time taken by function does not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
 	 *   value eagerly by {@link when_done} it is recommended to put the
 	 *   larger computation inside the returned future for example by
 	 *   {@link task}
+	 *
+	 * @param func Function applied to {@link value}
+	 * @return Value of a future returned by function
+	 *
+	 * @see map
 	 */
 	[CCode (ordering = 6)]
 	public virtual Gee.Future<A> flat_map<A>(owned FlatMapFunc<A, G> func) {

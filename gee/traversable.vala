@@ -399,11 +399,15 @@ public interface Gee.Traversable<G> : Object {
 	 * Note: The returned arrey might contain parent iterator if it is allowed
 	 *   by implementation. For example the iteration over collection does
 	 *   not need to generate and cache the results.
+	 *   In such case it is recommended to return the value as the first element
+	 *   of the array. This allows the consumer to check just the first element
+	 *   if it can perform optimizations for such case. However it //must// not
+	 *   depend on the order (that's for optimization only).
 	 *
-	 * Note: the resulting iterators does not need to be thread safe.
+	 * Note: The resulting iterators does not need to be thread safe.
 	 *
 	 * @param forks Number of iterators in array
-	 * @returns An array with created iterators
+	 * @return An array with created iterators
 	 * @since 0.11.5
 	 */
 	[CCode (ordering = 9)]
