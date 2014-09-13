@@ -26,7 +26,40 @@
 using GLib;
 
 namespace Gee {
+	/**
+	 * A function producing a hash for an object. Two hashes of equal
+	 * objects (as specified by corresponding {@link EqualDataFunc}) have to
+	 * be equal.
+	 *
+	 * Note: Hash for a given object //must not// change during the lifetime
+	 *   of delegate.
+	 *
+	 * @param v Hashed value
+	 * @return Hash for given value
+	 *
+	 * @see Hashable
+	 */
 	public delegate uint HashDataFunc<T> (T v);
+	/**
+	 * A function comparing two object defining equivalence relationship.
+	 *
+	 * In other words if `equal_to` is `EqualDataFunc` then:
+	 *
+	 *  * It must be reflexive: for all objects `a` it holds that
+	 *    `equal_to(a, a)`.
+	 *  * It must be symmetric: for all objects `a` and `b` if
+	 *    `equal_to(a, b)` then `equal_to(b, a)`.
+	 *  * It must be transitive: if `equal_to(a, b)` and `equal_to(b, c)`
+	 *    then `equal_to(a, c)`
+	 *
+	 * Note: The relationship //must not// change during lifetime of the
+	 *   delegate.
+	 *
+	 * @param v Hashed value
+	 * @return Hash for given value
+	 *
+	 * @see Hashable
+	 */
 	public delegate bool EqualDataFunc<T> (T a, T b);
 }
 
