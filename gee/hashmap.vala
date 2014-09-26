@@ -323,7 +323,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 		}
 	}
 
-	~HashSet () {
+	~HashMap () {
 		clear ();
 	}
 
