@@ -25,7 +25,7 @@
  * [[http://www.cse.yorku.ca/~ruppert/papers/lfll.pdf|Mikhail Fomitchev and  Eric Ruppert paper ]].
  *
  * Many threads are allowed to operate on the same structure as well as modification
- * of structure during iteration is allowed. However the change may not be immidiatly
+ * of structure during iteration is allowed. However the change may not be immediately
  * visible to other threads.
  */
 public class Gee.ConcurrentList<G> : AbstractList<G> {
