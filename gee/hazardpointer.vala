@@ -458,6 +458,9 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 						Thread.yield ();
 						pull_from_queue (ctx._to_free, ctx._to_free.is_empty);
 						ctx.try_free ();
+						if (ctx._to_free.is_empty) {
+							GLib.Thread.usleep (100000);
+						}
 					}
 				});
 				break;
