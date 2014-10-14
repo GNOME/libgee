@@ -1,3 +1,9 @@
+libgee 0.16.1
+=============
+ * Workaround GC thread consuming 100% of CPU
+ * Fix HashMap destructor name
+ * Fix a documentation typo
+
 libgee 0.16.0
 =============
  * No changes since previous release
