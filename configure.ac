@@ -61,7 +61,7 @@ AC_ARG_ENABLE(internal-asserts, [AS_HELP_STRING([--disable-internal-asserts], [D
 AS_IF([test "x$enable_internal_asserts" = xno], [VALA_ADD_VALAFLAGS(-D DISABLE_INTERNAL_ASSERTS)])
 
 AC_ARG_ENABLE(consistency-check, [AS_HELP_STRING([--enable-consistency-check], [Enables (very) expensive consistency checks. It might affect the asymptotic performance.])],
-              enable_consistency_check=$enableval, enable_internal_asserts=no)
+              enable_consistency_check=$enableval, enable_consistency_check=no)
 AS_IF([test "x$enable_consistency_check" != xno], [VALA_ADD_VALAFLAGS(-D CONSISTENCY_CHECKS)])
 
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
