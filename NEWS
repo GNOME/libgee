@@ -1,3 +1,7 @@
+libgee 0.17.92
+==============
+ * Fix default value of --enable-consistency-check
+
 libgee 0.16.1
 =============
  * Workaround GC thread consuming 100% of CPU
