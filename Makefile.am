@@ -54,5 +54,6 @@ EXTRA_DIST += \
 	gitlog-to-changelog \
 	MAINTAINERS \
 	gee-0.8.pc.in \
+	utils/geeutils.vapi \
 	$(NULL)
 
