@@ -3,14 +3,35 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-ORIGDIR=`pwd`
-cd $srcdir
 
-# Automake requires that ChangeLog exists.
-touch ChangeLog
+(test -f $srcdir/configure.ac) || {
+	echo "**Error**: Directory "\`$srcdir\'" does not look like the top-level project directory"
+	exit 1
+}
 
-REQUIRED_M4MACROS=introspection.m4 \
-	REQUIRED_AUTOMAKE_VERSION=1.11 \
-	gnome-autogen.sh "$@" || exit 1
-cd $ORIGDIR || exit $?
+PKG_NAME=`autoconf --trace 'AC_INIT:$1' "$srcdir/configure.ac"`
+
+if [ "$#" = 0 -a "x$NOCONFIGURE" = "x" ]; then
+	echo "**Warning**: I am going to run \`configure' with no arguments." >&2
+	echo "If you wish to pass any to it, please specify them on the" >&2
+	echo \`$0\'" command line." >&2
+	echo "" >&2
+fi
+
+set -x
+aclocal --install || exit 1
+autoreconf --verbose --force --install -Wno-portability || exit 1
+set +x
+
+if [ "$NOCONFIGURE" = "" ]; then
+        set -x
+        $srcdir/configure "$@" || exit 1
+        set +x
+
+        if [ "$1" = "--help" ]; then exit 0 else
+                echo "Now type \`make\' to compile $PKG_NAME" || exit 1
+        fi
+else
+        echo "Skipping configure process."
+fi
 

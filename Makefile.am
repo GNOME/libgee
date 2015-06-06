@@ -1,5 +1,5 @@
 include $(top_srcdir)/Makefile.decl
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = --install -I m4
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-introspection=no --enable-vala
 
 if ENABLE_DOC
