@@ -119,7 +119,7 @@ public interface Gee.Future<G> : Object {
 	 *
 	 * Note: As time taken by function might not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
-	 *   value eagerly by {@link when_done} it is recommended to use
+	 *   value eagerly by {@link wait_async} it is recommended to use
 	 *   {@link task} and {@link flat_map} for longer computation.
 	 *
 	 * @param func Function applied to {@link value}
@@ -154,7 +154,7 @@ public interface Gee.Future<G> : Object {
 	 *
 	 * Note: As time taken by function does not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
-	 *   value eagerly by {@link when_done} it is recommended to use
+	 *   value eagerly by {@link wait_async} it is recommended to use
 	 *   {@link task} and {@link flat_map} for longer computation.
 	 *
 	 * @param func Function applied to {@link value}
@@ -183,10 +183,10 @@ public interface Gee.Future<G> : Object {
 	 *
 	 * Note: As time taken by function does not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
-	 *   value eagerly by {@link when_done} it is recommended to return a
+	 *   value eagerly by {@link wait_async} it is recommended to return a
 	 *   future from {@link task} and use {@link flat_map} for longer computation.
 	 *
-	 * @param join_func Function applied to values
+	 * @param zip_func Function applied to values
 	 * @param second Second parameter
 	 * @return A combine value
 	 * @since 0.11.4
@@ -215,7 +215,7 @@ public interface Gee.Future<G> : Object {
 	 *
 	 * Note: As time taken by function does not contribute to
 	 *   {@link wait_until} and the implementation is allowed to compute
-	 *   value eagerly by {@link when_done} it is recommended to put the
+	 *   value eagerly by {@link wait_async} it is recommended to put the
 	 *   larger computation inside the returned future for example by
 	 *   {@link task}
 	 *

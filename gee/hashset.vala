@@ -55,8 +55,9 @@ namespace Gee {
 	 * Note: The relationship //must not// change during lifetime of the
 	 *   delegate.
 	 *
-	 * @param v Hashed value
-	 * @return Hash for given value
+	 * @param a First value
+	 * @param b Second value
+	 * @return Whether values are equal
 	 *
 	 * @see Hashable
 	 */
