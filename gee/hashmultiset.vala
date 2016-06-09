@@ -59,7 +59,11 @@ public class Gee.HashMultiSet<G> : AbstractMultiSet<G> {
 	 * @param hash_func an optional element hash function
 	 * @param equal_func an optional element equality testing function
 	 */
+#if VALA_0_32
+	[Version (deprecated = true, deprecated_since = "0.13.3", replacement = "gee_hash_multi_set_new_fixed")]
+#else
 	[Deprecated (since = "0.13.3", replacement = "gee_hash_multi_set_new_fixed")]
+#endif
 	[CCode (cname = "gee_hash_multi_set_new")]
 	public HashMultiSet.broken (HashDataFunc<G>? hash_func = null, EqualDataFunc<G>? equal_func = null) {
 		base (new HashMap<G, int> (hash_func, equal_func));

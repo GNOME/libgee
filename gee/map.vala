@@ -92,7 +92,11 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @return    ``true`` if key is found, ``false`` otherwise
 	 */
+#if VALA_0_32
+	[Version (deprecated = true, replacement = "Map.has_key")]
+#else
 	[Deprecated (replacement = "Map.has_key")]
+#endif
 	public bool contains (K key) {
 		return has_key(key);
 	}
@@ -143,7 +147,11 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @return    ``true`` if the map has been changed, ``false`` otherwise
 	 */
+#if VALA_0_32
+	[Version (deprecated = true, replacement = "Map.unset")]
+#else
 	[Deprecated (replacement = "Map.unset")]
+#endif
 	public bool remove (K key, out V? value = null) {
 		return unset (key, out value);
 	}
@@ -192,7 +200,11 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @param map the map which common items are deleted from this map
 	 */
+#if VALA_0_32
+	[Version (deprecated = true, replacement = "Map.unset_all")]
+#else
 	[Deprecated (replacement = "Map.unset_all")]
+#endif
 	public bool remove_all (Map<K,V> map) {
 		return unset_all (map);
 	}
@@ -216,7 +228,11 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	 *
 	 * @param map the map which items will be compared with this map
 	 */
+#if VALA_0_32
+	[Version (deprecated = true, replacement = "Map.has_all")]
+#else
 	[Deprecated (replacement = "Map.has_all")]
+#endif
 	public bool contains_all (Map<K,V> map) {
 		return has_all (map);
 	}
