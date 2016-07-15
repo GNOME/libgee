@@ -179,11 +179,11 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 			return false;
 		}
 
-		public override bool add (K key) {
+		public override bool add (V value) {
 			assert_not_reached ();
 		}
 
-		public override  bool remove (K item) {
+		public override  bool remove (V value) {
 			assert_not_reached ();
 		}
 
