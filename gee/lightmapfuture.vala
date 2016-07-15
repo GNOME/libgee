@@ -41,8 +41,8 @@ internal class Gee.LightMapFuture<A, G> : Object, Future<A> {
 		return _func (_base.wait ());
 	}
 
-	public bool wait_until (int64 end_time, out unowned G? value = null) throws Gee.FutureError {
-		unowned A arg;
+	public bool wait_until (int64 end_time, out unowned A? value = null) throws Gee.FutureError {
+		unowned G arg;
 		bool result;
 		value = null;
 		if ((result = _base.wait_until (end_time, out arg))) {
@@ -51,8 +51,8 @@ internal class Gee.LightMapFuture<A, G> : Object, Future<A> {
 		return result;
 	}
 
-	public async unowned G wait_async () throws Gee.FutureError {
-		unowned A arg = yield _base.wait_async ();
+	public async unowned A wait_async () throws Gee.FutureError {
+		unowned G arg = yield _base.wait_async ();
 		return _func (arg);
 	}
 
