@@ -720,9 +720,9 @@ public class Gee.UnrolledLinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G
 	private Node<G>? _head = null;
 	private unowned Node<G>? _tail = null;
 	private Functions.EqualDataFuncClosure<G> _equal_func;
-	private static const int NODE_SIZE = 29; // Chosen for node to be multiply cache line (4 on 64 bit and 2 on 32 bit)
-	private static const int SPLIT_POS = (NODE_SIZE - 1)/2 + 1;
-	private static const int MERGE_THRESHOLD = (NODE_SIZE * 4)/5;
+	private const int NODE_SIZE = 29; // Chosen for node to be multiply cache line (4 on 64 bit and 2 on 32 bit)
+	private const int SPLIT_POS = (NODE_SIZE - 1)/2 + 1;
+	private const int MERGE_THRESHOLD = (NODE_SIZE * 4)/5;
 
 	private class Iterator<G> : Object, Gee.Traversable<G>, Gee.Iterator<G>, ListIterator<G>, BidirIterator<G>, BidirListIterator<G> {
 		public Iterator (UnrolledLinkedList<G> list) {

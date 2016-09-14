@@ -35,7 +35,7 @@ public class ArrayListTests : BidirListTests {
 		add_test ("[ArrayList] typed to_array calls", test_typed_to_array);
 	}
 
-	private static const int BIG_SORT_SIZE = 1000000;
+	private const int BIG_SORT_SIZE = 1000000;
 
 	public override void set_up () {
 		test_collection = new ArrayList<string> ();

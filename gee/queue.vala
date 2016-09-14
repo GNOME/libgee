@@ -49,7 +49,7 @@ public interface Gee.Queue<G> : Collection<G> {
 	/**
 	 * The unbounded capacity value.
 	 */
-	public static const int UNBOUNDED_CAPACITY = -1;
+	public const int UNBOUNDED_CAPACITY = -1;
 
 	/**
 	 * The capacity of this queue (or ``UNBOUNDED_CAPACITY`` if capacity is not bound).

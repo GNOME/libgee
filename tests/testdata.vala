@@ -30,7 +30,7 @@ public class TestData {
 	}
 
 	private static uint DATA_SIZE = data_size ();
-	private static const uint RND_IDX_SIZE = 8;
+	private const uint RND_IDX_SIZE = 8;
 
 	private static string[] data = create_data (DATA_SIZE);
 	private static string[] sorted_data = sort_array (data);

@@ -85,7 +85,7 @@ internal class Gee.TimSort<G> : Object {
 		helper.do_sort ();
 	}
 
-	private static const int MINIMUM_GALLOP = 7;
+	private const int MINIMUM_GALLOP = 7;
 
 	private List<G> list_collection;
 	private G[] array;
