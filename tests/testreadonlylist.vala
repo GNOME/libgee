@@ -49,7 +49,7 @@ public class ReadOnlyListTests : ReadOnlyCollectionTests {
 	}
 
 	protected override Collection<string> get_ro_view (Collection<string> collection) {
-		return ((Gee.List) collection).read_only_view;
+		return ((Gee.List<string>) collection).read_only_view;
 	}
 
 	public new void test_immutable_iterator () {

@@ -41,6 +41,6 @@ public class ReadOnlySetTests : ReadOnlyCollectionTests {
 	}
 
 	protected override Collection<string> get_ro_view (Collection<string> collection) {
-		return ((Gee.Set) collection).read_only_view;
+		return ((Gee.Set<string>) collection).read_only_view;
 	}
 }

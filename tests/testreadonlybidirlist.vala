@@ -30,7 +30,7 @@ public class ReadOnlyBidirListTests : ReadOnlyListTests {
 	}
 
 	protected override Collection<string> get_ro_view (Collection<string> collection) {
-		return ((Gee.BidirList) collection).read_only_view;
+		return ((Gee.BidirList<string>) collection).read_only_view;
 	}
 
 	public new void test_immutable_iterator () {
