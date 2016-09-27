@@ -809,8 +809,8 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 		}
 
-		private weak SortedSet<Entry<K,V>>? _entries;
-		public override Set<Entry<K,V>> entries {
+		private weak SortedSet<Map.Entry<K,V>>? _entries;
+		public override Set<Map.Entry<K,V>> entries {
 			owned get {
 				var entries = _entries;
 				if (_entries == null) {
@@ -1917,11 +1917,11 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return true;
 		}
 
-		public Gee.Iterator<Entry<K,V>>[] tee (uint forks) {
+		public Gee.Iterator<Map.Entry<K,V>>[] tee (uint forks) {
 			if (forks == 0) {
-				return new Iterator<Entry<K,V>>[0];
+				return new Iterator<Map.Entry<K,V>>[0];
 			} else {
-				Gee.Iterator<Entry<K,V>>[] result = new Gee.Iterator<Entry<K,V>>[forks];
+				Gee.Iterator<Map.Entry<K,V>>[] result = new Gee.Iterator<Map.Entry<K,V>>[forks];
 				result[0] = this;
 				for (uint i = 1; i < forks; i++) {
 					result[i] = new EntryIterator<K,V>.from_iterator (this);
@@ -1967,11 +1967,11 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			return true;
 		}
 
-		public Gee.Iterator<Entry<K,V>>[] tee (uint forks) {
+		public Gee.Iterator<Map.Entry<K,V>>[] tee (uint forks) {
 			if (forks == 0) {
-				return new Iterator<Entry<K,V>>[0];
+				return new Iterator<Map.Entry<K,V>>[0];
 			} else {
-				Gee.Iterator<Entry<K,V>>[] result = new Gee.Iterator<Entry<K,V>>[forks];
+				Gee.Iterator<Map.Entry<K,V>>[] result = new Gee.Iterator<Map.Entry<K,V>>[forks];
 				result[0] = this;
 				for (uint i = 1; i < forks; i++) {
 					result[i] = new SubEntryIterator<K,V>.from_iterator (this);
