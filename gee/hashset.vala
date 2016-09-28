@@ -222,7 +222,7 @@ public class Gee.HashSet<G> : AbstractSet<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override bool foreach (ForallFunc f) {
+	public override bool foreach (ForallFunc<G> f) {
 		for (int i = 0; i < _array_size; i++) {
 			for (unowned Node<G>? current = _nodes[i]; current != null; current = current.next) {
 				if (!f (current.key)) {

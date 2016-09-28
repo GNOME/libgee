@@ -77,7 +77,7 @@ internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Gee.Iterator<A> stream<A> (owned StreamFunc<A> f) {
+	public Gee.Iterator<A> stream<A> (owned StreamFunc<G, A> f) {
 		return _collection.stream<A> ((owned)f);
 	}
 
@@ -215,7 +215,7 @@ internal class Gee.ReadOnlyCollection<G> : Object, Traversable<G>, Iterable<G>, 
 			return _iter.foreach (f);
 		}
 
-		public Gee.Iterator<A> stream<A> (owned StreamFunc<A, G> f) {
+		public Gee.Iterator<A> stream<A> (owned StreamFunc<G, A> f) {
 			return _iter.stream<A> ((owned)f);
 		}
 

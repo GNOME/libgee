@@ -162,7 +162,7 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 			_multi_map = multi_map;
 		}
 
-		public override Gee.Iterator<K> iterator () {
+		public override Gee.Iterator<V> iterator () {
 			return new ValueIterator<K, V> (_multi_map._storage_map.map_iterator ());
 		}
 

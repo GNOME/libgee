@@ -377,7 +377,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override bool foreach (ForallFunc f) {
+	public override bool foreach (ForallFunc<G> f) {
 		for (unowned Node<G>? current = _iter_head; current != null; current = current.iter_next) {
 			if (!f (current.data)) {
 				return false;
