@@ -1419,7 +1419,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			return ah ? -1 : cmp(a._data, b);
 		}
 
-		[NoArrayLength]
+		[CCode (array_length = false)]
 		public TowerNode<G>[] _nodes;
 		public G _data;
 		public int _height;
@@ -1431,7 +1431,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 	}
 
 	private struct TowerIter<G> {
-		[NoArrayLength]
+		[CCode (array_length = false)]
 		public Tower<G>? _iter[31 /*_MAX_HEIGHT*/];
 	}
 
