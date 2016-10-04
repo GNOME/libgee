@@ -34,6 +34,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}
 		_cmp = (owned)compare_func;
+		_head = new Tower<G>.head ();
 	}
 
 	~ConcurrentSet () {
@@ -246,7 +247,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 #endif
 
 	private int _size = 0;
-	private Tower<G> _head = new Tower<G>.head ();
+	private Tower<G> _head;
 	private CompareDataFunc<G>? _cmp;
 	private const int _MAX_HEIGHT = 31;
 	private static Private rand = new Private((ptr) => {
