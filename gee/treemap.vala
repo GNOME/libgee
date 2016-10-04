@@ -507,6 +507,12 @@ public class Gee.TreeMap<K,V> : Gee.AbstractBidirSortedMap<K,V> {
 			}
 		}
 
+		~Node () {
+			if (entry != null) {
+				entry.remove_weak_pointer ((void**) (&entry));
+			}
+		}
+
 		public void flip () {
 			color = color.flip ();
 			if (left != null) {

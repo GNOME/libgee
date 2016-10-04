@@ -341,6 +341,12 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 			key_hash = hash;
 			 entry = null;
 		}
+
+		~Node () {
+			if (entry != null) {
+				entry.remove_weak_pointer ((void**) (&entry));
+			}
+		}
 	}
 
 	private class Entry<K,V> : Map.Entry<K,V> {

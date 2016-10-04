@@ -35,6 +35,7 @@ public abstract class MapTests : Gee.TestCase {
 		add_test ("[Map] keys", test_keys);
 		add_test ("[Map] values", test_values);
 		add_test ("[Map] entries", test_entries);
+		add_test ("[Map] entry weak pointer lifetime", test_entry_weak_pointer_lifetime);
 		add_test ("[Map] set all", test_set_all);
 		add_test ("[Map] unset all", test_unset_all);
 		add_test ("[Map] has all", test_has_all);
@@ -283,7 +284,20 @@ public abstract class MapTests : Gee.TestCase {
 		entries = test_map.entries;
 		assert (entries.size == 0);
 	}
-	
+
+	private void test_entry_weak_pointer_lifetime () {
+		// Issue was reproducible with AddressSanitizer and G_SLICE=always-malloc
+
+		test_map["1337"] = "Badger";
+
+		foreach (var entry in test_map.entries) {
+			if (entry.value == "Badger") {
+				test_map.unset (entry.key);
+				break;
+			}
+		}
+	}
+
 	public void test_clear () {
 		test_map.set ("one", "value_of_one");
 		test_map.set ("two", "value_of_two");
