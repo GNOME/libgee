@@ -100,6 +100,10 @@ public class ArrayListTests : BidirListTests {
 		}
 	}
 
+	private enum TestEnum {
+		ONE, TWO, THREE
+	}
+
 	private void test_typed_to_array () {
 		// Test with a bool collection
 		Gee.List<bool> bool_list = new ArrayList<bool> ();
@@ -139,6 +143,18 @@ public class ArrayListTests : BidirListTests {
 		index = 0;
 		foreach (double element in double_list) {
 			assert (element == double_array[index++]);
+		}
+
+		// Test with an enum collection
+		Gee.List<TestEnum> enum_list = new ArrayList<TestEnum> ();
+		assert (enum_list.add (TestEnum.ONE));
+		assert (enum_list.add (TestEnum.TWO));
+		assert (enum_list.add (TestEnum.THREE));
+
+		TestEnum[] enum_array = enum_list.to_array ();
+		index = 0;
+		foreach (TestEnum element in enum_list) {
+			assert (element == enum_array[index++]);
 		}
 	}
 }
