@@ -350,11 +350,7 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 		_lm_head = null;
 		_lm_tail = null;
 		_p = null;
-#if VALA_0_16
 		_a = new Type1Node<G>?[0];
-#else
-		_a = new Type1Node<G>[0];
-#endif
 		_lp_head = null;
 		_lp_tail = null;
 		_b = new bool[0];

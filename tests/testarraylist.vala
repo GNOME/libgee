@@ -135,11 +135,7 @@ public class ArrayListTests : BidirListTests {
 		assert (double_list.add (1.5d));
 		assert (double_list.add (2.0d));
 
-#if VALA_0_16
 		double?[] double_array = double_list.to_array ();
-#else
-		double[] double_array = double_list.to_array ();
-#endif
 		index = 0;
 		foreach (double element in double_list) {
 			assert (element == double_array[index++]);
