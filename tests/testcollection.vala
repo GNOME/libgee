@@ -51,6 +51,11 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] scan", test_scan);
 		add_test ("[Collection] filter", test_filter);
 		add_test ("[Collection] chop", test_chop);
+		add_test ("[Collection] first_match", test_first_match);
+		add_test ("[Collection] any_match", test_any_match);
+		add_test ("[Collection] all_match", test_all_match);
+		add_test ("[Collection] max_min", test_max_min);
+		add_test ("[Collection] order_by", test_order_by);
 	}
 
 	protected Collection<string> test_collection;
@@ -1196,6 +1201,63 @@ public abstract class CollectionTests : Gee.TestCase {
 		assert (iter2.get () == iter.get ());
 		assert (!iter.next ());
 		assert (iter2.next ());
+	}
+
+	public void test_first_match () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+
+		assert (test_collection.first_match ((x) => x == "one") == "one");
+		assert (test_collection.first_match ((x) => x == "two") == "two");
+		assert (test_collection.first_match ((x) => x == "three") == "three");
+		assert (test_collection.first_match ((x) => x == "four") == null);
+	}
+
+	public void test_any_match () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+
+		assert (test_collection.any_match ((x) => x == "one"));
+		assert (test_collection.any_match ((x) => x == "two"));
+		assert (test_collection.any_match ((x) => x == "three"));
+		assert (!test_collection.any_match ((x) => x == "four"));
+	}
+
+	public void test_all_match () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.all_match ((x) => x == "one"));
+
+		assert (test_collection.add ("two"));
+		assert (!test_collection.all_match ((x) => x == "one"));
+	}
+
+	public void test_max_min () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+
+		assert (test_collection.max ((a, b) => strcmp (a, b)) == "one");
+		assert (test_collection.min ((a, b) => strcmp (a, b)) == "two");
+	}
+
+	public void test_order_by () {
+		assert (test_collection.add ("one"));
+		assert (test_collection.add ("two"));
+		assert (test_collection.add ("three"));
+
+		var sorted_collection = test_collection.order_by ((a, b) => strcmp (a, b));
+
+		string previous_item = null;
+		while (sorted_collection.next ()) {
+			var item = sorted_collection.get ();
+			if (previous_item != null) {
+				assert (strcmp (previous_item, item) <= 0);
+			}
+
+			previous_item = item;
+		}
 	}
 }
 
