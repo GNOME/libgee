@@ -451,7 +451,7 @@ public interface Gee.Traversable<G> : Object {
 	 *
 	 * @param pred Predicate to be called to check for matches
 	 * @return The first element that matches or null
-	 * @since 0.18.2
+	 * @since 0.19.91
 	 */
 	[CCode (ordering = 10)]
 	public virtual G? first_match (owned Predicate<G> pred) {
@@ -475,7 +475,7 @@ public interface Gee.Traversable<G> : Object {
 	 *
 	 * @param pred Predicate to be called to check for matches
 	 * @return Whether there was a match or not
-	 * @since 0.18.2
+	 * @since 0.19.91
 	 */
 	[CCode (ordering = 11)]
 	public virtual bool any_match (owned Predicate<G> pred) {
@@ -487,7 +487,7 @@ public interface Gee.Traversable<G> : Object {
 	 *
 	 * @param pred Predicate to be called to check for matches
 	 * @return Whether all elements match or not
-	 * @since 0.18.2
+	 * @since 0.19.91
 	 */
 	[CCode (ordering = 12)]
 	public virtual bool all_match (owned Predicate<G> pred) {
@@ -508,7 +508,7 @@ public interface Gee.Traversable<G> : Object {
 	 *
 	 * @param compare Function to be called for comparisons
 	 * @return The item containing the max value.
-	 * @since 0.18.2
+	 * @since 0.19.91
 	 */
 	[CCode (ordering = 13)]
 	public virtual G max (owned CompareDataFunc<G> compare) {
@@ -528,7 +528,7 @@ public interface Gee.Traversable<G> : Object {
 	 *
 	 * @param compare Function to be called for comparisons
 	 * @return The item containing the min value.
-	 * @since 0.18.2
+	 * @since 0.19.91
 	 */
 	[CCode (ordering = 14)]
 	public virtual G min (owned CompareDataFunc<G> compare) {
@@ -548,7 +548,7 @@ public interface Gee.Traversable<G> : Object {
 	 *
 	 * @param compare Comparison function
 	 * @return A new iterator with the source elements sorted.
-	 * @since 0.18.2
+	 * @since 0.19.91
 	 */
 	[CCode (ordering = 15)]
 	public virtual Iterator<G> order_by (owned CompareDataFunc<G>? compare = null) {
