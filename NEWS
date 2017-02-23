@@ -1,3 +1,8 @@
+libgee 0.19.91
+==============
+ * Fix to_array on enums and flags
+ * Add additional query operations to Traversable
+
 libgee 0.18.1
 =============
  * Various build and runtime fixes
