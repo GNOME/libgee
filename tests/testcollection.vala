@@ -56,6 +56,8 @@ public abstract class CollectionTests : Gee.TestCase {
 		add_test ("[Collection] all_match", test_all_match);
 		add_test ("[Collection] max_min", test_max_min);
 		add_test ("[Collection] order_by", test_order_by);
+		add_test ("[Collection] one_match", test_one_match);
+		add_test ("[Collection] count_match", test_count_match);
 	}
 
 	protected Collection<string> test_collection;
@@ -1258,6 +1260,48 @@ public abstract class CollectionTests : Gee.TestCase {
 
 			previous_item = item;
 		}
+	}
+
+	public void test_one_match () {
+		assert (!test_collection.one_match ((x) => x == "one"));
+
+		assert (test_collection.add ("one"));
+		assert (test_collection.one_match ((x) => x == "one"));
+		assert (!test_collection.one_match ((x) => x == "two"));
+
+		assert (test_collection.add ("two"));
+		assert (test_collection.one_match ((x) => x == "one"));
+		assert (test_collection.one_match ((x) => x == "two"));
+
+		if (test_collection.add ("two")) {
+			assert (!test_collection.one_match ((x) => x == "two"));
+		} else {
+			assert (test_collection.one_match ((x) => x == "two"));
+		}
+		assert (test_collection.one_match ((x) => x == "one"));
+
+		assert (!test_collection.one_match ((x) => x == "three"));
+	}
+
+	public void test_count_match () {
+		assert (test_collection.count_match ((x) => x == "one") == 0);
+
+		assert (test_collection.add ("one"));
+		assert (test_collection.count_match ((x) => x == "one") == 1);
+		assert (test_collection.count_match ((x) => x == "two") == 0);
+
+		assert (test_collection.add ("two"));
+		assert (test_collection.count_match ((x) => x == "one") == 1);
+		assert (test_collection.count_match ((x) => x == "two") == 1);
+
+		if (test_collection.add ("two")) {
+			assert (test_collection.count_match ((x) => x == "two") == 2);
+		} else {
+			assert (test_collection.count_match ((x) => x == "two") == 1);
+		}
+		assert (test_collection.count_match ((x) => x == "one") == 1);
+
+		assert (test_collection.count_match ((x) => x == "three") == 0);
 	}
 }
 
