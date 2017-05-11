@@ -36,5 +36,5 @@ configure_file(input : 'gee.deps.in',
 
 subdir('utils')
 subdir('gee')
-#subdir('doc')
+subdir('doc')
 #subdir('tests')
