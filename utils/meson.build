@@ -2,8 +2,7 @@ utilsf = files ([
 	'assume.h',
 	'async.h',
 	'free.h',
-	'misc.h',
-	'geeutils.vapi'])
+	'misc.h'])
 utilsvapi = files (['geeutils.vapi'])
 
 

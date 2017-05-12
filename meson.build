@@ -6,7 +6,7 @@ VALADEPS = 'gio-2.0'
 PCDEPS = 'gio-2.0'
 
 API_VERSION = '0.8'
-VERSION = '0.20.0'
+PROJECT_VERSION = '0.20.0'
 
 conf = configuration_data()
 conf.set('prefix', get_option('prefix'))
@@ -15,7 +15,7 @@ conf.set('libdir', join_paths (get_option ('prefix'),get_option ('libdir')))
 conf.set('includedir', get_option ('includedir'))
 conf.set('VALADEPS', VALADEPS)
 conf.set('PCDEPS', PCDEPS)
-conf.set('VERSION', VERSION)
+conf.set('VERSION', PROJECT_VERSION)
 conf.set('API_VERSION', API_VERSION)
 
 configure_file(input : 'gee-0.8.pc.in',
@@ -36,5 +36,5 @@ configure_file(input : 'gee.deps.in',
 
 subdir('utils')
 subdir('gee')
-subdir('doc')
+#subdir('doc')
 #subdir('tests')
