@@ -94,16 +94,13 @@ sources = files ([])
 includehdir = include_directories ('.')
 includehdir_dep = declare_dependency (include_directories : includehdir)
 
-includehdir_dep = declare_dependency (include_directories : includehdir)
-
 gee = library('gee-@0@'.format(API_VERSION),
-	valasources + sources + utilsf + utilsvapi,
+	valasources + sources,
 	version : PROJECT_VERSION,
 	vala_header : 'gee.h',
 	vala_vapi : 'gee-@0@.vapi'.format(API_VERSION),
 	vala_gir : 'Gee-@0@.gir'.format(API_VERSION),
-	vala_internal_header : 'gee-internals.h',
-	vala_internal_vapi : 'gee-internals-0.8.vapi',
+	vala_args : [ '--pkg', 'geeutils'],
 	dependencies : [ gio, include_utils_h_dir_dep ],
 	install : true,
 	install_dir : [
@@ -111,8 +108,6 @@ gee = library('gee-@0@'.format(API_VERSION),
 		join_paths (get_option('includedir'),'gee-@0@'.format (API_VERSION)),
 		true,
 		true,
-		true,
-		true
 	])
 
 g_ir_compiler = find_program('g-ir-compiler')

@@ -9,7 +9,7 @@ vapidirvapi = '--vapidir='+join_paths (meson.current_source_dir (),'vapi')
 docsdir = join_paths (get_option ('datadir'), 'devhelp','books')
 
 custom_target ('valadocs',
-		input : sources,
+		input : valasources,
 		output : outdir,
 		command : [valadoc,
 			driver,
@@ -20,7 +20,8 @@ custom_target ('valadocs',
 			'--pkg=gio-2.0',
 			vapidir,
 			vapidirvapi,
-			utilsvapi,
+			'--vapidir', join_paths (meson.source_root (),'utils'),
+			'--pkg=geeutils',
 			'--directory=@OUTDIR@',
 			valasources],
 		install : true,
