@@ -92,6 +92,7 @@ valasources = files ([
 sources = files ([])
 
 includehdir = include_directories ('.')
+includehdir_dep = declare_dependency (include_directories : includehdir)
 
 includehdir_dep = declare_dependency (include_directories : includehdir)
 

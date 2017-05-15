@@ -41,10 +41,10 @@ testf = files ([
 ])
 
 t = executable('tests',
-	testf + utilsvapi,
-	vala_args : [''],
-	dependencies : [ gio, includehdir_dep, include_utils_h_dir_dep ],
+	testf,
+	vala_args : ['--pkg', 'geeutils', '--pkg', 'posix'],
+	dependencies : [ gio, include_utils_h_dir_dep, includehdir_dep ],
 	link_with: gee
 )
 
-test ('gee', t)
+test ('tests', t)

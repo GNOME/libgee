@@ -1,5 +1,8 @@
 project('libgee', [ 'vala', 'c'])
 
+add_project_arguments (['--vapidir', join_paths (meson.source_root (),'utils')],
+	language: 'vala')
+
 gio = dependency('gio-2.0')
 
 VALADEPS = 'gio-2.0'
@@ -33,8 +36,7 @@ configure_file(input : 'gee.deps.in',
 	install_dir : vapidir)
 
 
-
 subdir('utils')
 subdir('gee')
-#subdir('doc')
-#subdir('tests')
+subdir('doc')
+subdir('tests')
