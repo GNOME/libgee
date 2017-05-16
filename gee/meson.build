@@ -99,13 +99,19 @@ if internal_asserts_opt
 	internal_asserts_args += ['-D','DISABLE_INTERNAL_ASSERTS']
 endif
 
+enable_consistency_check_opt = get_option ('enable-consistency-check')
+enable_consistency_check_args = []
+if enable_consistency_check_opt
+	enable_consistency_check_args += ['-D','CONSISTENCY_CHECKS']
+endif
+
 gee = library('gee-@0@'.format(API_VERSION),
 	valasources + sources,
 	version : PROJECT_VERSION,
 	vala_header : 'gee.h',
 	vala_vapi : 'gee-@0@.vapi'.format(API_VERSION),
 	vala_gir : 'Gee-@0@.gir'.format(API_VERSION),
-	vala_args : [ '--pkg', 'geeutils'] + internal_asserts_args,
+	vala_args : [ '--pkg', 'geeutils'] + internal_asserts_args + enable_consistency_check_args,
 	vala_internal_header : 'gee-internals.h',
 	vala_internal_vapi : 'gee-internals-0.8.vapi',
 	dependencies : [ gio, include_utils_h_dir_dep ],
