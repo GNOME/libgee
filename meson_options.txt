@@ -1,1 +1,2 @@
 option('enable-benchmark', type : 'boolean', value : false, description : 'Enable benchmark')
+option('disable-internal-asserts', type : 'boolean', value : false, description : 'Disables the internal asserts')
