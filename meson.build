@@ -1,8 +1,5 @@
 project('libgee', [ 'vala', 'c'])
 
-add_project_arguments (['--vapidir', join_paths (meson.source_root (),'utils')],
-	language: 'vala')
-
 gio = dependency('gio-2.0')
 
 VALADEPS = 'gio-2.0'
@@ -37,8 +34,17 @@ configure_file(input : 'gee.deps.in',
 	install : true,
 	install_dir : vapidir)
 
+# Coverage is supported in Meson, so no code is added to libgee
+# for coverage how-to, go to: http://mesonbuild.com/howtox.html#producing-a-coverage-report
+
+
 
 subdir('utils')
 subdir('gee')
 subdir('doc')
 subdir('tests')
+
+benchmarks_opt = get_option ('enable-benchmark')
+if benchmarks_opt
+	subdir('benchmark')
+endif

@@ -1,0 +1,1 @@
+option('enable-benchmark', type : 'boolean', value : false, description : 'Enable benchmark')
