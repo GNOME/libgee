@@ -12,7 +12,6 @@
 #configure_file(output : 'config.h',
 #	configuration : confh)
 
-
 valasources = files ([
 	'assemblyinfo.vala',
 	'abstractbidirlist.vala',
@@ -101,6 +100,8 @@ gee = library('gee-@0@'.format(API_VERSION),
 	vala_vapi : 'gee-@0@.vapi'.format(API_VERSION),
 	vala_gir : 'Gee-@0@.gir'.format(API_VERSION),
 	vala_args : [ '--pkg', 'geeutils'],
+	vala_internal_header : 'gee-internals.h',
+	vala_internal_vapi : 'gee-internals-0.8.vapi',
 	dependencies : [ gio, include_utils_h_dir_dep ],
 	install : true,
 	install_dir : [
@@ -108,6 +109,8 @@ gee = library('gee-@0@'.format(API_VERSION),
 		join_paths (get_option('includedir'),'gee-@0@'.format (API_VERSION)),
 		true,
 		true,
+		false,
+		false
 	])
 
 g_ir_compiler = find_program('g-ir-compiler')
