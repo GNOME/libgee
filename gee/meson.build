@@ -93,13 +93,19 @@ sources = files ([])
 includehdir = include_directories ('.')
 includehdir_dep = declare_dependency (include_directories : includehdir)
 
+internal_asserts_opt = get_option ('disable-internal-asserts')
+internal_asserts_args = []
+if internal_asserts_opt
+	internal_asserts_args += ['-D','DISABLE_INTERNAL_ASSERTS']
+endif
+
 gee = library('gee-@0@'.format(API_VERSION),
 	valasources + sources,
 	version : PROJECT_VERSION,
 	vala_header : 'gee.h',
 	vala_vapi : 'gee-@0@.vapi'.format(API_VERSION),
 	vala_gir : 'Gee-@0@.gir'.format(API_VERSION),
-	vala_args : [ '--pkg', 'geeutils'],
+	vala_args : [ '--pkg', 'geeutils'] + internal_asserts_args,
 	vala_internal_header : 'gee-internals.h',
 	vala_internal_vapi : 'gee-internals-0.8.vapi',
 	dependencies : [ gio, include_utils_h_dir_dep ],
