@@ -166,7 +166,7 @@ public interface Gee.Future<G> : Object {
 	 */
 	[CCode (ordering = 10, cname = "gee_future_light_map_fixed", vfunc_name = "light_map_fixed")]
 	public virtual Future<A> light_map<A> (owned LightMapFunc<A, G> func) {
-		return new LightMapFuture<A, G> (this, func);
+		return new LightMapFuture<A, G> (this, (owned) func);
 	}
 
 	[CCode (ordering = 4, cname = "gee_future_light_map", vfunc_name = "light_map")]
