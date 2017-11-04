@@ -134,6 +134,8 @@ public interface Gee.Future<G> : Object {
 		wait_async.begin ((obj, res) => {
 			try {
 				promise.set_value (func (wait_async.end (res)));
+			} catch (FutureError.EXCEPTION e) {
+				promise.set_exception (this.exception);
 			} catch (Error ex) {
 				promise.set_exception ((owned)ex);
 			}
@@ -234,8 +236,15 @@ public interface Gee.Future<G> : Object {
 	private static async void do_flat_map<A, B> (owned FlatMapFunc<B, A> func, Future<A> future, Promise<B> promise) {
 		try {
 			A input = yield future.wait_async ();
-			B output = yield func (input).wait_async ();
-			promise.set_value ((owned)output);
+			Future<B> output_future = func (input);
+			try {
+				B output = yield output_future.wait_async ();
+				promise.set_value ((owned)output);
+			} catch (FutureError.EXCEPTION e) {
+				promise.set_exception (output_future.exception);
+			}
+		} catch (FutureError.EXCEPTION e) {
+			promise.set_exception (future.exception);
 		} catch (Error ex) {
 			promise.set_exception ((owned)ex);
 		}
