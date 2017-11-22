@@ -479,7 +479,7 @@ public interface Gee.Traversable<G> : Object {
 	 */
 	[CCode (ordering = 11)]
 	public virtual bool any_match (owned Predicate<G> pred) {
-		return this.first_match (pred) != null;
+		return this.first_match ((owned) pred) != null;
 	}
 
 	/**
@@ -554,7 +554,7 @@ public interface Gee.Traversable<G> : Object {
 	public virtual Iterator<G> order_by (owned CompareDataFunc<G>? compare = null) {
 		ArrayList<G> result = new ArrayList<G> ();
 		this.foreach ((item) => result.add (item));
-		result.sort (compare);
+		result.sort ((owned) compare);
 		return result.iterator ();
 	}
 
