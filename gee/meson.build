@@ -105,6 +105,14 @@ if enable_consistency_check_opt
 	enable_consistency_check_args += ['-D','CONSISTENCY_CHECKS']
 endif
 
+# Can't prevent install generated GIR file
+disable_introspection = get_option('disable-introspection')
+introspectiondir=false
+if disable_introspection
+else
+introspectiondir = join_paths (get_option('includedir'),'gee-@0@'.format (API_VERSION))
+endif
+
 gee = library('gee-@0@'.format(API_VERSION),
 	valasources + sources,
 	version : PROJECT_VERSION,
@@ -116,20 +124,25 @@ gee = library('gee-@0@'.format(API_VERSION),
 	install : true,
 	install_dir : [
 		get_option('libdir'),
-		join_paths (get_option('includedir'),'gee-@0@'.format (API_VERSION)),
+		introspectiondir,
 		true,
 		true,
 	])
 
-g_ir_compiler = find_program('g-ir-compiler')
-custom_target('typelib',
-	command: [
-		g_ir_compiler,
-		'--shared-library', 'libgee-@0@.so'.format (API_VERSION),
-		'--output', '@OUTPUT@',
-		join_paths(meson.current_build_dir(), 'Gee-@0@.gir'.format(API_VERSION))
-	],
-	output: 'Gee-@0@.typelib'.format(API_VERSION),
-	depends: gee,
-	install: true,
-	install_dir: join_paths(get_option('libdir'), 'girepository-1.0'))
+if disable_introspection
+else
+	g_ir_compiler = find_program('g-ir-compiler', required: false)
+	if g_ir_compiler.found()
+		custom_target('typelib',
+			command: [
+				g_ir_compiler,
+				'--shared-library', 'libgee-@0@.so'.format (API_VERSION),
+				'--output', '@OUTPUT@',
+				join_paths(meson.current_build_dir(), 'Gee-@0@.gir'.format(API_VERSION))
+			],
+			output: 'Gee-@0@.typelib'.format(API_VERSION),
+			depends: gee,
+			install: true,
+			install_dir: join_paths(get_option('libdir'), 'girepository-1.0'))
+	endif
+endif
