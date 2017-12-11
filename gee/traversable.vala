@@ -392,9 +392,9 @@ public interface Gee.Traversable<G> : Object {
 	 * Splits the traversable into multiple ones, caching the result if needed.
 	 *
 	 * Note: In {@link Iterator} implementation using the parent iterator is
-	 *   not allowed. However if any of the forked iterators {@link next}
+	 *   not allowed. However if any of the forked iterators {@link Iterator.next}
 	 *   return false then it is treated as if the parent iterator
-	 *   {@link next} returned false.
+	 *   {@link Iterator.next} returned false.
 	 *
 	 * Note: The returned arrey might contain parent iterator if it is allowed
 	 *   by implementation. For example the iteration over collection does
