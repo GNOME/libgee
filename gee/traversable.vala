@@ -558,45 +558,6 @@ public interface Gee.Traversable<G> : Object {
 		return result.iterator ();
 	}
 
-	/**
-	 * Checks if a signle element matches the given predicate.
-	 *
-	 * @param pred Predicate to be called to check for matches
-	 * @return If a single element matches the predicate
-	 * @since 0.20.1
-	 */
-	[CCode (ordering = 16)]
-	public virtual bool one_match (owned Predicate<G> pred) {
-		int count = 0;
-		this.foreach ((item) => {
-			if (pred (item)) {
-				count++;
-				return count <= 1;
-			}
-			return true;
-		});
-		return count == 1;
-	}
-
-	/**
-	 * Counts the number of elements matching the given predicate.
-	 *
-	 * @param pred Predicate to be called to check for matches
-	 * @return The number of elements matching the pre
-	 * @since 0.20.1
-	 */
-	[CCode (ordering = 17)]
-	public virtual int count_match (owned Predicate<G> pred) {
-		int count = 0;
-		this.foreach ((item) => {
-			if (pred (item)) {
-				count++;
-			}
-			return true;
-		});
-		return count;
-	}
-
 	public enum Stream {
 		YIELD,
 		CONTINUE,
