@@ -13,9 +13,9 @@ build-release-tarball:
   image: "quay.io/gnome_infrastructure/gnome-build-meta:sdk-47"
   stage: "build"
   script:
-    - ./autogen.sh --prefix=/usr --libdir=/usr/lib/$(gcc -print-multiarch)
-    - make --jobs=$(nproc)
-    - make --jobs=$(nproc) distcheck
+    - meson setup _build --prefix=/usr --libdir=/usr/lib/$(gcc -print-multiarch)
+    - meson compile -C _build
+    - meson dist -C _build
   artifacts:
     expire_in: "2 days"
     when: "always"
