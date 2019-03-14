@@ -28,7 +28,7 @@ using Gee;
 
 public abstract class MultiMapTests : Gee.TestCase {
 
-	public MultiMapTests (string name) {
+	protected MultiMapTests (string name) {
 		base (name);
 		add_test ("[MultiMap] type correctness", test_type_correctness);
 		add_test ("[MultiMap] size", test_size);

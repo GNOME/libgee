@@ -28,7 +28,7 @@ using Gee;
 
 public abstract class MultiSetTests : CollectionTests {
 
-	public MultiSetTests (string name) {
+	protected MultiSetTests (string name) {
 		base (name);
 		add_test ("[MultiSet] duplicates are retained",
 		          test_duplicates_are_retained);

@@ -23,7 +23,7 @@ using GLib;
 using Gee;
 
 public abstract class BidirSortedMapTests : SortedMapTests {
-	public BidirSortedMapTests(string name) {
+	protected BidirSortedMapTests(string name) {
 		base (name);
 		add_test ("[SortedMap] bi-directional iterators can go backward",
 		          test_bidir_iterator_can_go_backward);

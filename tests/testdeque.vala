@@ -24,7 +24,7 @@ using Gee;
 
 public abstract class DequeTests : QueueTests {
 
-	public DequeTests (string name) {
+	protected DequeTests (string name) {
 		base (name);
 		add_test ("[Deque] queue use", test_queue_use);
 		add_test ("[Deque] stack use", test_stack_use);

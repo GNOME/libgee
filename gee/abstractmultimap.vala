@@ -39,7 +39,7 @@ public abstract class Gee.AbstractMultiMap<K,V> : Object, MultiMap<K,V> {
 	protected Map<K, Collection<V>> _storage_map;
 	private int _nitems = 0;
 
-	public AbstractMultiMap (Map<K, Collection<V>> storage_map) {
+	protected AbstractMultiMap (Map<K, Collection<V>> storage_map) {
 		this._storage_map = storage_map;
 	}
 

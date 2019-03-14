@@ -24,7 +24,7 @@ using GLib;
 using Gee;
 
 public abstract class SortedSetTests : SetTests {
-	public SortedSetTests (string name, bool strict = true) {
+	protected SortedSetTests (string name, bool strict = true) {
 		base (name);
 		this.strict = strict;
 		add_test ("[SortedSet] first", test_first);

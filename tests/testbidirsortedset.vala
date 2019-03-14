@@ -23,7 +23,7 @@ using GLib;
 using Gee;
 
 public abstract class BidirSortedSetTests : SortedSetTests {
-	public BidirSortedSetTests(string name) {
+	protected BidirSortedSetTests(string name) {
 		base (name);
 		add_test ("[SortedSet] bi-directional iterators can go backward",
 		          test_bidir_iterator_can_go_backward);

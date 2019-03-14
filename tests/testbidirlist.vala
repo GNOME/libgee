@@ -25,7 +25,7 @@ using Gee;
 
 public abstract class BidirListTests : ListTests {
 
-	public BidirListTests (string name) {
+	protected BidirListTests (string name) {
 		base (name);
 		add_test ("[List] bi-directional list iterator", test_bidir_list_iterator);
 	}
