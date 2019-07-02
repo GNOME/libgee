@@ -77,6 +77,7 @@ gee_files = files(
 gee_name = 'gee-'+api_version
 gee_gir = 'Gee-'+api_version+'.gir'
 gee_typelib = 'Gee-'+api_version+'.typelib'
+gee_gir_dir = meson.current_build_dir()
 gee_deps = [glib_dep, gobject_dep, gio_dep]
 
 gee_lib = library(
