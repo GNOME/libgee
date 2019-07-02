@@ -23,6 +23,21 @@ if get_option('consistency-check')
     add_project_arguments('--define=CONSISTENCY_CHECKS', language: 'vala')
 endif
 
+conf = configuration_data()
+conf.set('prefix', get_option('prefix'))
+conf.set('exec_prefix', get_option('prefix'))
+conf.set('libdir', '${exec_prefix}/'+get_option ('libdir'))
+conf.set('includedir', '${exec_prefix}/'+get_option('includedir'))
+conf.set('datadir', '${exec_prefix}/'+get_option('datadir'))
+conf.set('datarootdir', '${exec_prefix}/'+get_option('datadir'))
+conf.set('VERSION', meson.project_version())
+
+configure_file(input : 'gee-0.8.pc.in',
+	output : 'gee-0.8.pc',
+	configuration : conf,
+	install : true,
+	install_dir : join_paths(get_option('libdir'), 'pkgconfig'))
+
 subdir('utils')
 subdir('gee')
 subdir('benchmark')
