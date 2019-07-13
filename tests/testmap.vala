@@ -27,7 +27,7 @@ using Gee;
 
 public abstract class MapTests : Gee.TestCase {
 
-	public MapTests (string name) {
+	protected MapTests (string name) {
 		base (name);
 		add_test ("[Map] type correctness", test_type_correctness);
 		add_test ("[Map] has_key, size and is_empty",

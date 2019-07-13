@@ -29,7 +29,7 @@ using Gee;
 
 public abstract class CollectionTests : Gee.TestCase {
 
-	public CollectionTests (string name) {
+	protected CollectionTests (string name) {
 		base (name);
 		add_test ("[Collection] type correctness", test_type_correctness);
 		add_test ("[Collection] iterator returns all elements once",

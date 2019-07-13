@@ -42,7 +42,7 @@ public abstract class Gee.AbstractMultiSet<G> : AbstractCollection<G>, MultiSet<
 	/**
 	 * Constructs a new, empty abstract multi set.
 	 */
-	public AbstractMultiSet (Map<G, int> storage_map) {
+	protected AbstractMultiSet (Map<G, int> storage_map) {
 		this._storage_map = storage_map;
 	}
 

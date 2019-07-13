@@ -24,7 +24,7 @@ using Gee;
 
 public abstract class QueueTests : CollectionTests {
 
-	public QueueTests (string name) {
+	protected QueueTests (string name) {
 		base (name);
 		add_test ("[Queue] capacity bound", test_capacity_bound);
 		add_test ("[Queue] one element operation", test_one_element_operation);

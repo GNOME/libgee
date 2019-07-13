@@ -491,12 +491,12 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private abstract class NodeIterator<K,V> : Object {
-		public NodeIterator (HashMap map) {
+		protected NodeIterator (HashMap map) {
 			_map = map;
 			_stamp = _map._stamp;
 		}
 
-		public NodeIterator.from_iterator (NodeIterator<K,V> iter) {
+		protected NodeIterator.from_iterator (NodeIterator<K,V> iter) {
 			_map = iter._map;
 			_index = iter._index;
 			_node = iter._node;

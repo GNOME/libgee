@@ -28,7 +28,7 @@ using Gee;
 
 public abstract class SetTests : CollectionTests {
 
-	public SetTests (string name) {
+	protected SetTests (string name) {
 		base (name);
 		add_test ("[Set] duplicates are ignored", test_duplicates_are_ignored);
 	}

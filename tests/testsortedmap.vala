@@ -21,7 +21,7 @@
  */
 
 public abstract class Gee.SortedMapTests : MapTests {
-	public SortedMapTests (string name) {
+	protected SortedMapTests (string name) {
 		base (name);
 		add_test ("[SortedMap] key ordering", test_key_ordering);
 		add_test ("[SortedMap] first", test_first);

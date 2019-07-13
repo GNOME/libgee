@@ -28,7 +28,7 @@ using Gee;
 
 public abstract class ListTests : CollectionTests {
 
-	public ListTests (string name) {
+	protected ListTests (string name) {
 		base (name);
 		add_test ("[List] iterator is ordered", test_iterator_is_ordered);
 		add_test ("[List] list iterator", test_list_iterator);
