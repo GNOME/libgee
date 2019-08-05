@@ -1,4 +1,4 @@
-AC_INIT([libgee], [0.20.1],
+AC_INIT([libgee], [0.20.2],
 	[https://gitlab.gnome.org/GNOME/libgee/issues],
 	[libgee],
 	[https://wiki.gnome.org/Projects/Libgee])
