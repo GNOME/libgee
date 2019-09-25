@@ -43,7 +43,7 @@ internal class Gee.ReadOnlyBidirSortedMap<K,V> : ReadOnlySortedMap<K,V>, BidirSo
 	 * {@inheritDoc}
 	 */
 	public Gee.BidirMapIterator<K,V> bidir_map_iterator () {
-		return new BidirMapIterator<K,V> ((_map as BidirSortedMap<K,V>).bidir_map_iterator ());
+		return new BidirMapIterator<K,V> (((BidirSortedMap<K,V>) _map).bidir_map_iterator ());
 	}
 
 	/**
@@ -61,19 +61,19 @@ internal class Gee.ReadOnlyBidirSortedMap<K,V> : ReadOnlySortedMap<K,V>, BidirSo
 		}
 
 		public bool first () {
-			return (_iter as Gee.BidirMapIterator<K,V>).first ();
+			return ((Gee.BidirMapIterator<K,V>) _iter).first ();
 		}
 
 		public bool previous () {
-			return (_iter as Gee.BidirMapIterator<K,V>).previous ();
+			return ((Gee.BidirMapIterator<K,V>) _iter).previous ();
 		}
 
 		public bool has_previous () {
-			return (_iter as Gee.BidirMapIterator<K,V>).has_previous ();
+			return ((Gee.BidirMapIterator<K,V>) _iter).has_previous ();
 		}
 
 		public bool last () {
-			return (_iter as Gee.BidirMapIterator<K,V>).last ();
+			return ((Gee.BidirMapIterator<K,V>) _iter).last ();
 		}
 	}
 }

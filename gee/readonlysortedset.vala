@@ -44,21 +44,21 @@ internal class Gee.ReadOnlySortedSet<G> : ReadOnlySet<G>, SortedSet<G> {
 	 * {@inheritDoc}
 	 */
 	public G first () {
-		return (_collection as SortedSet<G>).first ();
+		return ((SortedSet<G>) _collection).first ();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public G last () {
-		return (_collection as SortedSet<G>).last ();
+		return ((SortedSet<G>) _collection).last ();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public Gee.Iterator<G>? iterator_at (G element) {
-		var iter = (_collection as SortedSet<G>).iterator_at (element);
+		var iter = ((SortedSet<G>) _collection).iterator_at (element);
 		return (iter != null) ? new Iterator<G> (iter) : null;
 	}
 
@@ -66,49 +66,49 @@ internal class Gee.ReadOnlySortedSet<G> : ReadOnlySet<G>, SortedSet<G> {
 	 * {@inheritDoc}
 	 */
 	public G? lower (G element) {
-		return (_collection as SortedSet<G>).lower (element);
+		return ((SortedSet<G>) _collection).lower (element);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public G? higher (G element) {
-		return (_collection as SortedSet<G>).higher (element);
+		return ((SortedSet<G>) _collection).higher (element);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public G? floor (G element) {
-		return (_collection as SortedSet<G>).floor (element);
+		return ((SortedSet<G>) _collection).floor (element);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public G? ceil (G element) {
-		return (_collection as SortedSet<G>).ceil (element);
+		return ((SortedSet<G>) _collection).ceil (element);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public SortedSet<G> head_set (G before) {
-		return (_collection as SortedSet<G>).head_set (before).read_only_view;
+		return ((SortedSet<G>) _collection).head_set (before).read_only_view;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public SortedSet<G> tail_set (G after) {
-		return(_collection as SortedSet<G>).tail_set (after).read_only_view;
+		return((SortedSet<G>) _collection).tail_set (after).read_only_view;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public SortedSet<G> sub_set (G from, G to) {
-		return (_collection as SortedSet<G>).sub_set (from, to).read_only_view;
+		return ((SortedSet<G>) _collection).sub_set (from, to).read_only_view;
 	}
 
 	/**

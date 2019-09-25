@@ -43,21 +43,21 @@ internal class Gee.ReadOnlySortedMap<K,V> : ReadOnlyMap<K,V>, SortedMap<K,V> {
 	 * {@inheritDoc}
 	 */
 	public SortedMap<K,V> head_map (K before) {
-		return (_map as SortedMap<K,V>).head_map (before).read_only_view;
+		return ((SortedMap<K,V>) _map).head_map (before).read_only_view;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public SortedMap<K,V> tail_map (K after) {
-		return (_map as SortedMap<K,V>).tail_map (after).read_only_view;
+		return ((SortedMap<K,V>) _map).tail_map (after).read_only_view;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public SortedMap<K,V> sub_map (K from, K to) {
-		return (_map as SortedMap<K,V>).sub_map (from, to).read_only_view;
+		return ((SortedMap<K,V>) _map).sub_map (from, to).read_only_view;
 	}
 
 	/**
@@ -65,7 +65,7 @@ internal class Gee.ReadOnlySortedMap<K,V> : ReadOnlyMap<K,V>, SortedMap<K,V> {
 	 */
 	public SortedSet<K> ascending_keys {
 		owned get {
-			return (_map as SortedMap<K,V>).ascending_keys.read_only_view;
+			return ((SortedMap<K,V>) _map).ascending_keys.read_only_view;
 		}
 	}
 
@@ -74,7 +74,7 @@ internal class Gee.ReadOnlySortedMap<K,V> : ReadOnlyMap<K,V>, SortedMap<K,V> {
 	 */
 	public SortedSet<Map.Entry<K,V>> ascending_entries {
 		owned get {
-			return (_map as SortedMap<K,V>).ascending_entries.read_only_view;
+			return ((SortedMap<K,V>) _map).ascending_entries.read_only_view;
 		}
 	}
 

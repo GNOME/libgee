@@ -330,8 +330,8 @@ public abstract class BidirSortedMapTests : SortedMapTests {
 			}
 			assert (i == contains.length);
 			
-			var keys_iter = ((submap.ascending_keys) as BidirSortedSet<string>).bidir_iterator ();
-			var entries_iter = ((submap.ascending_entries) as BidirSortedSet<Map.Entry<string,string>>).bidir_iterator ();
+			var keys_iter = ((BidirSortedSet<string>) submap.ascending_keys).bidir_iterator ();
+			var entries_iter = ((BidirSortedSet<Map.Entry<string,string>>) submap.ascending_entries).bidir_iterator ();
 			var map_iter = submap.bidir_map_iterator ();
 			if (type != SortedMapTests.SubMapTests.Type.EMPTY) {
 				assert (map_iter.last ());

@@ -43,7 +43,7 @@ internal class Gee.ReadOnlyBidirSortedSet<G> : ReadOnlySortedSet<G>, BidirSorted
 	 * {@inheritDoc}
 	 */
 	public Gee.BidirIterator<G> bidir_iterator () {
-		return new BidirIterator<G> ((_collection as BidirSortedSet<G>).bidir_iterator ());
+		return new BidirIterator<G> (((BidirSortedSet<G>) _collection).bidir_iterator ());
 	}
 
 	protected class BidirIterator<G> : Gee.ReadOnlyCollection.Iterator<G>, Gee.BidirIterator<G> {
@@ -52,19 +52,19 @@ internal class Gee.ReadOnlyBidirSortedSet<G> : ReadOnlySortedSet<G>, BidirSorted
 		}
 
 		public bool first () {
-			return (_iter as Gee.BidirIterator<G>).first ();
+			return ((Gee.BidirIterator<G>) _iter).first ();
 		}
 
 		public bool previous () {
-			return (_iter as Gee.BidirIterator<G>).previous ();
+			return ((Gee.BidirIterator<G>) _iter).previous ();
 		}
 
 		public bool has_previous () {
-			return (_iter as Gee.BidirIterator<G>).has_previous ();
+			return ((Gee.BidirIterator<G>) _iter).has_previous ();
 		}
 
 		public bool last () {
-			return (_iter as Gee.BidirIterator<G>).last ();
+			return ((Gee.BidirIterator<G>) _iter).last ();
 		}
 	}
 }
