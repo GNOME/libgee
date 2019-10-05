@@ -93,7 +93,9 @@ public class Gee.Lazy<G> {
 			_mutex.lock ();
 			if (_lazy._func != null) {
 				if (_state == State.EVAL) {
-					_eval.wait (_mutex);
+					while (_state == State.EVAL) {
+						_eval.wait (_mutex);
+					}
 					_mutex.unlock ();
 				} else {
 					do_eval ();
@@ -108,12 +110,14 @@ public class Gee.Lazy<G> {
 			_mutex.lock ();
 			if (_lazy._func != null) {
 				if (_state == State.EVAL) {
-					bool res = _eval.wait_until (_mutex, end_time);
-					_mutex.unlock ();
-					if (!res) {
-						value = null;
-						return false;
+					while (_state == State.EVAL) {
+						if (!_eval.wait_until (_mutex, end_time)) {
+							value = null;
+							_mutex.unlock ();
+							return false;
+						}
 					}
+					_mutex.unlock ();
 				} else {
 					do_eval ();
 				}

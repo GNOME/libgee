@@ -93,10 +93,11 @@ public class Gee.Promise<G> {
 			_mutex.lock ();
 			State state = _state;
 			if (_state == State.INIT) {
-				_set.wait (_mutex);
-				state = _state;
+				while (_state == State.INIT) {
+					_set.wait (_mutex);
+					state = _state;
+				}
 			}
-			assert (state != State.INIT);
 			_mutex.unlock ();
 			switch (state) {
 			case State.ABANDON:
@@ -114,14 +115,17 @@ public class Gee.Promise<G> {
 			_mutex.lock ();
 			State state = _state;
 			if (state == State.INIT) {
-				_set.wait_until (_mutex, end_time);
-				state = _state;
+				while (_state == State.INIT) {
+					if (!_set.wait_until (_mutex, end_time)) {
+						value = null;
+						_mutex.unlock ();
+						return false;
+					}
+					state = _state;
+				}
 			}
 			_mutex.unlock ();
 			switch (state) {
-			case State.INIT:
-				value = null;
-				return false;
 			case State.ABANDON:
 				throw new FutureError.ABANDON_PROMISE ("Promise has been abandon");
 			case State.EXCEPTION:
