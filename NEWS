@@ -1,3 +1,8 @@
+libgee 0.20.3
+=============
+ * Minor warning fixes for newer valac
+ * Guard GLib.Cond.wait/wait_until calls against spurious or stolen wakeups
+
 libgee 0.20.2
 =============
  * Minor build fixes
