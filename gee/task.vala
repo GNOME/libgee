@@ -28,7 +28,7 @@ namespace Gee {
 	 * of threads from pool will execute the task.
 	 *
 	 * Note: There is limited number of threads unless environment variable
-	 *   ``GEE_NUM_THREADS`` is set to -1. It is not adviced to call I/O or
+	 *   ``GEE_NUM_THREADS`` is set to -1. It is not advised to call I/O or
 	 *   block inside the taks. If necessary it is possible to create a new one
 	 *   by anyther call.
 	 *
@@ -51,7 +51,7 @@ namespace Gee {
 	 * one of threads from pool will execute the task.
 	 *
 	 * Note: There is limited number of threads unless environment variable
-	 *   ``GEE_NUM_THREADS`` is set to -1. It is not adviced to call I/O or
+	 *   ``GEE_NUM_THREADS`` is set to -1. It is not advised to call I/O or
 	 *   block inside the taks. If necessary it is possible to create a new one
 	 *   by anyther call.
 	 *

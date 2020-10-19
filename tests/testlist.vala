@@ -556,7 +556,7 @@ public abstract class ListTests : CollectionTests {
 		test_list.clear ();
 		dummy.clear ();
 
-		// Insert all in the beginnig
+		// Insert all in the beginning
 		assert (test_list.add ("three"));
 		assert (test_list.add ("four"));
 		assert (test_list.add ("five"));

@@ -26,11 +26,11 @@
 [GenericAccessors]
 public interface Gee.MultiSet<G> : Collection<G> {
 	/**
-	 * Returns the number of occurences of an item in this multiset.
+	 * Returns the number of occurrences of an item in this multiset.
 	 *
-	 * @param item the item to count occurences of
+	 * @param item the item to count occurrences of
 	 *
-	 * @return     the number of occurences of the item in this multiset.
+	 * @return     the number of occurrences of the item in this multiset.
 	 */
 	public abstract int count (G item);
 

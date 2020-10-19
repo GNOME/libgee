@@ -118,7 +118,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	}
 
 	/**
-	 * Exchange objects safly.
+	 * Exchange objects safely.
 	 *
 	 * @param aptr Atomic pointer.
 	 * @param new_ptr New value
@@ -173,7 +173,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	}
 
 	/**
-	 * Exchange objects safly.
+	 * Exchange objects safely.
 	 *
 	 * @param aptr Atomic pointer.
 	 * @param new_ptr New value
@@ -249,7 +249,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 	 */
 	public static void set_default_policy (Policy policy) requires (policy.is_concrete ()) {
 		if (policy.is_blocking ())
-			warning ("Setting blocking defautl Gee.HazardPointer.Policy (there may be a deadlock).\n");
+			warning ("Setting blocking default Gee.HazardPointer.Policy (there may be a deadlock).\n");
 		AtomicInt.set(ref _default_policy, (int)policy);
 	}
 
@@ -303,7 +303,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		TRY_FREE,
 		/**
 		 * Goes through the free list and attempts to free un-freed elements
-		 * untill all elements are freed.
+		 * until all elements are freed.
 		 */
 		FREE,
 		/**
@@ -497,7 +497,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 				policy = AtomicInt.get (ref release_policy);
 				if ((policy & (1 << (sizeof(int) * 8 - 1))) == 0) {
 					_queue = new LinkedList<ArrayList<FreeNode *>> ();
-					// Hack to not lie about successfull setting policy
+					// Hack to not lie about successful setting policy
 					policy = AtomicInt.add (ref release_policy, (int)(1 << (sizeof(int) * 8 - 1)));
 					start ((ReleasePolicy) policy);
 				}
@@ -589,7 +589,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		}
 
 		/**
-		 * Ensure that whole context is freed. Plase note that it might block.
+		 * Ensure that whole context is freed. Please note that it might block.
 		 */
 		public void free_all () {
 			while (HazardPointer.try_free (_to_free))
@@ -608,7 +608,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 		}
 
 		/**
-		 * Pushes the current context to releaser. Plase note that it might block.
+		 * Pushes the current context to releaser. Please note that it might block.
 		 */
 		public void release () {
 			_queue_mutex.lock ();

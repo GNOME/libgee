@@ -30,7 +30,7 @@
  * the {@link Queue} methods with respect to capacity bounds.
  *
  * The Deque interface inherits from the {@link Queue} interface. Thus, to use
- * a deque as a queue, you can equivalently use the folowing method set:
+ * a deque as a queue, you can equivalently use the following method set:
  *
  * ||<)(> ''Queue method'' ||<)(>  ''Deque method'' ||
  * || {@link Queue.offer}  || {@link offer_tail}    ||

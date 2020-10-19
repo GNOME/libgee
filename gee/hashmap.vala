@@ -28,7 +28,7 @@ using GLib;
 /**
  * Hash table implementation of the {@link Map} interface.
  *
- * This implementation is better fit for highly heterogenous key values.
+ * This implementation is better fit for highly heterogeneous key values.
  * In case of high key hashes redundancy or higher amount of data prefer using
  * tree implementation like {@link TreeMap}.
  *

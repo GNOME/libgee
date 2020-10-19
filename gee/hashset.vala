@@ -67,7 +67,7 @@ namespace Gee {
 /**
  * Hash table implementation of the {@link Set} interface.
  *
- * This implementation is better fit for highly heterogenous values.
+ * This implementation is better fit for highly heterogeneous values.
  * In case of high value hashes redundancy or higher amount of data prefer using
  * tree implementation like {@link TreeSet}.
  *

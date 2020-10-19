@@ -38,7 +38,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	public virtual bool is_empty { get { return size == 0; } }
 
 	/**
-	 * Specifies whether this collection can change - i.e. wheather {@link add},
+	 * Specifies whether this collection can change - i.e. whether {@link add},
 	 * {@link remove} etc. are legal operations.
 	 */
 	[CCode (ordering = 11)]
@@ -66,7 +66,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 	public abstract bool add (G item);
 
 	/**
-	 * Removes the first occurence of an item from this collection. Must not
+	 * Removes the first occurrence of an item from this collection. Must not
 	 * be called on read-only collections.
 	 *
 	 * @param item the item to remove from the collection
@@ -112,7 +112,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 
 	/**
 	 * Removes the subset of items in this collection corresponding to the
-	 * elments in the input collection. If there is several occurrences of
+	 * elements in the input collection. If there is several occurrences of
 	 * the same value in this collection they are decremented of the number
 	 * of occurrences in the input collection.
 	 *
@@ -283,7 +283,7 @@ public interface Gee.Collection<G> : Iterable<G> {
 
 	/**
 	 * Removes the subset of items in this collection corresponding to the
-	 * elments in the input array. If there is several occurrences of
+	 * elements in the input array. If there is several occurrences of
 	 * the same value in this collection they are decremented of the number
 	 * of occurrences in the input array.
 	 *

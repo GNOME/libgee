@@ -61,7 +61,7 @@ public interface Gee.Future<G> : Object {
 
 	/**
 	 * Checks if value is ready. If it is calls to {@link wait} and
-	 * {@link wait_until} will not block and value is returned immidiatly.
+	 * {@link wait_until} will not block and value is returned immediately.
 	 */
 	[CCode (ordering = 8)]
 	public abstract bool ready {get;}

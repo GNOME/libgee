@@ -70,13 +70,13 @@ public interface Gee.Iterator<G> : Object, Traversable<G> {
 	public abstract void remove ();
 
 	/**
-	 * Determines wheather the call to {@link get} is legal. It is false at the
+	 * Determines whether the call to {@link get} is legal. It is false at the
 	 * beginning and after {@link remove} call and true otherwise.
 	 */
 	public abstract bool valid { get; }
 
 	/**
-	 * Determines wheather the call to {@link remove} is legal assuming the
+	 * Determines whether the call to {@link remove} is legal assuming the
 	 * iterator is valid. The value must not change in runtime hence the user
 	 * of iterator may cache it.
 	 */
@@ -94,10 +94,10 @@ public interface Gee.Iterator<G> : Object, Traversable<G> {
 	}
 
 	/**
-	 * Concatinate iterators.
+	 * Concatenate iterators.
 	 *
 	 * @param iters Iterators of iterators
-	 * @return Iterator containg values of each iterator
+	 * @return Iterator containing values of each iterator
 	 */
 	public static Iterator<G> concat<G> (Iterator<Iterator<G>> iters) {
 		Iterator<G>? current = null;

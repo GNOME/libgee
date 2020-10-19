@@ -40,7 +40,7 @@
  */
 public interface Gee.Comparable<G> : Object {
 	/**
-	 * Compares this object with the specifed object.
+	 * Compares this object with the specified object.
 	 *
 	 * @return a negative integer, zero, or a positive integer as this object
 	 *         is less than, equal to, or greater than the specified object

@@ -454,7 +454,7 @@ public abstract class CollectionTests : Gee.TestCase {
 		// Creating a dummy collection
 		var dummy = new ArrayList<string> ();
 
-		// Check when both collection are intially empty
+		// Check when both collection are initially empty
 		assert (! test_collection.remove_all (dummy));
 
 		assert (test_collection.is_empty);

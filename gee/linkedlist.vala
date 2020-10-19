@@ -154,7 +154,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override bool remove (G item) { // Should remove only the first occurence (a test should be added)
+	public override bool remove (G item) { // Should remove only the first occurrence (a test should be added)
 		for (weak Node<G> n = this._head; n != null; n = n.next) {
 			if (this.equal_func (item, n.data)) {
 				this._remove_node (n);

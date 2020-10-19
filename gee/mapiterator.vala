@@ -84,28 +84,28 @@ public interface Gee.MapIterator<K,V> : Object {
 	public abstract void unset ();
 	
 	/**
-	 * Determines wheather the call to {@link get_key}, {@link get_value} and 
+	 * Determines whether the call to {@link get_key}, {@link get_value} and
 	 * {@link set_value} is legal. It is false at the beginning and after
 	 * {@link unset} call and true otherwise.
 	 */
 	public abstract bool valid { get; }
 	
 	/**
-	 * Determines wheather the call to {@link set_value} is legal assuming the
+	 * Determines whether the call to {@link set_value} is legal assuming the
 	 * iterator is valid. The value must not change in runtime hence the user
 	 * of iterator may cache it.
 	 */
 	public abstract bool mutable { get; }
 	
 	/**
-	 * Determines wheather the call to {@link unset} is legal assuming the
+	 * Determines whether the call to {@link unset} is legal assuming the
 	 * iterator is valid. The value must not change in runtime hence the user
 	 * of iterator may cache it.
 	 */
 	public abstract bool read_only { get; }
 	
 	/**
-	 * Standard aggragation function.
+	 * Standard aggregation function.
 	 *
 	 * It takes a function, seed and first element, returns the new seed and
 	 * progress to next element when the operation repeats.

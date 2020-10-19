@@ -49,10 +49,10 @@ public interface Gee.List<G> : Collection<G> {
 	public abstract void set (int index, G item);
 
 	/**
-	 * Returns the index of the first occurence of the specified item in
+	 * Returns the index of the first occurrence of the specified item in
 	 * this list.
 	 *
-	 * @return the index of the first occurence of the specified item, or
+	 * @return the index of the first occurrence of the specified item, or
 	 *         -1 if the item could not be found
 	 */
 	public abstract int index_of (G item);
@@ -77,8 +77,8 @@ public interface Gee.List<G> : Collection<G> {
 	/**
 	 * Returns a slice of this list.
 	 *
-	 * @param start zero-based index of the begin of the slice
-	 * @param stop  zero-based index after the end of the slice
+	 * @param start zero-based index of the slice's first element
+	 * @param stop  zero-based index of the position after the end of the slice
 	 *
 	 * @return A list containing a slice of this list
 	 */

@@ -25,7 +25,7 @@
  * [[http://www.cse.yorku.ca/~ruppert/Mikhail.pdf|Mikhail Fomitchev Master Thesis]].
  *
  * Many threads are allowed to operate on the same structure as well as modification
- * of structure during iteration is allowed. However the change may not be immidiatly
+ * of structure during iteration is allowed. However the change may not be immediately
  * visible to other threads.
  */
 public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {

@@ -471,7 +471,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 				prev = (owned)curr;
 				curr = (owned)next;
 #if DEBUG
-				stderr.printf ("  Procceed to %p (previous %p)\n", curr, prev);
+				stderr.printf ("  Proceed to %p (previous %p)\n", curr, prev);
 #endif
 			}
 			return success;

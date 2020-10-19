@@ -52,7 +52,7 @@ namespace Gee {
 [GenericAccessors]
 public interface Gee.Traversable<G> : Object {
 	/**
-	 * Apply function to each element returned by iterator untill last element
+	 * Apply function to each element returned by iterator until last element
 	 * or function return ''false''.
 	 *
 	 * ''{@link Iterator} implementation:'' Operation moves the iterator
@@ -194,9 +194,9 @@ public interface Gee.Traversable<G> : Object {
 	 *
 	 * Note: Default implementation uses {@link stream}.
 	 *
-	 * Note: When the method is called on {@link Iterator} using the parent
-	 *    iterator is not allowed befor the inner iterator
-	 *    {@link Iterator.next} return false and then it points on its last
+	 * Note: When the method is called on {@link Iterator}, using the parent
+	 *    iterator is not allowed before the inner iterator
+	 *    {@link Iterator.next} returns false and then it points to its last
 	 *    element. The resulting iterator is {@link Iterator.valid}.
 	 *
 	 * @param f Folding function
@@ -235,15 +235,15 @@ public interface Gee.Traversable<G> : Object {
 	}
 
 	/**
-	 * Creates a new iterator that contains only values that fullfills the
+	 * Creates a new iterator that contains only values that fulfills the
 	 * predicate.
 	 *
 	 * Note: When the method is called on {@link Iterator} using the parent
-	 *    iterator is not allowed befor the inner iterator
+	 *    iterator is not allowed before the inner iterator
 	 *    {@link Iterator.next} return false and then it points on its last
 	 *    element. The resulting iterator is {@link Iterator.valid} if parent
 	 *    iterator is {@link Iterator.valid} and value it is pointing on
-	 *    fullfills the predicate.
+	 *    fulfills the predicate.
 	 *
 	 * @param pred predicate to check should the value be retained
 	 * @return Iterator containing values of subsequent values of seed
@@ -331,8 +331,8 @@ public interface Gee.Traversable<G> : Object {
 	public virtual Type element_type { get { return typeof (G); } }
 
 	/**
-	 * A fused concatinate and map. The function is applied to each element
-	 * of iteration and the resulting values are concatinated.
+	 * A fused concatenate and map. The function is applied to each element
+	 * of iteration and the resulting values are concatenated.
 	 *
 	 * The iterator is lazy evaluated but value is force-evaluated when
 	 * iterator is moved to next value.

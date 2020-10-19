@@ -21,7 +21,7 @@
  */
 
 /**
- * This interface defines a hash function amongs instances of each class
+ * This interface defines a hash function among instances of each class
  * implementing it.
  *
  * @see Comparable
@@ -38,7 +38,7 @@ public interface Gee.Hashable<G> : Object {
 	public abstract uint hash ();
 
 	/**
-	 * Compares this object with the specifed object. This defines the
+	 * Compares this object with the specified object. This defines the
 	 * equivalence relation between them.
 	 *
 	 * In other words:

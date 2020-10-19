@@ -34,8 +34,8 @@
  * because the queue was full or empty.
  *
  * Queue implementations are not limited to First-In-First-Out behavior and can
- * propose different ordering of their elements. Each Queue implementation have
- * to specify how it orders its elements.
+ * offer different orderings of their elements. Each Queue implementation must
+ * specify how it orders its elements.
  *
  * Queue implementations do not allow insertion of ``null`` elements, although
  * some implementations, such as {@link LinkedList}, do not prohibit insertion

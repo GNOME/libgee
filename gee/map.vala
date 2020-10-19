@@ -36,7 +36,7 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	public virtual bool is_empty { get { return size == 0; } }
 	
 	/**
-	 * Specifies whether this collection can change - i.e. wheather {@link set},
+	 * Specifies whether this collection can change - i.e. whether {@link set},
 	 * {@link remove} etc. are legal operations.
 	 */
 	public abstract bool read_only { get; }
@@ -210,7 +210,8 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	}
 
 	/**
-	 * Returns ``true`` it this map contains all items as the input map.
+	 * Returns ``true`` if this map contains all the same items as the input
+	 * map.
 	 *
 	 * @param map the map which items will be compared with this map
 	 */
@@ -224,7 +225,8 @@ public interface Gee.Map<K,V> : Object, Iterable<Map.Entry<K,V>> {
 	}
 
 	/**
-	 * Returns ``true`` it this map contains all items as the input map.
+	 * Returns ``true`` if this map contains all the same items as the input
+	 * map.
 	 *
 	 * @param map the map which items will be compared with this map
 	 */

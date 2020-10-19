@@ -31,7 +31,7 @@ public interface Gee.MultiMap<K,V> : Object {
 	public abstract int size { get; }
 	
 	/**
-	 * Specifies whether this collection can change - i.e. wheather {@link set},
+	 * Specifies whether this collection can change - i.e. whether {@link set},
 	 * {@link remove} etc. are legal operations.
 	 */
 	public abstract bool read_only { get; }

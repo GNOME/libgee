@@ -41,7 +41,7 @@ public interface Gee.SortedSet<G> : Gee.Set<G> {
 	public abstract G last ();
 
 	/**
-	 * Returns a {@link BidirIterator} initialy pointed at the specified
+	 * Returns a {@link BidirIterator} initially pointed at the specified
 	 * element.
 	 *
 	 * @param element the element to point the iterator at
