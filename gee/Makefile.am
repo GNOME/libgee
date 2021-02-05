@@ -121,6 +121,7 @@ libgee_0_8_la_VALAFLAGS = \
 	-h gee-internals.h \
 	--internal-vapi gee-internals-0.8.vapi \
 	--library gee-0.8 --gir Gee-0.8.gir \
+	--vapi-comments \
 	--pkg gio-2.0 \
 	--vapidir $(top_srcdir)/utils --pkg geeutils \
 	$(COVERAGE_VALAFLAGS) \
