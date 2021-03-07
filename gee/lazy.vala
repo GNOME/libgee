@@ -75,7 +75,7 @@ public class Gee.Lazy<G> {
 	private class Future<G> : Object, Gee.Future<G> {
 		public Future (Lazy<G> lazy) {
 			_lazy = lazy;
-			_when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
+			_when_done = new Gee.Future.SourceFuncArrayElement[0];
 		}
 
 		public bool ready {
@@ -159,7 +159,7 @@ public class Gee.Lazy<G> {
 			_eval.broadcast ();
 			_mutex.unlock ();
 
-			Gee.Future.SourceFuncArrayElement<G>[] when_done = (owned)_when_done;
+			Gee.Future.SourceFuncArrayElement[] when_done = (owned)_when_done;
 			for (int i = 0; i < when_done.length; i++) {
 				when_done[i].func ();
 			}
@@ -169,7 +169,7 @@ public class Gee.Lazy<G> {
 		private Cond _eval = Cond ();
 		private Lazy<G> _lazy;
 		private State _state = State.UNLOCK;
-		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done;
+		private Gee.Future.SourceFuncArrayElement[]? _when_done;
 		private enum State {
 			UNLOCK,
 			EVAL
