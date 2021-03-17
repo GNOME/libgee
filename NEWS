@@ -1,3 +1,7 @@
+libgee 0.20.4
+=============
+ * Fixes for newer valac
+
 libgee 0.20.3
 =============
  * Minor warning fixes for newer valac
