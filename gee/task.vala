@@ -69,8 +69,8 @@ namespace Gee {
 		public void run() {
 			promise.set_value(function());
 		}
-		private static GLib.Once<ThreadPool<TaskData>> async_pool;
-		internal static unowned ThreadPool<TaskData> get_async_pool () {
+		private static GLib.Once<ThreadPool<TaskData<G>>> async_pool;
+		internal static unowned ThreadPool<TaskData<G>> get_async_pool () {
 			return async_pool.once(() => {
 				int num_threads = (int)GLib.get_num_processors ();
 				string? gee_num_threads_str = Environment.get_variable("GEE_NUM_THREADS");
@@ -81,7 +81,7 @@ namespace Gee {
 					}
 				}
 				try {
-					return new ThreadPool<TaskData>.with_owned_data((tdata) => {
+					return new ThreadPool<TaskData<G>>.with_owned_data((tdata) => {
 						tdata.run();
 					}, num_threads, false);
 				} catch (ThreadError err) {

@@ -379,7 +379,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	private class KeySet<K,V> : AbstractSet<K> {
 		private HashMap<K,V> _map;
 
-		public KeySet (HashMap map) {
+		public KeySet (HashMap<K,V> map) {
 			_map = map;
 		}
 
@@ -415,7 +415,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	private class ValueCollection<K,V> : AbstractCollection<V> {
 		private HashMap<K,V> _map;
 
-		public ValueCollection (HashMap map) {
+		public ValueCollection (HashMap<K,V> map) {
 			_map = map;
 		}
 
@@ -491,7 +491,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private abstract class NodeIterator<K,V> : Object {
-		protected NodeIterator (HashMap map) {
+		protected NodeIterator (HashMap<K,V> map) {
 			_map = map;
 			_stamp = _map._stamp;
 		}
@@ -549,7 +549,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class KeyIterator<K,V> : NodeIterator<K,V>, Traversable<K>, Iterator<K> {
-		public KeyIterator (HashMap map) {
+		public KeyIterator (HashMap<K,V> map) {
 			base (map);
 		}
 
@@ -607,7 +607,7 @@ public class Gee.HashMap<K,V> : Gee.AbstractMap<K,V> {
 	}
 
 	private class MapIterator<K,V> : NodeIterator<K,V>, Gee.MapIterator<K,V> {
-		public MapIterator (HashMap map) {
+		public MapIterator (HashMap<K,V> map) {
 			base (map);
 		}
 

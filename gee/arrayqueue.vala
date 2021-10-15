@@ -364,7 +364,7 @@ public class Gee.ArrayQueue<G> : Gee.AbstractQueue<G>, Deque<G> {
 			}
 		}
 
-		protected ArrayQueue _queue;
+		protected ArrayQueue<G> _queue;
 		protected int _stamp;
 		protected int _offset = -1;
 		protected bool _removed = false;

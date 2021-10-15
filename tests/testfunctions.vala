@@ -36,9 +36,9 @@ public class FunctionsTests : Gee.TestCase {
 		string two = "two";
 		string two_copy = two.dup ();
 
-		Gee.EqualDataFunc eq = Gee.Functions.get_equal_func_for (typeof (string));
-		CompareDataFunc cmp = Gee.Functions.get_compare_func_for (typeof (string));
-		Gee.HashDataFunc hash = Gee.Functions.get_hash_func_for (typeof (string));
+		Gee.EqualDataFunc<string> eq = Gee.Functions.get_equal_func_for (typeof (string));
+		CompareDataFunc<string> cmp = Gee.Functions.get_compare_func_for (typeof (string));
+		Gee.HashDataFunc<string> hash = Gee.Functions.get_hash_func_for (typeof (string));
 		assert (eq != null);
 		assert (cmp != null);
 		assert (hash != null);
@@ -59,12 +59,12 @@ public class FunctionsTests : Gee.TestCase {
 	}
 
 	public void test_int_func () {
-		void *one = (void *)1;
-		void *two = (void *)2;
+		int one = 1;
+		int two = 2;
 
-		Gee.EqualDataFunc eq = Gee.Functions.get_equal_func_for (typeof (int));
-		CompareDataFunc cmp = Gee.Functions.get_compare_func_for (typeof (int));
-		Gee.HashDataFunc hash = Gee.Functions.get_hash_func_for (typeof (int));
+		Gee.EqualDataFunc<int> eq = Gee.Functions.get_equal_func_for (typeof (int));
+		CompareDataFunc<int> cmp = Gee.Functions.get_compare_func_for (typeof (int));
+		Gee.HashDataFunc<int> hash = Gee.Functions.get_hash_func_for (typeof (int));
 
 		assert (eq != null);
 		assert (cmp != null);
@@ -86,8 +86,8 @@ public class FunctionsTests : Gee.TestCase {
 		MyComparable one = new MyComparable(1);
 		MyComparable two_copy = new MyComparable(2);
 
-		Gee.EqualDataFunc eq = Gee.Functions.get_equal_func_for (typeof (MyComparable));
-		CompareDataFunc cmp = Gee.Functions.get_compare_func_for (typeof (MyComparable));
+		Gee.EqualDataFunc<MyComparable> eq = Gee.Functions.get_equal_func_for (typeof (MyComparable));
+		CompareDataFunc<MyComparable> cmp = Gee.Functions.get_compare_func_for (typeof (MyComparable));
 		//Gee.HashDataFunc hash = Gee.Functions.get_hash_func_for (typeof (MyComparable));
 
 		assert (eq != null);
@@ -116,9 +116,9 @@ public class FunctionsTests : Gee.TestCase {
 		MyHashable minus_one = new MyHashable(-1);
 		MyHashable minus_one2 = new MyHashable(-1);
 
-		Gee.EqualDataFunc eq = Gee.Functions.get_equal_func_for (typeof (MyHashable));
-		CompareDataFunc cmp = Gee.Functions.get_compare_func_for (typeof (MyHashable));
-		Gee.HashDataFunc hash = Gee.Functions.get_hash_func_for (typeof (MyHashable));
+		Gee.EqualDataFunc<MyHashable> eq = Gee.Functions.get_equal_func_for (typeof (MyHashable));
+		CompareDataFunc<MyHashable> cmp = Gee.Functions.get_compare_func_for (typeof (MyHashable));
+		Gee.HashDataFunc<MyHashable> hash = Gee.Functions.get_hash_func_for (typeof (MyHashable));
 
 		assert (eq != null);
 		assert (cmp != null);
