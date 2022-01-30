@@ -1279,7 +1279,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			return removed;
 		}
 
-		private static inline bool remove_level (CompareDataFunc<G>? cmp, ref Tower<G> prev, Tower<G> curr, uint8 level) {
+		private static inline bool remove_level<G> (CompareDataFunc<G>? cmp, ref Tower<G> prev, Tower<G> curr, uint8 level) {
 			bool status;
 			bool flagged = curr.try_flag (cmp, ref prev, out status, level);
 			if (status) {
