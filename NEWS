@@ -1,3 +1,8 @@
+libgee 0.20.5
+=============
+ * Fixes for newer valac
+ * Use Makefile.introspection instead of custom rule
+
 libgee 0.20.4
 =============
  * Fixes for newer valac
