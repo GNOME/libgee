@@ -242,7 +242,7 @@ public interface Gee.Traversable<G> : Object {
 	 *    iterator is not allowed before the inner iterator
 	 *    {@link Iterator.next} return false and then it points on its last
 	 *    element. The resulting iterator is {@link Iterator.valid} if parent
-	 *    iterator is {@link Iterator.valid} and value it is pointing on
+	 *    iterator is {@link Iterator.valid} and value it is pointing at
 	 *    fulfills the predicate.
 	 *
 	 * @param pred predicate to check should the value be retained

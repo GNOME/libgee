@@ -21,7 +21,7 @@
  */
 
 /**
- * A list iterator. This supports bi-directionnal and index-based iteration.
+ * A list iterator. This supports bi-directional and index-based iteration.
  */
 public interface Gee.ListIterator<G> : Gee.Iterator<G> {
 	/**
