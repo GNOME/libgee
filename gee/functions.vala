@@ -46,7 +46,7 @@ namespace Gee {
 		 *
 		 * @return the equality testing function corresponding to the given type.
 		 */
-		public static EqualDataFunc get_equal_func_for (Type t) {
+		public static EqualDataFunc<void*> get_equal_func_for (Type t) {
 			if (t == typeof (string)) {
 				return (a, b) => {
 					if (a == b)
@@ -85,7 +85,7 @@ namespace Gee {
 		 *
 		 * @return the hash function corresponding to the given type.
 		 */
-		public static HashDataFunc get_hash_func_for (Type t) {
+		public static HashDataFunc<void*> get_hash_func_for (Type t) {
 			if (t == typeof (string)) {
 				return (a) => {
 					if (a == null)
@@ -112,7 +112,7 @@ namespace Gee {
 		 *
 		 * @return the comparator function corresponding to the given type.
 		 */
-		public static CompareDataFunc get_compare_func_for (Type t) {
+		public static CompareDataFunc<void*> get_compare_func_for (Type t) {
 			if (t == typeof (string)) {
 				return (a, b) => {
 					if (a == b)
