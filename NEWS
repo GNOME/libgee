@@ -1,3 +1,8 @@
+libgee 0.20.6
+=============
+ * Fixes for newer valac
+ * Keep the original exception in Future.map/flat_map
+
 libgee 0.20.5
 =============
  * Fixes for newer valac
