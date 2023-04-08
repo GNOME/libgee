@@ -233,7 +233,7 @@ public class Gee.LinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G> {
 				n.next.prev = n;
 				this._head = (owned)n;
 			} else {
-				weak Node prev = this._head;
+				weak Node<G> prev = this._head;
 				for (int i = 0; i < index - 1; i++) {
 					prev = prev.next;
 				}
