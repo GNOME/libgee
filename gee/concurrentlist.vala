@@ -170,7 +170,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public override G? get (int index) {
+	public override G get (int index) {
 		HazardPointer.Context ctx = new HazardPointer.Context ();
 		Utils.Misc.unused (ctx);
 		assert (index >= 0);

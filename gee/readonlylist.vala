@@ -74,7 +74,7 @@ internal class Gee.ReadOnlyList<G> : Gee.ReadOnlyCollection<G>, List<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public new G? get (int index) {
+	public new G get (int index) {
 		return ((Gee.List<G>) _collection).get (index);
 	}
 

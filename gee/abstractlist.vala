@@ -39,7 +39,7 @@ public abstract class Gee.AbstractList<G> : Gee.AbstractCollection<G>, List<G> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract new G? get (int index);
+	public abstract new G get (int index);
 
 	/**
 	 * {@inheritDoc}

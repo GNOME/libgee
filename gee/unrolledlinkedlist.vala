@@ -158,7 +158,7 @@ public class Gee.UnrolledLinkedList<G> : AbstractBidirList<G>, Queue<G>, Deque<G
 		return new Iterator<G> (this);
 	}
 
-	public override G? get (int index) {
+	public override G get (int index) {
 		assert (index >= 0);
 		assert (index < this._size);
 
