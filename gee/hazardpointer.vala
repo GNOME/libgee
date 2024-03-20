@@ -733,7 +733,7 @@ public class Gee.HazardPointer<G> { // FIXME: Make it a struct
 			AtomicInt.set (ref _active, 1);
 		}
 		
-		inline ~Node () {
+		~Node () {
 			delete _next;
 		}
 

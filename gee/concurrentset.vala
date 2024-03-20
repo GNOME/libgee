@@ -1145,14 +1145,14 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 	}
 
 	private class Tower<G> {
-		public inline Tower (G data, uint8 height) {
+		public Tower (G data, uint8 height) {
 			_nodes = new TowerNode<G>[height];
 			_data = data;
 			_height = 0;
 			AtomicPointer.set (&_nodes[0]._backlink, null); // FIXME: This should be memory barrier
 		}
 
-		public inline Tower.head () {
+		public Tower.head () {
 			_nodes = new TowerNode<G>[_MAX_HEIGHT];
 			_height = -1;
 #if DEBUG
@@ -1160,7 +1160,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 #endif
 		}
 
-		inline ~Tower () {
+		~Tower () {
 			int height = get_height();
 			for (uint8 i = 0; i < height; i++) {
 				set_succ (null, State.NONE, i);

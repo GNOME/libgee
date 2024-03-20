@@ -420,7 +420,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 	}
 
 	private class Node<G> {
-		public inline Node (G data) {
+		public Node (G data) {
 			AtomicPointer.set (&_succ, null);
 			AtomicPointer.set (&_backlink, null);
 			G data_copy = data;
@@ -431,7 +431,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 			AtomicPointer.set (&_data, (owned)data_ptr);
 		}
 
-		public inline Node.head () {
+		public Node.head () {
 			AtomicPointer.set (&_succ, null);
 			AtomicPointer.set (&_backlink, null);
 			AtomicPointer.set (&_data, null);
@@ -440,7 +440,7 @@ public class Gee.ConcurrentList<G> : AbstractList<G> {
 #endif
 		}
 
-		inline ~Node () {
+		~Node () {
 			HazardPointer.set_pointer<Node<G>?> (&_succ, null, 3);
 			HazardPointer.set_pointer<Node<G>?> (&_backlink, null);
 #if DEBUG
