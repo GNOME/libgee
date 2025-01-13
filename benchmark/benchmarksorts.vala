@@ -75,7 +75,7 @@ namespace Gee.Benchmark {
 
 internal class Gee.MergeSort<G> {
 
-	public static void sort<G> (List<G> list, CompareDataFunc compare) {
+	public static void sort<G> (List<G> list, CompareDataFunc<G> compare) {
 		if (list is ArrayList) {
 			MergeSort.sort_arraylist<G> ((ArrayList<G>) list, compare);
 		} else {
@@ -83,7 +83,7 @@ internal class Gee.MergeSort<G> {
 		}
 	}
 
-	public static void sort_list<G> (List<G> list, CompareDataFunc compare) {
+	public static void sort_list<G> (List<G> list, CompareDataFunc<G> compare) {
 		MergeSort<G> helper = new MergeSort<G> ();
 
 		helper.list_collection = list;
@@ -102,7 +102,7 @@ internal class Gee.MergeSort<G> {
 		}
 	}
 
-	public static void sort_arraylist<G> (ArrayList<G> list, CompareDataFunc compare) {
+	public static void sort_arraylist<G> (ArrayList<G> list, CompareDataFunc<G> compare) {
 		MergeSort<G> helper = new MergeSort<G> ();
 
 		helper.list_collection = list;
