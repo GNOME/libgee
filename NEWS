@@ -1,3 +1,7 @@
+libgee 0.20.7
+=============
+ * Fixes for newer valac
+
 libgee 0.20.6
 =============
  * Fixes for newer valac
