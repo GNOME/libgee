@@ -39,7 +39,7 @@ pkgconfig_DATA = gee-0.8.pc
 
 dist-hook: gen-ChangeLog
 
-gen_start_date = 2009-04-30
+gen_start_date = 2009-10-23
 .PHONY: gen-ChangeLog
 gen-ChangeLog:
 	if test -d .git; then						\
@@ -51,6 +51,7 @@ gen-ChangeLog:
 
 EXTRA_DIST += \
 	ChangeLog.pre-0-1-5 \
+	ChangeLog.pre-0-5-0 \
 	gitlog-to-changelog \
 	MAINTAINERS \
 	gee-0.8.pc.in \

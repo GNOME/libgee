@@ -1,0 +1,514 @@
+2009-09-28  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Release 0.5.0
+
+	Update library's interface to 2:0:0
+
+	Fix the documentation of all implementations' constructor
+	Fixes bug 592817.
+
+	Update .gitignore
+
+	Some more documentation enhancements
+
+	Make some style consistence enhancements
+
+2009-09-28  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Replace old-style asserts in tests
+
+	Add tests for Map.entries
+
+2009-09-28  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Implement TreeMultiMap
+
+	Enhance multimap's tests
+
+	Extract AbstractMultiMap from HashMultiMap
+
+	Various documentation enhancements
+
+	Fix {@inheritDoc} tags
+
+	Fix filenames in file headers
+
+2009-09-28  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Introduce the SortedSet interface and implement it in TreeSet
+
+	Add missing DEBUG section
+
+2009-09-27  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Make the coverage analysis on Vala code insteead of C code
+
+2009-09-26  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Fix TestCase against Vala master
+
+	Fix PriorityQueue implementation
+	The implementation was broken. The unused code, because we do not provide
+	a queue merge operation, was put inside #if false directives and left in case we
+	want to support that in the future. The debug code was enhanced too.
+
+2009-09-26  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Fix move_red_right and move_red_left in the Tree implementations
+	Fixes bug 595703.
+
+	Also:
+	 - For simplification move to 2-3 LLRB tree.
+	 - Add CONSTSTENCY_CHECK and DEBUG options
+
+2009-09-26  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Add more add and remove tests
+
+2009-09-25  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Fix a bug in PriorityQueue's iterator
+
+	Fix warnings due to comparison to strcmp
+
+	Use silent rules for users of automake 1.11
+
+	Fix some missing pointer casts
+
+2009-09-24  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Fix item count decrementation on removal in AbstractMultiSet
+
+	Introduce Map.key_type and Map.value_type
+
+	Introduce immutable empty collection, list, set and map
+
+2009-09-23  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Make Map<K,V> be an Iterable<Map.Entry<K,V>>
+
+	Implement TreeMultiSet
+	Fixes bug 594940.
+
+	Extract AbstractMultiSet from HashMultiSet
+
+	Introduce MapIterator<K,V> and implement it in HashMap and TreeMap
+
+2009-09-23  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Fix the iterators of the TreeMap and TreeSet implementations
+
+2009-09-21  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Enhance the tests for the ReadOnly* implementations
+
+2009-09-20  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Reuse the keys, values and entries view instances where possible
+	We use the same mechanism as for the read-only views.
+
+	Introduce the Map.Entry<K,V> class and the Map.entries property
+	We also use Map.entries to optimize the implementations of
+	set_all, has_all and HashMultiMap by avoiding the common pattern:
+	iterate on keys and for each key get the associated value.
+
+	Introduce the Map.has (K key, V value) method
+	Also we use Map.has to fix the implementation of has_all.
+
+2009-09-20  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Modify the Map interface API
+	We do apply the following renaming:
+	 - remove to unset
+	 - contains to has_key
+	 - remove_all to unset_all
+	 - contains_all to has_all
+
+	Old methods are documented as deprecated.
+
+	Also get_keys() and get_values() are transformed into properties.
+
+2009-09-20  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Fix fix_up method in the TreeSet and TreeMap implementations
+	Fixes bug 595703.
+
+2009-09-20  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Add a dependency to gee's vapi in tests' Makefile
+
+	Introduce the Comparable interface and provide a CompareFunc for it
+
+2009-09-19  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Remove unusefull private setter only and construct only properties
+
+	Fix first() and last() signatures in AbstractList
+
+2009-09-16  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Refactor the Set implementations' tests
+	Fixes bug 594241.
+
+2009-09-16  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Fix some bugs in TreeSet implementation
+	Fixes part of bug 594868.
+
+	The access to child nodes two level deeper does not check that the
+	child at the intermediate level is not null.
+	Also has_next was incorrectly handled in case of an empty set.
+
+2009-09-16  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Remove construct block in HashSet
+	Removing construct block enables the use of Vala's constructor chain up.
+
+	Make Functions class a namespace and fix copyright and authorship
+
+2009-09-15  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Introduce the ListIterator interface and make lists implement it
+
+2009-09-15  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Introduce the BidirIterator interface
+
+2009-09-15  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Introduce remove method to the Iterator interface
+
+	Add has_next and first methods to the Iterator interface
+
+2009-09-15  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Fix and improve the TreeMap and TreeSet implementations
+
+2009-09-14  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Fix read-only view unique instance test
+
+	Fix benchmark's build with vala master
+
+2009-09-14  Jürg Billeter  <j@bitron.ch>
+
+	Fix build with vala master
+
+2009-09-14  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Add some tests for List.slice
+
+	Fix List.get API contract and fix implementations accordingly
+
+	Add tests for GObject properties
+
+	Introduce PriorityQueue implementation of the Queue interface
+
+	Use non-nullable capacities and a constant to specify unbounded
+
+	Make Slice<G> a private inner class of TimSort<G>
+	Inline methods are now inlined correctly by gcc.
+
+2009-09-11  Julien Peeters  <contact@julienpeeters.fr>
+
+	Refactor the Map implementations' tests
+	Fixes part of bug 594241.
+
+2009-09-11  Julien Peeters  <contact@julienpeeters.fr>
+
+	Fix a bug in TreeMap implementation
+	Fixes part of bug 594868.
+
+	The access to child nodes two level deeper does not check that the
+	child at the intermediate level is not null.
+
+2009-09-11  Julien Peeters  <contact@julienpeeters.fr>
+
+	Change the Iterator.get method signature and fix implementations
+	Fixes part of bug 594868.
+
+	Change the return type of the Iterator.get method from G? to G and
+	apply those changes to implementations: ArrayList, HashMap,
+	HashMultiSet, HashSet, LinkedList, TreeMap, TreeSet.
+
+2009-09-11  Julien Peeters  <contact@julienpeeters.fr>
+
+	Improve the access to first and last elements in LinkedList
+	Fixes part of bug 594868.
+
+	The signature of first and last properties in List did not take in account the
+	fact that lists permit null elements. Their type has been changed from G? to G
+	to reflect this.
+
+	Also we optimized the access to first and last elements in LinkedList, which can
+	be made through head and tail pointers directly.
+
+2009-09-11  Julien Peeters  <contact@julienpeeters.fr>
+
+	Improve the read-only view property by using weak pointers
+	Fixes bug 594758.
+
+	By using weak pointers the read-only view is destroyed when there is no
+	references to it anymore.
+
+2009-09-11  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Introduce Queue and Deque interfaces, and implement them in LinkedList
+
+	Make List.remove_at return the removed element
+
+	Definitiely remove trailing whitespaces
+
+2009-09-10  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Make TimSort a GObject
+
+	Setup test code coverage with lcov
+	Code coverage analysis is enabled with --enable-coverage.
+
+	Add missing --library in addition to --vapi in gee/Makefile
+	The --gir option is not activated is --library is missing.
+
+2009-09-09  Julien Peeters  <contact@julienpeeters.fr>
+
+	Hide read-only views and make them accessible through a property
+	Fixes bug 594578.
+
+	A new read_only_view property is introduced in the Collection, List, Set and Map
+	interfaces. The AbstractSet class is introduced to put the common code for the
+	read_only_view property.
+
+2009-09-09  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Introduce benchmarks
+
+	Introduce TimSort and the public sorting API
+
+2009-09-07  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Remove possibility of passing null to constructors of ReadOnly* classes
+	Fixes bug 590305.
+
+2009-09-07  Tomaž Vajngerl  <quikee@gmail.com>
+
+	Change ReadOnlySet to inherit from ReadOnlyCollection.
+	Fixes part of bug 590677.
+
+	Change ReadOnlyList to inherit from ReadOnlyCollection.
+	Fixes part of bug 590677.
+
+2009-09-07  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Fix ReadOnlyCollection and ReadOnlyMap encapsulation failure
+
+2009-09-07  Tomaž Vajngerl  <quikee@gmail.com>
+
+	Add tests for ReadOnlyCollection and ReadOnlyList
+	Fixes part of bug 590677.
+
+	Contains missing tests for ReadOnlyCollection and ReadOnlyList following
+	the new tests implementation.
+
+2009-09-06  Ali Sabil  <ali.sabil@gmail.com>
+
+	Introduce the MultiMap interface and its hash based implementation
+
+	Introduce the MultiSet interface and its hash based implementation
+
+2009-09-06  Julien Peeters  <contact@julienpeeters.fr>
+
+	Reuse generic Collection and List tests for LinkedList
+	LinkedList tests now follow the same way of testing than ArrayList ones.
+	LinkedList tests inherit from the ListTests.
+
+2009-09-06  Julien Peeters  <contact@julienpeeters.fr>
+
+	Fix misunderstanding about ArrayList.{retain,remove}_all semantics
+	These methods did not match the semantic of the Collection interface ones.
+	Then they are deleted in order to use the implementation in
+	AbstractCollection.
+
+	By the way, few optimization could probably be found for these methods in
+	the case of ArrayList.
+
+2009-09-06  Julien Peeters  <contact@julienpeeters.fr>
+
+	Add generic tests for collections and lists and refactor ArrayListTests
+	Fixes part of bug 594241.
+
+	Some more enhancements to the test infrastructure
+	TestCase is a more appropriate name, and so are set_up and tear_down.
+
+	Adding a short descriptive introduction for each implementation class.
+	Generally this introduction consists of a implementation description and
+	few word about comparison with other structures.
+
+	Adding a first very basic documentation to data types implementations.
+	When a data type method is already documented in a super class or
+	in an interface the '@inheritDoc' parameter is set.
+
+2009-09-04  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Initial documentation infrastructure import
+
+	Fixing generics typo in HashMap's Value collection
+
+2009-09-03  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Change inner classes' properties from construct to private set
+	Removing construct properties enables the use of Vala's constructor chain up.
+
+2009-09-02  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Provide sane defaults for equal, hash and compare functions
+
+	Change *_func properties from construct to private set
+	Removing construct properties enables to use Vala's constructor chain up.
+
+2009-08-05  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Post-release version bump
+
+	Release 0.3.0
+
+	Enhanced Map removal to optionally retrieve removed value
+	Fixes bug 587134.
+
+	Remove invalid to_array implementation and re-enable test
+
+2009-08-03  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Bump library's version info
+
+2009-07-31  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Temporarily disable to_array test
+
+2009-07-31  Tomaž Vajngerl  <quikee@gmail.com>
+
+	Add Map.is_empty|set_all|remove_all|contains_all and AbstractMap implementations
+	Fixes bug 589902.
+
+	Add List.first|last|insert_all methods and AbstractList implementations
+	Fixes bug 589894.
+
+	Added Collection.is_empty|add_all|contains_all|remove_all|retain_all
+	Fixes bug 589690.
+
+2009-07-31  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Make Iterable.get_element_type a property
+	Fixes bug 589551.
+
+2009-07-31  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Remove unused inherited interface declarations
+
+	Fix list of maintainers
+
+2009-07-27  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Fix invalid test commit
+
+2009-07-27  Julien Peeters  <contact@julienpeeters.fr>
+
+	Make TestFixture's setup and teardown methods virtual
+
+2009-07-27  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Initial rework for tests
+
+	Fix AbstractCollection.to_array method
+
+2009-07-27  Julien Peeters  <contact@julienpeeters.fr>
+
+	Add test fixture helper
+
+2009-07-24  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Introduce Collection.to_array() method
+	A default naive implementation is provided in AbstractCollection. This
+	implementation is overriden in ArrayList in order to take benefit of its array
+	nature.
+
+	Introduce AbstractCollection base class
+	All collection implementations now have a common AbstractCollection base class
+	and now share the implementation of the get_element_type() method.
+
+2009-07-23  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Remove unused variable in tests
+
+	Fix generic parameter typo
+
+2009-07-23  Mark Lee  <marklee@src.gnome.org>
+
+	Add doubly linked list implementation
+	Fixes bug 584032.
+
+2009-07-22  Maciej Piechotka  <uzytkownik2@gmail.com>
+
+	Make func and wrappee properties non-updatable
+	Fixes bug 583723.
+
+	Add left-leaning red-black tree based set and map
+	Fixes bug 583728.
+
+2009-07-22  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Post-release version bump
+
+	Release 0.2.0
+
+	Hardcode gir repository path
+	Use of pkg-config make distcheck fail.
+
+2009-07-20  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Match vala-0.7.4's required GLib version
+
+	Generate, install and distribute GIR file
+
+	Post-release version bump
+
+	Release 0.1.6
+
+2009-07-19  Julien Fontanet  <julien.fontanet@isonoe.net>
+
+	Make ArrayList.Iterator._stamp private
+
+	Split asserts in ArrayList
+
+2009-07-19  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Hide inherited get and set methods from GLib.Object
+
+	Add missing method documentation comment
+
+2009-07-16  Didier 'Ptitjes  <ptitjes@free.fr>
+
+	Initialize 'next' variables
+	Fixes bug 588758.
+
+2009-06-26  Jaap A. Haitsma  <jaap@haitsma.org>
+
+	Add .gitignore
+	Fixes bug #583729
+
+	Add .doap file
+
+2009-06-01  Jürg Billeter  <j@bitron.ch>
+
+	gee: Fix memory leak in HashMap.remove and HashSet.remove
+	Fixes bug 584440.
+
+2009-04-30  Jürg Billeter  <j@bitron.ch>
+
+	Update code using deprecated # modifier or operator
+
+	Fix build with Vala 0.7
+	Based on patch by Thijs Vermeir, fixes bug 579182.
+
+	Generate ChangeLog from git log
+	Add gitlog-to-changelog script from gnulib and a dist-hook to
+	generate ChangeLog file when creating tarballs.
